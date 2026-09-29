@@ -9,12 +9,14 @@
   background:radial-gradient(ellipse at 30% 25%,#3a2256 0%,transparent 55%),radial-gradient(ellipse at 75% 80%,#1d2f5c 0%,transparent 60%),radial-gradient(ellipse at 50% 45%,#121a3c 0%,#060a1c 75%)}
 .intro-cielo{position:absolute;inset:0;width:100%;height:100%}
 .intro-escenario{position:absolute;left:0;top:0;width:1000px;height:600px;transform-origin:0 0}
+.intro-camara{position:absolute;left:0;top:0;width:1000px;height:600px;transform-origin:0 0;will-change:transform}
 
 /* constelación y emblemas: primero lineart, luego pintura */
 .intro-constelacion{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .intro-constelacion line{stroke:rgba(245,168,207,.45);stroke-width:1.2;stroke-dasharray:1;stroke-dashoffset:1}
 .intro-emblema{position:absolute;width:140px;height:140px;margin:-70px 0 0 -70px;opacity:0}
-.intro-emblema svg,.intro-emblema img{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.intro-emblema svg,.intro-emblema path.trazo{stroke-width:1.2}
+.intro-emblema img{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .intro-emblema img{filter:drop-shadow(0 0 8px rgba(255,212,90,.5))}
 .intro path.trazo{fill:none;stroke:#fff3fb;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;
   filter:drop-shadow(0 0 2px rgba(245,168,207,.95));stroke-dasharray:1;stroke-dashoffset:1}

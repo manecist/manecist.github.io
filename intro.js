@@ -1,10 +1,11 @@
 /* ==========================================================================
    Intro de Studios Conari: el hada dibuja y pinta el estudio (GSAP)
-   1. el hada llega volando y dibuja con su varita el lineart de los ocho emblemas
-   2. lanza un hechizo de área: una onda de luz pinta todos los dibujos
-   3. dibuja el dragón en el centro y lo pinta
-   4. lanza un hechizo de luz: el dragón cobra vida, da la vuelta y reúne los
-      emblemas en la luna
+   1. primer plano: un rayo de magia, sin ver aún de dónde sale, dibuja el
+      lineart de cada emblema; la cámara sigue la línea de la constelación
+      hasta el siguiente
+   2. la cámara se aleja y aparece el hada dibujando al dragón
+   3. con todo en lineart, su hechizo pinta a la vez los emblemas y el dragón,
+      que cobra vida, da una vuelta y reúne los emblemas en la luna
    5. el dragón cruza por delante del nombre y revela STUDIOS CONARI a su paso
    Es lo primero que aparece al abrir la página (una vez por sesión); al
    terminar deja a la vista la consola con ENCENDER. Cualquier tecla, clic o
@@ -28,7 +29,7 @@
     intro.className = 'intro'; intro.setAttribute('aria-hidden', 'true');
     intro.innerHTML = `
       <canvas class="intro-cielo"></canvas>
-      <div class="intro-escenario">
+      <div class="intro-escenario"><div class="intro-camara">
         <svg class="intro-constelacion" viewBox="0 0 1000 600"></svg>
         <div class="intro-logo">
           <img class="iw iw-luna" src="assets/intro/w-luna.png" alt="">
@@ -47,11 +48,11 @@
         <div class="intro-dragon"><div class="intro-dragon-spr"></div></div>
         <div class="intro-pluma"></div>
         <p class="intro-presenta">PRESENTA<span>El portafolio de María Inés Cisterna Escobar</span></p>
-      </div>
+      </div></div>
       <p class="intro-saltar">${movil ? 'Toca' : 'Pulsa cualquier tecla'} para saltar</p>`;
     document.body.appendChild(intro);
     const $ = s => intro.querySelector(s);
-    const escenario = $('.intro-escenario'), lienzo = $('.intro-cielo'), ctx = lienzo.getContext('2d');
+    const escenario = $('.intro-escenario'), camara = $('.intro-camara'), lienzo = $('.intro-cielo'), ctx = lienzo.getContext('2d');
 
     // trazos: se mide cada línea para dibujarla en orden, como con un lápiz
     const trazos = (svg, clave) => T[clave].map(d => {
@@ -70,7 +71,7 @@
       const el = document.createElement('div'); el.className = 'intro-emblema'; el.style.left = x + 'px'; el.style.top = y + 'px';
       const img = new Image(); img.src = `assets/intro/logo-${n}.png`; img.alt = ''; img.className = 'pintable';
       const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '0 0 256 256');
-      el.append(img, svg); escenario.insertBefore(el, $('.intro-logo'));
+      el.append(img, svg); camara.insertBefore(el, $('.intro-logo'));
       return { el, img, svg, x, y, lineas: trazos(svg, 'ic-' + n), a: (xx, yy) => ({ x: x - 70 + xx * 140 / 256, y: y - 70 + yy * 140 / 256 }) };
     });
     emblemas.forEach((e, i) => {
@@ -96,13 +97,15 @@
     // P es la punta de la varita. El hada la sigue: cada pose sostiene la varita en otro lugar.
     const P = { x: 1150, y: 230 }, hada = $('.intro-hada'), pluma = $('.intro-pluma'), poses = [...hada.children];
     const PUNTA = [[72, 97], [113, 42], [22, 318], [30, 372]], ESC = 150 / 360;
-    let pose = 0; const H = { x: P.x, y: P.y }, A = { x: 0, y: 0, on: 0 };
+    let pose = 0; const A = { x: 500, y: 300, on: 1 }, H = { x: A.x, y: A.y };
+    // cámara: punto del escenario que queda al centro y su acercamiento
+    const Cam = { x: 500, y: 300, z: 1 };
+    const pantalla = (x, y) => [ox + k * (500 + (x - Cam.x) * Cam.z), oy + k * (300 + (y - Cam.y) * Cam.z)];
     const posar = i => { pose = i; poses.forEach((img, j) => img.classList.toggle('activa', j === i)); };
     posar(0);
     const estrellas = Array.from({ length: movil ? 70 : 150 }, () => ({ x: Math.random(), y: Math.random(), f: Math.random() * 6.3, v: .5 + Math.random() * 1.5, r: .6 + Math.random() * 1.3, c: Math.random() < .3 ? '245,168,207' : Math.random() < .5 ? '186,147,240' : '232,238,255' }));
     const polvo = [], COLORES = ['255,217,240', '245,168,207', '186,147,240', '255,212,90'];
     const dragon = $('.intro-dragon'), sprite = $('.intro-dragon-spr');
-    const hadaVisible = () => +gsap.getProperty(hada, 'opacity') > 0;
     let previoX = null, previo = { x: P.x, y: P.y }, vivo = true, t = 0;
     function cuadro() {
       if (!vivo) return;
@@ -110,12 +113,13 @@
     }
     function pintarCuadro() {
       t += 1 / 60;
+      camara.style.transform = `translate(${500 - Cam.x * Cam.z}px, ${300 - Cam.y * Cam.z}px) scale(${Cam.z})`;
       // el hada sigue a la punta de su varita con un pequeño retraso y flota
       const meta = A.on ? A : P;
       H.x += (meta.x - H.x) * .35; H.y += (meta.y - H.y) * .35;
       const [px, py] = PUNTA[pose];
       hada.style.transform = `translate(${H.x - px * ESC}px, ${H.y - py * ESC + Math.sin(t * 3.2) * 3}px)`;
-      pluma.style.transform = `translate(${P.x}px, ${P.y}px)`;
+      pluma.style.transform = `translate(${P.x}px, ${P.y}px) scale(${1 / Math.sqrt(Cam.z)})`;
       ctx.clearRect(0, 0, lienzo.width, lienzo.height);
       for (const s of estrellas) {
         const b = .25 + .75 * Math.max(0, Math.sin(t * s.v + s.f));
@@ -124,23 +128,25 @@
       }
       // rayo de magia desde la varita hasta el trazo cuando dibuja a distancia
       if (A.on && +gsap.getProperty(pluma, 'opacity') > 0) {
-        const x1 = ox + H.x * k, y1 = oy + H.y * k, x2 = ox + P.x * k, y2 = oy + P.y * k;
+        const [x1, y1] = pantalla(H.x, H.y), [x2, y2] = pantalla(P.x, P.y), kz = k * Math.sqrt(Cam.z);
         const g = ctx.createLinearGradient(x1, y1, x2, y2);
         g.addColorStop(0, 'rgba(255,236,250,.15)'); g.addColorStop(1, 'rgba(255,236,250,.85)');
-        ctx.save(); ctx.strokeStyle = g; ctx.lineWidth = 1.6 * k; ctx.shadowColor = 'rgba(245,168,207,.9)'; ctx.shadowBlur = 10 * k;
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo((x1 + x2) / 2 + Math.sin(t * 9) * 12 * k, (y1 + y2) / 2 - 25 * k, x2, y2); ctx.stroke(); ctx.restore();
+        ctx.save(); ctx.strokeStyle = g; ctx.lineWidth = 1.8 * kz; ctx.shadowColor = 'rgba(245,168,207,.9)'; ctx.shadowBlur = 12 * kz;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo((x1 + x2) / 2 + Math.sin(t * 9) * 12 * kz, (y1 + y2) / 2 - 25 * kz, x2, y2); ctx.stroke(); ctx.restore();
       }
       // destellos de colores detrás de la varita mientras se mueve
       const mov = Math.hypot(P.x - previo.x, P.y - previo.y);
-      if (hadaVisible() && +gsap.getProperty(pluma, 'opacity') > 0 && mov > .4) {
-        for (let i = 0; i < (movil ? 1 : 3); i++) polvo.push({ x: ox + P.x * k + (Math.random() - .5) * 10 * k, y: oy + P.y * k + (Math.random() - .5) * 10 * k, v: 1, vy: .2 + Math.random() * .7, vx: (Math.random() - .5) * .6, r: 1 + Math.random() * 2, c: COLORES[Math.random() * 4 | 0] });
+      if (+gsap.getProperty(pluma, 'opacity') > 0 && mov > .4 / Cam.z) {
+        const [sx, sy] = pantalla(P.x, P.y);
+        for (let i = 0; i < (movil ? 1 : 3); i++) polvo.push({ x: sx + (Math.random() - .5) * 10 * k, y: sy + (Math.random() - .5) * 10 * k, v: 1, vy: .2 + Math.random() * .7, vx: (Math.random() - .5) * .6, r: 1 + Math.random() * 2, c: COLORES[Math.random() * 4 | 0] });
       }
       previo = { x: P.x, y: P.y };
       // estela dorada detrás del dragón
       const dx = gsap.getProperty(dragon, 'x'), dy = gsap.getProperty(dragon, 'y');
       if (+gsap.getProperty(dragon, 'opacity') > 0) {
         if (previoX !== null) sprite.style.transform = `scaleX(${dx > previoX + .2 ? -1 : 1})`;   // el sprite mira a la izquierda
-        for (let i = 0; i < (movil ? 1 : 2); i++) polvo.push({ x: ox + dx * k + (Math.random() - .5) * 30 * k, y: oy + (dy + 18) * k + (Math.random() - .5) * 20 * k, v: 1, vy: .3 + Math.random() * .8, vx: 0, r: 1.2 + Math.random() * 1.6, c: Math.random() < .7 ? '255,212,90' : '245,168,207' });
+        const [sx, sy] = pantalla(dx, dy + 18);
+        for (let i = 0; i < (movil ? 1 : 2); i++) polvo.push({ x: sx + (Math.random() - .5) * 30 * k, y: sy + (Math.random() - .5) * 20 * k, v: 1, vy: .3 + Math.random() * .8, vx: 0, r: 1.2 + Math.random() * 1.6, c: Math.random() < .7 ? '255,212,90' : '245,168,207' });
       }
       previoX = dx;
       for (let i = polvo.length - 1; i >= 0; i--) {
@@ -181,71 +187,68 @@
     gsap.set(nombre, { opacity: 1, clipPath: 'inset(0 0 0 100%)' });
 
     const tl = gsap.timeline({ onComplete: terminar });
-    tl.to(intro, { opacity: 1, duration: .45 }, 0)
-      .to(hada, { opacity: 1, duration: .4 }, .15)
-      .to(pluma, { opacity: 1, duration: .3 }, .5);
-
-    // 1. el hada llega volando y dibuja el lineart de cada emblema, cada vez con más soltura
-    let tt = .2;
-    const RITMO = [.42, .34, .28, .24, .21, .19, .18, .18];
-    emblemas.forEach((e, i) => {
-      const vuelo = i ? .11 : .6, ini = inicioDe(e.lineas, e.a);
-      tl.to(P, { x: ini.x, y: ini.y, duration: vuelo, ease: i ? 'power2.inOut' : 'power2.out' }, tt);
-      if (!i) tl.call(posar, [1], tt + vuelo * .7);
-      tt += vuelo;
-      tl.set(e.el, { opacity: 1 }, tt)
-        .add(dibujar(e.lineas, e.a, RITMO[i]), tt)
-        .to(constel.children[i], { strokeDashoffset: 0, duration: .35, ease: 'none' }, tt + RITMO[i] * .7);
-      tt += RITMO[i];
-    });
-
-    // 2. recorre el anillo con la varita baja y pinta cada emblema a su paso
-    // el hada va al centro y, con los ojos cerrados, suelta una onda de luz que pinta todo el anillo
-    const onda = $('.intro-onda');
+    const iniD = inicioDe(dragonLineas, aDragon), onda = $('.intro-onda'), dragonColor = $('.intro-dragon-color');
     gsap.set(onda, { width: RX * 2.3, height: RY * 2.3, marginLeft: -RX * 1.15, marginTop: -RY * 1.15 });
-    tl.to(P, { x: 470, y: 330, duration: .4, ease: 'power2.inOut' }, tt)
-      .call(posar, [2], tt + .25)
-      .fromTo('.intro-hechizo', { scale: .05, opacity: 0 }, { scale: .45, opacity: .9, duration: .3, ease: 'power2.out' }, tt + .4)
-      .to('.intro-hechizo', { scale: .7, opacity: 0, duration: .5 }, tt + .7)
-      .fromTo(onda, { scale: .05, opacity: 1 }, { scale: 1, opacity: 0, duration: 1, ease: 'power2.out', immediateRender: false }, tt + .45);
-    emblemas.forEach((e, i) => {
-      const t0 = tt + .75 + (i % 2) * .05;   // la onda alcanza el anillo casi a la vez
-      tl.add(pintar(e.img, .35), t0).to(e.svg, { opacity: 0, duration: .3 }, t0 + .2)
-        .fromTo(e.img, { filter: 'brightness(2.2) drop-shadow(0 0 14px rgba(255,236,250,.9))' }, { filter: 'brightness(1) drop-shadow(0 0 8px rgba(255,212,90,.5))', duration: .6 }, t0 + .15);
-    });
-    tt += 1.35;
-
-    // 3. dibuja el dragón en el centro y lo pinta
-    const iniD = inicioDe(dragonLineas, aDragon);
     // dónde flota el hada mientras trabaja en el dragón (en pantallas verticales, debajo de él)
     const ANCLA = vertical
-      ? { dibuja: { x: 520, y: 450 }, pinta: { x: 560, y: 590 }, hechizo: { x: 555, y: 560 } }
-      : { dibuja: { x: 680, y: 230 }, pinta: { x: 650, y: 380 }, hechizo: { x: 655, y: 350 } };
-    tl.call(posar, [1], tt)
-      .set(A, { x: () => H.x, y: () => H.y }, tt)
-      .to(A, { ...ANCLA.dibuja, on: 1, duration: .4, ease: 'power2.inOut' }, tt)
-      .to(P, { x: iniD.x, y: iniD.y, duration: .4, ease: 'power2.inOut' }, tt)
-      .to(constel, { opacity: .35, duration: .4 }, tt)
-      .set(dibujo, { opacity: 1 }, tt + .4)
-      .add(dibujar(dragonLineas, aDragon, 1.15), tt + .4);
-    tt += 1.57;
-    tl.call(posar, [3], tt)
-      .to(A, { ...ANCLA.pinta, duration: .3, ease: 'power2.inOut' }, tt)
-      .to(P, { duration: .75, ease: 'power1.inOut', motionPath: { path: [{ x: 400, y: 300 }, { x: 470, y: 250 }, { x: 540, y: 330 }, { x: 610, y: 280 }], curviness: 1.4 } }, tt)
-      .add(pintar($('.intro-dragon-color'), .75), tt)
-      .to('.intro-dragon-dibujo svg', { opacity: 0, duration: .4 }, tt + .5);
-    tt += .8;
+      ? { dibuja: { x: 520, y: 450 }, hechizo: { x: 555, y: 560 } }
+      : { dibuja: { x: 680, y: 230 }, hechizo: { x: 655, y: 350 } };
 
-    // 4. hechizo de luz: el dragón cobra vida y sale volando
+    // 1. primer plano: el rayo dibuja cada emblema y la cámara sigue la línea hasta el siguiente.
+    //    El rayo sale del centro del anillo, que queda fuera de cuadro mientras la cámara está cerca.
+    const Z = vertical ? 2 : 2.4, RITMO = [.55, .45, .4, .36, .33, .31, .3, .3], VIAJE = .36;
+    Object.assign(Cam, { x: emblemas[0].x, y: emblemas[0].y, z: Z });
+    Object.assign(P, inicioDe(emblemas[0].lineas, emblemas[0].a));
+    posar(1);
+    tl.to(intro, { opacity: 1, duration: .6 }, 0)
+      .to(pluma, { opacity: 1, duration: .3 }, .35);
+    let tt = .5;
+    emblemas.forEach((e, i) => {
+      const ini = inicioDe(e.lineas, e.a);
+      tl.to(P, { x: ini.x, y: ini.y, duration: .1, ease: 'power1.out' }, tt).set(e.el, { opacity: 1 }, tt);
+      tt += .1;
+      tl.add(dibujar(e.lineas, e.a, RITMO[i]), tt);
+      tt += RITMO[i];
+      if (i === emblemas.length - 1) return;
+      const q = emblemas[i + 1];
+      tl.to(P, { x: e.x, y: e.y, duration: .08 }, tt);
+      tt += .08;
+      tl.to(P, { x: q.x, y: q.y, duration: VIAJE, ease: 'power1.inOut' }, tt)
+        .to(constel.children[i], { strokeDashoffset: 0, duration: VIAJE, ease: 'power1.inOut' }, tt)
+        .to(Cam, { x: q.x, y: q.y, duration: VIAJE, ease: 'power1.inOut' }, tt);
+      tt += VIAJE;
+    });
+
+    // 2. la cámara se aleja: aparece el hada, que es quien lanzaba el rayo, y dibuja al dragón
+    tl.to(constel.children[emblemas.length - 1], { strokeDashoffset: 0, duration: .7, ease: 'power1.inOut' }, tt)
+      .to(Cam, { x: 500, y: 300, z: 1, duration: 1.4, ease: 'power2.inOut' }, tt)
+      .to(A, { ...ANCLA.dibuja, duration: 1.1, ease: 'power2.inOut' }, tt + .2)
+      .to(hada, { opacity: 1, duration: .6 }, tt + .55)
+      .to(P, { x: iniD.x, y: iniD.y, duration: .5, ease: 'power2.inOut' }, tt + .3)
+      .to(constel, { opacity: .5, duration: .6 }, tt + 1)
+      .set(dibujo, { opacity: 1 }, tt + .8)
+      .add(dibujar(dragonLineas, aDragon, 1.3), tt + .8);
+    tt += 2.15;
+
+    // 3. con todo en lineart, un solo hechizo pinta los emblemas y el dragón, que cobra vida
     tl.call(posar, [2], tt)
       .to(A, { ...ANCLA.hechizo, duration: .3, ease: 'power2.out' }, tt)
       .to(P, { x: 560, y: 300, duration: .3, ease: 'power2.out' }, tt)
       .fromTo('.intro-hechizo', { scale: .1, opacity: 0 }, { scale: 1.25, opacity: 1, duration: .45, ease: 'power2.out' }, tt + .25)
-      .set(dibujo, { opacity: 0 }, tt + .62)
-      .set(dragon, { opacity: 1, scale: 220 / (254 * .6) }, tt + .62)
-      .to('.intro-hechizo', { opacity: 0, scale: 1.6, duration: .6, ease: 'power1.in' }, tt + .7)
+      .fromTo(onda, { scale: .05, opacity: 1 }, { scale: 1, opacity: 0, duration: 1, ease: 'power2.out', immediateRender: false }, tt + .35)
+      .to(constel, { opacity: 1, duration: .4 }, tt + .4)
+      .add(pintar(dragonColor, .35), tt + .35)
+      .to('.intro-dragon-dibujo svg', { opacity: 0, duration: .3 }, tt + .5);
+    emblemas.forEach((e, i) => {
+      const t0 = tt + .6 + (i % 2) * .05;   // la onda alcanza el anillo casi a la vez
+      tl.add(pintar(e.img, .35), t0).to(e.svg, { opacity: 0, duration: .3 }, t0 + .2)
+        .fromTo(e.img, { filter: 'brightness(2.2) drop-shadow(0 0 14px rgba(255,236,250,.9))' }, { filter: 'brightness(1) drop-shadow(0 0 8px rgba(255,212,90,.5))', duration: .6, immediateRender: false }, t0 + .15);
+    });
+    tl.set(dibujo, { opacity: 0 }, tt + .75)
+      .set(dragon, { opacity: 1, scale: 220 / (254 * .6) }, tt + .75)
+      .to('.intro-hechizo', { opacity: 0, scale: 1.6, duration: .6, ease: 'power1.in' }, tt + .8)
       .to(pluma, { opacity: 0, duration: .3 }, tt + .7);
-    tt += .75;
+    tt += .95;
     // el hada se despide volando hacia arriba mientras el dragón da la vuelta y reúne los emblemas en la luna
     tl.call(posar, [0], tt + .2)
       .set(A, { on: 0 }, tt + .2)
