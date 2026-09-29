@@ -16,7 +16,7 @@ window.renderRelationshipReport=function(ageRows,selected,color,ageLabel){
  const root=$('#relationship-summary');root.replaceChildren();root.append(node('p',$('#sample-origin').textContent,'cohort-origin'));
  if(!selected.length){root.append(node('div','✧ Aún no hay personas en esta selección. Agrega registros o cambia los filtros para descubrir sus melodías.','cohort-empty'));return;}
  const colorGroups=freq(selected,'color').map(([name])=>({name,list:selected.filter(r=>r.color===name)}));
- const scope=node('div',undefined,'cohort-scope');scope.append(node('span','✧ '+selected.length+' personas en la selección'),node('span',ageLabel),node('span',color==='all'?'Todos los colores':color));root.append(scope);
+ const scope=node('div',undefined,'cohort-scope');scope.append(node('span','✧ '+personas(selected.length)+' en la selección'),node('span',ageLabel),node('span',color==='all'?'Todos los colores':color));root.append(scope);
  // Una lectura completa conserva siempre edad + color + denominador.
  const focus=colorGroups[0],focusBands=ageBands.map(b=>({band:b,list:cohortFor(focus.list,b)})).filter(g=>g.list.length);
  const lead=node('article',undefined,'cohort-reading');lead.append(node('span','✦ LECTURA DE LA MUESTRA','reading-label'));
@@ -26,7 +26,7 @@ window.renderRelationshipReport=function(ageRows,selected,color,ageLabel){
  root.append(lead);
  colorGroups.forEach(({name,list})=>{
   const section=node('section',undefined,'color-cohorts');section.style.setProperty('--cohort-color',colorHex[name]||'#c8a7ea');
-  const head=node('div',undefined,'color-cohort-heading'),dot=node('i');dot.setAttribute('aria-hidden','true');head.append(dot,node('h5',name),node('span',list.length+' personas'));section.append(head);
+  const head=node('div',undefined,'color-cohort-heading'),dot=node('i');dot.setAttribute('aria-hidden','true');head.append(dot,node('h5',name),node('span',personas(list.length)));section.append(head);
   const grid=node('div',undefined,'age-cohort-grid');
   ageBands.forEach(b=>{
    const group=cohortFor(list,b);if(!group.length)return;
@@ -37,7 +37,7 @@ window.renderRelationshipReport=function(ageRows,selected,color,ageLabel){
    const scroll=node('div',undefined,'cohort-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','Distribución musical de '+name+', '+b.label);
    const bars=node('div',undefined,'cohort-bars');bars.style.setProperty('--cohort-columns',s.entries.length);
    s.entries.forEach(([music,n])=>{const col=node('figure'),track=node('div',undefined,'cohort-track'),fill=node('div',undefined,'cohort-fill');fill.style.height=(n/s.total*100)+'%';fill.style.setProperty('--music-color',cohortMusicColor(music));fill.append(node('b',percent(n,s.total)));track.append(fill);const cap=node('figcaption');cap.append(node('strong',music),node('small',n+' de '+s.total));col.append(track,cap);col.setAttribute('aria-label',music+': '+n+' de '+s.total+', '+percent(n,s.total));bars.append(col);});scroll.append(bars);card.append(scroll);
-   card.append(node('small','Escala común: 0–100% · base: '+s.total+' personas de esta edad y color.','cohort-base'));
+   card.append(node('small','Escala común: 0–100% · base: '+personas(s.total)+' de esta edad y color.','cohort-base'));
    if(s.total<5)card.append(node('small','Pocos registros: cada persona pesa '+percent(1,s.total)+'.','cohort-small'));
    grid.append(card);
   });section.append(grid);root.append(section);
