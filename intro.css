@@ -1,0 +1,65 @@
+/* ==========================================================================
+   Intro de Studios Conari (intro.js): el hada dibuja y pinta el estudio.
+   Se muestra al pulsar ENCENDER, una vez por sesión.
+   ========================================================================== */
+.intro{position:fixed;inset:0;z-index:900;overflow:hidden;cursor:pointer;opacity:0;
+  background:radial-gradient(ellipse at 30% 25%,#3a2256 0%,transparent 55%),radial-gradient(ellipse at 75% 80%,#1d2f5c 0%,transparent 60%),radial-gradient(ellipse at 50% 45%,#121a3c 0%,#060a1c 75%)}
+.intro-cielo{position:absolute;inset:0;width:100%;height:100%}
+.intro-escenario{position:absolute;left:0;top:0;width:1000px;height:600px;transform-origin:0 0}
+
+/* constelación y emblemas: primero lineart, luego pintura */
+.intro-constelacion{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.intro-constelacion line{stroke:rgba(245,168,207,.45);stroke-width:1.2;stroke-dasharray:1;stroke-dashoffset:1}
+.intro-emblema{position:absolute;width:140px;height:140px;margin:-70px 0 0 -70px;opacity:0}
+.intro-emblema svg,.intro-emblema img{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.intro-emblema img{filter:drop-shadow(0 0 8px rgba(255,212,90,.5))}
+.intro path.trazo{fill:none;stroke:#fff3fb;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;
+  filter:drop-shadow(0 0 2px rgba(245,168,207,.95));stroke-dasharray:1;stroke-dashoffset:1}
+
+/* pintura: un pincel suave recorre la figura y deja el color a su paso */
+.intro .pintable{-webkit-mask-image:linear-gradient(100deg,#000 42%,rgba(0,0,0,.35) 48%,transparent 56%);mask-image:linear-gradient(100deg,#000 42%,rgba(0,0,0,.35) 48%,transparent 56%);
+  -webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:100% 0;mask-position:100% 0}
+
+/* dragón dibujado en el centro y luego con vida */
+.intro-dragon-dibujo{position:absolute;left:350px;top:150px;width:300px;height:300px;opacity:0}
+.intro-dragon-dibujo svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.intro-dragon-dibujo path.trazo{stroke-width:.55;stroke:#fff3fb}
+.intro-dragon-color{position:absolute;inset:0;background:url("assets/intro/dragon-vuela.png") 0 0/900% 100% no-repeat;image-rendering:pixelated}
+.intro-dragon{position:absolute;left:0;top:0;width:100px;height:100px;margin:-50px 0 0 -50px;opacity:0}
+.intro-dragon-spr{width:100px;height:100px;image-rendering:pixelated;scale:2.1;
+  background:url("assets/intro/dragon-vuela.png") 0 0/900px 100px no-repeat;animation:intro-aleteo .6s steps(8) infinite;
+  filter:drop-shadow(0 0 12px rgba(245,168,207,.55))}
+@keyframes intro-aleteo{to{background-position:-800px 0}}
+
+/* hada: cuatro poses de la varita */
+.intro-hada{position:absolute;left:0;top:0;width:198px;height:264px;opacity:0;pointer-events:none;
+  filter:drop-shadow(0 0 16px rgba(186,147,240,.55))}
+.intro-hada img{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+.intro-hada img.activa{opacity:1}
+
+/* punta de la varita, destellos y luz del hechizo */
+.intro-pluma{position:absolute;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;opacity:0;pointer-events:none;
+  background:radial-gradient(circle,#fff 0 12%,rgba(255,217,240,.95) 22%,rgba(245,168,207,.45) 45%,transparent 70%)}
+.intro-hechizo{position:absolute;left:500px;top:300px;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;opacity:0;pointer-events:none;
+  background:radial-gradient(circle,#fff 0 7%,rgba(255,236,190,.95) 14%,rgba(245,168,207,.6) 30%,rgba(186,147,240,.28) 48%,transparent 70%)}
+.intro-destello{position:absolute;width:90px;height:90px;margin:-45px 0 0 -45px;opacity:0;pointer-events:none;
+  background:radial-gradient(circle,#fff 0 6%,rgba(255,230,150,.9) 12%,rgba(255,212,90,.25) 35%,transparent 65%),
+    linear-gradient(90deg,transparent 47%,rgba(255,245,200,.9) 50%,transparent 53%),
+    linear-gradient(0deg,transparent 47%,rgba(255,245,200,.9) 50%,transparent 53%)}
+
+/* logotipo final */
+.intro-logo{position:absolute;left:236.5px;top:146.15px;width:620px;height:362px;transform:scale(.85);transform-origin:0 0}
+.intro-logo .iw,.intro-logo svg,.intro-brillo{position:absolute;inset:0;width:100%;height:100%}
+.intro-logo svg{overflow:visible;filter:drop-shadow(0 0 4px rgba(255,212,90,.8))}
+.intro-logo path.trazo{stroke:#ffd98a;stroke-width:1.2;filter:none}
+.iw{opacity:0}
+.iw-conari{opacity:1}
+.iw-lineas{transform-origin:50% 29%}
+.iw-base{transform-origin:50% 90%}
+.intro-brillo{-webkit-mask:url("assets/intro/conari-wordmark.png") 0 0/100% 100% no-repeat;mask:url("assets/intro/conari-wordmark.png") 0 0/100% 100% no-repeat;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,240,250,.95) 50%,transparent 60%) -250% 0/60% 100% no-repeat;mix-blend-mode:screen}
+.intro-presenta{position:absolute;left:0;right:0;top:500px;margin:0;text-align:center;opacity:0;
+  font:600 12px/1 var(--sans);letter-spacing:.55em;color:var(--gold)}
+.intro-presenta span{display:block;margin-top:14px;font:400 24px/1.1 Georgia,serif;letter-spacing:.04em;color:#ffe9f5}
+.intro-saltar{position:absolute;bottom:18px;left:0;right:0;margin:0;text-align:center;font:500 11px/1 var(--sans);letter-spacing:.14em;color:rgba(255,233,245,.45)}
