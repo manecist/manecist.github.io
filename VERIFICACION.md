@@ -16,33 +16,33 @@
 - Imagen 3 se revela al pulsar
 - Imagen 3 se oculta al volver a pulsar
 - Sin botones musicales fuera del selector
-- RomÃ¡ntica sigue dentro de la lista
-- Metal sinfÃ³nico sigue dentro de la lista
-- Ejemplo rotulado explÃ­citamente ficticio
+- Romántica sigue dentro de la lista
+- Metal sinfónico sigue dentro de la lista
+- Ejemplo rotulado explícitamente ficticio
 - Ejemplo con veinte registros
 - Rojo compara dos edades
-- NiÃ±ez: 4 de 5 prefieren Pop (80%)
+- Niñez: 4 de 5 prefieren Pop (80%)
 - Adultos: 3 de 5 prefieren Rock (60%)
 - Resumen conserva edad, color y base
-- Barras utilizan escala porcentual comÃºn
-- Filtro de edad reduce comparaciÃ³n
+- Barras utilizan escala porcentual común
+- Filtro de edad reduce comparación
 - Filtro conserva denominador edad y color
 - Grupo sin datos explica ausencia
-- Empate explÃ­cito sin falsa mayorÃ­a
+- Empate explícito sin falsa mayoría
 - Un registro no se presenta como tendencia
 - Resumen de empate correcto
-- 40% mÃ¡s frecuente no se llama mayorÃ­a
-- Muestra vacÃ­a controlada
+- 40% más frecuente no se llama mayoría
+- Muestra vacía controlada
 - Nuevo registro actualiza el resumen
-- Edades lÃ­mite asignadas sin solapamientos ni huecos
-- Dos fuentes cientÃ­ficas primarias enlazadas
-- Explica asociaciÃ³n de colores versus preferencia personal
+- Edades límite asignadas sin solapamientos ni huecos
+- Dos fuentes científicas primarias enlazadas
+- Explica asociación de colores versus preferencia personal
 - Sin desbordamiento a 1920
 - Sin desbordamiento a 1440
 - Sin desbordamiento a 768
 - Sin desbordamiento a 390
 - Sin desbordamiento a 360
 - Texto personalizado seguro en informe
-- Sin errores JavaScript ni imÃ¡genes rotas
+- Sin errores JavaScript ni imágenes rotas
 - Entrega local conserva etapas cerradas
 - Informe funciona sin servidor

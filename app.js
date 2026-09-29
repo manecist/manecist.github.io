@@ -1,5 +1,6 @@
 
 'use strict';
+const personas=n=>n+(n===1?' persona':' personas');
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));

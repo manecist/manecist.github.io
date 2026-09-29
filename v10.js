@@ -19,7 +19,7 @@ function startGemLesson(type){
   if(findMatches().length)continue;swap(source,target);const groups=matchGroups(findMatches());ready=groups.length===1&&groups[0].cells.size===size;swap(source,target);if(ready)break;
  }
  if(!ready){initMatch();$('#match-message').textContent='Prueba los poderes del tablero y vuelve a elegir el reto.';return;}
- window.gemHint=[source,target];$('#gem-lesson-hint').hidden=false;$('#gem-lesson-hint').textContent='Toca la estrella marcada 1 y después la gema marcada 2. '+(mode==='bomb-l'||mode==='bomb-t'?'Unirás dos líneas de tres en '+(mode==='bomb-l'?'L':'T')+'. Comparten una estrella: son cinco en total y forman una bomba.':type==='disco'?'Formarás dos líneas conectadas de seis estrellas en total.':'Unirás '+size+' estrellas para crear '+(type==='bomb'?'una bomba.':'un cohete.'));
+ window.gemHint=[source,target];$('#gem-lesson-hint').hidden=false;$('#gem-lesson-hint').textContent='Toca la estrella marcada 1 y después la gema marcada 2. '+(mode==='bomb-l'||mode==='bomb-t'?'Unirás dos líneas de tres en '+(mode==='bomb-l'?'L':'T')+'. Comparten una estrella: son cinco en total y forman una bomba.':type==='disco'?'Unirás seis estrellas en dos líneas conectadas para crear una bola disco.':'Unirás '+size+' estrellas para crear '+(type==='bomb'?'una bomba.':'un cohete.'));
  $('#gem-power-message').textContent='Tu reto: crear '+powerLabels[type].toLowerCase()+'.';$('#match-message').textContent='Las dos casillas señaladas son vecinas: selecciónalas en orden.';$$('[data-gem-lesson]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.gemLesson===mode)));renderMatch();
  $('#match-grid').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'center'});
 }
