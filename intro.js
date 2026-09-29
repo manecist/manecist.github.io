@@ -6,15 +6,16 @@
    4. lanza un hechizo de luz: el dragón cobra vida, da la vuelta y reúne los
       emblemas en la luna
    5. el dragón cruza por delante del nombre y revela STUDIOS CONARI a su paso
-   Se muestra al pulsar ENCENDER, una vez por sesión. Cualquier tecla, clic o
+   Es lo primero que aparece al abrir la página (una vez por sesión); al
+   terminar deja a la vista la consola con ENCENDER. Cualquier tecla, clic o
    toque la salta. Con movimiento reducido no se reproduce.
    ========================================================================== */
 (() => {
-  const boton = document.getElementById('power-button');
-  if (!boton || !window.gsap || !window.MCE_TRAZOS) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  try { if (sessionStorage.getItem('mce-intro')) return; } catch (e) { /* sin almacenamiento */ }
-  boton.addEventListener('click', () => setTimeout(iniciar, 380), { once: true });
+  // index.html marca <html class="con-intro"> antes de pintar si corresponde mostrarla
+  const raiz = document.documentElement;
+  if (!raiz.classList.contains('con-intro') || !window.gsap || !window.MCE_TRAZOS) { raiz.classList.remove('con-intro'); return; }
+  window.MCEIntroActiva = true;
+  iniciar();
 
   function iniciar() {
     gsap.registerPlugin(...[window.MotionPathPlugin].filter(Boolean));
@@ -39,7 +40,7 @@
           <div class="intro-brillo"></div>
         </div>
         <div class="intro-hada">${[0, 1, 2, 3].map(i => `<img src="assets/hada-hechizo-${i}.webp" alt="">`).join('')}</div>
-        <div class="intro-dragon-dibujo"><div class="intro-dragon-color pintable"></div><svg viewBox="0 0 100 100"></svg></div>
+        <div class="intro-dragon-dibujo"><div class="intro-dragon-color pintable"></div><svg viewBox="0 0 254 240"></svg></div>
         <div class="intro-onda"></div>
         <div class="intro-hechizo"></div>
         <div class="intro-destello"></div>
@@ -78,7 +79,7 @@
       constel.appendChild(l);
     });
     const dibujo = $('.intro-dragon-dibujo'), dragonLineas = trazos($('.intro-dragon-dibujo svg'), 'dragon');
-    const aDragon = (xx, yy) => ({ x: 350 + xx * 3, y: 150 + yy * 3 });
+    const DS = 220 / 254, aDragon = (xx, yy) => ({ x: 390 + xx * DS, y: 196 + yy * DS });   // dibujo de 220 px de ancho en el centro
     const svgLogo = $('.intro-logo svg'), lineasLuna = trazos(svgLogo, 'luna');
 
     // ---------------------------------------------------------- escala del escenario
@@ -94,7 +95,7 @@
     // ---------------------------------------------------------- pluma, hada y partículas
     // P es la punta de la varita. El hada la sigue: cada pose sostiene la varita en otro lugar.
     const P = { x: 1150, y: 230 }, hada = $('.intro-hada'), pluma = $('.intro-pluma'), poses = [...hada.children];
-    const PUNTA = [[72, 97], [113, 42], [22, 318], [30, 372]], ESC = 198 / 360;
+    const PUNTA = [[72, 97], [113, 42], [22, 318], [30, 372]], ESC = 150 / 360;
     let pose = 0; const H = { x: P.x, y: P.y }, A = { x: 0, y: 0, on: 0 };
     const posar = i => { pose = i; poses.forEach((img, j) => img.classList.toggle('activa', j === i)); };
     posar(0);
@@ -206,7 +207,7 @@
       .call(posar, [2], tt + .25)
       .fromTo('.intro-hechizo', { scale: .05, opacity: 0 }, { scale: .45, opacity: .9, duration: .3, ease: 'power2.out' }, tt + .4)
       .to('.intro-hechizo', { scale: .7, opacity: 0, duration: .5 }, tt + .7)
-      .fromTo(onda, { scale: .05, opacity: 1 }, { scale: 1, opacity: 0, duration: 1, ease: 'power2.out' }, tt + .45);
+      .fromTo(onda, { scale: .05, opacity: 1 }, { scale: 1, opacity: 0, duration: 1, ease: 'power2.out', immediateRender: false }, tt + .45);
     emblemas.forEach((e, i) => {
       const t0 = tt + .75 + (i % 2) * .05;   // la onda alcanza el anillo casi a la vez
       tl.add(pintar(e.img, .35), t0).to(e.svg, { opacity: 0, duration: .3 }, t0 + .2)
@@ -218,8 +219,8 @@
     const iniD = inicioDe(dragonLineas, aDragon);
     // dónde flota el hada mientras trabaja en el dragón (en pantallas verticales, debajo de él)
     const ANCLA = vertical
-      ? { dibuja: { x: 540, y: 485 }, pinta: { x: 590, y: 650 }, hechizo: { x: 585, y: 610 } }
-      : { dibuja: { x: 745, y: 205 }, pinta: { x: 700, y: 360 }, hechizo: { x: 705, y: 330 } };
+      ? { dibuja: { x: 520, y: 450 }, pinta: { x: 560, y: 590 }, hechizo: { x: 555, y: 560 } }
+      : { dibuja: { x: 680, y: 230 }, pinta: { x: 650, y: 380 }, hechizo: { x: 655, y: 350 } };
     tl.call(posar, [1], tt)
       .set(A, { x: () => H.x, y: () => H.y }, tt)
       .to(A, { ...ANCLA.dibuja, on: 1, duration: .4, ease: 'power2.inOut' }, tt)
@@ -230,7 +231,7 @@
     tt += 1.57;
     tl.call(posar, [3], tt)
       .to(A, { ...ANCLA.pinta, duration: .3, ease: 'power2.inOut' }, tt)
-      .to(P, { duration: .75, ease: 'power1.inOut', motionPath: { path: [{ x: 380, y: 300 }, { x: 470, y: 240 }, { x: 560, y: 330 }, { x: 640, y: 270 }], curviness: 1.4 } }, tt)
+      .to(P, { duration: .75, ease: 'power1.inOut', motionPath: { path: [{ x: 400, y: 300 }, { x: 470, y: 250 }, { x: 540, y: 330 }, { x: 610, y: 280 }], curviness: 1.4 } }, tt)
       .add(pintar($('.intro-dragon-color'), .75), tt)
       .to('.intro-dragon-dibujo svg', { opacity: 0, duration: .4 }, tt + .5);
     tt += .8;
@@ -241,7 +242,7 @@
       .to(P, { x: 560, y: 300, duration: .3, ease: 'power2.out' }, tt)
       .fromTo('.intro-hechizo', { scale: .1, opacity: 0 }, { scale: 1.25, opacity: 1, duration: .45, ease: 'power2.out' }, tt + .25)
       .set(dibujo, { opacity: 0 }, tt + .62)
-      .set(dragon, { opacity: 1, scale: 300 / 210 }, tt + .62)
+      .set(dragon, { opacity: 1, scale: 220 / (254 * .6) }, tt + .62)
       .to('.intro-hechizo', { opacity: 0, scale: 1.6, duration: .6, ease: 'power1.in' }, tt + .7)
       .to(pluma, { opacity: 0, duration: .3 }, tt + .7);
     tt += .75;
@@ -290,7 +291,8 @@
     function terminar() {
       if (cerrado) return; cerrado = true; vivo = false;
       try { sessionStorage.setItem('mce-intro', '1'); } catch (e) { /* sin almacenamiento */ }
-      intro.remove();
+      intro.remove(); raiz.classList.remove('con-intro');
+      document.getElementById('power-button')?.focus({ preventScroll: true });
       removeEventListener('keydown', saltar, true); removeEventListener('resize', medir);
     }
     function saltar(e) {

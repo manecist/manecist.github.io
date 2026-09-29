@@ -6,8 +6,8 @@ Sitio estático (HTML, CSS y JavaScript sin dependencias ni compilación), prepa
 
 ## Secciones
 
-- **Pantalla de inicio**: consola rosada con Tetris automático en la pantalla LCD. Al pulsar **ENCENDER** comienza la intro.
-- **Intro de Studios Conari** (unos 14 s, una vez por sesión; cualquier tecla, clic o toque la salta): el hada dibuja con su varita el lineart de los ocho emblemas del estudio y los pinta todos con un hechizo de área. Después dibuja al dragón con un rayo de magia, lo colorea y le da vida con un hechizo de luz. El dragón da una vuelta, reúne los emblemas en la luna y revela STUDIOS CONARI. No se reproduce si el sistema pide movimiento reducido.
+- **Intro de Studios Conari**: es lo primero que aparece al abrir la página (unos 14 s, una vez por sesión; cualquier tecla, clic o toque la salta). El hada dibuja con su varita el lineart de los ocho emblemas del estudio y los pinta todos con un hechizo de área. Después dibuja al dragón rosa con un rayo de magia, lo colorea y le da vida con un hechizo de luz. El dragón da una vuelta, reúne los emblemas en la luna y, a su paso, revela STUDIOS CONARI. No se reproduce si el sistema pide movimiento reducido.
+- **Pantalla de inicio**: tras la intro, consola rosada con Tetris automático en la pantalla LCD. Al pulsar **ENCENDER** aparece el portafolio.
 - **Portada**: el hada del portafolio y cinco burbujas perladas que llevan a Empresa, Desarrollo, Diseño, Datos y Salud.
 - **Studios Conari**: la empresa, sus servicios y el equipo (María Inés, Kevin Alexis y Elías Alejandro).
 - **Desarrollo**
@@ -46,9 +46,9 @@ El archivo `.nojekyll` evita que GitHub procese el sitio con Jekyll.
 | `tetris.js` | Motor de Bloques Encantados |
 | `constellations.js` | Coordenadas y trazados de las diez constelaciones |
 | `intro.js`, `intro.css` | Intro animada de Studios Conari |
-| `intro-trazos.js` | Contornos vectoriales del logotipo, los emblemas y el dragón que dibuja el hada |
+| `intro-trazos.js` | Contornos vectoriales del logotipo, los emblemas y el dragón rosa que dibuja el hada |
 | `vendor/` | GSAP 3.15 y MotionPathPlugin (animación de la intro) |
-| `assets/` | Imágenes, iconos y CV; `assets/intro/` guarda el logotipo por piezas, los emblemas y el dragón |
+| `assets/` | Imágenes, iconos y CV; `assets/intro/` guarda el logotipo por piezas, los emblemas y la hoja de sprites del dragón rosa |
 | `java/` | Aplicación de escritorio en Java (Swing); ver `java/README-JAVA.md` |
 
 Al modificar `styles.css` o los archivos `.js`, cambia el valor `?v=` de sus enlaces en `index.html` (por ejemplo, la fecha del cambio) para que los visitantes no vean una copia antigua guardada en caché.
@@ -58,5 +58,5 @@ Al modificar `styles.css` o los archivos `.js`, cambia el valor `?v=` de sus enl
 - Catálogo M4 y capturas M7: repositorios de [manecist](https://github.com/manecist).
 - Constelaciones: coordenadas y líneas de [d3-celestial](https://github.com/ofrohn/d3-celestial) (Olaf Frohn, BSD-3-Clause; ver [LICENCIAS.txt](LICENCIAS.txt)), con proyección gnomónica. Nombres y figuras: [IAU](https://iauarchive.eso.org/public/themes/constellations/). Son figuras tradicionales, no los límites oficiales de las regiones del cielo.
 - Investigaciones citadas en el laboratorio de datos: [FUENTES_ANALISIS.md](FUENTES_ANALISIS.md).
-- Identidad visual e ilustraciones: Studios Conari SpA y María Inés Cisterna Escobar. La intro reutiliza el logotipo, los emblemas y el dragón de la intro de [kdelrio.github.io](https://kdelrio.github.io/).
+- Identidad visual e ilustraciones: Studios Conari SpA y María Inés Cisterna Escobar. La intro reutiliza el logotipo y los emblemas de la intro de [kdelrio.github.io](https://kdelrio.github.io/).
 - Animación: [GSAP](https://gsap.com) (GreenSock, licencia estándar sin costo).
