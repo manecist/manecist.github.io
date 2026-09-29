@@ -7,15 +7,20 @@
   <meta name="theme-color" content="#0b1430">
   <title>María Inés Cisterna Escobar · Portafolio</title>
   <link rel="stylesheet" href="styles.css?v=20260927b">
-  <link rel="stylesheet" href="intro.css?v=20260929b">
+  <link rel="stylesheet" href="intro.css?v=20260929e">
   <link rel="icon" href="assets/emblema-estrella.png">
+  <script>
+    // la intro es lo primero que se ve (una vez por sesión y sin movimiento reducido)
+    try { if (!sessionStorage.getItem('mce-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('con-intro'); } catch (e) {}
+    addEventListener('load', () => { if (!window.MCEIntroActiva) document.documentElement.classList.remove('con-intro'); });
+  </script>
   <script src="constellations.js?v=20260927b" defer></script>
   <script src="tetris.js?v=20260927b" defer></script>
   <script src="app.js?v=20260927b" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
-  <script src="intro-trazos.js?v=20260929" defer></script>
-  <script src="intro.js?v=20260929c" defer></script>
+  <script src="intro-trazos.js?v=20260929c" defer></script>
+  <script src="intro.js?v=20260929g" defer></script>
 </head>
 <body class="bloqueado">
 <a class="skip-link" href="#inicio">Saltar al contenido</a>
