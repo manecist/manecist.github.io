@@ -1,0 +1,48 @@
+# Verificación V12
+
+44 comprobaciones específicas completadas en Chrome, sin errores JavaScript. Se revisaron capturas de escritorio y móvil y apertura directa de index.html.
+
+- Cuatro etapas empiezan cerradas
+- Imagen 0 oculta inicialmente
+- Imagen 0 se revela al pulsar
+- Imagen 0 se oculta al volver a pulsar
+- Imagen 1 oculta inicialmente
+- Imagen 1 se revela al pulsar
+- Imagen 1 se oculta al volver a pulsar
+- Imagen 2 oculta inicialmente
+- Imagen 2 se revela al pulsar
+- Imagen 2 se oculta al volver a pulsar
+- Imagen 3 oculta inicialmente
+- Imagen 3 se revela al pulsar
+- Imagen 3 se oculta al volver a pulsar
+- Sin botones musicales fuera del selector
+- RomÃ¡ntica sigue dentro de la lista
+- Metal sinfÃ³nico sigue dentro de la lista
+- Ejemplo rotulado explÃ­citamente ficticio
+- Ejemplo con veinte registros
+- Rojo compara dos edades
+- NiÃ±ez: 4 de 5 prefieren Pop (80%)
+- Adultos: 3 de 5 prefieren Rock (60%)
+- Resumen conserva edad, color y base
+- Barras utilizan escala porcentual comÃºn
+- Filtro de edad reduce comparaciÃ³n
+- Filtro conserva denominador edad y color
+- Grupo sin datos explica ausencia
+- Empate explÃ­cito sin falsa mayorÃ­a
+- Un registro no se presenta como tendencia
+- Resumen de empate correcto
+- 40% mÃ¡s frecuente no se llama mayorÃ­a
+- Muestra vacÃ­a controlada
+- Nuevo registro actualiza el resumen
+- Edades lÃ­mite asignadas sin solapamientos ni huecos
+- Dos fuentes cientÃ­ficas primarias enlazadas
+- Explica asociaciÃ³n de colores versus preferencia personal
+- Sin desbordamiento a 1920
+- Sin desbordamiento a 1440
+- Sin desbordamiento a 768
+- Sin desbordamiento a 390
+- Sin desbordamiento a 360
+- Texto personalizado seguro en informe
+- Sin errores JavaScript ni imÃ¡genes rotas
+- Entrega local conserva etapas cerradas
+- Informe funciona sin servidor

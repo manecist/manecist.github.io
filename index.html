@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Portafolio de María Inés Cisterna Escobar: Studios Conari, desarrollo Java, diseño, datos y trayectoria profesional.">
+  <meta name="theme-color" content="#0b1430">
+  <title>María Inés Cisterna Escobar · Portafolio V12</title>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="v7.css"><link rel="stylesheet" href="v8.css"><link rel="stylesheet" href="v9.css"><link rel="stylesheet" href="v10.css"><link rel="stylesheet" href="v11.css">
+  <link rel="icon" href="assets/emblema-estrella.png">
+  <script src="constellations.js" defer></script>
+  <script src="tetris.js" defer></script>
+  <script src="app.js" defer></script><script src="v8.js" defer></script><script src="v9.js" defer></script><script src="v10.js" defer></script><script src="v11.js" defer></script>
+<link rel="stylesheet" href="v12.css">
+<script src="v12.js" defer></script>
+</head>
+<body class="bloqueado">
+<a class="skip-link" href="#inicio">Saltar al contenido</a>
+
+<!-- SUSPENSIÓN MCE -->
+<section class="suspension" id="suspension" aria-label="Pantalla de inicio MCE">
+  <div class="console-shell">
+    <div class="console-label">MCE · SUEÑOS DE BOLSILLO</div>
+    <div class="console-body">
+      <div class="speaker" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="screen-bezel">
+        <div class="screen">
+          <canvas id="suspend-tetris" width="240" height="480" aria-hidden="true"></canvas>
+          <div class="lcd-status" aria-hidden="true"><span>DEMO</span><span>▦<br>▦▦</span><small>EN ESPERA</small></div><div class="crt-lines" aria-hidden="true"></div>
+          <div class="mce-overlay">
+            
+            <strong>MCE</strong>
+            <small>EN ESPERA</small>
+          </div>
+        </div>
+      </div>
+      <div class="console-side">
+        <button id="power-button" class="power-button" aria-label="Encender portafolio"><span>⏻</span>ENCENDER</button>
+        <div class="ab"><span>A</span><span>B</span></div>
+      </div>
+    </div>
+    <div class="console-foot"><span>EDICIÓN ROSADA</span><span>MARÍA INÉS CISTERNA ESCOBAR</span></div>
+  </div>
+  <p class="suspend-hint">Tetris en suspensión · pulsa <b>ENCENDER</b> para entrar</p>
+</section>
+
+<div id="site" class="site" aria-hidden="true">
+<header class="topbar">
+  <a class="brand" href="#inicio"><span>MCE</span><small>María Inés Cisterna Escobar</small></a>
+  <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav">Menú</button><nav id="main-nav" aria-label="Secciones del portafolio">
+    <a href="#inicio">Inicio</a>
+    <a href="#estudio">Studios Conari</a>
+    <a href="#desarrollo">Desarrollo</a>
+    <a href="#diseno">Diseño</a>
+    <a href="#datos">Datos</a>
+    <a href="#trayectoria">Trayectoria</a><a href="#formacion">Formación</a>
+    <a href="#arcade">Arcade</a>
+  </nav>
+  <a class="mini-cta" href="#contacto">Contacto</a>
+</header>
+
+<main>
+<section id="inicio" class="hero wrap">
+  <div class="hero-copy">
+    <p class="eyebrow">EMPRESA · DISEÑO · DESARROLLO · DATOS</p>
+    <h1 tabindex="-1" id="nombre-principal"><span>María Inés</span>Cisterna Escobar</h1>
+    <p class="roleline">Fundadora y administradora de Studios Conari SpA · Desarrolladora Java Full Stack · Diseño y producción digital · Análisis de datos · Matrona</p>
+    <p class="lead">
+      Transformé una trayectoria profesional en salud en una forma distinta de abordar la tecnología: con rigurosidad,
+      organización, sensibilidad visual y foco en cumplir objetivos. Hoy desarrollo, diseño, documento y gestiono proyectos
+      capaces de pasar de una idea a una entrega concreta, funcional y presentable.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#estudio">Conocer Studios Conari</a>
+      <a class="btn ghost" href="#desarrollo">Ver proyectos</a>
+      <a class="btn ghost" href="assets/cv.pdf" target="_blank" rel="noopener">Ver CV</a>
+    </div>
+    <div class="quick-links">
+      <a href="mailto:manecisterna@gmail.com">manecisterna@gmail.com</a>
+      <a href="https://github.com/manecist" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </div>
+
+  <div class="fairy-stage" aria-label="Navegación visual del portafolio">
+    <div class="fairy-glow"></div>
+    <img class="fairy" src="assets/hada-corregida.webp" alt="Personaje mágico del portafolio de María Inés">
+    <div class="sparkle s1">✦</div><div class="sparkle s2">✧</div><div class="sparkle s3">✦</div>
+    <a class="magic-orb orb-company" href="#estudio"><img src="assets/icon-company.webp" alt=""><span>Empresa</span></a>
+    <a class="magic-orb orb-code" href="#desarrollo"><img src="assets/icon-code.webp" alt=""><span>Desarrollo</span></a>
+    <a class="magic-orb orb-design" href="#diseno"><img src="assets/icon-design.webp" alt=""><span>Diseño</span></a>
+    <a class="magic-orb orb-data" href="#datos"><img src="assets/icon-data.webp" alt=""><span>Datos</span></a>
+    <a class="magic-orb orb-health" href="#trayectoria"><img src="assets/icon-health.webp" alt=""><span>Salud</span></a>
+  </div>
+</section>
+
+<div class="divider"><span></span><b>✦</b><span></span></div>
+
+<section id="estudio" class="section wrap">
+  <div class="section-head">
+    <div><p class="eyebrow gold">01 · STUDIOS CONARI SpA</p><h2>Donde nacen mundos<br>y leyendas eternas.</h2></div>
+    <p>
+      Studios Conari es el núcleo empresarial desde el que desarrollamos proyectos creativos y tecnológicos.
+      Integramos narrativa, diseño, programación, documentación, producción digital y apoyo 3D para transformar
+      conceptos en experiencias, productos y propuestas capaces de presentarse a clientes, colaboradores y convocatorias.
+    </p>
+  </div>
+
+  <div class="studio-hero">
+    <div class="studio-brand-card">
+      <img class="studio-wordmark" src="assets/logo-oficial-oscuro.webp" alt="Studios Conari" loading="lazy">
+      <div>
+        <span class="chip gold-chip">ESTUDIO CREATIVO CHILENO</span>
+        <p class="official-slogan">Donde nacen mundos y leyendas eternas.</p><h3>Tu idea puede convertirse en un mundo propio.</h3>
+        <p>
+          Desde una aplicación hasta un universo narrativo: reunimos diseño, programación y producción para dar forma a tu proyecto, organizar su desarrollo y preparar una entrega con identidad. Trabajamos en proyectos propios y propuestas para clientes, colaboradores e instituciones.
+        </p>
+        <div class="studio-actions">
+          <a class="btn gold-btn" href="mailto:studiosconari@gmail.com?subject=Consulta%20de%20servicios%20Studios%20Conari">Solicitar información</a>
+          <a class="btn ghost" href="https://studiosconari.github.io/" target="_blank" rel="noopener">Sitio oficial ↗</a>
+        </div>
+      </div>
+    </div>
+    <figure class="studio-visual">
+      <img src="assets/mundo-conari-sol-luna.webp" alt="Un libro abre un mundo con sol y luna, dragón alado, sakura de hojas verdes, castillo y Andes nevados" loading="lazy">
+      <figcaption>Creamos mundos. Contamos leyendas.</figcaption>
+    </figure>
+  </div>
+
+  <div class="service-gallery" aria-label="Servicios de Studios Conari">
+    <article><img src="assets/icon-company.webp" alt="" loading="lazy"><div><h3>Videojuegos y experiencias</h3><p>Conceptualización, narrativa, diseño, documentación, producción y recursos para experiencias interactivas.</p></div></article>
+    <article><img src="assets/icon-code.webp" alt="" loading="lazy"><div><h3>Software y web</h3><p>Aplicaciones, sitios, interfaces y soluciones digitales con frontend, backend y bases de datos.</p></div></article>
+    <article><img src="assets/icon-design.webp" alt="" loading="lazy"><div><h3>Diseño y producción visual</h3><p>Identidad visual, ilustración, diseño editorial, personajes, recursos gráficos y material de presentación.</p></div></article>
+    <article><img src="assets/emblema-conari-magico.webp" alt="" loading="lazy"><div><h3>Propiedad intelectual</h3><p>Conceptos, mundos, personajes, documentación y material para proyectos originales y postulaciones.</p></div></article>
+  </div>
+
+  <div class="service-more"><article><h3>Documentación y propuestas</h3><p>Dossiers, presentaciones, estructura de proyectos y material para convocatorias.</p></article><article><h3>Modelado y animación 3D</h3><p>Recursos desarrollados desde el área 3D del equipo, integrados a las necesidades de cada proyecto.</p></article></div>
+  <div class="studio-team">
+    <div>
+      <p class="eyebrow gold">CÓMO TRABAJAMOS</p>
+      <h3>Una empresa que conecta disciplinas</h3>
+      <p>
+        La dirección creativa y la gestión conviven con programación, narrativa y modelado 3D. Esa combinación
+        permite desarrollar proyectos propios y responder encargos externos con una visión común.
+      </p>
+    </div>
+    <div class="team-path" aria-label="Equipo y aportes complementarios"><article class="role-node"><img src="assets/equipo-maria.webp" alt="Libro de historias, pluma, tableta y marketing creativo" loading="lazy"><strong>María Inés</strong><span>Dirección creativa · Full Stack Java · salud</span><p>Matrona titulada, desarrolladora Full Stack Java certificada y socia fundadora de Studios Conari. Creo historias y dirijo su producción editorial y visual, conectando narrativa, ilustración y diseño para dar identidad a nuestros mundos.</p><p>Desarrollo aplicaciones y sitios web, trabajo el marketing y participo en recursos 3D. Mi experiencia en salud aporta rigor documental, análisis de datos y trazabilidad: integro esa mirada en cada proyecto, desde la idea y el diseño hasta la entrega final.</p><small class="role-skills">Narrativa · diseño editorial · Java · datos · salud</small></article><article class="role-node"><img src="assets/equipo-kevin.webp" alt="Programación, gráficos de datos, bloc de notas y micrófono" loading="lazy"><strong>Kevin Alexis</strong><span>Dirección técnica · videojuegos y datos</span><p>Ingeniero en Informática y socio fundador de Studios Conari. Lidera la programación de nuestros videojuegos en Godot: arquitectura, mecánicas, sistemas e integración 3D, desde el prototipo hasta una versión jugable.</p><p>Especialista en análisis de datos y Business Intelligence, con experiencia liderando TI. Construye modelos, procesos ETL y tableros en Power BI, SAP y SQL para convertir datos en decisiones. También aporta narrativa, pintura y doblaje en inglés.</p><small class="role-skills">Videojuegos · programación · datos · dirección técnica</small></article><article class="role-node"><img src="assets/equipo-elias.webp" alt="Modelado 3D, malla de un dragón, rigging y tableta gráfica" loading="lazy"><strong>Elías Alejandro</strong><span>Animación y arte 3D · rigging · efectos</span><p>Animador y artista 3D, con formación en Animación Digital en Duoc UC y experiencia freelance y en productora. En Studios Conari crea objetos, entornos y personajes, y les da movimiento y expresión mediante animación y rigging.</p><p>Trabaja modelado en Maya, efectos FX y VFX, iluminación, cámaras y sincronización labial. Combina ilustración y tableta gráfica con el trabajo 3D, aporta ideas a las historias y colabora en la integración visual de nuestros mundos.</p><small class="role-skills">Modelado · animación · rigging · FX / VFX · iluminación</small></article><p class="team-outcome">Tres miradas, una creación compartida. Las ideas se conversan y se construyen en equipo.</p></div>
+  </div>
+</section>
+
+<section id="desarrollo" class="section wrap">
+  <div class="section-head">
+    <div><p class="eyebrow">02 · DESARROLLO</p><h2>Programación que<br>se puede probar.</h2></div>
+    <p>No quiero mostrar solo palabras o código aislado. Estas demostraciones convierten la lógica que trabajé en Java en pequeñas experiencias interactivas.</p>
+  </div>
+
+  <div class="dev-tabs" role="tablist">
+    <button class="dev-tab active" data-dev="calc">Calculadora Java</button>
+    <button class="dev-tab" data-dev="m4">Tienda Java · M4</button>
+    <button class="dev-tab" data-dev="m7">eCommerce final · M7</button>
+  </div>
+
+  <div class="dev-panel active" id="dev-calc">
+    <div class="magic-calculator">
+      <div class="calc-top"><span>✦ CALCULADORA JAVA ✦</span><small id="calc-op-name">Suma</small></div>
+      <div class="calc-display"><span id="calc-expression">0 + 0</span><strong id="calc-result" aria-live="polite">0</strong></div>
+      <div class="calc-inputs"><label>A<input id="calc-a" type="number" step="any" value="0"></label><label>B<input id="calc-b" type="number" step="any" value="0"></label></div>
+      <div class="calc-buttons">
+        <button data-op="+">+</button><button data-op="-">−</button><button data-op="*">×</button>
+        <button data-op="/">÷</button><button data-op="%">%</button><button data-op="log">log</button>
+        <button id="calc-equals" class="equals">=</button><button id="calc-clear">C</button>
+      </div>
+    </div>
+    <div class="code-card">
+      <span class="chip">LÓGICA EQUIVALENTE EN JAVA</span>
+      <h3 id="java-title">Suma</h3>
+      <pre><code id="java-code">double resultado = a + b;</code></pre>
+      <p>La interfaz web ejecuta JavaScript porque GitHub Pages es estático; al lado se muestra la lógica equivalente en Java.</p><a class="btn ghost" href="java/ConariJava.java" download>Descargar aplicación Java</a> <a class="btn ghost" href="java/README-JAVA.md">Cómo ejecutarla</a>
+    </div>
+  </div>
+
+  <div class="dev-panel" id="dev-m4">
+    <div class="cash-register">
+      <div class="register-marquee"><span>MAGICAL STORE · M4</span><output id="register-display" aria-label="Total de la compra">$0</output></div><div class="register-sign">TIENDA JAVA M4 · CAJA 01</div>
+      <div class="register-window">
+        <div class="product-picker">
+          <label>Producto
+            <select id="m4-product"><optgroup label="Anillos"><option value="1800000" data-product-id="1">Anillo Magic · $1.800.000</option><option value="800000" data-product-id="2">Anillo Sailor · $800.000</option><option value="200000" data-product-id="3">Anillos Ali · $200.000</option><option value="450000" data-product-id="4">Anillo Moon · $450.000</option></optgroup><optgroup label="Aros"><option value="15000" data-product-id="5">Aros Sailor · $15.000</option><option value="22000" data-product-id="6">Aros Saku · $22.000</option><option value="10000" data-product-id="7">Diges Sailor · $10.000</option><option value="12000" data-product-id="8">Diges Saku · $12.000</option></optgroup><optgroup label="Carteras"><option value="32000" data-product-id="9">Cartera Sailor · $32.000</option><option value="41000" data-product-id="10">Cartera Magic · $41.000</option><option value="37000" data-product-id="11">Cartera Cel · $37.000</option><option value="28000" data-product-id="12">Cartera Moon · $28.000</option></optgroup><optgroup label="Cosmetiqueros"><option value="16000" data-product-id="13">Cosmetiqueros 01 · $16.000</option><option value="10000" data-product-id="14">Cosmetiqueros 02 · $10.000</option><option value="10000" data-product-id="15">Cosmetiqueros 03 · $10.000</option><option value="9000" data-product-id="16">Cosmetiqueros 04 · $9.000</option></optgroup><optgroup label="Perfumes"><option value="18000" data-product-id="17">Perfume R · $18.000</option><option value="20000" data-product-id="18">Perfume S · $20.000</option><option value="27000" data-product-id="19">Perfume M · $27.000</option><option value="15000" data-product-id="20">Perfume C · $15.000</option></optgroup><optgroup label="Relojes"><option value="45000" data-product-id="21">Reloj Mag · $45.000</option><option value="45000" data-product-id="22">Reloj Hom · $45.000</option><option value="33000" data-product-id="23">Reloj Sak · $33.000</option><option value="33000" data-product-id="24">Reloj Dar · $33.000</option></optgroup><optgroup label="Rostros"><option value="18750" data-product-id="25">Bases Col · $18.750</option><option value="11990" data-product-id="26">Conturn Mag · $11.990</option><option value="10870" data-product-id="27">Corrector M · $10.870</option><option value="14550" data-product-id="28">Polvo Mag · $14.550</option></optgroup><optgroup label="Ojos"><option value="8430" data-product-id="29">Delineadores · $8.430</option><option value="10990" data-product-id="30">Rimel Mag · $10.990</option><option value="29380" data-product-id="31">Sombra Ojos · $29.380</option><option value="9000" data-product-id="32">Sombra Gel · $9.000</option></optgroup><optgroup label="Labios"><option value="13000" data-product-id="33">Labial Magic · $13.000</option><option value="7000" data-product-id="34">Labial Sail · $7.000</option><option value="7000" data-product-id="35">Labial Sak · $7.000</option><option value="11000" data-product-id="36">Labial Lapiz · $11.000</option></optgroup><optgroup label="Herramientas"><option value="11670" data-product-id="37">Cepillo Mag · $11.670</option><option value="1000" data-product-id="38">Mascarilla Fac · $1.000</option><option value="28990" data-product-id="39">Secador Pelo · $28.990</option><option value="4800" data-product-id="40">Rizador Mag · $4.800</option></optgroup><optgroup label="Poleras"><option value="19900" data-product-id="41">Blusa corta · $19.900</option><option value="12650" data-product-id="42">Top · $12.650</option><option value="17420" data-product-id="43">Corset top · $17.420</option><option value="21900" data-product-id="44">Blusa larga · $21.900</option></optgroup><optgroup label="Pantalones"><option value="22740" data-product-id="45">Jeans estampado · $22.740</option><option value="17000" data-product-id="46">Faldas Magical · $17.000</option><option value="33760" data-product-id="47">Pantalones de tela · $33.760</option><option value="22400" data-product-id="48">Jeans flare · $22.400</option></optgroup><optgroup label="Conjuntos"><option value="41300" data-product-id="49">Conjunto lila · $41.300</option><option value="72400" data-product-id="50">Conjunto Magical · $72.400</option><option value="22900" data-product-id="51">Pijama · $22.900</option><option value="22000" data-product-id="52">Traje de baño · $22.000</option></optgroup><optgroup label="Vestidos"><option value="17900" data-product-id="53">Vestido ajustado · $17.900</option><option value="23000" data-product-id="54">Vestido blangro · $23.000</option><option value="25900" data-product-id="55">Vestido lilrose · $25.900</option><option value="28000" data-product-id="56">Vestido Magical · $28.000</option></optgroup><optgroup label="Matrimonio"><option value="118000" data-product-id="57">Traje de Hombre · $118.000</option><option value="142000" data-product-id="58">Vestido lilMagic · $142.000</option><option value="345000" data-product-id="59" selected>Vestido Princes · $345.000</option><option value="345000" data-product-id="60">Hombre Princes · $345.000</option></optgroup><optgroup label="Abrigos"><option value="31400" data-product-id="61">Chaqueta · $31.400</option><option value="44700" data-product-id="62">Blazer · $44.700</option><option value="73490" data-product-id="63">Abrigos · $73.490</option><option value="73490" data-product-id="64">Abrigo Largo · $73.490</option></optgroup><optgroup label="Calzado"><option value="82600" data-product-id="65">Zap Magic · $82.600</option><option value="79000" data-product-id="66">Zap Sailor · $79.000</option><option value="81990" data-product-id="67">Zap Magical H · $81.990</option><option value="41580" data-product-id="68">Zapatillas · $41.580</option></optgroup></select>
+          </label>
+          <label>Cantidad <input id="m4-qty" type="number" value="1" min="1" max="20"></label>
+          <label>Descuento personalizado (%)
+            <input id="m4-discount" type="number" inputmode="decimal" min="0" max="100" step="0.01" value="0" aria-describedby="discount-error"><span class="discount-unit">%</span>
+          </label>
+          <div class="discount-presets" aria-label="Porcentajes rápidos"><button type="button" data-discount="0">0%</button><button type="button" data-discount="10">10%</button><button type="button" data-discount="20">20%</button><button type="button" data-discount="50">50%</button></div><small id="discount-error" role="status">Escribe un porcentaje entre 0 y 100; admite decimales.</small><button id="m4-add" class="register-button">AGREGAR AL CARRITO</button>
+        </div>
+        <div class="receipt">
+          <div class="receipt-head">VISTA PREVIA</div>
+          <div id="m4-items" class="receipt-items"><p class="empty">Carrito vacío</p></div>
+          <div class="receipt-total"><span>Subtotal</span><b id="m4-subtotal">$0</b></div>
+          <div class="receipt-total"><span>Descuento</span><b id="m4-save">$0</b></div>
+          <div class="receipt-total total"><span>TOTAL</span><b id="m4-total">$0</b></div>
+          <label class="pay-row">Pago <input id="m4-paid" type="number" min="0" value="0"></label>
+          <div class="receipt-total"><span>Vuelto</span><b id="m4-change">$0</b></div>
+        </div>
+      </div>
+      <div class="register-keypad" aria-label="Teclado para ingresar el pago"><button type="button" data-cash-key="7" aria-label="Ingresar 7">7</button><button type="button" data-cash-key="8" aria-label="Ingresar 8">8</button><button type="button" data-cash-key="9" aria-label="Ingresar 9">9</button><button type="button" data-cash-key="4" aria-label="Ingresar 4">4</button><button type="button" data-cash-key="5" aria-label="Ingresar 5">5</button><button type="button" data-cash-key="6" aria-label="Ingresar 6">6</button><button type="button" data-cash-key="1" aria-label="Ingresar 1">1</button><button type="button" data-cash-key="2" aria-label="Ingresar 2">2</button><button type="button" data-cash-key="3" aria-label="Ingresar 3">3</button><button type="button" data-cash-key="C" aria-label="Borrar pago">C</button><button type="button" data-cash-key="0" aria-label="Ingresar 0">0</button><button type="button" data-cash-key="←" aria-label="Borrar último dígito">←</button></div><button id="m4-confirm" class="register-confirm">COBRAR E IMPRIMIR BOLETA</button><button id="m4-clear" class="register-clear">Vaciar carrito / nueva compra</button>
+      <section class="receipt-printer" aria-label="Impresora de boletas"><div class="printer-slot"><span>✧ Tu boleta sale aquí ✧</span></div><div id="printer-output" class="printer-output" hidden><article id="printed-receipt" class="printed-receipt" aria-label="Boleta de la compra simulada"></article></div></section>
+      <div class="cash-drawer" aria-hidden="true"><div class="drawer-tray"><div class="cash-bills"><span class="toy-note pink-note">✧</span><span class="toy-note blue-note">✧</span><span class="toy-note lilac-note">✧</span></div><div class="cash-coins"><span>✦</span><span>✦</span><span>✦</span><span>✦</span><span>✦</span></div><strong id="drawer-change">Vuelto: $0</strong></div><div class="drawer-front"><span>✧ CONARI ✧</span><i></i></div></div><p id="m4-message" class="register-message" role="status">Elige productos, agrégalos al recibo e ingresa el pago con las teclas de la caja. Simulación del flujo M4.</p>
+    </div>
+    <div class="code-card">
+      <span class="chip">PROYECTO DE CONSOLA JAVA</span>
+      <h3>Del menú ADMIN al carrito del USUARIO</h3>
+      <p>Mi proyecto Java organiza perfiles ADMIN/USUARIO, productos, descuentos por categoría o subcategoría, carrito y confirmación de compra. Esta caja toma los 68 productos y precios de su catálogo inicial. Aquí puedes probar la compra con un descuento global de ejemplo.</p>
+<p class="small-note">Catálogo de <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4</a> · la interfaz de caja es una demostración web del flujo de compra.</p><pre><code>double subtotal = precio * cantidad;
+double ahorro = subtotal * (descuento / 100.0);
+double total = subtotal - ahorro;</code></pre>
+      <a class="btn primary" href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ver repositorio M4 ↗</a>
+    </div>
+  </div>
+
+  <div class="dev-panel" id="dev-m7">
+    <div class="m7-card">
+      <div class="browser-mock"><i></i><i></i><i></i><span>Proyecto final · M7</span></div>
+      <div class="m7-body">
+        <div><span class="chip">FULL STACK JAVA</span><h3>Plataforma eCommerce completa</h3>
+        <p>Registro y autenticación por roles, CRUD de productos, carrito, pedidos, historial de compras, control de stock, MySQL y seguridad.</p></div>
+        <div class="stack-cloud"><span>Java</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>Thymeleaf</span></div>
+      </div>
+<div class="m7-gallery"><div class="m7-controls" aria-label="Capturas del proyecto M7"><button type="button" data-m7="0" aria-pressed="true">Inicio</button><button type="button" data-m7="1" aria-pressed="false">Catálogo</button><button type="button" data-m7="2" aria-pressed="false">Carrito</button><button type="button" data-m7="3" aria-pressed="false">Gestión</button></div><figure><a id="m7-full" href="assets/m7-inicio.webp" target="_blank" rel="noopener" aria-label="Abrir captura de M7 en tamaño completo"><img id="m7-preview" src="assets/m7-inicio.webp" alt="Captura real del inicio de Magical Alliance, proyecto M7" loading="lazy"></a><figcaption id="m7-caption">Inicio · identidad visual y navegación de Magical Alliance.</figcaption></figure><p class="small-note">Capturas reales del repositorio. Selecciona una vista y pulsa la imagen para ampliarla.</p><div class="m7-flow"><article><b>01 · Explorar</b><p>Catálogo, categorías y filtros para encontrar productos.</p></article><article><b>02 · Comprar</b><p>Cantidades, carrito y pedidos conectados al historial.</p></article><article><b>03 · Administrar</b><p>Productos, usuarios y stock organizados por roles.</p></article></div></div>      <a class="btn primary" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Ver repositorio M7 ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="diseno" class="section wrap">
+  <div class="section-head">
+    <div><p class="eyebrow">03 · DISEÑO E ILUSTRACIÓN</p><h2>Del papel a lo digital.</h2></div>
+    <p>Mi relación con el arte comenzó de forma autodidacta, dibujando y pintando por gusto. El arte digital es una etapa reciente en la que traslado esa experiencia a personajes, mundos y recursos visuales.</p>
+  </div>
+
+  <p class="art-context">Dos obras distintas, una misma curiosidad. Una fotografía de mi trabajo tradicional y una exploración digital reciente.</p><div class="art-controls"><button class="btn ghost active" data-art="both" aria-pressed="true">Ver ambas etapas</button><button class="btn ghost" data-art="paper" aria-pressed="false">Explorar papel</button><button class="btn ghost" data-art="digital" aria-pressed="false">Explorar digital</button></div><div class="art-compare" data-view="both">
+    <figure class="art-card">
+      <div class="art-label">PAPEL · ETAPA TRADICIONAL</div>
+      <img src="assets/arte-transicion-soledad-alegria.jpeg" alt="Dibujo tradicional realizado por María Inés" loading="lazy">
+      <figcaption>Transición de soledad a alegría · obra tradicional realizada a mano, como práctica personal.</figcaption>
+    </figure>
+    <div class="art-arrow"><span>✦</span><b>LA MISMA IMAGINACIÓN</b><span>→</span></div>
+    <figure class="art-card digital">
+      <div class="art-label">DIGITAL · APRENDIZAJE ACTUAL</div>
+      <img src="assets/digital-lineart.webp" alt="Line art digital realizado por María Inés" loading="lazy">
+      <div class="watermark">STUDIOS CONARI SpA · PORTAFOLIO</div>
+      <figcaption>Exploración reciente en line art, personajes, vestuario y construcción visual.</figcaption>
+    </figure>
+  </div>
+
+  <p class="art-credit">Obras de María Inés · práctica autodidacta y personal. No representan una transformación automática entre imágenes.</p><div class="design-story">
+    <div class="fairy-design">
+      <div class="fairy-frames"><img class="fairy-open" src="assets/hada-corregida.webp" alt="Hada mágica con un suave parpadeo" loading="lazy"><img class="fairy-blink" src="assets/hada-parpadeo.webp" alt="" aria-hidden="true" loading="lazy"></div>
+      <div class="wand-spark">✦</div>
+    </div>
+    <div>
+      <span class="chip">AUTODIDACTA · EN EVOLUCIÓN</span>
+      <h3>Dibujo porque me gusta transformar ideas en imágenes.</h3>
+      <p>Me inspiran el anime, las caricaturas expresivas, los ojos vivos, la fantasía, la magia, los paisajes y las narraciones míticas. No provengo de una formación artística formal: aprendo experimentando, redibujando, pintando y buscando una identidad visual propia.</p>
+      <div class="creative-journey"><details class="journey-step"><summary><span>01</span><b>Papel y pintura</b><small>Observar y dar forma</small></summary><div><img src="assets/arte-transicion-soledad-alegria.jpeg" alt="Papel y pintura" loading="lazy"><p>El trazo a mano, el color y la emoción son mi punto de partida.</p></div></details><details class="journey-step" ><summary><span>02</span><b>Line art y color</b><small>Llevar la idea a la pantalla</small></summary><div><img src="assets/digital-lineart.webp" alt="Line art y color" loading="lazy"><p>Pruebo líneas, paletas y vestuario para construir un lenguaje propio.</p></div></details><details class="journey-step" ><summary><span>03</span><b>Personajes e historias</b><small>Crear una identidad</small></summary><div><img src="assets/expressions.webp" alt="Personajes e historias" loading="lazy"><p>Relaciono expresiones, narrativa gráfica y estilo para que el personaje comunique.</p></div></details><details class="journey-step" ><summary><span>04</span><b>Exploración 3D</b><small>Ampliar las posibilidades</small></summary><div><img src="assets/emblema-conari-magico.webp" alt="Identidad del estudio que reúne la exploración creativa" loading="lazy"><p>Pinto, ajusto y adapto pequeños elementos y modelos, con herramientas 3D y apoyo de IA. Continúo aprendiendo.</p></div></details></div><p class="small-note">Blender, preparación de recursos e impresión PLA forman parte de mi exploración complementaria; continúo aprendiendo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="datos" class="section wrap">
+  <div class="section-head">
+    <div><p class="eyebrow">04 · DATOS</p><h2>Guardar, ordenar y<br>entender información.</h2></div>
+    <p>Explora cómo cambian las preferencias de color y música según la edad. Ingresa registros, elige un grupo y compara sus resultados con la muestra completa.</p>
+  </div>
+
+  <div class="data-lab">
+    <form id="data-form" class="data-form">
+      <span class="chip">LABORATORIO DE DATOS · DEMO</span>
+      <label>Nombre<input id="data-name" required maxlength="40" placeholder="Ej. María" autocomplete="off"></label>
+      <label>Edad<input id="data-age" type="number" min="1" max="120" required placeholder="Ej. 30"></label>
+      <label>Color favorito
+        <select id="data-color">
+      <optgroup label="Primarios · círculo cromático RYB"><option>Rojo</option><option>Amarillo</option><option>Azul</option></optgroup>
+      <optgroup label="Secundarios"><option>Naranja</option><option>Verde</option><option>Violeta</option></optgroup>
+      <optgroup label="Terciarios"><option>Rojo anaranjado</option><option>Amarillo anaranjado</option><option>Amarillo verdoso</option><option>Azul verdoso</option><option>Azul violáceo</option><option>Rojo violáceo</option></optgroup>
+      <optgroup label="Otros tonos y neutros"><option selected>Rosado</option><option>Morado</option><option>Celeste</option><option>Turquesa</option><option>Dorado</option><option>Blanco</option><option>Gris</option><option>Negro</option><option>Café</option><option>Otro</option></optgroup></select><span id="color-swatch" aria-hidden="true"></span>
+      </label>
+      <label>Música
+        <select id="data-music"><option>Pop</option><option>Rock</option><option>Rock alternativo</option><option>Indie</option><option>Metal</option><option>Metal sinfónico</option><option>Heavy metal</option><option>Power metal</option><option>Metal gótico</option><option>Metal progresivo</option><option>Punk</option><option>Grunge</option><option>Blues</option><option>Jazz</option><option>Soul</option><option>Funk</option><option>R&B</option><option>Hip hop / Rap</option><option>Reguetón</option><option>Trap</option><option>Electrónica</option><option>House</option><option>Techno</option><option>Trance</option><option>Dubstep</option><option>Drum and bass</option><option>Ambient</option><option>Lo-fi</option><option>Clásica</option><option>Ópera</option><option>Instrumental</option><option>Soundtracks</option><option>Música de videojuegos</option><option>Anime / Anisong</option><option>J-pop</option><option>J-rock</option><option>K-pop</option><option>Cumbia</option><option>Salsa</option><option>Bachata</option><option>Merengue</option><option>Romántica</option><option>Balada romántica</option><option>Pop romántico</option><option>Bolero</option><option>Tango</option><option>Folclore chileno</option><option>Música andina</option><option>Nueva canción</option><option>Folk</option><option>Country</option><option>Reggae</option><option>Ska</option><option>Góspel</option><option>Otro</option></select>
+      </label>
+      <label id="other-music-label" hidden>Otro género<input id="data-other-music" maxlength="40" placeholder="Escribe tu género musical"></label><button class="btn primary" type="submit">Guardar registro</button><p id="data-message" role="status"></p>
+      <button class="btn ghost" id="data-example" type="button">Cargar ejemplo ficticio · 20 registros</button><button class="btn ghost" id="data-clear" type="button">Limpiar muestra</button>
+      <small>Los datos permanecen solo en esta página durante la sesión; no se envían a ningún servidor.</small>
+    </form>
+    <div class="data-output"><p id="sample-origin" class="sample-origin">Muestra inicial ficticia · agrega tus propios registros para explorar.</p>
+      <div class="table-wrap">
+        <table><thead><tr><th>Nombre</th><th>Edad</th><th>Color</th><th>Música</th></tr></thead><tbody id="data-table"></tbody></table>
+      </div>
+      <div id="data-stats" class="stats-grid"></div><section class="chart-card" aria-labelledby="chart-title"><div class="chart-heading"><h3 id="chart-title">Los colores de esta muestra</h3><label>Distribución<select id="chart-kind"><option value="color">Color favorito</option><option value="music">Música favorita</option></select></label></div><div id="data-chart" class="data-chart"></div><p>Datos de esta muestra local · frecuencia y porcentaje.</p></section>
+<section class="cross-analysis" aria-labelledby="cross-title"><span class="chip">EDAD × COLOR × MÚSICA</span><h3 id="cross-title">El color de nuestras melodías</h3><div class="analysis-filters"><label>Grupo de edad<select id="analysis-age"><option value="all">Todas las edades</option><option value="1-4">1 a 4 años</option><option value="5-12">5 a 12 años</option><option value="13-17">13 a 17 años</option><option value="18-29">18 a 29 años</option><option value="30-44">30 a 44 años</option><option value="45-59">45 a 59 años</option><option value="60-120">60 años o más</option></select></label><label>Profundizar por color<select id="analysis-color"><option value="all">Todos los colores</option></select></label></div><section class="relationship-story" aria-labelledby="relationship-title"><h4 id="relationship-title">Un mismo color, distintas edades</h4><p class="cohort-guide">Elige un color y compara qué música prefieren las personas de cada edad. Cada porcentaje se calcula dentro de su propio grupo.</p><div id="relationship-summary" aria-live="polite"></div></section><details class="overview-details"><summary>Resumen general de la selección</summary><div id="analysis-findings" aria-live="polite"></div></details><h4>Todos los estilos del grupo seleccionado</h4><div id="analysis-bars" class="data-chart"></div><details class="cross-table-details"><summary>Ver el detalle de color y música</summary><p class="small-note">Cada celda muestra personas y porcentaje dentro de su color, para la edad seleccionada.</p><div class="table-wrap"><table id="cross-table"></table></div></details><p id="analysis-caution" class="small-note"></p><details class="analysis-method"><summary>Cómo se calculan estos resultados</summary><p>Proporción de edad = personas de esa edad ÷ total de registros. Preferencia musical dentro de un color = personas con esa música y ese color ÷ personas de ese color en la edad elegida. Los porcentajes se redondean a un decimal.</p><p>Son relaciones descriptivas de esta muestra, no explicaciones causales ni conclusiones sobre toda la población. Esta demo guarda los registros en memoria del navegador; no es un servidor de base de datos.</p></details></section>      <pre><code id="sql-demo">INSERT INTO preferencias (nombre, edad, color, musica)
+VALUES (?, ?, ?, ?);</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="trayectoria" class="section wrap">
+  <div class="section-head">
+    <div><p class="eyebrow">05 · TRAYECTORIA</p><h2>La salud fue una base,<br>no un capítulo perdido.</h2></div>
+    <p>La transición hacia tecnología y creación digital conserva habilidades que nacieron trabajando con personas, información crítica, protocolos y seguimiento.</p>
+  </div>
+
+  <div class="transition-path">
+    <a href="#salud-card"><img src="assets/icon-health.webp" alt="" loading="lazy"><span>Salud</span></a>
+    <i>→</i>
+    <a href="#salud-card"><img src="assets/icon-document.webp" alt="" loading="lazy"><span>Trazabilidad</span><small>Seguimiento y documentación</small></a>
+    <i>→</i>
+    <a href="#datos"><img src="assets/icon-data.webp" alt="" loading="lazy"><span>Datos</span></a>
+    <i>→</i>
+    <a href="#desarrollo"><img src="assets/icon-code.webp" alt="" loading="lazy"><span>Desarrollo</span></a>
+    <i>→</i>
+    <a href="#diseno"><img src="assets/icon-design.webp" alt="" loading="lazy"><span>Diseño</span></a>
+    <i>→</i>
+    <a class="transition-finale" href="#estudio"><img src="assets/logo-oficial-oscuro.webp" alt="Studios Conari" loading="lazy"><span>Un proyecto que reúne mis caminos</span></a>
+  </div>
+
+  <p class="transition-explanation">No son etapas que se borran: son capacidades que se suman. Hoy las conecto en mi trabajo y en Studios Conari.</p><div id="salud-card" class="health-card">
+    <img src="assets/icon-health.webp" alt="" loading="lazy">
+    <div>
+      <span class="chip">MATRONA · CINCO AÑOS DE EXPERIENCIA</span>
+      <h3>Atención clínica, salud pública y seguimiento con responsabilidad real.</h3>
+      <p>
+        Ejercí como Matrona en atención primaria, hospitalaria y programas de salud pública. Formé parte del
+        Proyecto de Reactivación del Programa de Cáncer Cervicouterino de la Unidad de Redes Transversales del
+        Servicio de Salud Metropolitano Sur Oriente, liderando campañas de toma de PAP, seguimiento de resultados
+        positivos y coordinación de derivaciones. También trabajé en Hospital San José de Coronel, Hospital Dr. José
+        Luis Arraño de Andacollo y CESFAM O'Higgins.
+      </p>
+      <p>
+        En atención primaria diseñé planillas Excel para seguimiento de resultados de PAP y mamografía, reemplazando
+        registros en papel y mejorando trazabilidad y acceso a la información. Esa forma de ordenar problemas y crear
+        herramientas útiles conecta directamente con mi transición hacia datos y tecnología.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="formacion" class="section wrap">
+  <div class="section-head">
+    <div><p class="eyebrow">06 · FORMACIÓN Y CREDENCIALES</p><h2>Formación que respalda<br>lo que hago.</h2></div>
+    <p>Empresa, práctica y creatividad se sostienen sobre formación técnica continua y una base profesional previa en salud.</p>
+  </div>
+
+  <div class="credential-gallery">
+    <article><img src="assets/icon-code.webp" alt="" loading="lazy"><div><span>FULL STACK JAVA</span><h3>480 horas</h3><p>SENCE · Talento Digital · Sustantiva SpA</p><code>840655be-6245-4c15-a9f4-6fc4542a71b1</code><a href="https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1" target="_blank" rel="noopener">Verificar credencial ↗</a></div></article>
+    <article><img src="assets/icon-data.webp" alt="" loading="lazy"><div><span>ANÁLISIS DE DATOS</span><h3>Google Data Analytics</h3><p>Certificado profesional en curso, con cinco cursos aprobados durante 2026.</p></div></article>
+    <article><img src="assets/icon-design.webp" alt="" loading="lazy"><div><span>TECNOLOGÍA Y DISEÑO</span><h3>Web, datos y producción digital</h3><p>Java, Spring Boot, MySQL, SQL, HTML, CSS, JavaScript, Git/GitHub, diseño web y herramientas creativas.</p></div></article>
+    <article><img src="assets/icon-health.webp" alt="" loading="lazy"><div><span>FORMACIÓN PROFESIONAL</span><h3>Matrona</h3><p>Matrona titulada, Licenciada en Obstetricia y Matronería y Bachiller en Salud Sexual y Reproductiva.</p></div></article>
+  </div>
+
+  <div class="cv-cta">
+    <div><span class="chip">CURRÍCULUM PROFESIONAL</span><h3>Empresa, tecnología, diseño, datos y salud en una misma trayectoria.</h3><p>El CV reúne experiencia, formación, herramientas, proyectos y credenciales verificables.</p></div>
+    <a class="btn primary" href="assets/cv.pdf" target="_blank" rel="noopener">Abrir CV completo</a>
+  </div>
+</section>
+
+<section id="arcade" class="section wrap">
+  <div class="section-head">
+    <div><p class="eyebrow">07 · ARCADE MÁGICO</p><h2>Tres pequeños juegos,<br>tres formas de interactuar.</h2></div>
+    <p>Una zona lúdica para mostrar lógica, estados, eventos, animación e interacción con JavaScript.</p>
+  </div>
+
+  <div class="game-tabs">
+    <button class="game-tab active" data-game="tetris">Bloques Encantados</button>
+    <button class="game-tab" data-game="match">Jardín de Gemas</button>
+    <button class="game-tab" data-game="stars">Constelaciones</button>
+  </div>
+
+  <div class="game-panel active" id="game-tetris">
+    <div class="tetris-layout">
+      <div class="tetris-frame">
+        <canvas id="play-tetris" width="240" height="480" tabindex="0" aria-label="Tablero de Tetris. Flechas para mover y girar; espacio para soltar; P para pausar."></canvas>
+        <div class="line-magic" id="line-magic" aria-hidden="true"><img src="assets/hada-corregida.webp" alt=""><div id="line-fragments"></div><strong>¡Magia!</strong></div><div class="tetris-crown" aria-hidden="true">✧ BLOQUES ENCANTADOS ✧</div>
+      </div>
+      <aside class="game-side">
+        <h3>Bloques Encantados</h3><p>← → mover · ↑ girar · ↓ bajar · Espacio: bajar y fijar de inmediato · P pausa</p>
+        <div class="score-row"><span>Puntos</span><b id="play-score">00000</b></div>
+        <div class="score-row"><span>Líneas</span><b id="play-lines">00</b></div>
+        <div class="score-row"><span>Nivel</span><b id="play-level">1</b></div><button id="play-start" class="btn primary">Iniciar / reiniciar</button><div class="touch-controls" aria-label="Controles táctiles de Tetris"><button data-tetris-action="left" aria-label="Mover a la izquierda">←</button><button data-tetris-action="rotate" aria-label="Girar">↻</button><button data-tetris-action="right" aria-label="Mover a la derecha">→</button><button data-tetris-action="down" aria-label="Bajar">↓</button><button data-tetris-action="drop">Soltar</button><button data-tetris-action="pause">Pausa</button></div>
+        <div id="landing-status" class="landing-status" role="status">Mueve y gira la pieza antes de fijarla.</div><button id="tetris-magic-demo" class="btn secondary" type="button">Reto de una línea ✦</button><p class="small-note">El reto reinicia la partida. Pulsa Espacio o Soltar para completar la línea y ver al hada.</p><p class="lock-help">Al tocar el fondo tienes 1,5 segundos para acomodar la pieza. Moverla o girarla renueva ese margen hasta 15 veces. Puedes girarla junto al suelo si hay espacio libre. Espacio o Soltar la fijan de inmediato. Al completar una línea, aparece el hada con destellos.</p><p id="play-status" class="game-status">Pulsa iniciar. Luego usa las flechas del teclado.</p>
+      </aside>
+    </div>
+  </div>
+
+  <div class="game-panel" id="game-match">
+    <div class="gem-welcome"><div><span class="chip">MAGIA PARA JUGAR</span><h3>Cohetes, bombas y bolas disco</h3><p>Empiezas con uno de cada poder. Intercámbialo con una gema vecina para ver su efecto, o aprende a crear los tuyos.</p></div><div id="gem-inventory" aria-label="Poderes disponibles en el tablero"></div></div>
+    <div class="gem-lessons"><span>Retos guiados</span><button type="button" data-gem-lesson="rocket"><img src="assets/gema-rocket.svg" alt="">Crear cohete · 4</button><button type="button" data-gem-lesson="bomb"><img src="assets/gema-bomb.svg" alt="">Crear bomba · 5</button><button type="button" data-gem-lesson="disco"><img src="assets/gema-disco.svg" alt="">Crear bola disco · 6</button><button type="button" data-gem-lesson="bomb-l"><img src="assets/gema-bomb.svg" alt="">Bomba en L · 3 + 3</button><button type="button" data-gem-lesson="bomb-t"><img src="assets/gema-bomb.svg" alt="">Bomba en T · 3 + 3</button><small>Cada reto prepara un tablero nuevo y reinicia los puntos.</small></div>
+    <p id="gem-lesson-hint" class="gem-lesson-hint" hidden role="status"></p>
+    <div id="gem-power-message" class="gem-power-message" role="status">Tres poderes te esperan en el tablero.</div>
+    <div class="match-layout">
+      <div id="match-grid" class="match-grid" aria-label="Tablero de gemas"></div>
+      <aside class="game-side"><h3>Jardín de Gemas</h3><p>Selecciona dos piezas vecinas. Une 3 para puntuar. Con 4 creas un cohete; con 5, una bomba; con 6 o más, una bola disco. Las uniones horizontales y verticales cuentan también cuando se cruzan en L o T: 3 + 3 comparten una gema y forman una bomba de 5. Intercambia un especial con cualquier vecino para activarlo.</p><div class="special-guide"><p><img src="assets/gema-rocket.svg" alt=""> <b>4 · Cohete</b><span>Limpia una fila o columna, según la combinación.</span></p><p><img src="assets/gema-bomb.svg" alt=""> <b>5 · Bomba</b><span>Rompe un área de hasta 5 × 5 casillas.</span></p><p><img src="assets/gema-disco.svg" alt=""> <b>6+ · Bola disco</b><span>Elimina todas las gemas del símbolo vecino.</span></p></div><div class="score-row"><span>Puntos</span><b id="match-score">0000</b></div><button id="match-reset" class="btn primary">Nueva partida</button><div id="match-message" class="match-message" role="status">✦ Crea tu primera combinación ✦</div></aside>
+    </div>
+  </div>
+
+  <div class="game-panel" id="game-stars">
+    <div class="atlas-heading"><span class="chip">10 CONSTELACIONES · 8 ILUSTRACIONES OCULTAS</span><h3>Elige el cielo que quieres descubrir</h3><p>Todas están disponibles. Toca una figura para jugar: sus estrellas revelan una ilustración al completar las conexiones.</p></div>
+    <div id="atlas-gallery" class="atlas-gallery" aria-label="Galería de diez constelaciones"></div>
+    <div class="constellation-layout">
+      <div id="constellation-board" class="constellation-board">
+        <img id="reveal-image" hidden alt="Recompensa oculta">
+        <div class="watermark const-watermark">STUDIOS CONARI SpA · PORTAFOLIO</div>
+        <div class="constellation-veil"></div>
+        <svg id="constellation-lines" viewBox="0 0 100 100" aria-hidden="true"></svg>
+        <div id="star-layer"></div>
+        <div id="wand-cursor" class="wand-cursor">✦━━✧</div>
+      </div>
+      <aside class="game-side"><span class="chip">ATLAS DE ESTRELLAS</span><h3 id="constellation-name">Constelaciones</h3><label class="constellation-select">Elegir constelación<select id="constellation-select"></select></label><p>Sigue la estrella indicada. Las uniones aparecen al activar sus dos extremos. Completa el trazado y descubre una ilustración de la colección del portafolio.</p><div class="score-row"><span>Progreso</span><b id="star-progress">0 / 7</b></div><button id="star-reset" class="btn primary">Siguiente constelación →</button><div id="star-message" class="match-message" role="status">La primera estrella está brillando.</div><div class="star-lesson"><span class="chip">CONOCE ESTA CONSTELACIÓN</span><h4 id="lesson-title"></h4><p id="lesson-description"></p><p id="constellation-note"></p></div><p id="atlas-progress" role="status"></p><a id="constellation-source" class="source-link" target="_blank" rel="noopener">Consultar carta de la IAU ↗</a><p class="small-note">Figuras tradicionales simplificadas; las constelaciones son regiones del cielo. La ilustración revelada es una recompensa artística; no representa la figura astronómica.</p></aside>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="contact-section">
+  <div class="wrap">
+    <p class="eyebrow">08 · CONTACTO</p>
+    <h2>¿Construimos algo?</h2>
+    <p>Desarrollo, diseño, videojuegos, datos y producción digital pueden encontrarse en una misma conversación.</p>
+    <div class="contact-buttons">
+      <a href="mailto:manecisterna@gmail.com">manecisterna@gmail.com</a>
+      <a href="mailto:studiosconari@gmail.com">studiosconari@gmail.com</a>
+      <a href="https://studiosconari.github.io/" target="_blank" rel="noopener">Studios Conari ↗</a>
+      <a href="https://github.com/manecist" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">MCE · María Inés Cisterna Escobar <span>✦</span> Studios Conari SpA</div><p class="edition-tag">Edición V12 · Colores, edades y melodías</p></footer>
+</div>
+<noscript><style>.suspension{display:none}.site{opacity:1;visibility:visible}body.bloqueado{overflow:auto}</style><p>Activa JavaScript para usar las demostraciones y los juegos.</p></noscript>
+</body>
+</html>
