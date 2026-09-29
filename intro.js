@@ -1,7 +1,7 @@
 /* ==========================================================================
    Intro de Studios Conari: el hada dibuja y pinta el estudio (GSAP)
    1. el hada llega volando y dibuja con su varita el lineart de los ocho emblemas
-   2. recorre el anillo y los pinta con su color a su paso
+   2. lanza un hechizo de área: una onda de luz pinta todos los dibujos
    3. dibuja el dragón en el centro y lo pinta
    4. lanza un hechizo de luz: el dragón cobra vida, da la vuelta y reúne los
       emblemas en la luna
@@ -40,6 +40,7 @@
         </div>
         <div class="intro-hada">${[0, 1, 2, 3].map(i => `<img src="assets/hada-hechizo-${i}.webp" alt="">`).join('')}</div>
         <div class="intro-dragon-dibujo"><div class="intro-dragon-color pintable"></div><svg viewBox="0 0 100 100"></svg></div>
+        <div class="intro-onda"></div>
         <div class="intro-hechizo"></div>
         <div class="intro-destello"></div>
         <div class="intro-dragon"><div class="intro-dragon-spr"></div></div>
@@ -197,16 +198,20 @@
     });
 
     // 2. recorre el anillo con la varita baja y pinta cada emblema a su paso
-    tl.call(posar, [3], tt);
+    // el hada va al centro y, con los ojos cerrados, suelta una onda de luz que pinta todo el anillo
+    const onda = $('.intro-onda');
+    gsap.set(onda, { width: RX * 2.3, height: RY * 2.3, marginLeft: -RX * 1.15, marginTop: -RY * 1.15 });
+    tl.to(P, { x: 470, y: 330, duration: .4, ease: 'power2.inOut' }, tt)
+      .call(posar, [2], tt + .25)
+      .fromTo('.intro-hechizo', { scale: .05, opacity: 0 }, { scale: .45, opacity: .9, duration: .3, ease: 'power2.out' }, tt + .4)
+      .to('.intro-hechizo', { scale: .7, opacity: 0, duration: .5 }, tt + .7)
+      .fromTo(onda, { scale: .05, opacity: 1 }, { scale: 1, opacity: 0, duration: 1, ease: 'power2.out' }, tt + .45);
     emblemas.forEach((e, i) => {
-      const paso = i ? .15 : .22;
-      tl.to(P, { x: e.x - 30, y: e.y + 20, duration: paso, ease: 'sine.inOut' }, tt);
-      tt += paso;
-      tl.to(P, { x: e.x + 40, y: e.y - 10, duration: .1, ease: 'none' }, tt)
-        .add(pintar(e.img, .3), tt - .06)
-        .to(e.svg, { opacity: 0, duration: .3 }, tt + .15);
-      tt += .1;
+      const t0 = tt + .75 + (i % 2) * .05;   // la onda alcanza el anillo casi a la vez
+      tl.add(pintar(e.img, .35), t0).to(e.svg, { opacity: 0, duration: .3 }, t0 + .2)
+        .fromTo(e.img, { filter: 'brightness(2.2) drop-shadow(0 0 14px rgba(255,236,250,.9))' }, { filter: 'brightness(1) drop-shadow(0 0 8px rgba(255,212,90,.5))', duration: .6 }, t0 + .15);
     });
+    tt += 1.35;
 
     // 3. dibuja el dragón en el centro y lo pinta
     const iniD = inicioDe(dragonLineas, aDragon);
@@ -243,12 +248,12 @@
     tl.call(posar, [0], tt + .2)
       .set(A, { on: 0 }, tt + .2)
       .set(P, { x: () => H.x, y: () => H.y }, tt + .2)
-      .to(P, { x: 1180, y: -120, duration: 1.1, ease: 'power2.in' }, tt + .25)
+      .to(P, { x: vertical ? 700 : 1150, y: vertical ? 1000 : 760, duration: 1, ease: 'power2.in' }, tt + .25)
       .to(hada, { opacity: 0, duration: .5 }, tt + .9)
       .to(dragon, { scale: 1, duration: .5 }, tt)
       .to(dragon, {
-        duration: 2.1, ease: 'power1.inOut',
-        motionPath: { path: [{ x: 360, y: 180 }, { x: 70, y: 320 }, { x: 260, y: 565 }, { x: 740, y: 560 }, { x: 965, y: 330 }, { x: 860, y: 100 }, { x: 520, y: 30 }, { x: 1010, y: conariY - 30 }], curviness: 1.25 }
+        duration: 2, ease: 'power1.inOut',
+        motionPath: { path: [{ x: 760, y: 110 }, { x: 560, y: 20 }, { x: 150, y: 90 }, { x: 40, y: 330 }, { x: 260, y: 560 }, { x: 740, y: 575 }, { x: 1010, y: conariY - 30 }], curviness: 1.25 }
       }, tt)
       .to(constel, { opacity: 0, duration: .5 }, tt + .8)
       .add(dibujar(lineasLuna, (x, y) => ({ x: L.x + x * L.s, y: L.y + y * L.s }), 1.1, false), tt + .5)
