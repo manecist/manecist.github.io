@@ -6,7 +6,7 @@ Sitio estático (HTML, CSS y JavaScript sin dependencias ni compilación), prepa
 
 ## Secciones
 
-- **Intro de Studios Conari**: es lo primero que aparece al abrir la página (unos 14 s, una vez por sesión; cualquier tecla, clic o toque la salta). El hada dibuja con su varita el lineart de los ocho emblemas del estudio y los pinta todos con un hechizo de área. Después dibuja al dragón rosa con un rayo de magia, lo colorea y le da vida con un hechizo de luz. El dragón da una vuelta, reúne los emblemas en la luna y, a su paso, revela STUDIOS CONARI. No se reproduce si el sistema pide movimiento reducido.
+- **Intro de Studios Conari**: es lo primero que aparece al abrir la página (unos 16 s, una vez por sesión; cualquier tecla, clic o toque la salta). En primer plano, un rayo de magia dibuja el lineart de cada emblema del estudio y la cámara sigue la línea de la constelación hasta el siguiente. Al terminar, la cámara se aleja y aparece el hada, que era quien lanzaba el rayo, dibujando al dragón rosa. Con todo en lineart, su hechizo pinta a la vez los emblemas y el dragón, que cobra vida, da una vuelta, reúne los emblemas en la luna y, a su paso, revela STUDIOS CONARI. No se reproduce si el sistema pide movimiento reducido.
 - **Pantalla de inicio**: tras la intro, consola rosada con Tetris automático en la pantalla LCD. Al pulsar **ENCENDER** aparece el portafolio.
 - **Portada**: el hada del portafolio y cinco burbujas perladas que llevan a Empresa, Desarrollo, Diseño, Datos y Salud.
 - **Studios Conari**: la empresa, sus servicios y el equipo (María Inés, Kevin Alexis y Elías Alejandro).
