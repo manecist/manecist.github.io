@@ -7,7 +7,7 @@ Sitio estático (HTML, CSS y JavaScript sin dependencias ni compilación), prepa
 ## Secciones
 
 - **Pantalla de inicio**: consola rosada con Tetris automático en la pantalla LCD. Al pulsar **ENCENDER** comienza la intro.
-- **Intro de Studios Conari** (unos 15 s, una vez por sesión; cualquier tecla, clic o toque la salta): el hada dibuja con su varita el lineart de los ocho emblemas del estudio y luego los pinta al pasar. Después dibuja al dragón con un rayo de magia, lo colorea y le da vida con un hechizo de luz. El dragón da la vuelta, reúne los emblemas en la luna y revela STUDIOS CONARI. No se reproduce si el sistema pide movimiento reducido.
+- **Intro de Studios Conari** (unos 14 s, una vez por sesión; cualquier tecla, clic o toque la salta): el hada dibuja con su varita el lineart de los ocho emblemas del estudio y los pinta todos con un hechizo de área. Después dibuja al dragón con un rayo de magia, lo colorea y le da vida con un hechizo de luz. El dragón da una vuelta, reúne los emblemas en la luna y revela STUDIOS CONARI. No se reproduce si el sistema pide movimiento reducido.
 - **Portada**: el hada del portafolio y cinco burbujas perladas que llevan a Empresa, Desarrollo, Diseño, Datos y Salud.
 - **Studios Conari**: la empresa, sus servicios y el equipo (María Inés, Kevin Alexis y Elías Alejandro).
 - **Desarrollo**
