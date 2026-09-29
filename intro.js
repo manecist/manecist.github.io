@@ -5,7 +5,7 @@
    3. dibuja el dragón en el centro y lo pinta
    4. lanza un hechizo de luz: el dragón cobra vida, da la vuelta y reúne los
       emblemas en la luna
-   5. aparece STUDIOS; el dragón cruza por delante de CONARI y lo revela
+   5. el dragón cruza por delante del nombre y revela STUDIOS CONARI a su paso
    Se muestra al pulsar ENCENDER, una vez por sesión. Cualquier tecla, clic o
    toque la salta. Con movimiento reducido no se reproduce.
    ========================================================================== */
@@ -79,7 +79,7 @@
     });
     const dibujo = $('.intro-dragon-dibujo'), dragonLineas = trazos($('.intro-dragon-dibujo svg'), 'dragon');
     const aDragon = (xx, yy) => ({ x: 350 + xx * 3, y: 150 + yy * 3 });
-    const svgLogo = $('.intro-logo svg'), lineasLuna = trazos(svgLogo, 'luna'), lineasConari = trazos(svgLogo, 'conari');
+    const svgLogo = $('.intro-logo svg'), lineasLuna = trazos(svgLogo, 'luna');
 
     // ---------------------------------------------------------- escala del escenario
     let k = 1, ox = 0, oy = 0;
@@ -174,9 +174,10 @@
     const L = { x: 500 - 620 * .85 / 2, y: 300 - 362 * .85 / 2, s: .85 };
     const estrellaLuna = { x: L.x + 311 * L.s, y: L.y + 75 * L.s };
     const conariY = L.y + 258 * L.s;
-    const conari = $('.iw-conari');
     gsap.set(dragon, { x: 500, y: 300, opacity: 0 });
-    gsap.set(conari, { clipPath: 'inset(0 0 0 100%)' });
+    // STUDIOS, CONARI y las líneas laterales quedan ocultos hasta que pase el dragón
+    const nombre = ['.iw-lineas', '.iw-studios', '.iw-conari'].map(s => $(s));
+    gsap.set(nombre, { opacity: 1, clipPath: 'inset(0 0 0 100%)' });
 
     const tl = gsap.timeline({ onComplete: terminar });
     tl.to(intro, { opacity: 1, duration: .45 }, 0)
@@ -267,20 +268,16 @@
       .to(lineasLuna.map(l => l.p), { opacity: 0, duration: .5 }, tt + .2)
       .fromTo('.iw-luna', { filter: 'brightness(1)' }, { filter: 'brightness(1.8)', duration: .35, yoyo: true, repeat: 1 }, tt)
       // 5. nombre del estudio
-      .fromTo('.iw-lineas', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .7, ease: 'power3.out' }, tt + .15)
-      .fromTo('.iw-studios', { opacity: 0, clipPath: 'inset(0 50% 0 50%)' }, { opacity: 1, clipPath: 'inset(0 0% 0 0%)', duration: .8, ease: 'power2.out' }, tt + .3)
-      .add(dibujar(lineasConari, (x, y) => ({ x: L.x + x * L.s, y: L.y + y * L.s }), 1.1, false), tt + .35)
-      // el dragón cruza por delante del nombre y lo va dejando a la vista
+      // el dragón cruza por delante del nombre y lo va dejando a la vista a su paso
       .to(dragon, {
         x: -220, y: conariY - 40, duration: 1.15, ease: 'none',
         onUpdate() {
           const f = Math.min(100, Math.max(0, (gsap.getProperty(dragon, 'x') - L.x) / (620 * L.s) * 100));
-          conari.style.clipPath = `inset(0 0 0 ${f}%)`;
+          nombre.forEach(el => { el.style.clipPath = `inset(0 0 0 ${f}%)`; });
         }
       }, tt + .65)
       .to(dragon, { x: () => -ox / k - 260, y: conariY - 150, duration: .75, ease: 'none' }, tt + 1.8)
       .set(dragon, { opacity: 0 }, tt + 2.55)
-      .to(lineasConari.map(l => l.p), { opacity: 0, duration: .5 }, tt + 1.65)
       .fromTo('.iw-base', { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .5, ease: 'back.out(3)' }, tt + 1.6)
       .fromTo('.intro-brillo', { backgroundPosition: '-250% 0' }, { backgroundPosition: '300% 0', duration: 1.3, ease: 'power1.inOut' }, tt + 1.75)
       .fromTo('.intro-presenta', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .6 }, tt + 1.95)
