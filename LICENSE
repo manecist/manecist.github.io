@@ -1,0 +1,35 @@
+TODOS LOS DERECHOS RESERVADOS
+
+Copyright (c) 2026 María Inés Cisterna Escobar ("Ari") y Studios Conari SpA.
+
+Este repositorio y el sitio publicado en https://manecist.github.io/ contienen obra
+original protegida por la Ley N.º 17.336 de Propiedad Intelectual de Chile y por los
+tratados internacionales sobre derecho de autor. Esto incluye, entre otros:
+
+  - las ilustraciones, personajes (el hada, Ari, Coen, Rancek y las criaturas de la
+    serie de leyendas), logotipos, emblemas y la identidad visual de Studios Conari;
+  - los textos, el cuento y el diseño del sitio;
+  - el código fuente propio (HTML, CSS, JavaScript y Java).
+
+Se permite ver el sitio y leer el código con fines de evaluación profesional.
+
+Sin autorización previa y por escrito de las titulares NO se permite:
+  - copiar, descargar, reproducir, modificar, adaptar, redistribuir ni publicar,
+    total o parcialmente, el contenido de este repositorio o del sitio;
+  - usar las ilustraciones, personajes o marcas en otros proyectos, productos o
+    publicaciones, con o sin fines de lucro;
+  - quitar o alterar las marcas de agua;
+  - usar cualquier parte de este contenido para entrenar, ajustar o alimentar
+    modelos de inteligencia artificial.
+
+Las ilustraciones marcadas como "Arianes · regalo" son obra personal de María Inés
+Cisterna Escobar, con todos los derechos reservados a su autora.
+
+Componentes de terceros, que conservan sus propias licencias y no quedan cubiertos
+por este aviso:
+  - GSAP y MotionPathPlugin (vendor/): GreenSock, licencia estándar sin costo.
+  - Coordenadas de constelaciones (constellations.js): d3-celestial, (c) 2015 Olaf
+    Frohn, licencia BSD-3-Clause; ver LICENCIAS.txt.
+  - Fuentes Cinzel y Cormorant Garamond: Google Fonts, SIL Open Font License.
+
+Para solicitar permisos: studiosconari@gmail.com · manecisterna@gmail.com

@@ -3,10 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="María Inés Cisterna Escobar · Studios Conari SpA">
+  <meta name="copyright" content="© 2026 María Inés Cisterna Escobar y Studios Conari SpA. Todos los derechos reservados.">
+  <meta name="robots" content="noimageai, noai">
   <meta name="description" content="Portafolio de María Inés Cisterna Escobar: Studios Conari, desarrollo Java, diseño, datos y trayectoria profesional.">
   <meta name="theme-color" content="#0b1430">
   <title>María Inés Cisterna Escobar · Portafolio</title>
-  <link rel="stylesheet" href="styles.css?v=20260927b">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
+  <link rel="stylesheet" href="styles.css?v=20261001a">
+  <link rel="stylesheet" href="libro.css?v=20261001a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
   <script>
@@ -16,44 +22,64 @@
   </script>
   <script src="constellations.js?v=20260927b" defer></script>
   <script src="tetris.js?v=20260927b" defer></script>
-  <script src="app.js?v=20260927b" defer></script>
+  <script src="app.js?v=20261001a" defer></script>
+  <script src="magia.js?v=20261001a" defer></script>
+  <script src="secciones.js?v=20261001a" defer></script>
+  <script src="libro.js?v=20261001a" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
-  <script src="intro.js?v=20260929h" defer></script>
+  <script src="intro.js?v=20261001a" defer></script>
 </head>
 <body class="bloqueado">
 <a class="skip-link" href="#inicio">Saltar al contenido</a>
 
-<!-- SUSPENSIÓN MCE -->
-<section class="suspension" id="suspension" aria-label="Pantalla de inicio MCE">
-  <div class="console-shell">
-    <div class="console-label">MCE · SUEÑOS DE BOLSILLO</div>
-    <div class="console-body">
-      <div class="speaker" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-      </div>
-      <div class="screen-bezel">
-        <div class="screen">
-          <canvas id="suspend-tetris" width="240" height="480" aria-hidden="true"></canvas>
-          <div class="lcd-status" aria-hidden="true"><span>DEMO</span><span>▦<br>▦▦</span><small>EN ESPERA</small></div><div class="crt-lines" aria-hidden="true"></div>
-          <div class="mce-overlay">
-            <strong>MCE</strong>
-            <small>EN ESPERA</small>
-          </div>
-        </div>
-      </div>
-      <div class="console-side">
-        <button id="power-button" class="power-button" aria-label="Encender portafolio"><span>⏻</span>ENCENDER</button>
-        <div class="ab"><span>A</span><span>B</span></div>
-      </div>
+<!-- ESCENA DEL LIBRO MÁGICO -->
+<section class="escena" id="escena" aria-label="Libro mágico de Studios Conari">
+  <div class="escena-fondo" aria-hidden="true"><div class="escena-cielo"></div><div class="escena-niebla"></div></div>
+  <div class="escena-estela" aria-hidden="true"></div>
+  <div class="libro" id="libro" data-estado="cerrado">
+    <div class="libro-sombra" aria-hidden="true"></div>
+    <div class="libro-cuerpo">
+      <div class="pag pag-izq" id="pag-izq"></div>
+      <div class="pag pag-der" id="pag-der"></div>
+      <div class="libro-lomo" aria-hidden="true"></div>
     </div>
-    <div class="console-foot"><span>EDICIÓN ROSADA</span><span>MARÍA INÉS CISTERNA ESCOBAR</span></div>
+    <button class="libro-tapa" id="libro-tapa" type="button" aria-label="Abrir el libro">
+      <span class="tapa-frente">
+        <span class="tapa-marco" aria-hidden="true"></span>
+        <span class="tapa-esquina e1" aria-hidden="true"></span><span class="tapa-esquina e2" aria-hidden="true"></span><span class="tapa-esquina e3" aria-hidden="true"></span><span class="tapa-esquina e4" aria-hidden="true"></span>
+        <img class="tapa-emblema" src="assets/emblema-conari-magico.webp" alt="">
+        <span class="tapa-titulo"><small>Studios Conari presenta</small>La historia de Ari<em>Donde nacen mundos y leyendas eternas</em></span>
+        <span class="tapa-gema" aria-hidden="true"></span>
+      </span>
+      <span class="tapa-dorso" aria-hidden="true"></span>
+    </button>
+    <div class="libro-cinta" aria-hidden="true"></div>
   </div>
-  <p class="suspend-hint">Tetris en suspensión · pulsa <b>ENCENDER</b> para entrar</p>
+  <div class="hada-viva hada-escena" id="hada-escena" aria-hidden="true"></div>
+  <p class="escena-pista" id="escena-pista">Toca el libro para abrirlo</p>
+  <nav class="libro-nav" id="libro-nav" aria-label="Navegación del cuento">
+    <button type="button" id="libro-prev" aria-label="Página anterior">‹</button>
+    <button type="button" id="libro-indice">Índice</button>
+    <span id="libro-folio" aria-live="polite">—</span>
+    <button type="button" id="libro-clasico">Versión clásica</button>
+    <button type="button" id="libro-next" aria-label="Página siguiente">›</button>
+  </nav>
 </section>
 
 <div id="site" class="site" aria-hidden="true">
+<div class="reino" id="reino" aria-hidden="true">
+  <div class="reino-capa reino-cielo"></div>
+  <canvas class="reino-estrellas" id="reino-estrellas"></canvas>
+  <div class="reino-capa reino-dragon"><span></span></div>
+  <div class="reino-capa reino-personajes">
+    <div class="rp rp-mago"><img src="assets/personajes/rancek-espalda.webp" alt=""></div>
+    <div class="rp rp-pareja"><img class="rp-coen" src="assets/personajes/coen-espalda.webp" alt=""><img class="rp-ari" src="assets/personajes/ari-espalda.webp" alt=""><i class="rp-lazo"></i></div>
+  </div>
+  <div class="reino-capa reino-petalos" id="reino-petalos"></div>
+  <div class="reino-velo"></div>
+</div>
 <header class="topbar">
   <a class="brand" href="#inicio"><span>MCE</span><small>María Inés Cisterna Escobar</small></a>
   <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav">Menú</button><nav id="main-nav" aria-label="Secciones del portafolio">
@@ -65,6 +91,7 @@
     <a href="#trayectoria">Trayectoria</a><a href="#formacion">Formación</a>
     <a href="#arcade">Arcade</a>
   </nav>
+  <button type="button" class="abrir-cuento" id="abrir-cuento"><span aria-hidden="true">📖</span> Leer como cuento</button>
   <a class="mini-cta" href="#contacto">Contacto</a>
 </header>
 
@@ -93,7 +120,7 @@
 
   <div class="fairy-stage" aria-label="Navegación visual del portafolio">
     <div class="fairy-glow"></div>
-    <img class="fairy" src="assets/hada-corregida.webp" alt="Personaje mágico del portafolio de María Inés">
+    <div class="hada-viva fairy" data-hada="hero" role="img" aria-label="Hada mágica, el personaje de María Inés"></div>
     <div class="sparkle s1">✦</div><div class="sparkle s2">✧</div><div class="sparkle s3">✦</div>
     <a class="magic-orb orb-company" href="#estudio"><img src="assets/icon-company.webp" alt=""><span>Empresa</span></a>
     <a class="magic-orb orb-code" href="#desarrollo"><img src="assets/icon-code.webp" alt=""><span>Desarrollo</span></a>
@@ -170,26 +197,35 @@
   </div>
 
   <div class="dev-panel active" id="dev-calc">
-    <div class="magic-calculator">
-      <div class="calc-top"><span>✦ CALCULADORA JAVA ✦</span><small id="calc-op-name">Suma</small></div>
-      <div class="calc-display"><span id="calc-expression">0 + 0</span><strong id="calc-result" aria-live="polite">0</strong></div>
-      <div class="calc-inputs"><label>A<input id="calc-a" type="number" step="any" value="0"></label><label>B<input id="calc-b" type="number" step="any" value="0"></label></div>
-      <div class="calc-buttons">
-        <button data-op="+">+</button><button data-op="-">−</button><button data-op="*">×</button>
-        <button data-op="/">÷</button><button data-op="%">%</button><button data-op="log">log</button>
-        <button id="calc-equals" class="equals">=</button><button id="calc-clear">C</button>
+    <div class="calc-zona" id="calc-zona">
+      <div class="calc-magica" id="calc">
+        <div class="calc-cabeza"><span class="calc-gema" aria-hidden="true"></span><span>CALCULADORA ENCANTADA</span><small id="calc-op-name">Lista para calcular</small></div>
+        <div class="calc-pantalla"><span id="calc-expression">&nbsp;</span><strong id="calc-result" aria-live="polite">0</strong></div>
+        <div class="calc-teclas" role="group" aria-label="Teclado de la calculadora">
+          <button type="button" class="t-fn" data-k="C">C</button><button type="button" class="t-fn" data-k="back" aria-label="Borrar">⌫</button><button type="button" class="t-op" data-k="%">%</button><button type="button" class="t-op" data-k="/" aria-label="Dividir">÷</button>
+          <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" class="t-op" data-k="*" aria-label="Multiplicar">×</button>
+          <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" class="t-op" data-k="-" aria-label="Restar">−</button>
+          <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" class="t-op" data-k="+" aria-label="Sumar">+</button>
+          <button type="button" class="t-fn" data-k="neg" aria-label="Cambiar signo">±</button><button type="button" data-k="0">0</button><button type="button" data-k=".">,</button><button type="button" class="t-igual" data-k="=" aria-label="Calcular">=</button>
+          <button type="button" class="t-esp" data-k="log">log₁₀</button><button type="button" class="t-esp" data-k="sqrt">√x</button><button type="button" class="t-esp" data-k="sq">x²</button><button type="button" class="t-esp" data-k="inv">1/x</button>
+        </div>
+        <p class="calc-ayuda">También funciona con el teclado: números, + − * / , Enter y Retroceso.</p>
       </div>
     </div>
-    <div class="code-card">
-      <span class="chip">LÓGICA EQUIVALENTE EN JAVA</span>
+    <div class="code-card calc-java" id="calc-java">
+      <span class="chip">LO MISMO, ESCRITO EN JAVA</span>
       <h3 id="java-title">Suma</h3>
-      <pre><code id="java-code">double resultado = a + b;</code></pre>
-      <p>La interfaz web ejecuta JavaScript porque GitHub Pages es estático; al lado se muestra la lógica equivalente en Java.</p><a class="btn ghost" href="java/ConariJava.java" download>Descargar aplicación Java</a> <a class="btn ghost" href="java/README-JAVA.md">Cómo ejecutarla</a>
+      <pre class="java-pre"><code id="java-code">double a = 0;
+double b = 0;
+double resultado = a + b;</code></pre>
+      <p class="small-note">GitHub Pages solo sirve páginas estáticas, así que la calculadora corre en JavaScript; al lado ves el mismo cálculo en Java, línea por línea.</p>
+      <p class="botonera"><a class="btn ghost" href="java/ConariJava.java" download>Descargar la app Java</a> <a class="btn ghost" href="java/README-JAVA.md">Cómo ejecutarla</a></p>
     </div>
   </div>
 
+
   <div class="dev-panel" id="dev-m4">
-    <div class="cash-register">
+    <div class="cash-register" id="caja">
       <div class="register-marquee"><span>MAGICAL STORE · M4</span><output id="register-display" aria-label="Total de la compra">$0</output></div><div class="register-sign">TIENDA JAVA M4 · CAJA 01</div>
       <div class="register-window">
         <div class="product-picker">
@@ -235,8 +271,8 @@ double total = subtotal - ahorro;</code></pre>
         <p>Registro y autenticación por roles, CRUD de productos, carrito, pedidos, historial de compras, control de stock, MySQL y seguridad.</p></div>
         <div class="stack-cloud"><span>Java</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>Thymeleaf</span></div>
       </div>
-<div class="m7-gallery"><div class="m7-controls" aria-label="Capturas del proyecto M7"><button type="button" data-m7="0" aria-pressed="true">Inicio</button><button type="button" data-m7="1" aria-pressed="false">Catálogo</button><button type="button" data-m7="2" aria-pressed="false">Carrito</button><button type="button" data-m7="3" aria-pressed="false">Gestión</button></div><figure><a id="m7-full" href="assets/m7-inicio.webp" target="_blank" rel="noopener" aria-label="Abrir captura de M7 en tamaño completo"><img id="m7-preview" src="assets/m7-inicio.webp" alt="Captura real del inicio de Magical Alliance, proyecto M7" loading="lazy"></a><figcaption id="m7-caption">Inicio · identidad visual y navegación de Magical Alliance.</figcaption></figure><p class="small-note">Capturas reales del repositorio. Selecciona una vista y pulsa la imagen para ampliarla.</p><div class="m7-flow"><article><b>01 · Explorar</b><p>Catálogo, categorías y filtros para encontrar productos.</p></article><article><b>02 · Comprar</b><p>Cantidades, carrito y pedidos conectados al historial.</p></article><article><b>03 · Administrar</b><p>Productos, usuarios y stock organizados por roles.</p></article></div></div>
-      <a class="btn primary" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Ver repositorio M7 ↗</a>
+<div class="m7-gallery" id="m7-galeria"><div class="m7-controls" aria-label="Capturas del proyecto M7"><button type="button" data-m7="0" aria-pressed="true">Inicio</button><button type="button" data-m7="1" aria-pressed="false">Catálogo</button><button type="button" data-m7="2" aria-pressed="false">Carrito</button><button type="button" data-m7="3" aria-pressed="false">Gestión</button></div><figure><a id="m7-full" href="assets/m7-inicio.webp" target="_blank" rel="noopener" aria-label="Abrir captura de M7 en tamaño completo"><img id="m7-preview" src="assets/m7-inicio.webp" alt="Captura real del inicio de Magical Alliance, proyecto M7" loading="lazy"></a><figcaption id="m7-caption">Inicio · identidad visual y navegación de Magical Alliance.</figcaption></figure><p class="small-note">Capturas reales del repositorio. Selecciona una vista y pulsa la imagen para ampliarla.</p><div class="m7-flow"><article><b>01 · Explorar</b><p>Catálogo, categorías y filtros para encontrar productos.</p></article><article><b>02 · Comprar</b><p>Cantidades, carrito y pedidos conectados al historial.</p></article><article><b>03 · Administrar</b><p>Productos, usuarios y stock organizados por roles.</p></article></div></div>
+      <p class="botonera"><a class="btn primary" href="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/" target="_blank" rel="noopener">Abrir la vitrina interactiva ↗</a> <a class="btn ghost" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Ver repositorio M7 ↗</a></p>
     </div>
   </div>
 </section>
@@ -262,7 +298,15 @@ double total = subtotal - ahorro;</code></pre>
     </figure>
   </div>
 
-  <p class="art-credit">Obras de María Inés · práctica autodidacta y personal. No representan una transformación automática entre imágenes.</p><div class="design-story">
+  <p class="art-credit">Obras de María Inés · práctica autodidacta y personal. No representan una transformación automática entre imágenes.</p>
+  <div class="leyendas" id="leyendas">
+    <div class="leyendas-cabeza"><span class="chip">LEYENDAS DIBUJADAS · OBRA ORIGINAL</span><h3>Criaturas y espíritus de Chile y los Andes</h3>
+      <div class="leyendas-filtros" role="group" aria-label="Filtrar ilustraciones"><button type="button" data-filtro="todas" aria-pressed="true">Todas</button><button type="button" data-filtro="leyenda" aria-pressed="false">Leyendas</button><button type="button" data-filtro="proceso" aria-pressed="false">Proceso</button><button type="button" data-filtro="regalo" aria-pressed="false">Regalos</button></div></div>
+    <div class="leyendas-grid" id="leyendas-grid"></div>
+    <p class="leyendas-aviso">© 2026 María Inés Cisterna Escobar · Studios Conari SpA. Todas las ilustraciones son obra original con todos los derechos reservados: no se permite descargarlas, copiarlas, reutilizarlas ni usarlas para entrenar modelos de IA sin autorización escrita.</p>
+  </div>
+
+<div class="design-story">
     <div class="fairy-design">
       <div class="fairy-frames"><img class="fairy-open" src="assets/hada-corregida.webp" alt="Hada mágica con un suave parpadeo" loading="lazy"><img class="fairy-blink" src="assets/hada-parpadeo.webp" alt="" aria-hidden="true" loading="lazy"></div>
       <div class="wand-spark">✦</div>
@@ -279,38 +323,40 @@ double total = subtotal - ahorro;</code></pre>
 <section id="datos" class="section wrap">
   <div class="section-head">
     <div><p class="eyebrow">04 · DATOS</p><h2>Guardar, ordenar y<br>entender información.</h2></div>
-    <p>Explora cómo cambian las preferencias de color y música según la edad. Ingresa registros, elige un grupo y compara sus resultados con la muestra completa.</p>
+    <p>Un pequeño laboratorio de datos: registra edad, color y música favorita, y el oráculo los ordena en un mapa que se lee de un vistazo. Cada lectura dice cuántas personas la sostienen.</p>
   </div>
 
-  <div class="data-lab">
-    <form id="data-form" class="data-form">
-      <span class="chip">LABORATORIO DE DATOS · DEMO</span>
-      <label>Nombre<input id="data-name" required maxlength="40" placeholder="Ej. María" autocomplete="off"></label>
-      <label>Edad<input id="data-age" type="number" min="1" max="120" required placeholder="Ej. 30"></label>
-      <label>Color favorito
-        <select id="data-color">
-      <optgroup label="Primarios · círculo cromático RYB"><option>Rojo</option><option>Amarillo</option><option>Azul</option></optgroup>
-      <optgroup label="Secundarios"><option>Naranja</option><option>Verde</option><option>Violeta</option></optgroup>
-      <optgroup label="Terciarios"><option>Rojo anaranjado</option><option>Amarillo anaranjado</option><option>Amarillo verdoso</option><option>Azul verdoso</option><option>Azul violáceo</option><option>Rojo violáceo</option></optgroup>
-      <optgroup label="Otros tonos y neutros"><option selected>Rosado</option><option>Morado</option><option>Celeste</option><option>Turquesa</option><option>Dorado</option><option>Blanco</option><option>Gris</option><option>Negro</option><option>Café</option><option>Otro</option></optgroup></select><span id="color-swatch" aria-hidden="true"></span>
-      </label>
-      <label>Música
-        <select id="data-music"><option>Pop</option><option>Rock</option><option>Rock alternativo</option><option>Indie</option><option>Metal</option><option>Metal sinfónico</option><option>Heavy metal</option><option>Power metal</option><option>Metal gótico</option><option>Metal progresivo</option><option>Punk</option><option>Grunge</option><option>Blues</option><option>Jazz</option><option>Soul</option><option>Funk</option><option>R&B</option><option>Hip hop / Rap</option><option>Reguetón</option><option>Trap</option><option>Electrónica</option><option>House</option><option>Techno</option><option>Trance</option><option>Dubstep</option><option>Drum and bass</option><option>Ambient</option><option>Lo-fi</option><option>Clásica</option><option>Ópera</option><option>Instrumental</option><option>Soundtracks</option><option>Música de videojuegos</option><option>Anime / Anisong</option><option>J-pop</option><option>J-rock</option><option>K-pop</option><option>Cumbia</option><option>Salsa</option><option>Bachata</option><option>Merengue</option><option>Romántica</option><option>Balada romántica</option><option>Pop romántico</option><option>Bolero</option><option>Tango</option><option>Folclore chileno</option><option>Música andina</option><option>Nueva canción</option><option>Folk</option><option>Country</option><option>Reggae</option><option>Ska</option><option>Góspel</option><option>Otro</option></select>
-      </label>
-      <label id="other-music-label" hidden>Otro género<input id="data-other-music" maxlength="40" placeholder="Escribe tu género musical"></label><button class="btn primary" type="submit">Guardar registro</button><p id="data-message" role="status"></p>
-      <button class="btn ghost" id="data-example" type="button">Cargar ejemplo ficticio · 20 registros</button><button class="btn ghost" id="data-clear" type="button">Limpiar muestra</button>
-      <small>Los datos permanecen solo en esta página durante la sesión; no se envían a ningún servidor.</small>
+  <div class="oraculo" id="oraculo">
+    <form id="lab-form" class="oraculo-form" novalidate>
+      <span class="chip">EL ORÁCULO DE LOS COLORES · DEMO</span>
+      <h3>Cuéntale al oráculo</h3>
+      <div class="fila2"><label>Nombre<input id="lab-nombre" maxlength="30" placeholder="Ej. Luna" autocomplete="off"></label><label>Edad<input id="lab-edad" type="number" inputmode="numeric" min="1" max="120" placeholder="Ej. 28"></label></div>
+      <fieldset class="paleta"><legend>Color favorito · <b id="lab-color-nombre">Rosado</b></legend><div id="lab-colores" class="paleta-gotas"></div></fieldset>
+      <label>Música favorita<select id="lab-musica"></select></label>
+      <label id="lab-otra-wrap" hidden>¿Cuál?<input id="lab-otra" maxlength="30" placeholder="Escribe el género"></label>
+      <button class="btn primary" type="submit">✦ Guardar en el oráculo</button>
+      <p id="lab-msg" class="lab-msg" role="status"></p>
+      <div class="oraculo-acciones"><button type="button" id="lab-ejemplo" class="btn ghost">Ejemplo ficticio · 20 personas</button><button type="button" id="lab-limpiar" class="btn ghost">Vaciar</button></div>
+      <small class="lab-privado">Los registros viven solo en esta página: no se guardan ni se envían a ningún servidor.</small>
     </form>
-    <div class="data-output"><p id="sample-origin" class="sample-origin">Muestra inicial ficticia · agrega tus propios registros para explorar.</p>
-      <div class="table-wrap">
-        <table><thead><tr><th>Nombre</th><th>Edad</th><th>Color</th><th>Música</th></tr></thead><tbody id="data-table"></tbody></table>
-      </div>
-      <div id="data-stats" class="stats-grid"></div><section class="chart-card" aria-labelledby="chart-title"><div class="chart-heading"><h3 id="chart-title">Los colores de esta muestra</h3><label>Distribución<select id="chart-kind"><option value="color">Color favorito</option><option value="music">Música favorita</option></select></label></div><div id="data-chart" class="data-chart"></div><p>Datos de esta muestra local · frecuencia y porcentaje.</p></section>
-<section class="cross-analysis" aria-labelledby="cross-title"><span class="chip">EDAD × COLOR × MÚSICA</span><h3 id="cross-title">El color de nuestras melodías</h3><div class="analysis-filters"><label>Grupo de edad<select id="analysis-age"><option value="all">Todas las edades</option><option value="1-4">1 a 4 años</option><option value="5-12">5 a 12 años</option><option value="13-17">13 a 17 años</option><option value="18-29">18 a 29 años</option><option value="30-44">30 a 44 años</option><option value="45-59">45 a 59 años</option><option value="60-120">60 años o más</option></select></label><label>Profundizar por color<select id="analysis-color"><option value="all">Todos los colores</option></select></label></div><section class="relationship-story" aria-labelledby="relationship-title"><h4 id="relationship-title">Un mismo color, distintas edades</h4><p class="cohort-guide">Elige un color y compara qué música prefieren las personas de cada edad. Cada porcentaje se calcula dentro de su propio grupo.</p><div id="relationship-summary" aria-live="polite"></div></section><details class="overview-details"><summary>Resumen general de la selección</summary><div id="analysis-findings" aria-live="polite"></div></details><h4>Todos los estilos del grupo seleccionado</h4><div id="analysis-bars" class="data-chart"></div><details class="cross-table-details"><summary>Ver el detalle de color y música</summary><p class="small-note">Cada celda muestra personas y porcentaje dentro de su color, para la edad seleccionada.</p><div class="table-wrap"><table id="cross-table"></table></div></details><p id="analysis-caution" class="small-note"></p><details class="analysis-method"><summary>Cómo se calculan estos resultados</summary><p>Proporción de edad = personas de esa edad ÷ total de registros. Preferencia musical dentro de un color = personas con esa música y ese color ÷ personas de ese color en la edad elegida. Los porcentajes se redondean a un decimal.</p><p>Son relaciones descriptivas de esta muestra, no explicaciones causales ni conclusiones sobre toda la población. Esta demo guarda los registros en memoria del navegador; no es un servidor de base de datos.</p></details></section>
-      <pre><code id="sql-demo">INSERT INTO preferencias (nombre, edad, color, musica)
-VALUES (?, ?, ?, ?);</code></pre>
+    <div class="oraculo-viz" id="lab-viz">
+      <div class="oraculo-kpis" id="lab-kpis"></div>
+      <figure class="oraculo-mapa">
+        <figcaption><strong>¿Qué colores eligen las distintas edades?</strong><span>Cada burbuja reúne a las personas de un color y un tramo de edad; su tamaño es la cantidad. Toca una burbuja para escuchar su música.</span></figcaption>
+        <div id="lab-mapa" class="mapa"></div>
+      </figure>
+      <div class="oraculo-lectura" id="lab-lectura" aria-live="polite"></div>
+      <details class="oraculo-tabla"><summary>Ver los registros como tabla</summary><div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Edad</th><th>Color</th><th>Música</th></tr></thead><tbody id="lab-tabla"></tbody></table></div>
+        <pre><code>INSERT INTO preferencias (nombre, edad, color, musica)
+VALUES (?, ?, ?, ?);</code></pre></details>
+      <details class="oraculo-ciencia"><summary>✧ Lo que investiga la ciencia sobre color, música y edad</summary>
+        <article><h5>Color, emoción y sonido</h5><p>En un experimento con música clásica, participantes de Estados Unidos y México asociaron piezas rápidas en modo mayor con colores más claros, saturados y amarillos; las emociones compartidas ayudaron a explicarlo. Elegir un color para una canción no es lo mismo que tener un color favorito: no permite concluir «si te gusta el rojo, te gusta el pop».</p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3670360/" target="_blank" rel="noopener noreferrer">Palmer y colaboradores · PNAS, 2013 ↗</a></article>
+        <article><h5>Las preferencias cambian con la edad</h5><p>Dos estudios con más de 250.000 personas encontraron diferencias entre adolescencia y mediana edad: en promedio, la música «intensa» y «contemporánea» disminuye con los años y otras aumentan. Son tendencias de grupos, no reglas para cada persona.</p><a href="https://pubmed.ncbi.nlm.nih.gov/23895269/" target="_blank" rel="noopener noreferrer">Bonneville-Roussy y colaboradores · JPSP, 2013 ↗</a></article>
+        <p class="small-note">El oráculo solo describe los registros de esta página; las fuentes son contexto y no se usan para inventar resultados.</p>
+      </details>
     </div>
   </div>
+
 </section>
 
 <section id="trayectoria" class="section wrap">
@@ -379,6 +425,7 @@ VALUES (?, ?, ?, ?);</code></pre>
     <p>Una zona lúdica para mostrar lógica, estados, eventos, animación e interacción con JavaScript.</p>
   </div>
 
+  <div class="arcade-zona" id="arcade-zona">
   <div class="game-tabs">
     <button class="game-tab active" data-game="tetris">Bloques Encantados</button>
     <button class="game-tab" data-game="match">Jardín de Gemas</button>
@@ -427,6 +474,7 @@ VALUES (?, ?, ?, ?);</code></pre>
       <aside class="game-side"><span class="chip">ATLAS DE ESTRELLAS</span><h3 id="constellation-name">Constelaciones</h3><label class="constellation-select">Elegir constelación<select id="constellation-select"></select></label><p>Sigue la estrella indicada. Las uniones aparecen al activar sus dos extremos. Completa el trazado y descubre una ilustración de la colección del portafolio.</p><div class="score-row"><span>Progreso</span><b id="star-progress">0 / 7</b></div><button id="star-reset" class="btn primary">Siguiente constelación →</button><div id="star-message" class="match-message" role="status">La primera estrella está brillando.</div><div class="star-lesson"><span class="chip">CONOCE ESTA CONSTELACIÓN</span><h4 id="lesson-title"></h4><p id="lesson-description"></p><p id="constellation-note"></p></div><p id="atlas-progress" role="status"></p><a id="constellation-source" class="source-link" target="_blank" rel="noopener">Consultar carta de la IAU ↗</a><p class="small-note">Figuras tradicionales simplificadas; las constelaciones son regiones del cielo. La ilustración revelada es una recompensa artística; no representa la figura astronómica.</p></aside>
     </div>
   </div>
+  </div>
 </section>
 
 <section id="contacto" class="contact-section">
@@ -444,8 +492,200 @@ VALUES (?, ?, ?, ?);</code></pre>
   </div>
 </section>
 </main>
-<footer><div class="wrap">MCE · María Inés Cisterna Escobar <span>✦</span> Studios Conari SpA</div></footer>
+<footer><div class="wrap"><p>MCE · María Inés Cisterna Escobar <span>✦</span> Studios Conari SpA</p><p class="derechos">© 2026 María Inés Cisterna Escobar y Studios Conari SpA. Todos los derechos reservados. Ilustraciones, personajes, textos y diseño son obra original protegida: no se permite copiarlos, reutilizarlos ni usarlos para entrenar modelos de IA sin autorización escrita. <a href="LICENSE">Ver licencia</a>.</p></div></footer>
+<button type="button" class="volver-arriba" id="volver-arriba" aria-label="Volver arriba"><span class="va-estela" aria-hidden="true"></span><img src="assets/personajes/ari-lado.webp" alt="" draggable="false"><span class="va-texto">Arriba</span></button>
+
 </div>
-<noscript><style>.suspension{display:none}.site{opacity:1;visibility:visible}body.bloqueado{overflow:auto}</style><p>Activa JavaScript para usar las demostraciones y los juegos.</p></noscript>
+<noscript><style>.escena{display:none}.site{opacity:1;visibility:visible}body.bloqueado{overflow:auto}</style><p>Activa JavaScript para usar las demostraciones y los juegos.</p></noscript>
+<dialog class="visor" id="visor" aria-label="Ilustración ampliada">
+  <figure><div class="visor-img"><img id="visor-img" alt="" draggable="false"><span class="visor-escudo" aria-hidden="true"></span></div><figcaption id="visor-texto"></figcaption></figure>
+  <button type="button" class="visor-prev" id="visor-prev" aria-label="Anterior">‹</button><button type="button" class="visor-next" id="visor-next" aria-label="Siguiente">›</button>
+  <button type="button" class="visor-cerrar" id="visor-cerrar" aria-label="Cerrar">✕</button>
+</dialog>
+<canvas class="magia-canvas" id="magia-canvas" aria-hidden="true"></canvas>
+<!-- PÁGINAS DEL CUENTO (el libro las va mostrando de dos en dos) -->
+<div id="paginas" class="paginas" hidden>
+
+  <!-- 0 · guarda izquierda -->
+  <article class="pagina pagina-guarda" data-cap="Inicio">
+    <div class="exlibris">
+      <img src="assets/emblema-conari-magico.webp" alt="Emblema de Studios Conari">
+      <p class="exlibris-sello">Ex libris</p>
+      <p class="exlibris-texto">Este libro pertenece a quien se atreva a soñar con mundos nuevos.</p>
+      <p class="exlibris-firma">Escrito e ilustrado por<br><b>María Inés Cisterna Escobar</b><br><span>Ari · Studios Conari SpA</span></p>
+    </div>
+  </article>
+
+  <!-- 1 · elegir camino + índice -->
+  <article class="pagina pagina-camino" data-cap="Inicio">
+    <p class="capitular">¿Cómo quieres conocer esta historia?</p>
+    <div class="caminos">
+      <button type="button" class="camino" data-ir="2"><span class="camino-icono">📖</span><b>Leer el cuento</b><small>Página a página, con magia, juegos y cosas que se pueden tocar.</small></button>
+      <button type="button" class="camino" data-modo="clasico"><span class="camino-icono">✦</span><b>Versión clásica</b><small>El portafolio completo en una sola página, con el paisaje del reino de fondo.</small></button>
+    </div>
+    <ol class="indice">
+      <li><button type="button" data-ir="2"><span>I</span>La matrona que soñaba con mundos</button></li>
+      <li><button type="button" data-ir="4"><span>II</span>Nace Studios Conari</button></li>
+      <li><button type="button" data-ir="6"><span>III</span>El hechizo de los números</button></li>
+      <li><button type="button" data-ir="8"><span>IV</span>La tienda del mago</button></li>
+      <li><button type="button" data-ir="10"><span>V</span>La gran tienda Magical Alliance</button></li>
+      <li><button type="button" data-ir="12"><span>VI</span>Leyendas dibujadas</button></li>
+      <li><button type="button" data-ir="14"><span>VII</span>El oráculo de los colores</button></li>
+      <li><button type="button" data-ir="16"><span>VIII</span>El salón de los juegos</button></li>
+      <li><button type="button" data-ir="18"><span>✦</span>Y la historia continúa…</button></li>
+    </ol>
+  </article>
+
+  <!-- 2 · capítulo I -->
+  <article class="pagina pagina-ilustrada" data-cap="I · La matrona que soñaba con mundos">
+    <p class="cap-num">Capítulo I</p>
+    <h2 class="cap-titulo">La matrona que soñaba con mundos</h2>
+    <div class="vineta vineta-hada"><div class="hada-viva hada-pagina" data-hada="pagina"></div></div>
+    <p class="cuento"><span class="letra">H</span>abía una vez una matrona llamada María Inés, a quien todos conocían como <b>Ari</b>. De día cuidaba a mujeres y familias; de noche, cuando la ciudad dormía, dibujaba hadas, dragones y castillos en los márgenes de sus cuadernos.</p>
+  </article>
+  <article class="pagina" data-cap="I · La matrona que soñaba con mundos">
+    <p class="cuento">Durante cinco años trabajó en atención primaria, hospitales y salud pública. Lideró campañas de PAP, siguió de cerca cada resultado positivo y coordinó derivaciones para que nadie se perdiera en el camino.</p>
+    <p class="cuento">Allí descubrió su primer hechizo: <em>ordenar la información también es una forma de cuidar</em>. Cambió registros de papel por planillas que cualquiera podía seguir, y entendió que los datos cuentan historias de personas reales.</p>
+    <ul class="sellos">
+      <li><b>Matrona</b><span>Licenciada en Obstetricia y Matronería</span></li>
+      <li><b>Full Stack Java</b><span>480 horas · Talento Digital · <a href="https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1" target="_blank" rel="noopener">verificar ↗</a></span></li>
+      <li><b>Google Data Analytics</b><span>Certificado profesional en curso</span></li>
+    </ul>
+    <p class="cuento">Pero los mundos de sus cuadernos querían salir del papel…</p>
+  </article>
+
+  <!-- 4 · capítulo II -->
+  <article class="pagina pagina-ilustrada" data-cap="II · Nace Studios Conari">
+    <p class="cap-num">Capítulo II</p>
+    <h2 class="cap-titulo">Nace Studios Conari</h2>
+    <div class="vineta vineta-pareja">
+      <img class="pareja-fondo" src="assets/mundo-conari-sol-luna.webp" alt="">
+      <img class="pareja ari" src="assets/personajes/ari-frente.webp" alt="Ari, la asesina de cintas rosadas">
+      <img class="pareja coen" src="assets/personajes/coen-frente.webp" alt="Coen, el caballero de capa carmesí">
+      <span class="pareja-corazon" aria-hidden="true">♥</span>
+    </div>
+    <p class="cuento">Una noche de estrellas, Ari —la asesina de cintas rosadas— y Coen —el caballero de capa carmesí— se tomaron de la mano y prometieron construir juntos un reino donde las historias nunca terminaran.</p>
+  </article>
+  <article class="pagina" data-cap="II · Nace Studios Conari">
+    <img class="logo-pagina" src="assets/logo-oficial-oscuro.webp" alt="Studios Conari">
+    <p class="lema">«Donde nacen mundos y leyendas eternas.»</p>
+    <p class="cuento">Así nació <b>Studios Conari SpA</b>, un estudio creativo chileno que une narrativa, diseño, programación, datos y arte 3D para transformar ideas en videojuegos, aplicaciones y mundos propios.</p>
+    <div class="trio">
+      <figure><img src="assets/equipo-maria.webp" alt=""><figcaption><b>María Inés</b>Dirección creativa · Full Stack Java</figcaption></figure>
+      <figure><img src="assets/equipo-kevin.webp" alt=""><figcaption><b>Kevin Alexis</b>Dirección técnica · videojuegos y datos</figcaption></figure>
+      <figure><img src="assets/equipo-elias.webp" alt=""><figcaption><b>Elías Alejandro</b>Animación y arte 3D</figcaption></figure>
+    </div>
+    <p class="botonera"><a class="btn gold-btn" href="mailto:studiosconari@gmail.com?subject=Consulta%20Studios%20Conari">Escribir al estudio</a><a class="btn ghost" href="https://studiosconari.github.io/" target="_blank" rel="noopener">Sitio oficial ↗</a></p>
+  </article>
+
+  <!-- 6 · capítulo III -->
+  <article class="pagina" data-cap="III · El hechizo de los números">
+    <p class="cap-num">Capítulo III</p>
+    <h2 class="cap-titulo">El hechizo de los números</h2>
+    <p class="cuento"><span class="letra">P</span>ara construir su reino, Ari tuvo que aprender el idioma de las máquinas: <b>Java</b>. Su primer conjuro fue pequeño, pero preciso: una calculadora.</p>
+    <p class="cuento nota">Cada vez que pulses una tecla, la página de la izquierda escribe el mismo cálculo en Java. Así se ve la lógica por dentro.</p>
+    <div class="ranura" data-widget="#calc-java"></div>
+  </article>
+  <article class="pagina pagina-centrada" data-cap="III · El hechizo de los números">
+    <div class="ranura" data-widget="#calc-zona"></div>
+  </article>
+
+  <!-- 8 · capítulo IV -->
+  <article class="pagina pagina-ilustrada" data-cap="IV · La tienda del mago">
+    <p class="cap-num">Capítulo IV</p>
+    <h2 class="cap-titulo">La tienda del mago</h2>
+    <div class="tienda-escena" data-tienda>
+      <div class="tienda-estantes" aria-hidden="true"><i>💎</i><i>👗</i><i>💄</i><i>👠</i><i>⌚</i><i>🌙</i></div>
+      <img class="t-mago" src="assets/personajes/rancek-frente.webp" alt="Rancek, el mago comerciante">
+      <div class="t-mostrador" aria-hidden="true"><span>Tienda Mágica · Caja 01</span></div>
+      <img class="t-coen" src="assets/personajes/coen-lado.webp" alt="Coen, de compras">
+      <img class="t-ari" src="assets/personajes/ari-lado.webp" alt="Ari, de compras">
+      <p class="globo globo-mago" data-globo="mago">¡Bienvenidos a mi tienda! ¿Qué se les ofrece?</p>
+      <p class="globo globo-ari" data-globo="ari">Algo bonito para la fiesta del reino ✧</p>
+    </div>
+    <p class="cuento">Rancek, el mago comerciante, atiende su tienda con una caja registradora encantada. Ari y Coen vienen de compras: tú manejas la caja. Agrega productos, aplica un descuento, cobra… ¡y entrega la boleta!</p>
+    <p class="cuento nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
+  </article>
+  <article class="pagina pagina-scroll" data-cap="IV · La tienda del mago">
+    <div class="ranura" data-widget="#caja"></div>
+  </article>
+
+  <!-- 10 · capítulo V -->
+  <article class="pagina" data-cap="V · La gran tienda Magical Alliance">
+    <p class="cap-num">Capítulo V</p>
+    <h2 class="cap-titulo">La gran tienda Magical Alliance</h2>
+    <p class="cuento"><span class="letra">L</span>a tiendita creció hasta convertirse en un mercado entero: <b>Magical Alliance</b>, mi proyecto final Full Stack Java. Tiene registro e inicio de sesión por roles, catálogo con filtros, carrito, pedidos, historial de compras, control de stock y un panel para administrar todo.</p>
+    <div class="stack-cloud"><span>Java 17</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>Thymeleaf</span></div>
+    <p class="cuento nota">En la vitrina interactiva puedes recorrer la tienda como clienta o como administradora, llenar el carrito y ver cómo cambia el stock.</p>
+    <p class="botonera"><a class="btn primary" href="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/" target="_blank" rel="noopener">Abrir la vitrina interactiva ↗</a><a class="btn ghost" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Código ↗</a></p>
+  </article>
+  <article class="pagina pagina-centrada" data-cap="V · La gran tienda Magical Alliance">
+    <div class="ranura" data-widget="#m7-galeria"></div>
+  </article>
+
+  <!-- 12 · capítulo VI -->
+  <article class="pagina" data-cap="VI · Leyendas dibujadas">
+    <p class="cap-num">Capítulo VI</p>
+    <h2 class="cap-titulo">Leyendas dibujadas</h2>
+    <p class="cuento"><span class="letra">A</span>ri nunca dejó de dibujar. Aprendió sola, con papel y pintura primero y con tableta después, redibujando hasta encontrar su propio trazo: ojos vivos, cintas que flotan y criaturas de las leyendas de Chile y los Andes.</p>
+    <div class="etapas">
+      <figure><img src="assets/arte-transicion-soledad-alegria.jpeg" alt="Obra tradicional en papel"><figcaption>Papel</figcaption></figure>
+      <span aria-hidden="true">✦</span>
+      <figure><img src="assets/digital-lineart.webp" alt="Lineart digital"><figcaption>Digital</figcaption></figure>
+    </div>
+    <p class="cuento nota">Toca una ilustración para verla en grande. Todas llevan la marca de Studios Conari: son obra original y no se pueden reutilizar.</p>
+  </article>
+  <article class="pagina pagina-scroll" data-cap="VI · Leyendas dibujadas">
+    <div class="ranura" data-widget="#leyendas"></div>
+  </article>
+
+  <!-- 14 · capítulo VII -->
+  <article class="pagina pagina-scroll" data-cap="VII · El oráculo de los colores">
+    <p class="cap-num">Capítulo VII</p>
+    <h2 class="cap-titulo">El oráculo de los colores</h2>
+    <p class="cuento">En lo alto de la torre vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan. Cuéntale los tuyos y mira cómo ordena lo que aprende.</p>
+    <div class="ranura" data-widget="#lab-form"></div>
+  </article>
+  <article class="pagina pagina-scroll" data-cap="VII · El oráculo de los colores">
+    <div class="ranura" data-widget="#lab-viz"></div>
+  </article>
+
+  <!-- 16 · capítulo VIII -->
+  <article class="pagina pagina-ilustrada" data-cap="VIII · El salón de los juegos">
+    <p class="cap-num">Capítulo VIII</p>
+    <h2 class="cap-titulo">El salón de los juegos</h2>
+    <div class="vineta vineta-hada"><div class="hada-viva hada-pagina" data-hada="pagina"></div></div>
+    <p class="cuento">Cuando el trabajo termina, el hada abre el salón de los juegos: bloques encantados que ella misma rompe con su varita, un jardín de gemas con poderes y un cielo de constelaciones que esconden dibujos.</p>
+    <p class="cuento nota">Cada juego está hecho a mano en JavaScript: lógica, estados, eventos y animación.</p>
+  </article>
+  <article class="pagina pagina-scroll" data-cap="VIII · El salón de los juegos">
+    <div class="ranura" data-widget="#arcade-zona"></div>
+  </article>
+
+  <!-- 18 · epílogo -->
+  <article class="pagina pagina-ilustrada" data-cap="Y la historia continúa…">
+    <p class="cap-num">Epílogo</p>
+    <h2 class="cap-titulo">Y la historia continúa…</h2>
+    <div class="vineta vineta-trio">
+      <img class="trio-mago" src="assets/personajes/rancek-espalda.webp" alt="">
+      <img class="trio-coen" src="assets/personajes/coen-espalda.webp" alt="">
+      <img class="trio-ari" src="assets/personajes/ari-espalda.webp" alt="">
+    </div>
+    <p class="cuento">Salud, código, datos y dibujo no fueron caminos separados: fueron capítulos del mismo libro. Hoy Ari los une en cada proyecto de Studios Conari.</p>
+  </article>
+  <article class="pagina pagina-fin" data-cap="Y la historia continúa…">
+    <p class="capitular">¿Escribimos juntos el próximo capítulo?</p>
+    <p class="cuento">Desarrollo, diseño, videojuegos, datos y producción digital pueden encontrarse en una misma conversación.</p>
+    <div class="contacto-libro">
+      <a href="mailto:manecisterna@gmail.com">✉ manecisterna@gmail.com</a>
+      <a href="mailto:studiosconari@gmail.com">✉ studiosconari@gmail.com</a>
+      <a href="https://github.com/manecist" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="assets/cv.pdf" target="_blank" rel="noopener">Currículum (PDF) ↗</a>
+    </div>
+    <p class="botonera"><button type="button" class="btn primary" data-ir="0">Volver al comienzo</button><button type="button" class="btn ghost" data-modo="clasico">Ver versión clásica</button></p>
+    <p class="colofon">Fin del primer tomo · © 2026 María Inés Cisterna Escobar y Studios Conari SpA</p>
+  </article>
+</div>
 </body>
 </html>

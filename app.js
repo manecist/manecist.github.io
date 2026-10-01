@@ -5,26 +5,6 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
 
-/* suspensión MCE */
-const suspendCanvas=$('#suspend-tetris');
-const demoTetris=new ConariTetris(suspendCanvas,{demo:true});
-if(!reduceMotion)demoTetris.schedule();
-$('#power-button').addEventListener('click',()=>{
-  const suspension=$('#suspension'),site=$('#site');
-  if(suspension.classList.contains('powering'))return;
-  suspension.classList.add('powering');
-  $('#power-button').disabled=true;
-  setTimeout(()=>{
-    demoTetris.destroy();
-    suspension.classList.add('hide');
-    site.classList.add('ready');site.setAttribute('aria-hidden','false');
-    document.body.classList.remove('bloqueado');
-    window.scrollTo(0,0);
-    suspension.setAttribute('aria-hidden','true');
-    $('#nombre-principal').focus({preventScroll:true});
-  },reduceMotion?0:720);
-});
-
 /* pestañas desarrollo */
 $$('.dev-tab').forEach(btn=>btn.addEventListener('click',()=>{
   $$('.dev-tab').forEach(x=>x.classList.remove('active'));
@@ -32,34 +12,6 @@ $$('.dev-tab').forEach(btn=>btn.addEventListener('click',()=>{
   btn.classList.add('active');$('#dev-'+btn.dataset.dev).classList.add('active');
 }));
 
-/* calculadora */
-let calcOp='+';
-const codeMap={
-  '+':['Suma','double resultado = a + b;'],
-  '-':['Resta','double resultado = a - b;'],
-  '*':['Multiplicación','double resultado = a * b;'],
-  '/':['División','double resultado = b != 0 ? a / b : Double.NaN;'],
-  '%':['Porcentaje','double resultado = a * (b / 100.0);'],
-  'log':['Logaritmo','double resultado = Math.log10(a);']
-};
-function updateCalc(){
- const a=Number($('#calc-a').value||0),b=Number($('#calc-b').value||0);
- $('#calc-b').disabled=calcOp==='log';
- let expr='',res=0;
- if(calcOp==='+'){expr=`${a} + ${b}`;res=a+b}
- if(calcOp==='-'){expr=`${a} − ${b}`;res=a-b}
- if(calcOp==='*'){expr=`${a} × ${b}`;res=a*b}
- if(calcOp==='/'){expr=`${a} ÷ ${b}`;res=b===0?NaN:a/b}
- if(calcOp==='%'){expr=`${b}% de ${a}`;res=a*(b/100)}
- if(calcOp==='log'){expr=`log10(${a})`;res=a>0?Math.log10(a):NaN}
- $('#calc-expression').textContent=expr;$('#calc-result').textContent=Number.isFinite(res)?String(Math.round(res*100000)/100000):(calcOp==='/'&&b===0?'No dividir por 0':calcOp==='log'&&a<=0?'Usa A > 0':'Fuera de rango');
- $('#calc-op-name').textContent=codeMap[calcOp][0];$('#java-title').textContent=codeMap[calcOp][0];$('#java-code').textContent=codeMap[calcOp][1];
-}
-$$('[data-op]').forEach(b=>b.addEventListener('click',()=>{calcOp=b.dataset.op;updateCalc()}));
-$('#calc-equals').addEventListener('click',updateCalc);
-$('#calc-clear').addEventListener('click',()=>{$('#calc-a').value=0;$('#calc-b').value=0;calcOp='+';updateCalc()});
-['#calc-a','#calc-b'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')updateCalc()}));
-updateCalc();
 
 /* Tienda M4: simulación local, cantidades enteras y pesos redondeados. */
 let m4Cart=[];
@@ -78,34 +30,8 @@ $('#m4-add').addEventListener('click',()=>{const s=$('#m4-product'),o=s.options[
 $('#m4-confirm').addEventListener('click',()=>{const x=renderM4(),message=$('#m4-message');if(!x.discountValid){message.textContent='Ingresa un porcentaje válido entre 0 y 100.';return;}if(!m4Cart.length){message.textContent='Agrega al menos un producto al carrito.';return;}if(!Number.isSafeInteger(x.paid)||x.paid<0){message.textContent='Ingresa un pago en pesos enteros, mayor o igual que cero.';return;}if(x.paid<x.total){message.textContent=`Pago insuficiente. Faltan ${clp(x.total-x.paid)}.`;return;}message.textContent=`Compra simulada confirmada · vuelto ${clp(x.paid-x.total)}. No se realizó ningún cobro.`;$('#m4-confirm').disabled=true;});
 $('#m4-clear').addEventListener('click',()=>{m4Cart=[];$('#m4-paid').value=0;$('#m4-discount').value=0;renderM4();$('#m4-message').textContent='Caja lista para una nueva compra simulada.';});renderM4();
 
-/* Datos de la muestra: no persistencia ni peticiones de red. */
-let rows=[{name:'Luna',age:28,color:'Morado',music:'Soundtracks'},{name:'Nico',age:34,color:'Negro',music:'Rock'},{name:'Mara',age:25,color:'Rosado',music:'Pop'}];
-const colorHex={'Rojo':'#e86a80','Amarillo':'#ead37f','Azul':'#8aaaf0','Naranja':'#efad7b','Verde':'#a8d9b8','Violeta':'#ba93f0','Rojo anaranjado':'#e98b87','Amarillo anaranjado':'#efc183','Amarillo verdoso':'#cbd791','Azul verdoso':'#88cfc5','Azul violáceo':'#a49ce0','Rojo violáceo':'#dc98cc','Rosado':'#f5a8cf','Morado':'#ba93f0','Celeste':'#91dcff','Turquesa':'#81d1d7','Dorado':'#e2ba53','Blanco':'#fffafd','Gris':'#b8b9cf','Negro':'#74758c','Café':'#bc9382','Otro':'#ccacd9'};
 const chartPalette=['#f5a8cf','#ba93f0','#91dcff','#e2ba53','#c6b9ed','#b2daca'];
 function escapeHTML(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
-function counts(key){const tally=new Map();rows.forEach(r=>tally.set(r[key],(tally.get(r[key])||0)+1));return [...tally].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'es'));}
-function renderData(){
- const tb=$('#data-table');tb.replaceChildren();
- rows.forEach(r=>{const tr=document.createElement('tr');[r.name,String(r.age),r.color,r.music].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td)});tb.append(tr)});
- if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=4;td.textContent='Aún no hay registros. Crea tu propia muestra.';tr.append(td);tb.append(tr);}
- const avg=rows.length?rows.reduce((s,r)=>s+r.age,0)/rows.length:0;
- const top=key=>{const list=counts(key);if(!list.length)return 'Sin datos';const tied=list.filter(x=>x[1]===list[0][1]);return `${tied.length>1?'Empate: ':''}${tied.map(x=>x[0]).join(', ')} · ${Math.round(list[0][1]/rows.length*100)}%${tied.length>1?' cada uno':''}`;};
- const stats=$('#data-stats');stats.replaceChildren();
- [['Registros',rows.length],['Edad promedio',rows.length?avg.toLocaleString('es-CL',{minimumFractionDigits:1,maximumFractionDigits:1}):'—'],['Color más elegido',top('color')],['Música más elegida',top('music')]].forEach(([label,value])=>{const d=document.createElement('div');d.className='stat';const s=document.createElement('small'),v=document.createElement('strong');s.textContent=label;v.textContent=value;d.append(s,v);stats.append(d)});
- renderChart();if(window.renderCrossAnalysis)window.renderCrossAnalysis();
-}
-function renderChart(){if(window.renderVerticalData){window.renderVerticalData();return;}
- const key=$('#chart-kind').value,chart=$('#data-chart');chart.replaceChildren();$('#chart-title').textContent=key==='color'?'Los colores de esta muestra':'La música de esta muestra';
- if(!rows.length){const p=document.createElement('p');p.className='empty-chart';p.textContent='Agrega un registro para comenzar a dibujar las barras.';chart.append(p);return;}
- counts(key).forEach(([name,count],i)=>{const percent=count/rows.length*100;const row=document.createElement('div');row.className='chart-row';const label=document.createElement('div');label.className='bar-label';const n=document.createElement('span'),v=document.createElement('strong');n.textContent=name;v.textContent=`${count} · ${Math.round(percent)}%`;label.append(n,v);const track=document.createElement('div');track.className='bar-track';track.setAttribute('aria-hidden','true');const fill=document.createElement('div');fill.className='bar-fill';fill.style.width=percent+'%';fill.style.setProperty('--bar',key==='color'?colorHex[name]||chartPalette[0]:chartPalette[i%chartPalette.length]);track.append(fill);row.append(label,track);chart.append(row)});
-}
-function musicOther(){const other=$('#data-music').value==='Otro';$('#other-music-label').hidden=!other;$('#data-other-music').required=other;}
-$('#data-music').addEventListener('change',musicOther);
-$('#data-color').addEventListener('change',()=>$('#color-swatch').style.background=colorHex[$('#data-color').value]);
-$('#chart-kind').addEventListener('change',renderChart);
-$('#data-form').addEventListener('submit',e=>{e.preventDefault();const name=$('#data-name').value.trim(),age=Number($('#data-age').value),music=$('#data-music').value==='Otro'?$('#data-other-music').value.trim():$('#data-music').value;if(!name||!music||!Number.isInteger(age)||age<1||age>120){$('#data-message').textContent='Escribe un nombre, una edad entera de 1 a 120 y un género musical.';return;}rows.push({name,age,color:$('#data-color').value,music});e.target.reset();musicOther();$('#color-swatch').style.background=colorHex.Rosado;renderData();$('#data-message').textContent='Registro guardado. Las estadísticas y las barras están actualizadas.';});
-$('#data-clear').addEventListener('click',()=>{rows=[];renderData();$('#data-message').textContent='Muestra vacía. Puedes comenzar de nuevo.'});
-renderData();musicOther();
 
 /* tabs juegos */
 $$('.game-tab').forEach(btn=>btn.addEventListener('click',()=>{
@@ -126,7 +52,7 @@ $('#play-start').addEventListener('click',()=>{play.start();$('#play-tetris').fo
 function controlTetris(action){if(!play.running)return;if(action==='left')play.move(-1);if(action==='right')play.move(1);if(action==='down')play.down(true);if(action==='rotate')play.rotate();if(action==='drop')play.drop();if(action==='pause')play.pause();}
 $('#play-tetris').addEventListener('keydown',e=>{if(!$('#game-tetris').classList.contains('active')||!play.running)return;const action={ArrowLeft:'left',ArrowRight:'right',ArrowDown:'down',ArrowUp:'rotate',' ':'drop',p:'pause',P:'pause'}[e.key];if(action){e.preventDefault();controlTetris(action);}},{passive:false});
 $$('[data-tetris-action]').forEach(b=>b.addEventListener('click',()=>controlTetris(b.dataset.tetrisAction)));
-document.addEventListener('visibilitychange',()=>{if(document.hidden){if(play.running&&!play.paused)play.pause();demoTetris.destroy();}else if(!$('#site').classList.contains('ready')&&!reduceMotion)demoTetris.schedule();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&play.running&&!play.paused)play.pause();});
 new IntersectionObserver(entries=>{if(!entries[0].isIntersecting&&play.running&&!play.paused)play.pause();},{threshold:.1}).observe($('#play-tetris'));
 
 /* Match-3: 4 cohete, 5 bomba, 6+ bola disco. */
@@ -203,34 +129,6 @@ const percent=(n,d)=>d?(n/d*100).toLocaleString('es-CL',{maximumFractionDigits:1
 function freq(list,key){const out=new Map();list.forEach(r=>out.set(r[key],(out.get(r[key])||0)+1));return [...out].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'es'));}
 function withinAge(r){const band=$('#analysis-age').value;if(band==='all')return true;const [lo,hi]=band.split('-').map(Number);return r.age>=lo&&r.age<=hi;}
 function node(tag,text,cls){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;}
-window.renderCrossAnalysis=function(){
- const ageRows=rows.filter(withinAge),old=$('#analysis-color').value;
- const colors=freq(ageRows,'color');$('#analysis-color').replaceChildren(new Option('Todos los colores','all'),...colors.map(([k,n])=>new Option(k+' · '+n,k)));
- $('#analysis-color').value=colors.some(([k])=>k===old)?old:'all';
- const color=$('#analysis-color').value,selected=ageRows.filter(r=>color==='all'||r.color===color),ageLabel=$('#analysis-age').selectedOptions[0].text;
- const findings=$('#analysis-findings');findings.replaceChildren();
- const card=(title,text)=>{const el=node('article',undefined,'finding');el.append(node('strong',title),node('p',text));findings.append(el);};
- if(!rows.length){card('Sin registros','Agrega personas o carga el ejemplo ficticio para comparar preferencias.');}
- else{card(ageLabel,`${ageRows.length} de ${personas(rows.length)} · ${percent(ageRows.length,rows.length)} de la muestra total.`);
- if(ageRows.length){const topColor=colors[0][1],winners=colors.filter(x=>x[1]===topColor);card(winners.length>1?'Colores con igual frecuencia':'Color más frecuente',winners.map(([k,n])=>`${k}: ${n}/${ageRows.length} (${percent(n,ageRows.length)})`).join(' · ')+'.');}
- else card('Grupo sin registros','Todavía no hay personas en este rango de edad. Prueba otro grupo.');
- if(color!=='all')card('Personas que prefieren '+color,`${selected.length} de ${ageRows.length} dentro de esta edad · ${percent(selected.length,ageRows.length)}. ${selected.length===1?'La música se calcula solo para esa persona.':`La música se calcula solo entre esas ${selected.length} personas.`}`);
- const music=freq(selected,'music');if(music.length){const topMusic=music[0][1];card(color==='all'?'Música en este grupo':'Música entre quienes prefieren '+color,music.filter(x=>x[1]===topMusic).map(([k,n])=>`${k}: ${n} de ${selected.length} (${percent(n,selected.length)})`).join(' · ')+'.');}}
- const bars=$('#analysis-bars');bars.replaceChildren();if(!selected.length)bars.append(node('p','Sin datos para esta selección.','empty-chart'));
- freq(selected,'music').forEach(([key,count],i)=>{const item=node('div',undefined,'chart-row'),label=node('div',undefined,'bar-label');label.append(node('span',key),node('strong',`${count}/${selected.length} · ${percent(count,selected.length)}`));const track=node('div',undefined,'bar-track'),fill=node('div',undefined,'bar-fill');fill.style.width=count/selected.length*100+'%';fill.style.setProperty('--bar',chartPalette[i%chartPalette.length]);track.setAttribute('aria-hidden','true');track.append(fill);item.append(label,track);bars.append(item);});
- const table=$('#cross-table');table.replaceChildren();
- if(selected.length){const music=freq(selected,'music').map(x=>x[0]);const cap=node('caption',`Relación color y música · ${ageLabel.toLowerCase()} · ${personas(selected.length)}`);table.append(cap);const head=node('thead'),hr=node('tr');['Color / música',...music,'Personas'].forEach(text=>{const th=node('th',text);th.scope='col';hr.append(th);});head.append(hr);table.append(head);const body=node('tbody');freq(selected,'color').forEach(([c,total])=>{const tr=node('tr'),th=node('th',c);th.scope='row';tr.append(th);music.forEach(m=>{const n=selected.filter(r=>r.color===c&&r.music===m).length,td=node('td',`${n} · ${percent(n,total)}`);td.style.background=n?'rgba(186,147,240,'+(0.08+0.3*n/total)+')':'transparent';tr.append(td);});tr.append(node('td',String(total)));body.append(tr);});table.append(body);}
- else table.append(node('caption','No hay combinaciones para mostrar.'));
- $('#analysis-caution').textContent=selected.length?`${selected.length<10?'Grupo pequeño: cada persona puede cambiar mucho los porcentajes. ':''}Base del análisis musical: ${personas(selected.length)}. Estos resultados describen solo los registros visibles; no representan a toda la población.`:'Las estadísticas aparecerán al agregar registros a este grupo.';window.renderRelationshipReport?.(ageRows,selected,color,ageLabel);
-};
-['#analysis-age','#analysis-color'].forEach(s=>$(s).addEventListener('change',renderCrossAnalysis));
-$('#data-form').addEventListener('submit',()=>{if($('#data-message').textContent.startsWith('Registro guardado'))$('#sample-origin').textContent='Muestra local: registros ingresados y cualquier ejemplo ficticio que hayas conservado.';});
-$('#data-clear').addEventListener('click',()=>{$('#sample-origin').textContent='Muestra vacía · lista para tus propios registros.';});
-$('#data-example').addEventListener('click',()=>{
- const demo=[[6,'Rojo','Pop'],[7,'Rojo','Pop'],[9,'Rojo','Pop'],[10,'Rojo','Pop'],[12,'Rojo','Romántica'],[31,'Rojo','Rock'],[34,'Rojo','Rock'],[38,'Rojo','Rock'],[40,'Rojo','Metal'],[44,'Rojo','Pop'],[18,'Negro','Metal'],[22,'Negro','Metal'],[25,'Negro','Metal sinfónico'],[29,'Negro','Rock'],[13,'Rosado','K-pop'],[15,'Rosado','K-pop'],[17,'Rosado','Pop'],[46,'Morado','Romántica'],[52,'Morado','Romántica'],[58,'Morado','Clásica']];
- rows=demo.map(([age,color,music],i)=>({name:'Ejemplo '+String(i+1).padStart(2,'0'),age,color,music}));$('#analysis-age').value='all';$('#analysis-color').value='all';renderData();$('#sample-origin').textContent='20 registros completamente ficticios para aprender a interpretar relaciones. Reemplazaron la muestra anterior.';$('#data-message').textContent='Ejemplo ficticio cargado. Selecciona Rojo y compara sus grupos de edad. Los valores del ejemplo son inventados, no resultados de estudios.';
-});
-renderCrossAnalysis();
 
 // ===== Hada que rompe las líneas de Bloques Encantados =====
 window.showLineMagic=function(lines){const effect=$('#line-magic'),fragments=$('#line-fragments');effect.classList.remove('casting');fragments.replaceChildren();const y=lines.length?(lines.reduce((a,b)=>a+b,0)/lines.length+.5)/20*100:80;effect.style.setProperty('--line-y',y+'%');
@@ -292,37 +190,7 @@ $('#m4-confirm').addEventListener('click',()=>{
  $('.cash-register').classList.add('drawer-open');$('.cash-drawer').setAttribute('aria-hidden','false');$('#drawer-change').textContent='Tu vuelto: '+clp(x.paid-x.total);
  $('#m4-message').textContent='Boleta impresa · cajón abierto · vuelto '+clp(x.paid-x.total)+'. Compra de demostración, sin cobro real.';
 });
-$$('[data-music-choice]').forEach(b=>b.addEventListener('click',()=>{$('#data-music').value=b.dataset.musicChoice;musicOther();$('#data-music').focus({preventScroll:true});}));
 
-function verticalChart(target,entries,total,palette){
- const root=$(target);root.replaceChildren();root.classList.add('vertical-chart');
- if(!entries.length){root.append(node('p','Agrega registros para descubrir las preferencias.','empty-chart'));return;}
- const max=Math.max(...entries.map(x=>x[1])),unit=node('p','Personas · escala de 0 a '+max,'chart-unit');root.append(unit);
- const scroll=node('div',undefined,'columns-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','Gráfico de barras verticales. Desplázate horizontalmente si hay más categorías.');const plot=node('div',undefined,'columns-plot');plot.style.setProperty('--columns',entries.length);
- entries.forEach(([label,count],i)=>{const item=node('figure',undefined,'vertical-column'),track=node('div',undefined,'column-track'),bar=node('div',undefined,'column-fill'),value=node('b',String(count),'column-value');bar.style.height=(count/max*100)+'%';bar.style.setProperty('--column-color',palette(label,i));bar.append(value);track.append(bar);const caption=node('figcaption');caption.append(node('strong',label),node('small',percent(count,total)));item.append(track,caption);item.setAttribute('aria-label',label+': '+count+' de '+personas(total)+', '+percent(count,total));plot.append(item);});
- scroll.append(plot);root.append(scroll,node('p','Base: '+personas(total)+'. Altura = cantidad; etiqueta = porcentaje de este grupo.','chart-base'));
-}
-window.renderVerticalData=function(){const key=$('#chart-kind').value;$('#chart-title').textContent=key==='color'?'Los colores de esta muestra':'La música de esta muestra';verticalChart('#data-chart',counts(key),rows.length,(name,i)=>key==='color'?(colorHex[name]||chartPalette[0]):chartPalette[i%chartPalette.length]);};
-window.renderRelationshipReport=function(ageRows,selected,color,ageLabel){
- verticalChart('#analysis-bars',freq(selected,'music'),selected.length,(_,i)=>chartPalette[i%chartPalette.length]);
- const root=$('#relationship-summary');root.replaceChildren();
- if(!selected.length){root.append(node('p','Aún no hay registros para esta selección. Agrega personas o cambia el grupo de edad.'));return;}
- const groupNote=color==='all'?ageLabel:'Personas que prefieren '+color+' · '+ageLabel.toLowerCase();root.append(node('p',groupNote+' · '+selected.length+' registros analizados.','report-scope'));
- const groups=freq(selected,'color');
- if(groups.every(([,n])=>n===1))root.append(node('p','Todavía no hay una tendencia compartida: cada color tiene una sola persona. Estos registros describen preferencias individuales.','report-intro'));
- const cards=node('div',undefined,'relationship-cards');
- groups.forEach(([c,total])=>{
-  const subset=selected.filter(r=>r.color===c),music=freq(subset,'music'),highest=music[0][1],leaders=music.filter(x=>x[1]===highest),card=node('article',undefined,'relationship-card');card.style.setProperty('--relation-color',colorHex[c]||'#c9a7e8');
-  const title=leaders.length===1?c+' → '+leaders[0][0]:c+' · preferencias repartidas';card.append(node('h5',title));
-  let sentence;if(total===1)sentence='La única persona que elige '+c+' escucha '+leaders[0][0]+'. Un registro no permite identificar una tendencia compartida.';
-  else if(leaders.length>1)sentence='Entre las '+total+' personas que eligen '+c+', hay empate entre '+leaders.map(x=>x[0]).join(', ')+': '+highest+' de '+total+' ('+percent(highest,total)+') para cada estilo. No hay una música mayoritaria.';
-  else sentence='De las '+total+' personas que prefieren '+c+', '+highest+' escuchan '+leaders[0][0]+' ('+percent(highest,total)+'). '+(highest>total/2?'Es la música elegida por la mayoría de este grupo.':'Es la opción más frecuente, aunque no supera la mitad del grupo.');
-  card.append(node('p',sentence));
-  if(leaders.length===1&&total>1){const leading=subset.filter(r=>r.music===leaders[0][0]),bands=new Map();leading.forEach(r=>{const band=[...$('#analysis-age').options].slice(1).find(o=>{const [lo,hi]=o.value.split('-').map(Number);return r.age>=lo&&r.age<=hi;});if(band)bands.set(band.text,(bands.get(band.text)||0)+1);});const list=[...bands].sort((a,b)=>b[1]-a[1]),top=list.filter(x=>x[1]===list[0][1]);card.append(node('small','Dentro de esa combinación de '+c+' y '+leaders[0][0]+', '+top.map(([age,n])=>n+' de '+leading.length+' ('+percent(n,leading.length)+') tienen '+age.toLowerCase()).join('; ')+'.'));}
-  cards.append(card);
- });root.append(cards);
-};
-renderChart();renderCrossAnalysis();
 
 // Poses dibujadas: preparación, brazo arriba, golpe de varita y seguimiento.
 const wandFrames=Array.from({length:4},(_,i)=>'assets/hada-hechizo-'+i+'.webp');
@@ -341,59 +209,3 @@ $('#play-start').addEventListener('click',stopWand);
 // Mantener visible toda la boleta si cambia el ancho de la pantalla.
 new ResizeObserver(()=>{const out=$('#printer-output');if(!out.hidden)out.style.height=($('#printed-receipt').scrollHeight+20)+'px';}).observe($('#printed-receipt'));
 
-// ===== Informe «El color de nuestras melodías» y fuentes científicas =====
-// El análisis usa únicamente los registros de la sesión. Los estudios son contexto.
-$('.data-lab').append($('.cross-analysis'));
-const ageBands=[...$('#analysis-age').options].filter(o=>o.value!=='all').map(o=>({id:o.value,label:o.text,...Object.fromEntries(o.value.split('-').map((v,i)=>[i?'max':'min',Number(v)]))}));
-function cohortFor(list,band){return list.filter(r=>r.age>=band.min&&r.age<=band.max);}
-function cohortMusicColor(music){const names=[...new Set(rows.map(r=>r.music))].sort((a,b)=>a.localeCompare(b,'es'));return chartPalette[names.indexOf(music)%chartPalette.length];}
-function musicSummary(list){const entries=freq(list,'music'),n=entries[0]?.[1]||0;return {entries,n,leaders:entries.filter(x=>x[1]===n).map(x=>x[0]),total:list.length};}
-function cohortSentence(color,band,list){
- const s=musicSummary(list),base='Entre las '+s.total+' personas de '+band.label.toLowerCase()+' que prefieren '+color+', ';
- if(s.total===1)return 'Hay una persona de '+band.label.toLowerCase()+' que prefiere '+color+' y escucha '+s.leaders[0]+'. Es un caso individual.';
- if(s.leaders.length>1)return base+'empatan '+s.leaders.join(' y ')+': '+s.n+' de '+s.total+' ('+percent(s.n,s.total)+') para cada estilo.';
- return base+s.n+' eligen '+s.leaders[0]+' ('+percent(s.n,s.total)+'). '+(s.n>s.total/2?'Es la mayoría de este grupo.':'Es la opción más frecuente, sin superar la mitad.');
-}
-window.renderRelationshipReport=function(ageRows,selected,color,ageLabel){
- verticalChart('#analysis-bars',freq(selected,'music'),selected.length,(_,i)=>chartPalette[i%chartPalette.length]);
- const root=$('#relationship-summary');root.replaceChildren();root.append(node('p',$('#sample-origin').textContent,'cohort-origin'));
- if(!selected.length){root.append(node('div','✧ Aún no hay personas en esta selección. Agrega registros o cambia los filtros para descubrir sus melodías.','cohort-empty'));return;}
- const colorGroups=freq(selected,'color').map(([name])=>({name,list:selected.filter(r=>r.color===name)}));
- const scope=node('div',undefined,'cohort-scope');scope.append(node('span','✧ '+personas(selected.length)+' en la selección'),node('span',ageLabel),node('span',color==='all'?'Todos los colores':color));root.append(scope);
- // Una lectura completa conserva siempre edad + color + denominador.
- const focus=colorGroups[0],focusBands=ageBands.map(b=>({band:b,list:cohortFor(focus.list,b)})).filter(g=>g.list.length);
- const lead=node('article',undefined,'cohort-reading');lead.append(node('span','✦ LECTURA DE LA MUESTRA','reading-label'));
- lead.append(node('h5',focus.name+(focusBands.length>1?' a través de las edades':' · '+focusBands[0].band.label)));
- focusBands.slice(0,2).forEach(g=>lead.append(node('p',cohortSentence(focus.name,g.band,g.list))));
- lead.append(node('small',focusBands.length>1?'La comparación describe a estas personas. No demuestra que la edad o el color causen una preferencia musical.':'Para comparar edades de este color, agrega personas de otro rango o selecciona «Todas las edades».'));
- root.append(lead);
- colorGroups.forEach(({name,list})=>{
-  const section=node('section',undefined,'color-cohorts');section.style.setProperty('--cohort-color',colorHex[name]||'#c8a7ea');
-  const head=node('div',undefined,'color-cohort-heading'),dot=node('i');dot.setAttribute('aria-hidden','true');head.append(dot,node('h5',name),node('span',personas(list.length)));section.append(head);
-  const grid=node('div',undefined,'age-cohort-grid');
-  ageBands.forEach(b=>{
-   const group=cohortFor(list,b);if(!group.length)return;
-   const s=musicSummary(group),card=node('article',undefined,'age-cohort');card.dataset.age=b.id;card.dataset.color=name;
-   const heading=node('div',undefined,'age-cohort-title');heading.append(node('h6',b.label),node('span','n = '+s.total));card.append(heading);
-   const badge=node('div',undefined,'cohort-key');badge.append(node('strong',percent(s.n,s.total)),node('span',s.leaders.length===1?s.leaders[0]:'Empate: '+s.leaders.join(' / ')));card.append(badge);
-   card.append(node('p',s.total===1?'1 persona · preferencia individual':s.n+' de '+s.total+' personas'+(s.leaders.length>1?' por cada estilo empatado':s.n>s.total/2?' · mayoría':' · opción más frecuente'),'cohort-count'));
-   const scroll=node('div',undefined,'cohort-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','Distribución musical de '+name+', '+b.label);
-   const bars=node('div',undefined,'cohort-bars');bars.style.setProperty('--cohort-columns',s.entries.length);
-   s.entries.forEach(([music,n])=>{const col=node('figure'),track=node('div',undefined,'cohort-track'),fill=node('div',undefined,'cohort-fill');fill.style.height=(n/s.total*100)+'%';fill.style.setProperty('--music-color',cohortMusicColor(music));fill.append(node('b',percent(n,s.total)));track.append(fill);const cap=node('figcaption');cap.append(node('strong',music),node('small',n+' de '+s.total));col.append(track,cap);col.setAttribute('aria-label',music+': '+n+' de '+s.total+', '+percent(n,s.total));bars.append(col);});scroll.append(bars);card.append(scroll);
-   card.append(node('small','Escala común: 0–100% · base: '+personas(s.total)+' de esta edad y color.','cohort-base'));
-   if(s.total<5)card.append(node('small','Pocos registros: cada persona pesa '+percent(1,s.total)+'.','cohort-small'));
-   grid.append(card);
-  });section.append(grid);root.append(section);
- });
- root.append(node('p','Los grupos sin registros no se dibujan. Los porcentajes de cada tarjeta suman 100% antes del redondeo.','cohort-footnote'));
-};
-const research=node('details',undefined,'music-research');research.id='music-research';
-research.append(node('summary','✧ Lo que investiga la ciencia: color, música y edad'));
-const studies=[
- ['Color, emoción y sonido','En un experimento con música clásica, participantes de Estados Unidos y México asociaron piezas rápidas en modo mayor con colores más claros, saturados y amarillos. Las emociones compartidas ayudaron a explicar esas asociaciones. Elegir un color que acompaña una canción es distinto de declarar un color favorito: este estudio no permite concluir «si te gusta el rojo, te gusta el pop».','Palmer y colaboradores · PNAS, 2013','https://pmc.ncbi.nlm.nih.gov/articles/PMC3670360/'],
- ['Las preferencias también cambian con la edad','Dos estudios transversales con más de 250.000 personas encontraron diferencias entre adolescencia y mediana edad. En promedio, las dimensiones musicales «intensa» y «contemporánea» disminuían con la edad, y otras aumentaban. Son tendencias de grupos, vinculadas también a la personalidad; no reglas para cada persona ni evidencia sobre niños pequeños.','Bonneville-Roussy y colaboradores · JPSP, 2013','https://pubmed.ncbi.nlm.nih.gov/23895269/']
-];
-const researchGrid=node('div',undefined,'research-grid');studies.forEach(([title,text,label,url])=>{const article=node('article');article.append(node('h5',title),node('p',text));const a=node('a',label+' ↗');a.href=url;a.target='_blank';a.rel='noopener noreferrer';article.append(a);researchGrid.append(article);});research.append(researchGrid,node('p','En este laboratorio cruzamos tres respuestas: edad, color favorito y música favorita. Las fuentes aportan contexto; no se usan para inventar resultados de la muestra. El botón «Cargar ejemplo ficticio» permite practicar con datos expresamente inventados.','research-context'));
-$('.cross-analysis').append(research);
-renderCrossAnalysis();
-new MutationObserver(()=>{const origin=$('.cohort-origin');if(origin)origin.textContent=$('#sample-origin').textContent;}).observe($('#sample-origin'),{childList:true,characterData:true,subtree:true});
