@@ -212,7 +212,23 @@
     ['etapa-14', 'Hoy', 'Lila por sobre todo.'],
     ['etapa-15', 'Hoy · 32 años', 'Ari: fundadora de Studios Conari. ¡Y la historia sigue!']
   ];
-  VIDA.forEach(([s]) => { const i = new Image(); i.src = 'assets/cuento/etapas/' + s + '.webp'; });
+  // cada etapa camina de verdad: una tira de 6 cuadros (ciclo de caminata) que se recorre con steps()
+  const tiraDe = s => 'assets/cuento/caminata/' + s + '.webp';
+  // ciclo de caminata completo en 1,3 s; cada cuadro se funde brevemente con el siguiente
+  const CICLO = 1300, CICLOS_POR_TRAMO = 2, TRAMO = CICLO * CICLOS_POR_TRAMO;
+  const ponerCuadro = (capa, p) => {   // p: avance en cuadros (puede tener decimales)
+    const n = cuadrosDe[capa.dataset.etapa] || 6, [c1, c2] = capa.children, k = Math.floor(p) % n, f = p - Math.floor(p), mezcla = Math.max(0, (f - .7) / .3);   // fundido corto: sin piernas dobles
+    capa.style.setProperty('--n', n);
+    c1.style.backgroundPositionX = k / (n - 1) * 100 + '%'; c2.style.backgroundPositionX = (k + 1) % n / (n - 1) * 100 + '%'; c2.style.opacity = mezcla.toFixed(3);
+  };
+  const caminar = (el, capa) => {      // camina ciclos completos y se detiene en el primer cuadro
+    cancelAnimationFrame(el._raf); const t0 = performance.now();
+    const cuadro = t => { const dt = t - t0; if (dt >= TRAMO || !document.body.contains(el)) { ponerCuadro(capa, 0); el.classList.remove('andando'); return; } ponerCuadro(capa, dt / CICLO * (cuadrosDe[capa.dataset.etapa] || 6)); el._raf = requestAnimationFrame(cuadro); };
+    el.classList.add('andando'); el._raf = requestAnimationFrame(cuadro);
+  };
+  // cuántos cuadros trae cada tira (celdas de proporción 0,8): se lee del tamaño de la imagen
+  const cuadrosDe = {};
+  VIDA.forEach(([s]) => { const i = new Image(); i.onload = () => { cuadrosDe[s] = Math.max(1, Math.round(i.naturalWidth / (i.naturalHeight * .8))); }; i.src = tiraDe(s); });
   escena('[data-vida]', el => {
     const a = el.querySelector('.vida-img'), b = el.querySelector('.vida-img-b'), rango = el.querySelector('.vida-rango');
     const edad = el.querySelector('.vida-edad'), txt = el.querySelector('.vida-texto'), play = el.querySelector('.vida-play'), andante = el.querySelector('.vida-andante');
@@ -220,9 +236,10 @@
     let k = -1, pausa = false, frente = a;
     const mostrar = async (n, hablar) => {
       if (n === k) return; k = n; rango.value = n;
-      const otra = frente === a ? b : a; otra.src = 'assets/cuento/etapas/' + VIDA[n][0] + '.webp'; otra.alt = 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2];
+      const otra = frente === a ? b : a; otra.dataset.etapa = VIDA[n][0]; otra.style.setProperty('--tira', 'url(' + tiraDe(VIDA[n][0]) + ')'); ponerCuadro(otra, 0); otra.setAttribute('aria-label', 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2]);
       otra.classList.add('visible'); frente.classList.remove('visible'); frente = otra;
       andante.style.setProperty('--x', (4 + n / (VIDA.length - 1) * 78).toFixed(1) + '%');
+      if (n > 0 && !matchMedia('(prefers-reduced-motion: reduce)').matches) caminar(el, otra);
       el.style.setProperty('--hora', n / (VIDA.length - 1));
       edad.textContent = VIDA[n][1]; txt.textContent = VIDA[n][2];
       el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
@@ -234,7 +251,7 @@
       const n = k + 1;
       if (n >= VIDA.length) { el.classList.add('llego'); play.textContent = '↻'; play.setAttribute('aria-label', 'Volver a caminar'); pausa = true; return; }
       await mostrar(n, true);
-      luego(avanzar, window.MCENarrador.activo ? 900 : 2300);
+      luego(avanzar, window.MCENarrador.activo ? 900 : TRAMO + 900);
     };
     el.classList.remove('llego'); play.textContent = '❚❚'; k = -1;
     mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); decir(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 2600); });
