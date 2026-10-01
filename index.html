@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261001a">
-  <link rel="stylesheet" href="libro.css?v=20261001a">
+  <link rel="stylesheet" href="libro.css?v=20261001b">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
   <script>
@@ -21,11 +21,12 @@
     addEventListener('load', () => { if (!window.MCEIntroActiva) document.documentElement.classList.remove('con-intro'); });
   </script>
   <script src="constellations.js?v=20260927b" defer></script>
-  <script src="tetris.js?v=20260927b" defer></script>
-  <script src="app.js?v=20261001a" defer></script>
-  <script src="magia.js?v=20261001a" defer></script>
-  <script src="secciones.js?v=20261001a" defer></script>
-  <script src="libro.js?v=20261001a" defer></script>
+  <script src="tetris.js?v=20261001b" defer></script>
+  <script src="app.js?v=20261001b" defer></script>
+  <script src="magia.js?v=20261001b" defer></script>
+  <script src="secciones.js?v=20261001b" defer></script>
+  <script src="libro.js?v=20261001b" defer></script>
+  <script src="cuento.js?v=20261001b" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -36,7 +37,7 @@
 
 <!-- ESCENA DEL LIBRO MÁGICO -->
 <section class="escena" id="escena" aria-label="Libro mágico de Studios Conari">
-  <div class="escena-fondo" aria-hidden="true"><div class="escena-cielo"></div><div class="escena-niebla"></div></div>
+  <div class="escena-fondo" aria-hidden="true"><div class="escena-cielo"></div><canvas id="escena-estrellas" class="escena-estrellas"></canvas><div class="escena-nubes"><i></i><i></i><i></i><i></i></div><div class="escena-niebla"></div></div>
   <div class="escena-estela" aria-hidden="true"></div>
   <div class="libro" id="libro" data-estado="cerrado">
     <div class="libro-sombra" aria-hidden="true"></div>
@@ -50,7 +51,7 @@
         <span class="tapa-marco" aria-hidden="true"></span>
         <span class="tapa-esquina e1" aria-hidden="true"></span><span class="tapa-esquina e2" aria-hidden="true"></span><span class="tapa-esquina e3" aria-hidden="true"></span><span class="tapa-esquina e4" aria-hidden="true"></span>
         <img class="tapa-emblema" src="assets/emblema-conari-magico.webp" alt="">
-        <span class="tapa-titulo"><small>Studios Conari presenta</small>La historia de Ari<em>Donde nacen mundos y leyendas eternas</em></span>
+        <span class="tapa-titulo"><small>Studios Conari presenta</small>La historia de Ari<em>Un cuento de mundos, código y magia</em></span>
         <span class="tapa-gema" aria-hidden="true"></span>
       </span>
       <span class="tapa-dorso" aria-hidden="true"></span>
@@ -63,6 +64,8 @@
     <button type="button" id="libro-prev" aria-label="Página anterior">‹</button>
     <button type="button" id="libro-indice">Índice</button>
     <span id="libro-folio" aria-live="polite">—</span>
+    <button type="button" id="libro-voz" class="libro-voz" aria-pressed="false"><span aria-hidden="true">🔊</span> <b>Narrador</b></button>
+    <button type="button" class="cielo-btn" data-cielo-btn aria-pressed="false"><span aria-hidden="true">☾</span></button>
     <button type="button" id="libro-clasico">Versión clásica</button>
     <button type="button" id="libro-next" aria-label="Página siguiente">›</button>
   </nav>
@@ -91,6 +94,7 @@
     <a href="#trayectoria">Trayectoria</a><a href="#formacion">Formación</a>
     <a href="#arcade">Arcade</a>
   </nav>
+  <button type="button" class="cielo-btn cielo-top" data-cielo-btn aria-pressed="false"><span aria-hidden="true">☾</span></button>
   <button type="button" class="abrir-cuento" id="abrir-cuento"><span aria-hidden="true">📖</span> Leer como cuento</button>
   <a class="mini-cta" href="#contacto">Contacto</a>
 </header>
@@ -439,12 +443,15 @@ VALUES (?, ?, ?, ?);</code></pre></details>
         <div class="line-magic" id="line-magic" aria-hidden="true"><img src="assets/hada-corregida.webp" alt=""><div id="line-fragments"></div><strong>¡Magia!</strong></div><div class="tetris-crown" aria-hidden="true">✧ BLOQUES ENCANTADOS ✧</div>
       </div>
       <aside class="game-side">
-        <h3>Bloques Encantados</h3><p>← → mover · ↑ girar · ↓ bajar · Espacio: bajar y fijar de inmediato · P pausa</p>
+        <h3>Bloques Encantados</h3>
+        <ul class="como-jugar"><li><kbd>←</kbd><kbd>→</kbd> mover</li><li><kbd>↑</kbd> girar</li><li><kbd>↓</kbd> bajar</li><li><kbd>Espacio</kbd> cae de golpe</li><li><kbd>P</kbd> pausa</li></ul>
+        <p class="como-jugar-tactil">En celular o tableta usa el control mágico ✦</p>
         <div class="score-row"><span>Puntos</span><b id="play-score">00000</b></div>
         <div class="score-row"><span>Líneas</span><b id="play-lines">00</b></div>
-        <div class="score-row"><span>Nivel</span><b id="play-level">1</b></div><button id="play-start" class="btn primary">Iniciar / reiniciar</button><div class="touch-controls" aria-label="Controles táctiles de Tetris"><button data-tetris-action="left" aria-label="Mover a la izquierda">←</button><button data-tetris-action="rotate" aria-label="Girar">↻</button><button data-tetris-action="right" aria-label="Mover a la derecha">→</button><button data-tetris-action="down" aria-label="Bajar">↓</button><button data-tetris-action="drop">Soltar</button><button data-tetris-action="pause">Pausa</button></div>
+        <div class="score-row"><span>Nivel</span><b id="play-level">1</b></div><button id="play-start" class="btn primary">Iniciar / reiniciar</button>
         <div id="landing-status" class="landing-status" role="status">Mueve y gira la pieza antes de fijarla.</div><button id="tetris-magic-demo" class="btn secondary" type="button">Reto de una línea ✦</button><p class="small-note">El reto reinicia la partida. Pulsa Espacio o Soltar para completar la línea y ver al hada.</p><p class="lock-help">Al tocar el fondo tienes 1,5 segundos para acomodar la pieza. Moverla o girarla renueva ese margen hasta 15 veces. Puedes girarla junto al suelo si hay espacio libre. Espacio o Soltar la fijan de inmediato. Al completar una línea, aparece el hada con destellos.</p><p id="play-status" class="game-status">Pulsa iniciar. Luego usa las flechas del teclado.</p>
       </aside>
+      <div class="control-magico" aria-label="Control táctil de Bloques Encantados"><button type="button" class="cm-girar" data-tetris-action="rotate" aria-label="Girar">↻</button><button type="button" class="cm-izq" data-tetris-action="left" aria-label="Mover a la izquierda">◀</button><button type="button" class="cm-bajar" data-tetris-action="down" aria-label="Bajar">▼</button><button type="button" class="cm-der" data-tetris-action="right" aria-label="Mover a la derecha">▶</button><button type="button" class="cm-soltar" data-tetris-action="drop">✦ Soltar</button><button type="button" class="cm-pausa" data-tetris-action="pause">Pausa</button></div>
     </div>
   </div>
 
@@ -503,73 +510,98 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   <button type="button" class="visor-cerrar" id="visor-cerrar" aria-label="Cerrar">✕</button>
 </dialog>
 <canvas class="magia-canvas" id="magia-canvas" aria-hidden="true"></canvas>
-<!-- PÁGINAS DEL CUENTO (el libro las va mostrando de dos en dos) -->
+<!-- PÁGINAS DEL CUENTO · pares de páginas (izquierda/derecha) y pliegos anchos que ocupan las dos -->
 <div id="paginas" class="paginas" hidden>
 
-  <!-- 0 · guarda izquierda -->
+  <!-- 0 · primera página por dentro: el libro abierto mágico -->
   <article class="pagina pagina-guarda" data-cap="Inicio">
     <div class="exlibris">
-      <img src="assets/emblema-conari-magico.webp" alt="Emblema de Studios Conari">
+      <img class="exlibris-mundo" src="assets/mundo-conari-sol-luna.webp" alt="Un libro abierto del que nacen un árbol sakura, un castillo, la cordillera, el sol, la luna y un dragón">
       <p class="exlibris-sello">Ex libris</p>
-      <p class="exlibris-texto">Este libro pertenece a quien se atreva a soñar con mundos nuevos.</p>
+      <p class="exlibris-texto cuento">Este libro pertenece a quien se atreva a soñar con mundos nuevos.</p>
       <p class="exlibris-firma">Escrito e ilustrado por<br><b>María Inés Cisterna Escobar</b><br><span>Ari · Studios Conari SpA</span></p>
     </div>
   </article>
 
   <!-- 1 · elegir camino + índice -->
   <article class="pagina pagina-camino" data-cap="Inicio">
-    <p class="capitular">¿Cómo quieres conocer esta historia?</p>
+    <p class="capitular cuento">¿Cómo quieres conocer esta historia?</p>
     <div class="caminos">
-      <button type="button" class="camino" data-ir="2"><span class="camino-icono">📖</span><b>Leer el cuento</b><small>Página a página, con magia, juegos y cosas que se pueden tocar.</small></button>
-      <button type="button" class="camino" data-modo="clasico"><span class="camino-icono">✦</span><b>Versión clásica</b><small>El portafolio completo en una sola página, con el paisaje del reino de fondo.</small></button>
+      <button type="button" class="camino" data-ir="2"><span class="camino-icono" aria-hidden="true">📖</span><b>Leer el cuento</b><small>Página a página, con narrador, magia y cosas que se pueden tocar.</small></button>
+      <button type="button" class="camino" data-modo="clasico"><span class="camino-icono" aria-hidden="true">✦</span><b>Versión clásica</b><small>El portafolio completo en una sola página, con el reino de fondo.</small></button>
     </div>
     <ol class="indice">
-      <li><button type="button" data-ir="2"><span>I</span>La matrona que soñaba con mundos</button></li>
-      <li><button type="button" data-ir="4"><span>II</span>Nace Studios Conari</button></li>
-      <li><button type="button" data-ir="6"><span>III</span>El hechizo de los números</button></li>
-      <li><button type="button" data-ir="8"><span>IV</span>La tienda del mago</button></li>
-      <li><button type="button" data-ir="10"><span>V</span>La gran tienda Magical Alliance</button></li>
-      <li><button type="button" data-ir="12"><span>VI</span>Leyendas dibujadas</button></li>
-      <li><button type="button" data-ir="14"><span>VII</span>El oráculo de los colores</button></li>
-      <li><button type="button" data-ir="16"><span>VIII</span>El salón de los juegos</button></li>
-      <li><button type="button" data-ir="18"><span>✦</span>Y la historia continúa…</button></li>
+      <li><button type="button" data-ir="2"><span>I</span>La niña que soñaba con mundos</button></li>
+      <li><button type="button" data-ir="4"><span>II</span>Quién es Ari hoy</button></li>
+      <li><button type="button" data-ir="6"><span>III</span>Ari, Coen y el nacimiento de Conari</button></li>
+      <li><button type="button" data-ir="8"><span>✦</span>El reino que salió del libro</button></li>
+      <li><button type="button" data-ir="10"><span>IV</span>La matrona del uniforme rojo</button></li>
+      <li><button type="button" data-ir="12"><span>V</span>Noches de código</button></li>
+      <li><button type="button" data-ir="14"><span>VI</span>La tienda del mago</button></li>
+      <li><button type="button" data-ir="18"><span>VII</span>La gran tienda Magical Alliance</button></li>
+      <li><button type="button" data-ir="20"><span>VIII</span>Leyendas dibujadas</button></li>
+      <li><button type="button" data-ir="24"><span>IX</span>El oráculo de los colores</button></li>
+      <li><button type="button" data-ir="26"><span>X</span>El salón de los juegos</button></li>
+      <li><button type="button" data-ir="28"><span>✦</span>Esto es solo el comienzo</button></li>
     </ol>
   </article>
 
-  <!-- 2 · capítulo I -->
-  <article class="pagina pagina-ilustrada" data-cap="I · La matrona que soñaba con mundos">
+  <!-- 2 · capítulo I: la monita crece -->
+  <article class="pagina pagina-ilustrada" data-cap="I · La niña que soñaba con mundos">
     <p class="cap-num">Capítulo I</p>
-    <h2 class="cap-titulo">La matrona que soñaba con mundos</h2>
-    <div class="vineta vineta-hada"><div class="hada-viva hada-pagina" data-hada="pagina"></div></div>
-    <p class="cuento"><span class="letra">H</span>abía una vez una matrona llamada María Inés, a quien todos conocían como <b>Ari</b>. De día cuidaba a mujeres y familias; de noche, cuando la ciudad dormía, dibujaba hadas, dragones y castillos en los márgenes de sus cuadernos.</p>
+    <h2 class="cap-titulo">La niña que soñaba con mundos</h2>
+    <div class="vineta vineta-crece" data-crece>
+      <figure class="etapa-vida activa"><img src="assets/cuento/monita-nina.webp" alt="Ari de niña, rodeada de estrellas y libros de cuentos"><figcaption>Niña</figcaption></figure>
+      <figure class="etapa-vida"><img src="assets/cuento/monita-adolescente.webp" alt="Ari adolescente con un control de videojuegos"><figcaption>Adolescente</figcaption></figure>
+      <figure class="etapa-vida"><img src="assets/cuento/monita-adulta.webp" alt="Ari adulta, de ojos cafés y ropa casual"><figcaption>Hoy</figcaption></figure>
+      <span class="crece-notas" aria-hidden="true">♪ ♫ ♪</span>
+    </div>
+    <p class="cuento"><span class="letra">H</span>abía una vez una niña llamada María Inés, a quien todos llaman <b>Ari</b>. Desde muy pequeña se enamoró de los mundos mágicos: las hadas, los dragones y el anime que la esperaba cada tarde frente a la pantalla.</p>
   </article>
-  <article class="pagina" data-cap="I · La matrona que soñaba con mundos">
-    <p class="cuento">Durante cinco años trabajó en atención primaria, hospitales y salud pública. Lideró campañas de PAP, siguió de cerca cada resultado positivo y coordinó derivaciones para que nadie se perdiera en el camino.</p>
-    <p class="cuento">Allí descubrió su primer hechizo: <em>ordenar la información también es una forma de cuidar</em>. Cambió registros de papel por planillas que cualquiera podía seguir, y entendió que los datos cuentan historias de personas reales.</p>
-    <ul class="sellos">
-      <li><b>Matrona</b><span>Licenciada en Obstetricia y Matronería</span></li>
-      <li><b>Full Stack Java</b><span>480 horas · Talento Digital · <a href="https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1" target="_blank" rel="noopener">verificar ↗</a></span></li>
-      <li><b>Google Data Analytics</b><span>Certificado profesional en curso</span></li>
-    </ul>
-    <p class="cuento">Pero los mundos de sus cuadernos querían salir del papel…</p>
+  <article class="pagina" data-cap="I · La niña que soñaba con mundos">
+    <div class="cancion" aria-label="Canción de Ari">
+      <p class="cuento verso">«Desde niña soñé con castillos de luz,<br>con dragones que cruzan el cielo azul…»</p>
+      <p class="cuento verso">«De adolescente un control en mi mano<br>me abrió mil reinos, lejano tras lejano…»</p>
+      <p class="cuento verso">«Y hoy, a mis treinta y dos, sigo soñando:<br>pero ahora los mundos los voy creando.»</p>
+    </div>
+    <p class="cuento">En la adolescencia descubrió los videojuegos y entendió algo que no la soltaría jamás: una historia se puede <em>jugar</em>, no solo leer.</p>
+    <p class="cuento">Pero antes de crear mundos, la vida la llevó por otro camino: cuidar de las personas.</p>
   </article>
 
-  <!-- 4 · capítulo II -->
-  <article class="pagina pagina-ilustrada" data-cap="II · Nace Studios Conari">
+  <!-- P · quién es Ari hoy -->
+  <article class="pagina pagina-ilustrada" data-cap="II · Quién es Ari hoy">
     <p class="cap-num">Capítulo II</p>
-    <h2 class="cap-titulo">Nace Studios Conari</h2>
-    <div class="vineta vineta-pareja">
-      <img class="pareja-fondo" src="assets/mundo-conari-sol-luna.webp" alt="">
-      <img class="pareja ari" src="assets/personajes/ari-frente.webp" alt="Ari, la asesina de cintas rosadas">
-      <img class="pareja coen" src="assets/personajes/coen-frente.webp" alt="Coen, el caballero de capa carmesí">
+    <h2 class="cap-titulo">Quién es Ari hoy</h2>
+    <div class="vineta vineta-hoy"><img src="assets/cuento/monita-adulta.webp" alt="Ari hoy: adulta, de ojos cafés, con su tableta y su computador"></div>
+    <p class="cuento">Hoy Ari tiene treinta y dos años y muchas vidas en una: es <b>fundadora y administradora de Studios Conari SpA</b>, <b>desarrolladora Full Stack Java</b>, diseñadora, ilustradora, analista de datos en formación… y <b>matrona</b>.</p>
+  </article>
+  <article class="pagina pagina-perfil" data-cap="II · Quién es Ari hoy">
+    <ul class="poderes">
+      <li><span aria-hidden="true">🏰</span><b>Empresa</b><small>Fundadora de Studios Conari: dirección creativa, gestión y propuestas para clientes y fondos.</small></li>
+      <li><span aria-hidden="true">☕</span><b>Desarrollo</b><small>Full Stack Java certificada (480 h): Java, Spring Boot, Security, MySQL, HTML, CSS y JavaScript.</small></li>
+      <li><span aria-hidden="true">🎨</span><b>Diseño e ilustración</b><small>Personajes, identidad visual, mundos y recursos para videojuegos.</small></li>
+      <li><span aria-hidden="true">📊</span><b>Datos</b><small>Google Data Analytics en curso: planillas, tableros y orden de la información.</small></li>
+      <li><span aria-hidden="true">🩺</span><b>Salud</b><small>Matrona con cerca de cinco años de experiencia clínica y de gestión.</small></li>
+    </ul>
+    <p class="cuento">Cada una de esas vidas tiene su propio capítulo en este libro. Sigue leyendo y descubre cómo se unieron.</p>
+    <p class="botonera"><a class="btn primary" href="assets/cv.pdf" target="_blank" rel="noopener">Ver mi currículum ↗</a><a class="btn ghost" href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+  </article>
+
+  <!-- 6 · capítulo III: Ari y Coen -->
+  <article class="pagina pagina-ilustrada" data-cap="III · Ari, Coen y el nacimiento de Conari">
+    <p class="cap-num">Capítulo III</p>
+    <h2 class="cap-titulo">Ari, Coen y el nacimiento de Conari</h2>
+    <div class="vineta vineta-pareja" data-pareja>
+      <div class="pj pj-ari"><img class="pj-linea" src="assets/personajes/ari-frente-lineart.webp" alt=""><img class="pj-color" src="assets/personajes/ari-frente.webp" alt="Ari, la asesina de cintas rosadas"></div>
+      <div class="pj pj-coen"><img class="pj-linea" src="assets/personajes/coen-frente-lineart.webp" alt=""><img class="pj-color" src="assets/personajes/coen-frente.webp" alt="Coen, el caballero de capa carmesí"></div>
       <span class="pareja-corazon" aria-hidden="true">♥</span>
     </div>
-    <p class="cuento">Una noche de estrellas, Ari —la asesina de cintas rosadas— y Coen —el caballero de capa carmesí— se tomaron de la mano y prometieron construir juntos un reino donde las historias nunca terminaran.</p>
+    <p class="cuento">Un día, el trazo de un lápiz dio vida a dos héroes: <b>Ari</b>, la asesina ágil de cintas rosadas, y <b>Coen</b>, el caballero de capa carmesí. Línea a línea, color a color, se encontraron… y se tomaron de la mano.</p>
   </article>
-  <article class="pagina" data-cap="II · Nace Studios Conari">
-    <img class="logo-pagina" src="assets/logo-oficial-oscuro.webp" alt="Studios Conari">
-    <p class="lema">«Donde nacen mundos y leyendas eternas.»</p>
-    <p class="cuento">Así nació <b>Studios Conari SpA</b>, un estudio creativo chileno que une narrativa, diseño, programación, datos y arte 3D para transformar ideas en videojuegos, aplicaciones y mundos propios.</p>
+  <article class="pagina pagina-estudio" data-cap="III · Ari, Coen y el nacimiento de Conari">
+    <img class="logo-oficial" src="assets/logo-conari-circulo.webp" alt="Logo de Studios Conari: un dragón azul y dorado rodea un árbol, un castillo, la cordillera, el sol, la luna y un libro abierto">
+    <img class="logo-palabra" src="assets/logo-conari-eslogan.webp" alt="Studios Conari · Donde nacen mundos y leyendas eternas">
+    <p class="cuento">Juntos fundaron <b>Studios Conari SpA</b>, un estudio creativo chileno que une narrativa, diseño, programación, datos y arte 3D para convertir ideas en videojuegos, aplicaciones y mundos propios.</p>
     <div class="trio">
       <figure><img src="assets/equipo-maria.webp" alt=""><figcaption><b>María Inés</b>Dirección creativa · Full Stack Java</figcaption></figure>
       <figure><img src="assets/equipo-kevin.webp" alt=""><figcaption><b>Kevin Alexis</b>Dirección técnica · videojuegos y datos</figcaption></figure>
@@ -578,104 +610,180 @@ VALUES (?, ?, ?, ?);</code></pre></details>
     <p class="botonera"><a class="btn gold-btn" href="mailto:studiosconari@gmail.com?subject=Consulta%20Studios%20Conari">Escribir al estudio</a><a class="btn ghost" href="https://studiosconari.github.io/" target="_blank" rel="noopener">Sitio oficial ↗</a></p>
   </article>
 
-  <!-- 6 · capítulo III -->
-  <article class="pagina" data-cap="III · El hechizo de los números">
-    <p class="cap-num">Capítulo III</p>
-    <h2 class="cap-titulo">El hechizo de los números</h2>
-    <p class="cuento"><span class="letra">P</span>ara construir su reino, Ari tuvo que aprender el idioma de las máquinas: <b>Java</b>. Su primer conjuro fue pequeño, pero preciso: una calculadora.</p>
-    <p class="cuento nota">Cada vez que pulses una tecla, la página de la izquierda escribe el mismo cálculo en Java. Así se ve la lógica por dentro.</p>
+  <!-- 8 · pliego ancho: el reino sale del libro (pop-up 3D) -->
+  <article class="pagina pagina-ancha pagina-popup" data-cap="✦ El reino que salió del libro">
+    <div class="popup" data-popup>
+      <div class="popup-escenario">
+        <div class="pp-cielo"><span class="pp-sol"></span><span class="pp-luna"></span></div>
+        <div class="pp-capa pp-cordillera"></div>
+        <div class="pp-capa pp-castillo"><img src="assets/intro/logo-castillo-montana-bosque.png" alt=""></div>
+        <div class="pp-capa pp-arbol"><img src="assets/intro/logo-arbol.png" alt=""></div>
+        <div class="pp-dragon"><span></span></div>
+        <div class="pp-humo"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="pp-niebla"></div>
+        <div class="pp-monstruos"><i class="mo m1"></i><i class="mo m2"></i><i class="mo m3"></i><i class="mo m4"></i></div>
+        <img class="pp-heroe pp-ari" src="assets/personajes/ari-lado.webp" alt="">
+        <img class="pp-heroe pp-coen" src="assets/personajes/coen-lado.webp" alt="">
+        <img class="pp-heroe pp-rancek" src="assets/personajes/rancek-lado.webp" alt="">
+        <div class="pp-libro"></div>
+      </div>
+      <div class="popup-texto">
+        <p class="cuento" data-paso="1">Entonces el libro se abrió de par en par y de sus páginas brotó un humo mágico…</p>
+        <p class="cuento" data-paso="2">Del humo nacieron la cordillera de los Andes, el árbol de hojas sakura, el sol, la luna y un castillo en lo alto. El dragón despertó y alzó el vuelo.</p>
+        <p class="cuento" data-paso="3">Ari saltó al reino con su daga, ágil como el viento. Coen la siguió, apartando a los monstruitos que salían de la niebla.</p>
+        <p class="cuento" data-paso="4">Y desde el cielo llegó Rancek, el mago, volando sobre su bastón y lanzando hechizos.</p>
+        <p class="cuento" data-paso="5">Cuando la niebla se despejó, los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.</p>
+        <button type="button" class="btn ghost popup-repetir">↻ Ver de nuevo</button>
+      </div>
+    </div>
+  </article>
+  <article class="pagina pagina-hueco" data-cap="✦ El reino que salió del libro"></article>
+
+  <!-- 4 · capítulo II: matrona -->
+  <article class="pagina pagina-ilustrada" data-cap="IV · La matrona del uniforme rojo">
+    <p class="cap-num">Capítulo IV</p>
+    <h2 class="cap-titulo">La matrona del uniforme rojo</h2>
+    <div class="vineta vineta-matrona"><img src="assets/cuento/monita-matrona.webp" alt="Ari con uniforme clínico rojo atendiendo a una paciente"></div>
+    <p class="cuento"><span class="letra">D</span>urante cerca de <b>cinco años</b> fue matrona en hospitales, en CESFAM y hasta en un <b>camión de salud móvil</b> que llevaba la atención a quienes no podían llegar a ella. Con el tiempo, su mirada pasó de lo clínico a la <b>gestión</b>: crear herramientas que hicieran más fácil el trabajo de sus colegas y la vida de sus pacientes.</p>
+  </article>
+  <article class="pagina" data-cap="IV · La matrona del uniforme rojo">
+    <p class="cuento">Estas son algunas huellas que dejó en el camino:</p>
+    <ul class="huellas">
+      <li><b>Dispensadores hechos a mano</b><span>En el CESFAM O'Higgins fabricó dispensadores de condones femeninos para fomentar la protección de las mujeres.</span></li>
+      <li><b>Educación donde estuviera la gente</b><span>Charlas de pasillo, en colegios y en ferias de salud, como estudiante y como matrona.</span></li>
+      <li><b>Un abrazo contra el estigma</b><span>Un video de conciencia social sobre el VIH: se paró en medio de una plaza a pedir abrazos para mostrar cuánto pesa el prejuicio.</span></li>
+      <li><b>Tesis: la sexualidad del adulto mayor</b><span>Un tema que casi todos olvidan. Para muchas personas mayores el cariño, conversar y salir en pareja también es intimidad.</span></li>
+      <li><b>Planillas de PAP y mamografía</b><span>Reemplazó registros en papel para ordenar exámenes, resultados y entregas.</span></li>
+      <li><b>Chile Crece Contigo</b><span>Un video para dar a conocer el programa a las familias.</span></li>
+      <li><b>Servicio de Salud Metropolitano Sur Oriente</b><span>Una planilla de PAP mucho más completa que la llevó a la gestión de campañas de prevención.</span></li>
+    </ul>
+    <p class="cuento">Ahí descubrió que ordenar la información también es una forma de cuidar… y que los datos cuentan historias de personas reales.</p>
+  </article>
+
+  <!-- 10 · capítulo IV: noches de código -->
+  <article class="pagina pagina-ilustrada" data-cap="V · Noches de código">
+    <p class="cap-num">Capítulo V</p>
+    <h2 class="cap-titulo">Noches de código</h2>
+    <div class="vineta vineta-noche"><img src="assets/cuento/monita-codigo.webp" alt="Ari trasnochando frente al computador, aprendiendo Java"><span class="zzz" aria-hidden="true">z z z</span></div>
+    <p class="cuento"><span class="letra">P</span>ara construir su reino, Ari tuvo que aprender el idioma de las máquinas. Pasó noches enteras despierta, con café, errores en rojo y la terquedad de quien sueña en grande… hasta que su primer conjuro en <b>Java</b> funcionó: una calculadora.</p>
     <div class="ranura" data-widget="#calc-java"></div>
   </article>
-  <article class="pagina pagina-centrada" data-cap="III · El hechizo de los números">
+  <article class="pagina pagina-centrada" data-cap="V · Noches de código">
+    <p class="cuento nota">Pulsa las teclas: la página de la izquierda escribe el mismo cálculo en Java.</p>
     <div class="ranura" data-widget="#calc-zona"></div>
   </article>
 
-  <!-- 8 · capítulo IV -->
-  <article class="pagina pagina-ilustrada" data-cap="IV · La tienda del mago">
-    <p class="cap-num">Capítulo IV</p>
-    <h2 class="cap-titulo">La tienda del mago</h2>
-    <div class="tienda-escena" data-tienda>
-      <div class="tienda-estantes" aria-hidden="true"><i>💎</i><i>👗</i><i>💄</i><i>👠</i><i>⌚</i><i>🌙</i></div>
-      <img class="t-mago" src="assets/personajes/rancek-frente.webp" alt="Rancek, el mago comerciante">
-      <div class="t-mostrador" aria-hidden="true"><span>Tienda Mágica · Caja 01</span></div>
-      <img class="t-coen" src="assets/personajes/coen-lado.webp" alt="Coen, de compras">
-      <img class="t-ari" src="assets/personajes/ari-lado.webp" alt="Ari, de compras">
-      <p class="globo globo-mago" data-globo="mago">¡Bienvenidos a mi tienda! ¿Qué se les ofrece?</p>
-      <p class="globo globo-ari" data-globo="ari">Algo bonito para la fiesta del reino ✧</p>
+  <!-- 12 · pliego ancho: la tienda del mago -->
+  <article class="pagina pagina-ancha pagina-tienda" data-cap="VI · La tienda del mago">
+    <div class="tienda-cabeza">
+      <div>
+        <p class="cap-num">Capítulo VI</p>
+        <h2 class="cap-titulo">La tienda del mago</h2>
+        <p class="cuento">Un día, Ari y Coen caminaron hasta la tienda mágica de <b>Rancek</b>. Ahí el mago vende de todo: joyas, vestidos, perfumes y trajes encantados. Tú manejas la caja: elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!</p>
+      </div>
+      <div class="tienda-escena" data-tienda>
+        <div class="tienda-fachada" aria-hidden="true"><span>✦ Tienda Mágica de Rancek ✦</span></div>
+        <div class="tienda-estantes" aria-hidden="true"><i>💎</i><i>👗</i><i>💄</i><i>👠</i><i>⌚</i><i>🌙</i></div>
+        <img class="t-mago" src="assets/personajes/rancek-frente.webp" alt="Rancek, el mago comerciante, detrás del mostrador">
+        <div class="t-mostrador" aria-hidden="true"><span>Caja 01</span></div>
+        <img class="t-coen" src="assets/personajes/coen-frente.webp" alt="Coen entra a la tienda">
+        <img class="t-ari" src="assets/personajes/ari-frente.webp" alt="Ari entra a la tienda">
+        <p class="globo globo-mago" data-globo="mago">¡Bienvenidos a mi tienda! ¿Qué se les ofrece?</p>
+        <p class="globo globo-ari" data-globo="ari">¡Algo bonito para la fiesta del reino! ✧</p>
+      </div>
     </div>
-    <p class="cuento">Rancek, el mago comerciante, atiende su tienda con una caja registradora encantada. Ari y Coen vienen de compras: tú manejas la caja. Agrega productos, aplica un descuento, cobra… ¡y entrega la boleta!</p>
+    <div class="ranura ranura-caja" data-widget="#caja"></div>
     <p class="cuento nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
   </article>
-  <article class="pagina pagina-scroll" data-cap="IV · La tienda del mago">
-    <div class="ranura" data-widget="#caja"></div>
-  </article>
+  <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
 
-  <!-- 10 · capítulo V -->
-  <article class="pagina" data-cap="V · La gran tienda Magical Alliance">
-    <p class="cap-num">Capítulo V</p>
+  <!-- 14 · pliego ancho: salen de compras -->
+  <article class="pagina pagina-ancha pagina-paseo" data-cap="VI · La tienda del mago">
+    <div class="paseo" data-paseo>
+      <div class="paseo-suelo" aria-hidden="true"></div>
+      <div class="paseo-grupo">
+        <figure class="paseo-pj paseo-ari"><img src="assets/cuento/ari-casual.webp" alt="Ari con su ropa nueva"><figcaption data-ropa="ari">Ari estrena su compra</figcaption></figure>
+        <figure class="paseo-pj paseo-coen"><img src="assets/cuento/coen-casual.webp" alt="Coen con su ropa nueva"><figcaption data-ropa="coen">Coen también</figcaption></figure>
+      </div>
+      <figure class="paseo-pj paseo-rancek"><img src="assets/cuento/rancek-casual.webp" alt="Rancek corre detrás de ellos"></figure>
+      <p class="globo globo-rancek">¡Espérenme! ¡Yo también voy!</p>
+    </div>
+    <p class="cuento paseo-texto" data-paseo-texto>Con sus compras puestas, sin armaduras ni capas de héroe, Ari y Coen salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.</p>
+  </article>
+  <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
+
+  <!-- 16 · capítulo VI: M7 -->
+  <article class="pagina" data-cap="VII · La gran tienda Magical Alliance">
+    <p class="cap-num">Capítulo VII</p>
     <h2 class="cap-titulo">La gran tienda Magical Alliance</h2>
-    <p class="cuento"><span class="letra">L</span>a tiendita creció hasta convertirse en un mercado entero: <b>Magical Alliance</b>, mi proyecto final Full Stack Java. Tiene registro e inicio de sesión por roles, catálogo con filtros, carrito, pedidos, historial de compras, control de stock y un panel para administrar todo.</p>
+    <p class="cuento"><span class="letra">L</span>a tiendita creció hasta convertirse en un mercado entero: <b>Magical Alliance</b>, mi proyecto final Full Stack Java. Tiene registro e inicio de sesión por roles, catálogo con filtros, carrito, cupones, pedidos, historial de compras, control de stock y un panel para administrar todo.</p>
     <div class="stack-cloud"><span>Java 17</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>Thymeleaf</span></div>
     <p class="cuento nota">En la vitrina interactiva puedes recorrer la tienda como clienta o como administradora, llenar el carrito y ver cómo cambia el stock.</p>
     <p class="botonera"><a class="btn primary" href="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/" target="_blank" rel="noopener">Abrir la vitrina interactiva ↗</a><a class="btn ghost" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Código ↗</a></p>
   </article>
-  <article class="pagina pagina-centrada" data-cap="V · La gran tienda Magical Alliance">
+  <article class="pagina pagina-centrada" data-cap="VII · La gran tienda Magical Alliance">
     <div class="ranura" data-widget="#m7-galeria"></div>
   </article>
 
-  <!-- 12 · capítulo VI -->
-  <article class="pagina" data-cap="VI · Leyendas dibujadas">
-    <p class="cap-num">Capítulo VI</p>
+  <!-- 18 · capítulo VII: ilustraciones -->
+  <article class="pagina" data-cap="VIII · Leyendas dibujadas">
+    <p class="cap-num">Capítulo VIII</p>
     <h2 class="cap-titulo">Leyendas dibujadas</h2>
-    <p class="cuento"><span class="letra">A</span>ri nunca dejó de dibujar. Aprendió sola, con papel y pintura primero y con tableta después, redibujando hasta encontrar su propio trazo: ojos vivos, cintas que flotan y criaturas de las leyendas de Chile y los Andes.</p>
-    <div class="etapas">
-      <figure><img src="assets/arte-transicion-soledad-alegria.jpeg" alt="Obra tradicional en papel"><figcaption>Papel</figcaption></figure>
-      <span aria-hidden="true">✦</span>
-      <figure><img src="assets/digital-lineart.webp" alt="Lineart digital"><figcaption>Digital</figcaption></figure>
-    </div>
-    <p class="cuento nota">Toca una ilustración para verla en grande. Todas llevan la marca de Studios Conari: son obra original y no se pueden reutilizar.</p>
+    <p class="cuento"><span class="letra">A</span>ri nunca dejó de dibujar. Aprendió sola: primero con papel, lápices y pintura; después con tableta, redibujando hasta encontrar su propio trazo.</p>
+    <div class="papeles" data-papeles></div>
   </article>
-  <article class="pagina pagina-scroll" data-cap="VI · Leyendas dibujadas">
-    <div class="ranura" data-widget="#leyendas"></div>
+  <article class="pagina pagina-centrada" data-cap="VIII · Leyendas dibujadas">
+    <p class="cuento">Así nace cada ilustración: primero la línea… y después el color.</p>
+    <div class="dibujandose" data-dibujandose>
+      <img class="dj-linea" src="assets/galeria/regalo-1-lineart.webp" alt="">
+      <img class="dj-color" src="assets/galeria/regalo-1.webp" alt="Ilustración que se dibuja y se pinta">
+      <span class="dj-pincel" aria-hidden="true"></span>
+    </div>
+    <button type="button" class="btn ghost dj-repetir">↻ Dibujar otra vez</button>
   </article>
 
-  <!-- 14 · capítulo VII -->
-  <article class="pagina pagina-scroll" data-cap="VII · El oráculo de los colores">
-    <p class="cap-num">Capítulo VII</p>
+  <!-- 20 · pliego ancho: la galería saluda -->
+  <article class="pagina pagina-ancha pagina-galeria" data-cap="VIII · Leyendas dibujadas">
+    <div class="galeria-cabeza"><p class="cuento">Y un día, todas sus criaturas se juntaron en una misma página para saludarte.</p><button type="button" class="btn primary" data-saludar>✦ ¡Que saluden!</button></div>
+    <div class="ranura" data-widget="#leyendas"></div>
+  </article>
+  <article class="pagina pagina-hueco" data-cap="VIII · Leyendas dibujadas"></article>
+
+  <!-- 22 · capítulo VIII: datos -->
+  <article class="pagina pagina-scroll" data-cap="IX · El oráculo de los colores">
+    <p class="cap-num">Capítulo IX</p>
     <h2 class="cap-titulo">El oráculo de los colores</h2>
-    <p class="cuento">En lo alto de la torre vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan. Cuéntale los tuyos y mira cómo ordena lo que aprende.</p>
+    <p class="cuento">En lo alto de la torre vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan. Cuéntale los tuyos y mira cómo ordena lo que aprende: así trabaja Ari con los datos.</p>
     <div class="ranura" data-widget="#lab-form"></div>
   </article>
-  <article class="pagina pagina-scroll" data-cap="VII · El oráculo de los colores">
+  <article class="pagina pagina-scroll" data-cap="IX · El oráculo de los colores">
     <div class="ranura" data-widget="#lab-viz"></div>
   </article>
 
-  <!-- 16 · capítulo VIII -->
-  <article class="pagina pagina-ilustrada" data-cap="VIII · El salón de los juegos">
-    <p class="cap-num">Capítulo VIII</p>
-    <h2 class="cap-titulo">El salón de los juegos</h2>
-    <div class="vineta vineta-hada"><div class="hada-viva hada-pagina" data-hada="pagina"></div></div>
-    <p class="cuento">Cuando el trabajo termina, el hada abre el salón de los juegos: bloques encantados que ella misma rompe con su varita, un jardín de gemas con poderes y un cielo de constelaciones que esconden dibujos.</p>
-    <p class="cuento nota">Cada juego está hecho a mano en JavaScript: lógica, estados, eventos y animación.</p>
-  </article>
-  <article class="pagina pagina-scroll" data-cap="VIII · El salón de los juegos">
+  <!-- 24 · pliego ancho: juegos -->
+  <article class="pagina pagina-ancha pagina-juegos" data-cap="X · El salón de los juegos">
+    <div class="juegos-cabeza">
+      <div><p class="cap-num">Capítulo X</p><h2 class="cap-titulo">El salón de los juegos</h2></div>
+      <p class="cuento">Cuando el trabajo termina, se abre el salón de los juegos: bloques encantados, un jardín de gemas lunares y un cielo de constelaciones que esconden dibujos. Todos hechos a mano en JavaScript.</p>
+    </div>
     <div class="ranura" data-widget="#arcade-zona"></div>
   </article>
+  <article class="pagina pagina-hueco" data-cap="X · El salón de los juegos"></article>
 
-  <!-- 18 · epílogo -->
-  <article class="pagina pagina-ilustrada" data-cap="Y la historia continúa…">
+  <!-- 26 · epílogo -->
+  <article class="pagina pagina-ilustrada" data-cap="Esto es solo el comienzo">
     <p class="cap-num">Epílogo</p>
-    <h2 class="cap-titulo">Y la historia continúa…</h2>
+    <h2 class="cap-titulo">Esto es solo el comienzo</h2>
     <div class="vineta vineta-trio">
       <img class="trio-mago" src="assets/personajes/rancek-espalda.webp" alt="">
       <img class="trio-coen" src="assets/personajes/coen-espalda.webp" alt="">
       <img class="trio-ari" src="assets/personajes/ari-espalda.webp" alt="">
     </div>
-    <p class="cuento">Salud, código, datos y dibujo no fueron caminos separados: fueron capítulos del mismo libro. Hoy Ari los une en cada proyecto de Studios Conari.</p>
+    <p class="cuento">Salud, código, datos y dibujo no fueron caminos separados: fueron capítulos del mismo libro. Y este libro todavía tiene muchas páginas en blanco… esperando ser escritas.</p>
   </article>
-  <article class="pagina pagina-fin" data-cap="Y la historia continúa…">
-    <p class="capitular">¿Escribimos juntos el próximo capítulo?</p>
-    <p class="cuento">Desarrollo, diseño, videojuegos, datos y producción digital pueden encontrarse en una misma conversación.</p>
+  <article class="pagina pagina-fin" data-cap="Esto es solo el comienzo">
+    <p class="capitular cuento">¿Escribimos juntos el próximo capítulo?</p>
+    <p class="cuento">Desarrollo, diseño, videojuegos, datos y salud pueden encontrarse en una misma conversación.</p>
     <div class="contacto-libro">
       <a href="mailto:manecisterna@gmail.com">✉ manecisterna@gmail.com</a>
       <a href="mailto:studiosconari@gmail.com">✉ studiosconari@gmail.com</a>
@@ -684,7 +792,7 @@ VALUES (?, ?, ?, ?);</code></pre></details>
       <a href="assets/cv.pdf" target="_blank" rel="noopener">Currículum (PDF) ↗</a>
     </div>
     <p class="botonera"><button type="button" class="btn primary" data-ir="0">Volver al comienzo</button><button type="button" class="btn ghost" data-modo="clasico">Ver versión clásica</button></p>
-    <p class="colofon">Fin del primer tomo · © 2026 María Inés Cisterna Escobar y Studios Conari SpA</p>
+    <p class="colofon">Fin del primer tomo… continuará ✦ © 2026 María Inés Cisterna Escobar y Studios Conari SpA</p>
   </article>
 </div>
 </body>
