@@ -487,3 +487,52 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
 .dragon-portada.posado{animation:none;background-position:-2032px 0}
 .dragon-portada.brilla{filter:brightness(2.6) drop-shadow(0 0 30px #fff) drop-shadow(0 0 50px rgba(245,168,207,.9))}
 .dragon-portada.se-va{opacity:0}
+
+/* ---------------------------------------------------------------- todo el libro se adapta al alto de la pantalla
+   En pantallas altas se ve igual que antes; en las bajas, márgenes, letra e
+   ilustraciones se reducen lo justo para que cada página quepa sin desplazarse. */
+.pagina:not(.pagina-calc){padding:clamp(20px,4.4vh,46px) clamp(24px,3.4vw,46px) clamp(32px,5.6vh,54px)}
+.pagina{font-size:clamp(.94rem,2.15vh,1.12rem);line-height:clamp(1.42,.9 + .9vh,1.6)}
+.cap-titulo{font-size:clamp(1.2rem,min(2.4vw,4.2vh),1.95rem);margin-bottom:clamp(8px,1.8vh,16px)}
+.cuento{margin-bottom:clamp(.5em,1.4vh,.85em)}
+.cuento.nota{font-size:.88em}
+.capitular{font-size:clamp(1.15rem,3vh,1.45rem);margin-bottom:clamp(8px,2vh,18px)}
+.vineta{margin-bottom:clamp(6px,1.6vh,14px)}
+.vineta-hada{width:min(260px,64%,32vh)}
+.vineta-pareja,.vineta-trio{height:min(300px,32vh)}
+.tienda-escena{height:min(310px,34vh)}
+.logo-pagina{width:min(260px,64%,30vh)}
+.lema{font-size:clamp(1rem,2.4vh,1.15rem);margin-bottom:clamp(6px,1.4vh,12px)}
+.trio img{width:min(88%,16vh)}
+.trio figcaption{margin-top:2px}
+.sellos{gap:clamp(4px,1vh,8px);margin-bottom:clamp(8px,1.6vh,14px)}
+.sellos li{padding:clamp(4px,.9vh,8px) 12px clamp(4px,.9vh,8px) 40px}
+.sellos li::before{top:clamp(4px,.9vh,8px)}
+.etapas img{max-height:26vh}
+.etapas figure{width:min(40%,21vh)}
+.exlibris{gap:clamp(4px,1.2vh,10px)}
+.exlibris img{width:min(220px,60%,26vh)}
+.caminos{margin-bottom:clamp(8px,2vh,18px)}
+.camino{padding:clamp(8px,1.8vh,16px) 12px}
+.indice button{padding:clamp(2px,.6vh,6px) 4px}
+.contacto-libro{gap:clamp(4px,1vh,8px)}
+.contacto-libro a{padding:clamp(6px,1.2vh,10px) 14px}
+.colofon{margin-top:clamp(8px,2vh,18px)}
+.botonera{margin-top:clamp(8px,1.6vh,14px)}
+@media (max-height:700px){
+  .camino small{display:none}
+  .camino{gap:3px}
+}
+@media (max-height:640px){
+  .pagina{font-size:.88rem}
+  .camino-icono{display:none}
+  .indice button{font-size:.95rem}
+  .contacto-libro{grid-template-columns:1fr 1fr}
+  .contacto-libro a{font-size:.85rem;padding:5px 10px}
+  .vineta-hada{width:min(260px,64%,27vh)}
+  .tienda-escena{height:30vh}
+  .trio img{width:min(88%,13vh)}
+  .logo-pagina{width:min(260px,64%,25vh)}
+  .sellos li{font-size:.86rem}
+  .cuento{margin-bottom:.45em}
+}
