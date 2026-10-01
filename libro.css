@@ -386,22 +386,15 @@
 /* ---------------------------------------------------------------- el reino de fondo (versión clásica) */
 .reino{--px:0;--py:0;--scroll:0;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 .reino-capa{position:absolute;inset:0}
-.reino-cielo{inset:-5%;background:url("assets/fondo/noche.webp") center 62%/cover no-repeat;transform:translate(calc(var(--px)*-14px),calc(var(--py)*-10px + var(--scroll)*-30px)) scale(1.06);filter:saturate(1.08)}
-.reino-estrellas{position:absolute;left:0;top:0;width:100%;height:55%;mix-blend-mode:screen;opacity:.85}
-.reino-dragon span{position:absolute;left:-260px;top:12%;width:254px;height:240px;scale:.42;background:url("assets/intro/dragon-rosa.webp") 0 0/2286px 240px no-repeat;
-  animation:intro-aleteo .6s steps(8) infinite,dragon-cruza 26s linear infinite;filter:drop-shadow(0 0 14px rgba(245,168,207,.6))}
-@keyframes intro-aleteo{to{background-position:-2032px 0}}
-@keyframes dragon-cruza{0%{transform:translate(0,0)}45%{transform:translate(70vw,8vh)}100%{transform:translate(140vw,-4vh)}}
-.reino-personajes{transform:translate(calc(var(--px)*26px),calc(var(--py)*12px + var(--scroll)*40px))}
-.rp{position:absolute;bottom:-2%}
-.rp img{height:100%;width:auto;filter:drop-shadow(0 10px 16px rgba(0,0,0,.55)) brightness(.85)}
-.rp-mago{left:3%;bottom:22%;height:46vh;animation:mago-flota 5s ease-in-out infinite}
-.rp-mago::after{content:"";position:absolute;left:10%;right:10%;bottom:-18%;height:20%;border-radius:50%;background:radial-gradient(ellipse,rgba(145,220,255,.55),transparent 70%);filter:blur(6px);animation:hada-aura 5s ease-in-out infinite}
-@keyframes mago-flota{50%{transform:translateY(-16px) rotate(-1.5deg)}}
-.rp-pareja{right:8%;height:56vh;display:flex;align-items:flex-end;animation:respira 6s ease-in-out infinite}
-.rp-pareja .rp-ari{height:88%;margin-left:-11%}
-.rp-lazo{position:absolute;left:46%;bottom:44%;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#fff,#ff8fc0 40%,transparent 70%);filter:blur(1px);animation:corazon 2.4s ease-in-out infinite}
-@keyframes respira{50%{transform:translateY(-4px)}}
+/* la escena en acuarela (fondo-acuarela.js): el hada la pinta al elegir la versión clásica */
+.reino-acuarela{position:absolute;inset:0;width:100%;height:100%;display:block}
+.reino-petalos,.reino-velo{transition:opacity 1.2s ease}
+.reino-saltar{position:absolute;left:0;right:0;bottom:18px;margin:0;text-align:center;font:600 .78rem/1 var(--sans);letter-spacing:.14em;color:rgba(40,30,60,.55);opacity:0;transition:opacity .6s}
+/* mientras pinta, el portafolio espera oculto y la escena se ve completa */
+.site>:not(.reino){transition:opacity 1s ease}
+.site.pintando>:not(.reino){opacity:0;visibility:hidden}
+.site.pintando .reino-petalos,.site.pintando .reino-velo{opacity:0}
+.site.pintando .reino-saltar{opacity:1}
 .reino-petalos i{position:absolute;top:-30px;left:var(--x);width:14px;height:11px;border-radius:12px 0 12px 0;background:linear-gradient(135deg,#ffe1ef,#f5a8cf);opacity:.85;scale:var(--s);
   animation:petalo var(--d) linear infinite}
 @keyframes petalo{0%{transform:translate(0,0) rotate(var(--r))}100%{transform:translate(var(--dx),110vh) rotate(calc(var(--r) + 720deg))}}
@@ -410,7 +403,7 @@ body{background:#081127}
 .site .section,.site .contact-section{position:relative}
 .site main>.section:not(.hero){background:linear-gradient(180deg,rgba(8,17,39,.0),rgba(8,17,39,.55) 12%,rgba(8,17,39,.55) 88%,rgba(8,17,39,0))}
 .hero .fairy.hada-viva{width:min(100%,430px);margin:auto;cursor:pointer}
-@media (max-width:860px){.rp-mago{height:30vh;bottom:40%}.rp-pareja{height:36vh;right:-6%}.reino-velo{background:linear-gradient(180deg,rgba(8,17,39,.72),rgba(8,17,39,.6) 60%,rgba(8,17,39,.9))}}
+@media (max-width:860px){.reino-velo{background:linear-gradient(180deg,rgba(8,17,39,.72),rgba(8,17,39,.6) 60%,rgba(8,17,39,.9))}}
 
 /* ---------------------------------------------------------------- volver arriba: la asesina */
 .volver-arriba{position:fixed;right:18px;bottom:16px;z-index:150;width:70px;height:150px;padding:0;border:0;background:none;opacity:0;transform:translateY(160px);pointer-events:none;transition:opacity .4s,transform .5s cubic-bezier(.3,1.5,.5,1)}
@@ -448,6 +441,6 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
 #play-tetris{border-radius:12px}
 
 @media (prefers-reduced-motion:reduce){
-  .escena-cielo,.reino-dragon span,.reino-petalos,.rp-mago,.rp-pareja,.hada-marco,.hada-brillo,.tapa-emblema,.pareja-corazon{animation:none!important}
+  .escena-cielo,.reino-petalos,.hada-marco,.hada-brillo,.tapa-emblema,.pareja-corazon{animation:none!important}
   .libro,.libro-tapa,.hoja{transition:none!important}
 }
