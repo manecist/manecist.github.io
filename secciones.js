@@ -317,11 +317,27 @@
       try { sessionStorage.setItem('mce-acuarela', '1'); } catch (e) { /* sin almacenamiento */ }
     }
     function saltar(e) { if (e) { e.preventDefault(); e.stopImmediatePropagation(); } fondo?.saltar(); }
+    // modo día / noche: cambia el tema del sitio y funde el fondo con la escena del otro modo
+    const raizDoc = document.documentElement, botonTema = $('#tema-boton'), metaColor = document.querySelector('meta[name="theme-color"]');
+    function aplicarTema(t) {
+      raizDoc.dataset.tema = t;
+      const claro = t === 'claro';
+      if (botonTema) { botonTema.querySelector('span').textContent = claro ? '☾' : '☀'; botonTema.setAttribute('aria-label', claro ? 'Cambiar a modo noche' : 'Cambiar a modo día'); }
+      if (metaColor) metaColor.content = claro ? '#f6efe4' : '#0b1430';
+      fondo?.tema(claro ? 'dia' : 'noche');
+    }
+    aplicarTema(raizDoc.dataset.tema === 'claro' ? 'claro' : 'oscuro');
+    botonTema?.addEventListener('click', () => {
+      if (site.classList.contains('pintando')) return;
+      const t = raizDoc.dataset.tema === 'claro' ? 'oscuro' : 'claro';
+      try { localStorage.setItem('mce-tema', t); } catch (e) { /* sin almacenamiento */ }
+      aplicarTema(t);
+    });
     window.MCEReino = {
       // animar: el hada pinta la escena desde el lineart (una vez por sesión y sin movimiento reducido)
       mostrar(animar) {
         if (!window.FondoAcuarela) return;
-        if (!fondo) fondo = FondoAcuarela.montar($('#reino-acuarela'));
+        if (!fondo) fondo = FondoAcuarela.montar($('#reino-acuarela'), document.documentElement.dataset.tema === 'claro' ? 'dia' : 'noche');
         let visto = false; try { visto = !!sessionStorage.getItem('mce-acuarela'); } catch (e) { /* sin almacenamiento */ }
         if (!animar || quieto || visto) { fondo.pintada(); return; }
         site.classList.add('pintando'); document.body.classList.add('bloqueado');
