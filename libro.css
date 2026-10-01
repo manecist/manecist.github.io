@@ -447,3 +447,32 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
   .escena-cielo,.reino-petalos,.hada-marco,.hada-brillo,.tapa-emblema,.pareja-corazon{animation:none!important}
   .libro,.libro-tapa,.hoja{transition:none!important}
 }
+
+/* ---------------------------------------------------------------- capítulo III: todo cabe sin desplazamiento */
+.pagina-calc{padding-top:clamp(18px,3.4vh,34px);padding-bottom:clamp(30px,4.6vh,40px)}
+.pagina-calc .cap-titulo{margin-bottom:10px;font-size:clamp(1.2rem,2vw,1.7rem)}
+.pagina-calc .cuento{margin-bottom:.6em;line-height:1.5}
+.pagina-calc .cuento.nota{margin-bottom:.8em}
+.pagina-calc .code-card{padding:12px 16px}
+.pagina-calc .code-card h3{font-size:1.25rem;margin:.3em 0 0}
+.pagina-calc .calc-java .java-pre{margin:8px 0;padding:10px 14px;font-size:.8rem;line-height:1.5}
+.pagina-calc .code-card .botonera{margin:6px 0 0}
+.pagina-calc .code-card .btn{padding:7px 12px;font-size:.8rem}
+/* la calculadora se ajusta al alto disponible de la página */
+.pagina-calc .calc-magica{padding:clamp(10px,1.8vh,18px)}
+.pagina-calc .calc-cabeza{margin:2px 4px clamp(6px,1.2vh,10px)}
+.pagina-calc .calc-pantalla{min-height:clamp(62px,10vh,96px);margin-bottom:clamp(8px,1.4vh,14px);padding:10px 16px}
+.pagina-calc .calc-teclas{gap:clamp(6px,1vh,9px)}
+.pagina-calc .calc-teclas button{height:clamp(34px,5.9vh,52px)}
+.pagina-calc .calc-ayuda{margin-top:clamp(6px,1.2vh,12px)}
+@media (max-height:720px){
+  .pagina-calc .cuento{font-size:1rem;line-height:1.45}
+  .pagina-calc .cap-titulo::after{display:none}
+  .pagina-calc .code-card .chip{display:none}
+}
+@media (max-height:620px){
+  .pagina-calc .cap-num{display:none}
+  .pagina-calc .cuento{font-size:.94rem;line-height:1.4}
+  .pagina-calc .calc-java .java-pre{font-size:.74rem}
+  .pagina-calc .code-card .btn{padding:5px 10px;font-size:.74rem}
+}

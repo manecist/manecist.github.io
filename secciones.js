@@ -28,11 +28,9 @@
       const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
       jCodigo.innerHTML = lineas.map(l => {
         let [codigo, com] = l.split('//');
-        codigo = esc(codigo)
-          .replace(/\b(double|if|else|return)\b/g, '<span class="jk">$1</span>')
-          .replace(/\b(Math|System)\b/g, '<span class="jt">$1</span>')
-          .replace(/(".*?")/g, '<span class="js">$1</span>')
-          .replace(/(?<![\w.])(-?\d+(?:\.\d+)?)/g, '<span class="jn">$1</span>');
+        // una sola pasada: así una regla no colorea dentro de las etiquetas que puso otra
+        codigo = esc(codigo).replace(/(".*?")|\b(double|if|else|return)\b|\b(Math|System)\b|(?<![\w.])(-?\d+(?:\.\d+)?)/g,
+          (m, cad, pal, tipo) => `<span class="${cad ? 'js' : pal ? 'jk' : tipo ? 'jt' : 'jn'}">${m}</span>`);
         return codigo + (com != null ? '<span class="jc">//' + esc(com) + '</span>' : '');
       }).join('\n');
       jCodigo.parentElement.classList.remove('escribe'); void jCodigo.offsetWidth; jCodigo.parentElement.classList.add('escribe');
