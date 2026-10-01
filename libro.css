@@ -774,3 +774,10 @@ html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/noche.webp")}
 .dragoncito.feliz .dragoncito-globo,.dragoncito.duerme .dragoncito-globo{opacity:1}
 @media (max-width:700px){.dragoncito{width:80px;height:76px}.dragoncito-spr{background-size:720px 76px}@keyframes dragoncito-aleteo{to{background-position:-640px 0}}}
 @media (prefers-reduced-motion:reduce){.dragoncito-spr{animation:none}}
+
+/* portada clásica: la monita adulta camina en su lugar, con brillo suave */
+.monita-hero{position:relative;width:min(100%,400px);margin:auto;aspect-ratio:3/4;display:grid;place-items:end center}
+.monita-hero::before{content:"";position:absolute;inset:12% 8% 4%;border-radius:50%;background:radial-gradient(circle,rgba(245,168,207,.4),rgba(186,147,240,.18) 50%,transparent 72%);filter:blur(12px);animation:hada-aura 4s ease-in-out infinite}
+.monita-hero img{position:relative;height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 12px 20px rgba(0,0,0,.4));animation:monita-camina 1.2s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes monita-camina{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-6px) rotate(-1.2deg)}50%{transform:translateY(0) rotate(0)}75%{transform:translateY(-6px) rotate(1.2deg)}}
+@media (prefers-reduced-motion:reduce){.monita-hero img,.monita-hero::before{animation:none}}
