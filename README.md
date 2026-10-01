@@ -4,29 +4,26 @@ Portafolio interactivo de María Inés Cisterna Escobar (MCE): fundadora de Stud
 
 Sitio estático (HTML, CSS y JavaScript sin dependencias ni compilación), preparado para GitHub Pages.
 
-## Secciones
+## Cómo se recorre
 
-- **Intro de Studios Conari**: es lo primero que aparece al abrir la página (unos 16 s, una vez por sesión; cualquier tecla, clic o toque la salta). En primer plano, un rayo de magia dibuja el lineart de cada emblema del estudio y la cámara sigue la línea de la constelación hasta el siguiente. Al terminar, la cámara se aleja y aparece el hada, que era quien lanzaba el rayo, dibujando al dragón rosa. Con todo en lineart, su hechizo pinta a la vez los emblemas y el dragón, que cobra vida, da una vuelta, reúne los emblemas en la luna y, a su paso, revela STUDIOS CONARI. No se reproduce si el sistema pide movimiento reducido.
-- **Pantalla de inicio**: tras la intro, consola rosada con Tetris automático en la pantalla LCD. Al pulsar **ENCENDER** aparece el portafolio.
-- **Portada**: el hada del portafolio y cinco burbujas perladas que llevan a Empresa, Desarrollo, Diseño, Datos y Salud.
-- **Studios Conari**: la empresa, sus servicios y el equipo (María Inés, Kevin Alexis y Elías Alejandro).
-- **Desarrollo**
-  - Calculadora con la lógica equivalente en Java.
-  - Caja registradora con los 68 productos del catálogo de [Ecommerce-Backend-M4](https://github.com/manecist/Ecommerce-Backend-M4): descuento de 0 a 100 % (con decimales), teclado de pago, boleta impresa animada y cajón con el vuelto. El descuento es global y de ejemplo; no replica las reglas por categoría de la aplicación Java.
-  - Galería con cuatro capturas reales de [Ecommerce-Portafolio-Final-M7](https://github.com/manecist/Ecommerce-Portafolio-Final-M7). Es una galería, no el backend en ejecución.
-- **Diseño e ilustración**: obra tradicional y digital, y un recorrido creativo de cuatro etapas que se abren al pulsarlas.
-- **Datos · «El color de nuestras melodías»**: registra nombre, edad, color favorito y música favorita, y compara un mismo color entre tramos de edad (1–4, 5–12, 13–17, 18–29, 30–44, 45–59 y 60+ años). Cada porcentaje muestra su denominador; los empates, los grupos de una persona y las opciones más frecuentes sin mayoría se explican por escrito. Incluye un ejemplo ficticio de 20 registros y dos investigaciones citadas como contexto.
-- **Trayectoria y formación**: experiencia en salud y credenciales verificables.
-- **Arcade**
-  - *Bloques Encantados*: Tetris con 1,5 s para acomodar la pieza al aterrizar (se renueva hasta 15 veces al moverla o girarla), caída instantánea con Espacio y un hada que rompe las líneas completas.
-  - *Jardín de Gemas*: 4 gemas crean un cohete; 5, una bomba (también en L o en T), y 6 o más, una bola disco. Incluye retos guiados para aprender a crear cada poder.
-  - *Constelaciones*: diez figuras (Cruz del Sur, Casiopea, Lira, Orión, Cefeo, Delfín, Triángulo, Libra, Cisne y León) que revelan una ilustración al completarse.
+- **Intro de Studios Conari**: lo primero que aparece (una vez por sesión; cualquier tecla, clic o toque la salta). El hada dibuja y pinta los emblemas del estudio y al dragón rosa, que revela STUDIOS CONARI.
+- **El libro mágico**: al terminar la intro, una estela cruza el cielo del reino y aparece un libro cerrado. El hada llega volando, lo toca con su varita y el libro se abre. Ahí se elige cómo conocer la historia:
+  - **Cuento**: el portafolio contado página a página, con hojas que giran (flechas, teclado, deslizar en el celular o las esquinas dobladas). Ocho capítulos: la matrona que soñaba con mundos, el nacimiento de Studios Conari, la calculadora Java, la tienda del mago (Rancek atiende la caja registradora y Ari y Coen compran), la tienda Magical Alliance (M7), las leyendas dibujadas, el oráculo de los colores y el salón de juegos.
+  - **Versión clásica**: todo en una sola página, con el reino de fondo en movimiento (paralaje, estrellas, pétalos y el dragón que cruza el cielo). El botón «Leer como cuento» vuelve al libro.
+  - Las demostraciones son las mismas en los dos modos: el libro las toma prestadas de la versión clásica y las devuelve al cerrarse.
+- **Calculadora encantada**: teclado completo (también con el teclado físico) y, al lado, el mismo cálculo escrito en Java.
+- **Caja registradora M4**: 68 productos de [Ecommerce-Backend-M4](https://github.com/manecist/Ecommerce-Backend-M4), descuento de 0 a 100 %, boleta impresa y cajón con el vuelto. En el cuento, el mago comenta cada compra.
+- **Magical Alliance (M7)**: capturas reales y enlace a la [vitrina interactiva](https://manecist.github.io/Ecommerce-Portafolio-Final-M7/).
+- **Leyendas dibujadas**: ilustraciones originales con marca de agua incrustada, sin menú contextual ni arrastre, y visor ampliado.
+- **El oráculo de los colores**: laboratorio de datos con un mapa de burbujas color × edad; cada burbuja muestra la música de ese grupo con su base y advierte cuando el grupo es pequeño.
+- **Arcade**: Bloques Encantados (gemas y cielo estrellado), Jardín de Gemas y Constelaciones.
+- **Volver arriba**: Ari salta cuando bajas por la página y, al tocarla, sube haciendo un dash.
 
-Las animaciones respetan la preferencia de movimiento reducido del sistema. Los datos del laboratorio viven solo en la memoria de la página y no se envían a ningún servidor.
+Las animaciones respetan la preferencia de movimiento reducido del sistema. Los datos del laboratorio viven solo en la memoria de la página.
 
 ## Ver en local
 
-Abre `index.html` en el navegador y pulsa **ENCENDER**. No hace falta instalar nada; los enlaces externos requieren conexión.
+Abre `index.html` en el navegador (mejor con un servidor local, por ejemplo `python -m http.server`). No hace falta instalar nada; los enlaces externos requieren conexión.
 
 ## Publicar en GitHub Pages
 
@@ -42,7 +39,10 @@ El archivo `.nojekyll` evita que GitHub procese el sitio con Jekyll.
 | --- | --- |
 | `index.html` | Página completa del portafolio |
 | `styles.css` | Todos los estilos |
-| `app.js` | Lógica del sitio: calculadora, caja, laboratorio de datos, Jardín de Gemas y constelaciones |
+| `app.js` | Caja registradora, Jardín de Gemas, constelaciones y Tetris jugable |
+| `libro.js`, `libro.css` | Escena del libro mágico, modo cuento y estilos nuevos |
+| `magia.js` | Chispas y el hada viva (parpadeo y hechizo con fotogramas intermedios) |
+| `secciones.js` | Calculadora encantada, oráculo de los colores, leyendas dibujadas, reino de fondo, Ari que vuelve arriba y diálogos de la tienda |
 | `tetris.js` | Motor de Bloques Encantados |
 | `constellations.js` | Coordenadas y trazados de las diez constelaciones |
 | `intro.js`, `intro.css` | Intro animada de Studios Conari |
@@ -60,3 +60,7 @@ Al modificar `styles.css` o los archivos `.js`, cambia el valor `?v=` de sus enl
 - Investigaciones citadas en el laboratorio de datos: [FUENTES_ANALISIS.md](FUENTES_ANALISIS.md).
 - Identidad visual e ilustraciones: Studios Conari SpA y María Inés Cisterna Escobar. La intro reutiliza el logotipo y los emblemas de la intro de [kdelrio.github.io](https://kdelrio.github.io/).
 - Animación: [GSAP](https://gsap.com) (GreenSock, licencia estándar sin costo).
+
+## Licencia
+
+© 2026 María Inés Cisterna Escobar y Studios Conari SpA. **Todos los derechos reservados.** Ilustraciones, personajes, textos, diseño y código son obra original: no se permite copiarlos, reutilizarlos ni usarlos para entrenar modelos de IA sin autorización escrita. Detalles y componentes de terceros en [LICENSE](LICENSE).

@@ -8,7 +8,7 @@
       que cobra vida, da una vuelta y reúne los emblemas en la luna
    5. el dragón cruza por delante del nombre y revela STUDIOS CONARI a su paso
    Es lo primero que aparece al abrir la página (una vez por sesión); al
-   terminar deja a la vista la consola con ENCENDER. Cualquier tecla, clic o
+   terminar abre la escena del libro mágico. Cualquier tecla, clic o
    toque la salta. Con movimiento reducido no se reproduce.
    ========================================================================== */
 (() => {
@@ -295,7 +295,7 @@
       if (cerrado) return; cerrado = true; vivo = false;
       try { sessionStorage.setItem('mce-intro', '1'); } catch (e) { /* sin almacenamiento */ }
       intro.remove(); raiz.classList.remove('con-intro');
-      document.getElementById('power-button')?.focus({ preventScroll: true });
+      window.dispatchEvent(new Event('mce-intro-fin'));
       removeEventListener('keydown', saltar, true); removeEventListener('resize', medir);
     }
     function saltar(e) {
