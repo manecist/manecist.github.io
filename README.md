@@ -10,6 +10,7 @@ Sitio estático (HTML, CSS y JavaScript sin dependencias ni compilación), prepa
 - **El libro mágico**: al terminar la intro, una estela cruza el cielo del reino y aparece un libro cerrado. El hada llega volando, lo toca con su varita y el libro se abre. Ahí se elige cómo conocer la historia:
   - **Cuento**: el portafolio contado página a página, con hojas que giran (flechas, teclado, deslizar en el celular o las esquinas dobladas). Ocho capítulos: la matrona que soñaba con mundos, el nacimiento de Studios Conari, la calculadora Java, la tienda del mago (Rancek atiende la caja registradora y Ari y Coen compran), la tienda Magical Alliance (M7), las leyendas dibujadas, el oráculo de los colores y el salón de juegos.
   - **Versión clásica**: todo en una sola página, con el reino de fondo. Al elegirla, la escena aparece en lineart blanco y negro y el hada, pequeña, la pinta en acuarela de lo más cercano a lo más lejano (primer plano, mago, dragón) mientras la cámara la sigue; el cielo lo tiñe con un hechizo desde la luna (unos 13 s, una vez por sesión; se salta con cualquier tecla o toque). Luego queda como fondo en paralaje con el puntero y el desplazamiento, con pétalos de sakura. El botón «Leer como cuento» vuelve al libro.
+  - **Modo día y modo noche**: el botón ☀/☾ de la barra superior cambia el tema de la versión clásica (texto oscuro sobre papel crema de día) y funde el fondo con la escena del otro modo; el hada pinta la escena diurna o nocturna según el modo. Al principio sigue la preferencia del sistema y luego recuerda la elección.
   - Las demostraciones son las mismas en los dos modos: el libro las toma prestadas de la versión clásica y las devuelve al cerrarse.
 - **Calculadora encantada**: teclado completo (también con el teclado físico) y, al lado, el mismo cálculo escrito en Java.
 - **Caja registradora M4**: 68 productos de [Ecommerce-Backend-M4](https://github.com/manecist/Ecommerce-Backend-M4), descuento de 0 a 100 %, boleta impresa y cajón con el vuelto. En el cuento, el mago comenta cada compra.
@@ -42,6 +43,7 @@ El archivo `.nojekyll` evita que GitHub procese el sitio con Jekyll.
 | `app.js` | Caja registradora, Jardín de Gemas, constelaciones y Tetris jugable |
 | `libro.js`, `libro.css` | Escena del libro mágico, modo cuento y estilos nuevos |
 | `magia.js` | Chispas y el hada viva (parpadeo y hechizo con fotogramas intermedios) |
+| `tema-claro.css` | Modo día: paleta clara, velo luminoso y botón ☀/☾ |
 | `fondo-acuarela.js` | Escena del reino: del lineart a la acuarela pintada por el hada, y paralaje por capas (imágenes en `assets/fondo/acuarela/`) |
 | `secciones.js` | Calculadora encantada, oráculo de los colores, leyendas dibujadas, reino de fondo, Ari que vuelve arriba y diálogos de la tienda |
 | `tetris.js` | Motor de Bloques Encantados |

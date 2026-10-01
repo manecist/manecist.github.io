@@ -7,7 +7,8 @@
    render(t, px, py) es determinista: el mismo t produce el mismo cuadro.
    En la página: FondoAcuarela.montar(canvas) devuelve un controlador con
    reproducir() (promesa que se cumple al terminar o saltar), saltar() y
-   mover(px, py) para el parallax del puntero y del desplazamiento.
+   mover(px, py) para el parallax del puntero y del desplazamiento y tema('dia'|'noche')
+   para cambiar de escena con un fundido (las imágenes de cada modo se cargan al usarse).
    ========================================================================== */
 window.FondoAcuarela = (() => {
   const W = 1660, H = 948;                         // marco común de todas las capas
@@ -96,20 +97,30 @@ window.FondoAcuarela = (() => {
   const destello = (() => { const c = lienzo(64, 64), g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(.25, 'rgba(255,214,236,.9)'); gr.addColorStop(1, 'rgba(255,170,215,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return c; })();
 
   // ---------------------------------------------------------- carga
-  let img = {}, hada = [], listos = false;
+  // un juego de imágenes por modo; img apunta al que se dibuja
+  const juegos = {}; let img = null, hada = null, listos = false;
   const tmp = lienzo(W, H);
   const cargar = src => new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => mal(new Error(src)); i.src = src; });
-  async function preparar(base = 'assets/fondo/acuarela/', baseHada = 'assets/') {
+  // de día solo cambian las acuarelas y el lineart del fondo (sin luna); el resto del dibujo es común
+  const ruta = (tema, id, e) => `assets/fondo/${tema === 'dia' && (e === 'acuarela' || id === '01-fondo') ? 'acuarela-dia' : 'acuarela'}/${id}-${e}.webp`;
+  async function preparar(tema = 'noche') {
+    if (!juegos[tema]) juegos[tema] = cargarJuego(tema);
+    const juego = await juegos[tema];
+    if (!hada) hada = await Promise.all([0, 1, 2, 3].map(i => cargar(`assets/hada-hechizo-${i}.webp`)));
+    img = juego; listos = true;
+    return juego;
+  }
+  async function cargarJuego(tema) {
+    const juego = {};
     await Promise.all(CAPAS.map(async c => {
-      const [lin, acu] = await Promise.all(['lineart', 'acuarela'].map(e => cargar(`${base}${c.id}-${e}.${base.includes('acuarela/') ? 'webp' : 'png'}`)));
+      const [lin, acu] = await Promise.all(['lineart', 'acuarela'].map(e => cargar(ruta(tema, c.id, e))));
       // lineart en blanco y negro, ajustado al marco común; se calcula una sola vez
       const zona = c.region || [0, 0, W, H];
       const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, ...zona);
       const co = lienzo(W, H); co.getContext('2d').drawImage(acu, ...zona);
-      img[c.id] = { bn, co, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
+      juego[c.id] = { bn, co, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
     }));
-    hada = await Promise.all([0, 1, 2, 3].map(i => cargar(`${baseHada}hada-hechizo-${i}.webp`)));
-    listos = true;
+    return juego;
   }
 
   // ---------------------------------------------------------- dibujo de un cuadro
@@ -206,12 +217,13 @@ window.FondoAcuarela = (() => {
     }
   }
 
-  function montar(canvas) {
+  function montar(canvas, temaInicial = 'noche') {
     const ctx = canvas.getContext('2d');
     let t0 = null, t = 0, fin = null, saltado = false, px = 0, py = 0, vivo = true;
+    let actual = null, anterior = null, fundidoIni = 0, pedido = temaInicial;   // fundido entre modos
     const ajustar = () => { const d = Math.min(devicePixelRatio || 1, 1.5); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round(innerHeight * d); };
     ajustar(); addEventListener('resize', ajustar);
-    const cargado = preparar();
+    const cargado = preparar(temaInicial).then(j => { actual = j; });
     function bucle(ahora) {
       if (!vivo) return;
       requestAnimationFrame(bucle);
@@ -219,7 +231,11 @@ window.FondoAcuarela = (() => {
       if (t0 !== null && !saltado) { t = (ahora - t0) / 1000; if (t >= DURACION && fin) { const f = fin; fin = null; f(); } }
       // tras la animación el tiempo sigue corriendo solo para que el dragón y el mago floten
       if (saltado || t0 === null) t = DURACION + 2 + ahora / 1000;
-      render(ctx, t, px, py);
+      // al cambiar de modo, la escena anterior se funde con la nueva durante 0,9 s
+      const a = anterior ? Math.min(1, (ahora - fundidoIni) / 900) : 1;
+      if (a < 1) { img = anterior; render(ctx, t, px, py); ctx.globalAlpha = a; }
+      else anterior = null;
+      img = actual; render(ctx, t, px, py); ctx.globalAlpha = 1;
     }
     cargado.then(() => requestAnimationFrame(bucle));
     return {
@@ -230,6 +246,10 @@ window.FondoAcuarela = (() => {
       // sin animación: la escena ya pintada
       pintada() { saltado = true; },
       mover(x, y) { px = x; py = y; },
+      tema(nuevo) {
+        pedido = nuevo;
+        return preparar(nuevo).then(j => { if (pedido !== nuevo || j === actual) return; anterior = actual; actual = j; fundidoIni = performance.now(); });
+      },
       detener() { vivo = false; }
     };
   }

@@ -673,3 +673,14 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
 .libro[data-estado="abriendo"] .tapa-dorso{animation:reverso-apoya 1.3s linear .35s both}
 @keyframes reverso-apoya{0%,40%{opacity:0}44%,80%{opacity:1}100%{opacity:0}}
 .libro[data-estado="abierto"] .libro-tapa{transition:visibility 0s}
+
+/* ---------------------------------------------------------------- versión clásica a todo el ancho
+   Las franjas de fondo de cada sección van de borde a borde (antes medían lo mismo que la
+   columna y parecían tarjetas); la columna es más ancha y la barra superior queda pegada arriba. */
+.site .wrap{width:min(1560px,calc(100% - clamp(32px,8vw,140px)))}
+.site main>.section:not(.hero){background:none;position:relative;isolation:isolate}
+.site main>.section:not(.hero)::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,17,39,0),rgba(8,17,39,.55) 12%,rgba(8,17,39,.55) 88%,rgba(8,17,39,0))}
+.site .topbar{position:sticky;top:0;width:100%;max-width:none;margin:0;border-radius:0;border-width:0 0 1px;
+  padding-inline:max(14px,calc((100% - 1560px) / 2))}
+@media (max-width:860px){.site .topbar{width:100%;margin:0}}
