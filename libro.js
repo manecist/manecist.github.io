@@ -15,6 +15,10 @@
   const izq = $('#pag-izq'), der = $('#pag-der'), almacen = $('#paginas'), folio = $('#libro-folio');
   const site = $('#site'), raiz = document.documentElement;
   const paginas = [...almacen.querySelectorAll(':scope > .pagina')];
+  // En pantalla ancha se ven de a dos (los pliegos anchos ocupan ambas); en el celular, de a una y sin huecos.
+  let orden = paginas;
+  const esAncha = p => p && p.classList.contains('pagina-ancha');
+  const posDe = n => Math.max(0, orden.indexOf(paginas[n]) >= 0 ? orden.indexOf(paginas[n]) : orden.indexOf(paginas[n - 1]));
   const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mqUna = matchMedia('(max-width: 860px)');
   let una = mqUna.matches, actual = 0, abierto = false, animando = false, hada = null, empezo = false;
@@ -22,7 +26,11 @@
   const guardar = (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) { /* sin almacenamiento */ } };
   const leer = k => { try { return sessionStorage.getItem(k); } catch (e) { return null; } };
 
-  paginas.forEach((p, i) => { p.dataset.n = i; const f = document.createElement('span'); f.className = 'pagina-num'; f.textContent = i ? String(i) : ''; f.setAttribute('aria-hidden', 'true'); p.append(f); });
+  let num = 0;
+  paginas.forEach((p, i) => {
+    p.dataset.n = i; if (p.classList.contains('pagina-hueco')) return; num++;
+    const f = document.createElement('span'); f.className = 'pagina-num'; f.textContent = i ? String(i) : ''; f.setAttribute('aria-hidden', 'true'); p.append(f);
+  });
 
   // ------------------------------------------------------------ medidas
   function medir() {
@@ -33,9 +41,13 @@
     libro.style.setProperty('--pw', Math.round(pw) + 'px');
     libro.style.setProperty('--ph', Math.round(ph) + 'px');
     libro.classList.toggle('una', una);
+    orden = una ? paginas.filter(p => !p.classList.contains('pagina-hueco')) : paginas;
   }
   medir();
-  addEventListener('resize', () => { const antes = una; medir(); if (abierto && antes !== una) colocar(una ? actual : actual - actual % 2); });
+  addEventListener('resize', () => {
+    const antes = una, pag = orden[actual]; medir();
+    if (abierto && antes !== una) colocar(Math.max(0, orden.indexOf(pag) >= 0 ? orden.indexOf(pag) : orden.indexOf(paginas[Number(pag.dataset.n) - 1])));
+  });
 
   // ------------------------------------------------------------ préstamo de demostraciones
   const origen = new Map();
@@ -56,24 +68,30 @@
 
   // ------------------------------------------------------------ colocar páginas
   function colocar(i) {
-    i = Math.max(0, Math.min(paginas.length - 1, i));
+    i = Math.max(0, Math.min(orden.length - 1, i));
     if (!una) i -= i % 2;
     actual = i;
     [...izq.children, ...der.children].forEach(p => almacen.append(p));
-    const vis = una ? [paginas[i]] : [paginas[i], paginas[i + 1]];
+    const ancha = !una && esAncha(orden[i]);
+    libro.classList.toggle('pliego-ancho', ancha);
+    const vis = una || ancha ? [orden[i]] : [orden[i], orden[i + 1]];
     if (una) der.append(vis[0]); else { izq.append(vis[0]); if (vis[1]) der.append(vis[1]); }
     vis.forEach(p => { if (!p) return; prestar(p); despertarHadas(p); p.scrollTop = 0; });
     const ref = vis[vis.length - 1] || vis[0];
-    folio.textContent = (ref.dataset.cap || '') + ' · ' + (una ? (i + 1) : (i + 1) + '–' + Math.min(paginas.length, i + 2)) + ' / ' + paginas.length;
+    const visibles = orden.filter(p => !p.classList.contains('pagina-hueco'));
+    const n = visibles.indexOf(vis[0]) + 1;
+    folio.textContent = (ref.dataset.cap || '') + ' · ' + n + ' / ' + visibles.length;
     $('#libro-prev').disabled = i === 0;
-    $('#libro-next').disabled = i + (una ? 1 : 2) >= paginas.length;
-    guardar('mce-pagina', String(i));
+    $('#libro-next').disabled = i + (una ? 1 : 2) >= orden.length;
+    guardar('mce-pagina', ref.dataset.n);
+    window.dispatchEvent(new CustomEvent('cuento-paginas', { detail: { paginas: vis.filter(Boolean) } }));
   }
 
   // copia visual de una página (sin ids ni foco) para la hoja que gira
-  function clon(p) {
-    if (!p) { const v = document.createElement('div'); v.className = 'pagina pagina-vacia'; return v; }
+  function clon(p, mitadDerecha) {
+    if (!p || p.classList.contains('pagina-hueco')) { const v = document.createElement('div'); v.className = 'pagina pagina-vacia'; return v; }
     const c = p.cloneNode(true);
+    if (mitadDerecha) c.classList.add('clon-mitad-der');
     c.removeAttribute('id'); c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
     c.setAttribute('aria-hidden', 'true'); c.inert = true;
     const a = p.querySelectorAll('canvas'), b = c.querySelectorAll('canvas');
@@ -86,38 +104,44 @@
   function ir(nuevo, dir) {
     if (animando || !abierto) return;
     if (!una) nuevo -= nuevo % 2;
-    nuevo = Math.max(0, Math.min(paginas.length - 1, nuevo));
+    nuevo = Math.max(0, Math.min(orden.length - 1, nuevo));
     dir = dir || Math.sign(nuevo - actual);
     if (!dir || nuevo === actual) return;
+    window.dispatchEvent(new Event('cuento-pasa'));
     if (quieto) { colocar(nuevo); return; }
     animando = true;
     const hoja = document.createElement('div');
     const frente = document.createElement('div'), dorso = document.createElement('div');
     frente.className = 'hoja-cara hoja-frente'; dorso.className = 'hoja-cara hoja-dorso';
+    const actAncha = !una && esAncha(orden[actual]), nuevaAncha = !una && esAncha(orden[nuevo]);
     if (una) {
       hoja.className = 'hoja hoja-una ' + (dir > 0 ? 'va' : 'vuelve');
-      frente.append(clon(paginas[actual]));
+      frente.append(clon(orden[actual]));
       hoja.append(frente);
       colocar(nuevo);
     } else if (dir > 0) {
       hoja.className = 'hoja hoja-der';
-      frente.append(clon(paginas[actual + 1])); dorso.append(clon(paginas[nuevo]));
+      frente.append(actAncha ? clon(orden[actual], true) : clon(orden[actual + 1]));
+      dorso.append(clon(orden[nuevo]));
       hoja.append(frente, dorso);
       [...der.children].forEach(p => almacen.append(p));
-      if (paginas[nuevo + 1]) { der.append(paginas[nuevo + 1]); prestar(paginas[nuevo + 1]); despertarHadas(paginas[nuevo + 1]); paginas[nuevo + 1].scrollTop = 0; }
+      if (actAncha) { libro.classList.remove('pliego-ancho'); }
+      if (!nuevaAncha && orden[nuevo + 1]) { der.append(orden[nuevo + 1]); prestar(orden[nuevo + 1]); despertarHadas(orden[nuevo + 1]); orden[nuevo + 1].scrollTop = 0; }
     } else {
       hoja.className = 'hoja hoja-izq';
-      frente.append(clon(paginas[actual])); dorso.append(clon(paginas[nuevo + 1]));
+      frente.append(clon(orden[actual]));
+      dorso.append(nuevaAncha ? clon(orden[nuevo], true) : clon(orden[nuevo + 1]));
       hoja.append(frente, dorso);
-      [...izq.children].forEach(p => almacen.append(p));
-      izq.append(paginas[nuevo]); prestar(paginas[nuevo]); despertarHadas(paginas[nuevo]); paginas[nuevo].scrollTop = 0;
+      [...izq.children, ...(actAncha ? [] : [])].forEach(p => almacen.append(p));
+      if (actAncha) libro.classList.remove('pliego-ancho');
+      if (!nuevaAncha) { izq.append(orden[nuevo]); prestar(orden[nuevo]); despertarHadas(orden[nuevo]); orden[nuevo].scrollTop = 0; }
     }
     cuerpo.append(hoja);
     if (hada && window.Magia) hada.hechizo();
     requestAnimationFrame(() => requestAnimationFrame(() => hoja.classList.add('gira')));
-    const fin = () => { hoja.remove(); if (!una) colocar(nuevo); animando = false; };
+    const fin = () => { if (!hoja.isConnected) return; hoja.remove(); if (!una) colocar(nuevo); animando = false; };
     hoja.addEventListener('transitionend', e => { if (e.target === hoja) fin(); }, { once: true });
-    setTimeout(() => { if (hoja.isConnected) fin(); }, 1400);
+    setTimeout(fin, 1400);
     if (window.Magia) { const r = libro.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height * .15, { n: 10, vel: 2.4 }); }
   }
   const pasar = d => ir(actual + d * (una ? 1 : 2), d);
@@ -127,7 +151,7 @@
     if (abierto) return;
     abierto = true; tapa.disabled = true;
     $('#escena-pista').classList.add('fuera');
-    colocar(Number(leer('mce-pagina-ir') || 0));
+    colocar(posDe(Number(leer('mce-pagina-ir') || 0)));
     libro.dataset.estado = 'abriendo';
     if (window.Magia) { const r = tapa.getBoundingClientRect(); Magia.chispas(r.left + r.width * .5, r.top + r.height * .45, { n: 60, vel: 6 }); }
     setTimeout(() => { libro.dataset.estado = 'abierto'; escena.classList.add('leyendo'); posarHada(); }, quieto ? 0 : 1500);
@@ -163,7 +187,7 @@
     const w = el.offsetWidth, h = el.offsetHeight;
     const r = libro.getBoundingClientRect();
     const nav = $('#libro-nav').getBoundingClientRect();
-    const x = una ? 2 : (r.left > w * .9 ? r.left - w * .9 : Math.max(4, nav.left - w - 6)), y = una ? innerHeight - h - 4 : (r.left > w * .9 ? r.bottom - h : innerHeight - h - 2);
+    const x = una ? 2 : (r.left > w * .9 ? r.left - w * .9 : 6), y = una ? innerHeight - h - 4 : (r.left > w * .9 ? r.bottom - h : innerHeight - h - 2);
     const m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, x, y]).slice(1).map(Number);
     volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200);
   }
@@ -216,21 +240,21 @@
     if (!empezo) { if (pagina != null) guardar('mce-pagina-ir', String(pagina)); escenaInicial(); return; }
     escena.classList.add('activa');
     if (!abierto) { if (pagina != null) guardar('mce-pagina-ir', String(pagina)); abrir(); return; }
-    colocar(pagina != null ? pagina : actual);
+    colocar(pagina != null ? posDe(pagina) : actual);
     if (escena.classList.contains('leyendo')) posarHada();
   }
 
   // botones del libro y de las páginas
   escena.addEventListener('click', e => {
     const irA = e.target.closest('[data-ir]'), modo = e.target.closest('[data-modo]');
-    if (irA && abierto) { e.preventDefault(); ir(Number(irA.dataset.ir)); }
+    if (irA && abierto) { e.preventDefault(); ir(posDe(Number(irA.dataset.ir))); }
     if (modo && modo.dataset.modo === 'clasico') { e.preventDefault(); aClasico(); }
   });
   $('#libro-prev').addEventListener('click', () => pasar(-1));
   $('#libro-next').addEventListener('click', () => pasar(1));
-  $('#libro-indice').addEventListener('click', () => ir(una ? 1 : 0));
+  $('#libro-indice').addEventListener('click', () => ir(posDe(1)));
   $('#libro-clasico').addEventListener('click', () => aClasico());
-  $('#abrir-cuento').addEventListener('click', () => aLibro(una ? 1 : 0));
+  $('#abrir-cuento').addEventListener('click', () => aLibro(1));
 
   // esquinas para pasar la página
   ['prev', 'next'].forEach(d => {
@@ -242,7 +266,7 @@
   // teclado y gesto de deslizar
   addEventListener('keydown', e => {
     if (!escena.classList.contains('activa') || escena.classList.contains('oculta')) return;
-    if (e.target.closest('input,select,textarea,canvas,[contenteditable],.calc-magica,.match-grid,.constellation-board') || document.querySelector('dialog[open]')) return;
+    if (e.target.closest('input,select,textarea,canvas,[contenteditable],.calc-magica,.match-grid,.constellation-board,.arcade-zona') || document.querySelector('dialog[open]')) return;
     if (!abierto && (e.key === 'Enter' || e.key === ' ') && e.target === document.body) { e.preventDefault(); abrir(); }
     if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); pasar(1); }
     if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); pasar(-1); }
@@ -269,5 +293,5 @@
     else arrancar();
   }
   if (document.readyState === 'complete') cuandoListo(); else addEventListener('load', cuandoListo, { once: true });
-  window.MCELibro = { ir, pasar, aClasico, aLibro, abrir };
+  window.MCELibro = { ir, pasar, aClasico, aLibro, abrir, visibles: () => [...izq.children, ...der.children] };
 })();

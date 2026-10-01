@@ -248,13 +248,14 @@
     const OBRAS = [
       ['achachila', 'Achachila', 'leyenda', 'Espíritu protector de los cerros en la tradición aymara.'],
       ['alicanto', 'Alicanto', 'leyenda', 'Ave mítica del desierto de Atacama; sus alas brillan con la luz de los metales.'],
-      ['yastai', 'Yastai', 'leyenda', 'Protector de guanacos y vicuñas en las leyendas del norte de Chile.'],
       ['supai', 'Supai', 'leyenda', 'Espíritu del mundo de abajo en la cosmovisión andina.'],
       ['lascar', 'Láscar', 'leyenda', 'El volcán de Atacama convertido en personaje.'],
       ['tirana-1', 'La Tirana', 'leyenda', 'Inspirada en la fiesta de La Tirana, en Tarapacá.'],
       ['tirana-2', 'La Tirana · variante', 'leyenda', 'Segunda propuesta de vestuario y tocado.'],
       ['reina-noche', 'Reina de la Noche', 'leyenda', 'Personaje de la serie de leyendas.'],
       ['lica', 'Lica', 'leyenda', 'Personaje de la serie de leyendas.'],
+      ['emilia-expresiones', 'Emilia · expresiones', 'proceso', 'Hoja de expresiones de Emilia, personaje de Studios Conari.'],
+      ['emilia-vistas', 'Emilia · vistas', 'proceso', 'Vistas de frente, perfil y espalda para animación.'],
       ['puma', 'Puma', 'proceso', 'Lineart y paleta de color del guardián de la cordillera.'],
       ['tirana-proceso', 'La Tirana · proceso', 'proceso', 'Boceto de trabajo antes del color.'],
       ['regalo-1', 'Regalo', 'regalo', 'Ilustración hecha como regalo.'],
@@ -266,7 +267,7 @@
       vista = f === 'todas' ? OBRAS : OBRAS.filter(o => o[2] === f);
       grid.replaceChildren();
       vista.forEach(([slug, tit, tipo, txt], i) => {
-        const b = el('button', 'obra obra-' + tipo); b.type = 'button'; b.style.setProperty('--i', i);
+        const b = el('button', 'obra obra-' + tipo + (/^emilia|^papel/.test(slug) ? ' obra-horizontal' : '')); b.type = 'button'; b.style.setProperty('--i', i);
         const img = el('img'); img.src = 'assets/galeria/' + slug + '.webp'; img.alt = tit + '. ' + txt; img.loading = 'lazy'; img.draggable = false; img.decoding = 'async';
         b.append(img, el('span', 'obra-escudo'), el('span', 'obra-nombre', tit));
         b.addEventListener('click', () => abrir(i));
@@ -396,6 +397,15 @@
       if (m && window.Magia) { const r = m.getBoundingClientRect(); if (r.width) Magia.chispas(r.left + r.width / 2, r.top + r.height * .3, { n: 30 }); }
     }).observe(boleta, { childList: true });
   })();
+
+  /* mantener presionado repite el movimiento en el control táctil */
+  document.querySelectorAll('.control-magico [data-tetris-action]').forEach(b => {
+    if (!/left|right|down/.test(b.dataset.tetrisAction)) return;
+    let t1, t2;
+    const parar = () => { clearTimeout(t1); clearInterval(t2); };
+    b.addEventListener('pointerdown', () => { parar(); t1 = setTimeout(() => { t2 = setInterval(() => b.click(), 90); }, 260); });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, parar));
+  });
 
   /* ======================================================================
      8 · Bloques Encantados: chispas cuando el hada rompe una línea

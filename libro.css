@@ -451,3 +451,293 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
   .escena-cielo,.reino-dragon span,.reino-petalos,.rp-mago,.rp-pareja,.hada-marco,.hada-brillo,.tapa-emblema,.pareja-corazon{animation:none!important}
   .libro,.libro-tapa,.hoja{transition:none!important}
 }
+
+/* ==========================================================================
+   Segunda versión del cuento: cielo de noche y día, tapa rosada, pliegos
+   anchos, narrador y escenas animadas
+   ========================================================================== */
+/* cielo */
+.escena-fondo{transition:background 1.2s}
+.escena-cielo{inset:0;background:none;filter:none;transform:none;animation:none;transition:opacity 1.2s;
+  background:radial-gradient(ellipse at 30% 25%,#3a2256 0%,transparent 55%),radial-gradient(ellipse at 75% 80%,#1d2f5c 0%,transparent 60%),radial-gradient(ellipse at 50% 45%,#121a3c 0%,#060a1c 75%)}
+.escena-estrellas{position:absolute;inset:0;width:100%;height:100%}
+.escena-nubes{position:absolute;inset:0;opacity:0;transition:opacity 1.2s;pointer-events:none}
+.escena-nubes i{position:absolute;width:38vw;height:12vw;border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,.95),rgba(255,255,255,0) 70%);filter:blur(6px);animation:nube 60s linear infinite}
+.escena-nubes i:nth-child(1){top:8%;left:-40vw}.escena-nubes i:nth-child(2){top:28%;left:-60vw;animation-duration:80s;animation-delay:-20s;opacity:.8}
+.escena-nubes i:nth-child(3){top:62%;left:-50vw;animation-duration:70s;animation-delay:-45s;opacity:.7}.escena-nubes i:nth-child(4){top:80%;left:-40vw;animation-duration:95s;animation-delay:-10s}
+@keyframes nube{to{transform:translateX(180vw)}}
+html[data-cielo="dia"] .escena-fondo{background:#cfe6ff}
+html[data-cielo="dia"] .escena-cielo{background:radial-gradient(circle at 82% 14%,rgba(255,244,190,.95) 0 5%,rgba(255,226,150,.5) 9%,transparent 22%),linear-gradient(180deg,#9fd3ff 0%,#c9e3ff 38%,#ffe3f0 78%,#fff2e2 100%)}
+html[data-cielo="dia"] .escena-nubes{opacity:1}
+html[data-cielo="dia"] .escena-niebla{background:radial-gradient(ellipse 55% 50% at 50% 52%,rgba(255,255,255,.4),transparent 70%)}
+html[data-cielo="dia"] .escena-pista{color:#6b2d5c;text-shadow:0 0 10px #fff}
+html[data-cielo="dia"] .reino-cielo{background-image:url("assets/fondo/dia.webp")}
+html[data-cielo="dia"] .reino-velo{opacity:calc(.3 + var(--scroll)*.5)}
+.cielo-btn{width:40px;height:40px;padding:0!important;border-radius:50%!important;font-size:1.15rem!important;display:inline-grid;place-items:center}
+.cielo-top{border:1px solid rgba(243,212,138,.6);background:linear-gradient(135deg,#2a2160,#4a2a6a);color:#ffe9f5;cursor:pointer}
+html[data-cielo="dia"] .cielo-btn{background:linear-gradient(135deg,#ffe7a6,#f5a8cf)!important;color:#5a2a4a!important}
+.libro-voz[aria-pressed="true"]{background:linear-gradient(135deg,#f5a8cf,#ba93f0)!important;color:#1b1336!important}
+.libro-voz b{font-weight:600}
+@media (max-width:640px){.libro-voz b{display:none}}
+
+/* tapa rosada */
+.tapa-frente{background:radial-gradient(ellipse at 35% 25%,#ffe1ef,transparent 55%),radial-gradient(ellipse at 70% 90%,#d77fb2,transparent 60%),linear-gradient(145deg,#f9b9d6,#ec8fbd 50%,#c76aa5);
+  box-shadow:inset 18px 0 24px -12px rgba(120,30,80,.55),inset 0 0 0 2px #a54a85,0 30px 60px rgba(0,0,0,.5),0 0 60px rgba(245,168,207,.45)}
+.tapa-frente::before{background:repeating-radial-gradient(circle at 30% 40%,rgba(255,255,255,.08) 0 1px,transparent 1px 5px)}
+.tapa-marco{border-color:#e8bd5a;box-shadow:0 0 0 6px rgba(232,189,90,.25),inset 0 0 0 7px rgba(236,143,189,.9),inset 0 0 0 8px rgba(255,236,190,.8)}
+.tapa-titulo{color:#fff7e0;text-shadow:0 2px 0 #9b3f78,0 0 18px rgba(255,236,190,.7)}
+.tapa-titulo small{color:#7a2a5c;text-shadow:none}.tapa-titulo em{color:#fff;text-shadow:0 1px 0 #9b3f78}
+.tapa-esquina{border-color:#fff1c4}.tapa-esquina::after{color:#fff1c4}
+.tapa-dorso{background:radial-gradient(circle at 50% 40%,#ffe3f0,#f6c4dc);box-shadow:inset 0 0 0 10px #ec8fbd}
+
+/* páginas: un solo filete dorado (sin efecto de «doble hoja») y canto del libro visible */
+.pag::after{inset:14px;border:1px solid rgba(215,169,72,.5);box-shadow:none}
+.pagina-guarda{background:radial-gradient(circle at 50% 40%,rgba(245,168,207,.22),transparent 62%)}
+.libro-cuerpo::before,.libro-cuerpo::after{content:"";position:absolute;top:6px;bottom:6px;width:10px;z-index:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,#efe0c3 0 1px,#d9c6a2 1px 2px);border-radius:3px}
+.libro-cuerpo::before{left:-7px;box-shadow:-3px 4px 8px rgba(0,0,0,.35)}
+.libro-cuerpo::after{right:-7px;box-shadow:3px 4px 8px rgba(0,0,0,.35)}
+.libro.una .libro-cuerpo::before{display:none}
+.escena.leyendo .doblez-next{animation:doblez-invita 3s ease-in-out 2s infinite}
+@keyframes doblez-invita{0%,70%,100%{transform:none}80%{transform:scale(1.35) rotate(-3deg)}}
+
+/* pliegos anchos */
+.libro.pliego-ancho .pag-izq{width:calc(var(--pw)*2);border-radius:14px}
+.libro.pliego-ancho .pag-der{display:none}
+.libro.pliego-ancho .libro-lomo{opacity:.35}
+.libro:not(.una) .pagina-ancha{width:calc(var(--pw)*2)}
+.libro:not(.una) .pag .pagina-ancha{right:auto}
+.clon-mitad-der{position:absolute!important;left:calc(var(--pw)*-1)!important;width:calc(var(--pw)*2)!important;inset:auto;top:0;bottom:0}
+.pagina-hueco{background:var(--papel)}
+
+/* narrador: resalta lo que se está leyendo */
+.voz-activa{background:linear-gradient(90deg,rgba(245,168,207,.28),rgba(245,168,207,.08));border-radius:8px;box-shadow:0 0 0 4px rgba(245,168,207,.12);transition:background .3s}
+
+/* I · la monita crece */
+.vineta-crece{position:relative;width:min(300px,80%);aspect-ratio:1;background:radial-gradient(circle at 50% 55%,#ffe7f3,#f3c9e0 60%,#d9a6cf);margin-inline:auto}
+.etapa-vida{position:absolute;inset:0;margin:0;display:grid;place-items:center;opacity:0;transform:translateX(30px) scale(.95);transition:opacity .9s,transform .9s}
+.etapa-vida.activa{opacity:1;transform:none}
+.etapa-vida img{height:88%;width:auto;object-fit:contain;animation:camina-sitio 1.1s ease-in-out infinite;filter:drop-shadow(0 6px 8px rgba(80,40,70,.3))}
+@keyframes camina-sitio{50%{transform:translateY(-4px) rotate(1.5deg)}}
+.etapa-vida figcaption{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);padding:3px 10px;border-radius:99px;background:#fff8;font:700 .7rem/1 var(--titulo);letter-spacing:.15em;color:#8c2f62}
+.crece-notas{position:absolute;right:10%;top:10%;color:#c74c86;font-size:1.2rem;animation:notas 2.4s ease-in-out infinite}
+@keyframes notas{50%{transform:translateY(-10px) rotate(10deg);opacity:.5}}
+.cancion{display:grid;gap:10px;margin:0 0 16px;padding:16px 18px;border-radius:16px;background:linear-gradient(160deg,rgba(255,227,240,.8),rgba(246,231,204,.6));border:1px dashed rgba(199,76,134,.45)}
+.verso{margin:0!important;font-style:italic;font-size:1.15rem;color:#5d2c63}
+.verso::before{content:"♪ ";color:#c74c86}
+
+/* II · quién es Ari hoy */
+.vineta-hoy,.vineta-matrona,.vineta-noche{width:min(300px,80%);aspect-ratio:1;margin-inline:auto;display:grid;place-items:center;background:radial-gradient(circle at 50% 55%,#fff1f7,#f3d3e4 60%,#e2b6d2)}
+.vineta-hoy img,.vineta-matrona img,.vineta-noche img{height:92%;width:auto;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(80,40,70,.3))}
+.vineta-noche{background:radial-gradient(circle at 70% 30%,#3a3478,#141a40 70%)}
+.zzz{position:absolute;right:14%;top:12%;font:700 1.1rem/1 var(--titulo);color:#d9c8ff;animation:notas 2.6s ease-in-out infinite}
+.poderes{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:10px}
+.poderes li{display:grid;grid-template-columns:42px 1fr;column-gap:12px;align-items:center;padding:10px 14px;border-radius:16px;background:rgba(255,255,255,.6);border:1px solid rgba(215,169,72,.45);
+  animation:poder-entra .6s cubic-bezier(.3,1.4,.5,1) both}
+.poderes li:nth-child(2){animation-delay:.12s}.poderes li:nth-child(3){animation-delay:.24s}.poderes li:nth-child(4){animation-delay:.36s}.poderes li:nth-child(5){animation-delay:.48s}
+@keyframes poder-entra{from{opacity:0;transform:translateX(30px)}}
+.poderes span{grid-row:span 2;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#ffe3f0,#e7d6ff);font-size:1.3rem}
+.poderes b{font-family:var(--titulo);font-size:.98rem}.poderes small{font-size:.92rem;color:var(--tinta2);line-height:1.35}
+
+/* III · Ari y Coen se dibujan y se pintan */
+.vineta-pareja{height:min(330px,44vh);background:radial-gradient(ellipse at 50% 85%,#ffe3f0,#f6dcec 55%,#e8c7e0)}
+.pj{position:absolute;bottom:0;height:96%;transition:transform 1.4s cubic-bezier(.5,0,.3,1)}
+.pj img{position:absolute;bottom:0;left:0;height:100%;width:auto}
+.pj-ari{left:10%;aspect-ratio:335/720}.pj-coen{right:10%;aspect-ratio:291/720}
+.pj-linea{clip-path:inset(0 0 100% 0)}.pj-color{-webkit-mask-image:linear-gradient(100deg,#000 40%,transparent 60%);mask-image:linear-gradient(100deg,#000 40%,transparent 60%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-position:100% 0;mask-position:100% 0}
+.vineta-pareja.dibuja .pj-linea{clip-path:inset(0 0 0 0);transition:clip-path 2s ease-in-out}
+.vineta-pareja.pinta .pj-color{-webkit-mask-position:0 0;mask-position:0 0;transition:-webkit-mask-position 2.2s ease-in-out,mask-position 2.2s ease-in-out}
+.vineta-pareja.juntos .pj-ari{transform:translateX(42%)}.vineta-pareja.juntos .pj-coen{transform:translateX(-38%)}
+.vineta-pareja .pareja-corazon{left:50%;top:44%;opacity:0;transition:opacity .6s 1s}
+.vineta-pareja.juntos .pareja-corazon{opacity:1}
+.pagina-estudio{text-align:center}
+.logo-oficial{width:min(210px,52%);margin:0 auto;filter:drop-shadow(0 6px 14px rgba(16,32,80,.3));animation:logo-flota 5s ease-in-out infinite}
+@keyframes logo-flota{50%{transform:translateY(-5px) rotate(-1deg)}}
+.logo-palabra{width:min(280px,70%);margin:0 auto 6px}
+.pagina-estudio .cuento{text-align:left}
+
+/* ✦ el reino pop-up 3D */
+.pagina-popup{padding:26px 30px 40px;display:grid;grid-template-rows:1fr auto;gap:10px;overflow:hidden}
+.popup{display:contents}
+.popup-escenario{position:relative;min-height:0;perspective:900px;perspective-origin:50% 30%;border-radius:16px;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 100%,#3b2a68,#111a40 70%)}
+html[data-cielo="dia"] .popup-escenario{background:linear-gradient(180deg,#9fd3ff,#ffe3f0 80%)}
+.pp-libro{position:absolute;left:8%;right:8%;bottom:0;height:16%;border-radius:12px 12px 0 0;
+  background:linear-gradient(90deg,#f3e4c9,#fbf3e4 48%,#d9c6a2 50%,#fbf3e4 52%,#f3e4c9);box-shadow:0 -6px 20px rgba(0,0,0,.35),inset 0 -8px 0 #e8b4cf}
+.pp-capa,.pp-cielo{position:absolute;transform-origin:50% 100%;transform:rotateX(-92deg);opacity:0;transition:transform 1.4s cubic-bezier(.3,1.35,.5,1),opacity .6s}
+.pp-cielo{inset:0 0 16% 0}
+.pp-sol,.pp-luna{position:absolute;top:12%;width:54px;height:54px;border-radius:50%}
+.pp-sol{left:16%;background:radial-gradient(circle,#fff6c8,#f2c36b 60%,transparent 62%);box-shadow:0 0 30px #f2c36b;animation:respira 4s infinite}
+.pp-luna{right:16%;background:radial-gradient(circle at 35% 35%,#fff,#e6e9ff 60%,transparent 62%);box-shadow:0 0 24px #c8d2ff}
+.pp-cordillera{left:2%;right:2%;bottom:14%;height:52%;
+  background:linear-gradient(180deg,transparent,transparent);clip-path:polygon(0 100%,8% 52%,16% 70%,27% 22%,36% 55%,46% 8%,57% 48%,66% 26%,76% 60%,86% 18%,95% 58%,100% 100%)}
+.pp-cordillera::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#fff 0 18%,#d9e2ef 22%,#8a5a3c 26%,#6b4228 70%,#4e3020)}
+.pp-castillo{left:50%;bottom:14%;width:34%;transform-origin:50% 100%;margin-left:-17%}
+.pp-castillo img{width:100%;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
+.pp-arbol{left:4%;bottom:13%;width:26%}.pp-arbol img{width:100%;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4)) hue-rotate(-20deg)}
+.popup.paso-1 .pp-humo i{animation:humo 4s ease-out forwards}
+.pp-humo i{position:absolute;bottom:12%;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,236,250,.85),rgba(186,147,240,.4) 50%,transparent 70%);opacity:0;filter:blur(3px)}
+.pp-humo i:nth-child(1){left:20%}.pp-humo i:nth-child(2){left:35%;animation-delay:.3s!important}.pp-humo i:nth-child(3){left:50%;animation-delay:.6s!important}.pp-humo i:nth-child(4){left:65%;animation-delay:.2s!important}.pp-humo i:nth-child(5){left:78%;animation-delay:.5s!important}
+@keyframes humo{0%{opacity:0;transform:translateY(0) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translateY(-260px) scale(3)}}
+.popup.paso-2 .pp-cielo{opacity:1;transform:none}
+.popup.paso-2 .pp-cordillera{opacity:1;transform:none;transition-delay:.2s}
+.popup.paso-2 .pp-arbol{opacity:1;transform:none;transition-delay:.6s}
+.popup.paso-2 .pp-castillo{opacity:1;transform:none;transition-delay:1s}
+.pp-dragon{position:absolute;left:-30%;top:12%;opacity:0}
+.pp-dragon span{display:block;width:254px;height:240px;scale:.42;transform-origin:0 0;background:url("assets/intro/dragon-rosa.webp") 0 0/2286px 240px no-repeat;animation:intro-aleteo .6s steps(8) infinite;filter:drop-shadow(0 0 12px rgba(245,168,207,.7))}
+.popup.paso-2 .pp-dragon{opacity:1;animation:pp-dragon-vuela 9s ease-in-out 1.2s infinite}
+@keyframes pp-dragon-vuela{0%{transform:translate(0,0)}35%{transform:translate(55vw,4vh) }50%{transform:translate(70vw,-2vh) scaleX(1)}51%{transform:translate(70vw,-2vh) scaleX(-1)}85%{transform:translate(5vw,6vh) scaleX(-1)}86%{transform:translate(5vw,6vh) scaleX(1)}100%{transform:translate(0,0)}}
+.pp-niebla{position:absolute;inset:40% -10% 10%;background:radial-gradient(ellipse at 30% 60%,rgba(220,210,240,.85),transparent 60%),radial-gradient(ellipse at 75% 55%,rgba(220,210,240,.8),transparent 60%);filter:blur(10px);opacity:0;transition:opacity 1.6s}
+.popup.paso-3 .pp-niebla{opacity:.9}.popup.paso-5 .pp-niebla{opacity:0}
+.pp-monstruos .mo{position:absolute;bottom:16%;width:34px;height:28px;border-radius:50% 50% 40% 40%;background:radial-gradient(circle at 35% 30%,#d9b8ff,#7b4fc4);opacity:0;transition:opacity .4s}
+.pp-monstruos .mo::before,.pp-monstruos .mo::after{content:"";position:absolute;top:9px;width:6px;height:7px;border-radius:50%;background:#1b1336}
+.pp-monstruos .mo::before{left:9px}.pp-monstruos .mo::after{right:9px}
+.mo.m1{left:44%}.mo.m2{left:56%}.mo.m3{left:66%}.mo.m4{left:76%}
+.popup.paso-3 .mo{opacity:1;animation:mo-salta .7s ease-in-out infinite}
+.mo.m2{animation-delay:-.2s!important}.mo.m3{animation-delay:-.4s!important}.mo.m4{animation-delay:-.55s!important}
+@keyframes mo-salta{50%{transform:translateY(-12px) scale(1.05,.95)}}
+.popup.paso-4 .mo{animation:mo-poof .6s ease-in forwards}.popup.paso-4 .mo.m2{animation-delay:.3s!important}.popup.paso-4 .mo.m3{animation-delay:.6s!important}.popup.paso-4 .mo.m4{animation-delay:.9s!important}
+@keyframes mo-poof{to{transform:scale(1.8);opacity:0;filter:blur(4px)}}
+.pp-heroe{position:absolute;bottom:13%;height:34%;opacity:0;filter:drop-shadow(0 6px 8px rgba(0,0,0,.5))}
+.pp-ari{left:6%;transform:scaleX(-1)}.pp-coen{left:4%;transform:scaleX(-1)}.pp-rancek{right:-12%;top:4%;bottom:auto;height:30%}
+.popup.paso-3 .pp-ari{animation:ari-salta 2.6s cubic-bezier(.4,0,.3,1) forwards}
+@keyframes ari-salta{0%{opacity:0;transform:scaleX(-1) translate(0,0)}10%{opacity:1}35%{transform:scaleX(-1) translate(-18vw,-16vh) rotate(-20deg)}55%{transform:scaleX(-1) translate(-30vw,0) rotate(0)}70%{transform:scaleX(-1) translate(-30vw,-3vh)}100%{opacity:1;transform:scaleX(-1) translate(-32vw,0)}}
+.pp-ari::after{content:""}
+.popup.paso-3 .pp-coen{animation:coen-entra 3.6s ease-in-out .8s forwards}
+@keyframes coen-entra{0%{opacity:0;transform:scaleX(-1) translateX(0)}15%{opacity:1}60%{transform:scaleX(-1) translateX(-18vw) rotate(-4deg)}70%{transform:scaleX(-1) translateX(-20vw) rotate(6deg)}100%{opacity:1;transform:scaleX(-1) translateX(-22vw)}}
+.popup.paso-4 .pp-rancek{animation:rancek-vuela 3.4s ease-in-out forwards}
+@keyframes rancek-vuela{0%{opacity:0;transform:translate(0,0) rotate(-14deg)}20%{opacity:1}100%{opacity:1;transform:translate(-50vw,14vh) rotate(-6deg)}}
+.popup.paso-4 .pp-ari,.popup.paso-4 .pp-coen,.popup.paso-5 .pp-ari,.popup.paso-5 .pp-coen{opacity:1;animation:none}
+.popup.paso-4 .pp-ari{transform:scaleX(-1) translate(-32vw,0)}.popup.paso-4 .pp-coen{transform:scaleX(-1) translateX(-22vw)}
+.popup.paso-5 .pp-ari,.popup.paso-5 .pp-coen,.popup.paso-5 .pp-rancek{opacity:1;animation:al-castillo 4.5s ease-in-out forwards}
+.popup.paso-5 .pp-ari{transform:scaleX(-1) translate(-32vw,0)}.popup.paso-5 .pp-coen{transform:scaleX(-1) translateX(-22vw)}.popup.paso-5 .pp-rancek{transform:translate(-50vw,14vh)}
+@keyframes al-castillo{to{left:50%;bottom:22%;height:12%;opacity:0;transform:none}}
+.popup.fin .pp-castillo img{filter:drop-shadow(0 0 22px #ffe39a)}
+.popup-texto{position:relative;min-height:5.5em}
+.popup-texto .cuento{position:absolute;inset:0 0 auto 0;margin:0;opacity:0;transform:translateY(8px);transition:.6s;font-size:1.15rem;text-align:center}
+.popup-texto .cuento.activo{opacity:1;transform:none}
+.popup-repetir{position:absolute;right:0;bottom:-6px;opacity:0;pointer-events:none;transition:.4s}
+.popup.fin~* .popup-repetir,.pagina-popup .popup.fin .popup-repetir{opacity:1;pointer-events:auto}
+.popup.fin .popup-repetir{opacity:1;pointer-events:auto}
+
+/* VI · la tienda en un solo pliego */
+.pagina-tienda{display:grid;gap:14px;align-content:start}
+.tienda-cabeza{display:grid;grid-template-columns:1fr 1.15fr;gap:18px;align-items:center}
+@media (max-width:860px){.tienda-cabeza{grid-template-columns:1fr}}
+.tienda-cabeza .cap-titulo,.tienda-cabeza .cap-num{text-align:left}
+.tienda-cabeza .cap-titulo::after{background-position:left center}
+.tienda-fachada{position:absolute;left:0;right:0;top:0;height:24px;display:grid;place-items:center;background:linear-gradient(90deg,#c74c86,#f08bba,#c74c86);font:700 .62rem/1 var(--titulo);letter-spacing:.18em;color:#fff7e0;z-index:2}
+.tienda-escena .t-coen,.tienda-escena .t-ari{transform:none;opacity:0}
+.tienda-escena .t-coen{left:-30%;height:80%}.tienda-escena .t-ari{left:-20%;height:74%}
+.tienda-escena.entran .t-coen{animation:entra-coen 2.4s ease-out forwards}.tienda-escena.entran .t-ari{animation:entra-ari 2.4s ease-out .3s forwards}
+@keyframes entra-coen{0%{opacity:1;left:-30%}20%,40%,60%,80%{transform:translateY(-4px)}100%{opacity:1;left:6%}}
+@keyframes entra-ari{0%{opacity:1;left:-20%}20%,40%,60%,80%{transform:translateY(-4px)}100%{opacity:1;left:26%}}
+.globo-ari{top:auto;bottom:62%}
+.ranura-caja{display:grid;justify-items:center}
+.pagina-tienda .cash-register{max-width:1000px!important}
+.libro:not(.una) .pagina-tienda .register-window{grid-template-columns:1.1fr .9fr!important}
+
+/* VI · el paseo */
+.pagina-paseo{display:grid;grid-template-rows:1fr auto;gap:10px}
+.paseo{position:relative;min-height:260px;border-radius:16px;overflow:hidden;background:url("assets/fondo/dia.webp") center 70%/cover}
+html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/noche.webp")}
+.paseo-suelo{position:absolute;left:0;right:0;bottom:0;height:12%;background:linear-gradient(180deg,transparent,rgba(40,20,40,.35))}
+.paseo-grupo{position:absolute;left:-40%;bottom:2%;height:72%;display:flex;align-items:flex-end;gap:2%}
+.paseo-pj{margin:0;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.paseo-pj img{height:100%;width:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+.paseo-pj figcaption{position:absolute;top:-6px;white-space:nowrap;padding:4px 10px;border-radius:99px;background:#fffaf2;color:var(--tinta);font:600 .82rem/1.2 var(--serif);box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.paseo-coen img{height:104%}
+.paseo-rancek{position:absolute;left:-30%;bottom:2%;height:66%}
+.globo-rancek{left:4%;top:8%;opacity:0}
+.paseo.camina .paseo-grupo{animation:paseo-grupo 9s linear forwards}
+.paseo.camina .paseo-pj img{animation:camina-sitio .5s ease-in-out infinite}
+.paseo.camina .paseo-rancek{animation:paseo-rancek 7s cubic-bezier(.4,0,.6,1) 2s forwards}
+.paseo.camina .globo-rancek{animation:aparece-globo 4s ease 2.6s forwards}
+@keyframes paseo-grupo{to{left:58%}}
+@keyframes paseo-rancek{to{left:40%}}
+@keyframes aparece-globo{0%{opacity:0}15%,85%{opacity:1}100%{opacity:0}}
+
+/* VII · obras en papel y la ilustración que se dibuja */
+.papeles{display:grid;gap:14px}
+.papel{margin:0;padding:10px 10px 6px;background:#fff;border-radius:6px;box-shadow:0 0 0 6px #6b4a2a,0 0 0 8px #3e2a16,0 12px 24px rgba(0,0,0,.35);transform:rotate(-1deg);-webkit-touch-callout:none;user-select:none}
+.papel-1{transform:rotate(1.2deg)}
+.papel img{width:100%;pointer-events:none}
+.papel figcaption{font:italic 500 .9rem/1.3 var(--serif);color:var(--tinta2);text-align:center;padding-top:4px}
+.dibujandose{position:relative;width:min(300px,80%);aspect-ratio:731/1300;margin:10px auto;border-radius:10px;overflow:hidden;box-shadow:0 0 0 4px #fff,0 0 0 6px var(--oro),0 12px 24px rgba(80,45,30,.25);-webkit-touch-callout:none;user-select:none}
+.dibujandose img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.dj-linea{clip-path:inset(0 0 100% 0)}.dj-color{clip-path:inset(0 100% 0 0)}
+.dibujandose.dibuja .dj-linea{clip-path:inset(0 0 0 0);transition:clip-path 3s linear}
+.dibujandose.pinta .dj-color{clip-path:inset(0 0 0 0);transition:clip-path 3s ease-in-out}
+.dj-pincel{position:absolute;top:0;bottom:0;left:0;width:4px;background:linear-gradient(180deg,transparent,#f5a8cf,transparent);box-shadow:0 0 16px 6px rgba(245,168,207,.6);opacity:0}
+.dibujandose.pinta .dj-pincel{animation:pincel 3s ease-in-out forwards}
+@keyframes pincel{0%{left:0;opacity:1}95%{opacity:1}100%{left:100%;opacity:0}}
+.pagina-centrada .dj-repetir{justify-self:center}
+
+/* VII · galería que saluda */
+.pagina-galeria .galeria-cabeza{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pagina-galeria .galeria-cabeza .cuento{margin:0;flex:1 1 280px}
+.pagina-galeria .leyendas{margin-top:0}
+.pagina-galeria .leyendas-grid{grid-template-columns:repeat(auto-fill,minmax(118px,1fr))}
+.obra-horizontal{grid-column:span 2;aspect-ratio:16/10}
+.obra.saluda{animation:obra-saluda .9s cubic-bezier(.3,1.6,.5,1)}
+@keyframes obra-saluda{30%{transform:translateY(-16px) rotate(-4deg) scale(1.06)}60%{transform:translateY(-6px) rotate(4deg)}}
+.obra-globo{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:max-content;max-width:150%;padding:6px 10px;border-radius:12px;background:#fffaf2;color:#3b2546;font:600 .74rem/1.25 var(--sans);box-shadow:0 4px 10px rgba(0,0,0,.3);z-index:3;animation:habla .4s cubic-bezier(.3,1.6,.5,1)}
+
+/* II · matrona: huellas */
+.huellas{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:7px}
+.huellas li{display:grid;gap:1px;padding:7px 12px 7px 34px;position:relative;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(215,169,72,.4);font-size:.93rem;line-height:1.35}
+.huellas li::before{content:"♥";position:absolute;left:11px;top:7px;color:#d23a5f}
+.huellas b{font-family:var(--titulo);font-size:.86rem;color:#8c2f62}.huellas span{color:var(--tinta2)}
+
+/* X · juegos en pliego ancho */
+.pagina-juegos .juegos-cabeza{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-bottom:10px}
+.pagina-juegos .juegos-cabeza .cap-titulo{margin:0}.pagina-juegos .juegos-cabeza .cap-titulo::after{display:none}
+.libro:not(.una) .pagina-juegos .tetris-layout{grid-template-columns:minmax(260px,330px) 1fr!important;justify-items:stretch}
+.libro:not(.una) .pagina-juegos .match-layout,.libro:not(.una) .pagina-juegos .constellation-layout{grid-template-columns:1fr 260px!important}
+@media (max-width:860px){.pagina-juegos .juegos-cabeza{grid-template-columns:1fr}}
+.pagina-perfil{display:grid;align-content:center}
+
+/* ---------------------------------------------------------------- Bloques Encantados: control mágico táctil */
+.tetris-layout{grid-template-areas:"tablero lado" "tablero control"!important;grid-template-columns:minmax(260px,400px) minmax(220px,1fr)!important;align-items:start}
+.tetris-layout .tetris-frame{grid-area:tablero}.tetris-layout .game-side{grid-area:lado}
+.control-magico{grid-area:control;display:grid;grid-template-columns:repeat(3,58px);grid-template-rows:58px 58px auto auto;gap:8px;justify-content:center;align-content:start;
+  padding:14px;border-radius:28px;background:radial-gradient(circle at 50% 30%,rgba(245,168,207,.25),rgba(42,33,96,.9));box-shadow:0 0 0 2px rgba(243,212,138,.5),0 10px 26px rgba(0,0,0,.35);touch-action:manipulation;user-select:none}
+.control-magico button{border:0;border-radius:50%;font-size:1.3rem;color:#2a1640;background:radial-gradient(circle at 35% 30%,#fff,#ffd0e5 45%,#d98cc0);box-shadow:0 4px 0 #9b4f86,0 6px 12px rgba(0,0,0,.35);transition:transform .06s}
+.control-magico button:active{transform:translateY(3px);box-shadow:0 1px 0 #9b4f86}
+.cm-girar{grid-column:2;grid-row:1;background:radial-gradient(circle at 35% 30%,#fff,#d9c8ff 45%,#9a7ae6)!important}
+.cm-izq{grid-column:1;grid-row:2}.cm-bajar{grid-column:2;grid-row:2}.cm-der{grid-column:3;grid-row:2}
+.cm-soltar{grid-column:1/-1;grid-row:3;border-radius:20px!important;height:50px;font:800 .95rem/1 var(--sans)!important;background:linear-gradient(180deg,#ffe7a6,#e2ba53)!important;box-shadow:0 4px 0 #9c7424,0 6px 12px rgba(0,0,0,.3)!important}
+.cm-pausa{grid-column:1/-1;grid-row:4;border-radius:16px!important;height:36px;font:700 .8rem/1 var(--sans)!important}
+.como-jugar{list-style:none;padding:0;margin:8px 0;display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.84rem;color:#dcd4eb}
+.como-jugar kbd{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;margin-right:3px;border-radius:7px;background:#fff;color:#2a1640;font:700 .74rem/1 var(--sans);box-shadow:0 2px 0 #b89ad6}
+.como-jugar-tactil{font-size:.8rem;color:#f5a8cf;margin:0 0 8px}
+@media (hover:hover) and (pointer:fine){.como-jugar-tactil{display:none}}
+@media (max-width:700px){
+  .tetris-layout{grid-template-areas:"tablero control" "lado lado"!important;grid-template-columns:1fr auto!important;gap:10px!important}
+  .tetris-layout .tetris-frame{width:100%;padding:40px 10px 14px}
+  .control-magico{grid-template-columns:repeat(3,44px);grid-template-rows:44px 44px auto auto;gap:6px;padding:10px;align-self:center}
+  .cm-soltar{height:44px}
+}
+@media (max-height:520px) and (orientation:landscape){
+  .tetris-layout{grid-template-areas:"tablero control lado"!important;grid-template-columns:minmax(200px,260px) auto 1fr!important}
+  .control-magico{align-self:center}
+}
+
+/* ---------------------------------------------------------------- Jardín de Gemas más mágico */
+.match-grid{border-radius:26px!important;padding:12px!important;background:radial-gradient(circle at 50% 0,rgba(245,168,207,.25),transparent 60%),linear-gradient(160deg,#2a2160,#120f36)!important;
+  box-shadow:0 0 0 3px #e2ba53,0 0 0 6px #3b2a10,0 0 40px rgba(186,147,240,.4),inset 0 0 30px rgba(0,0,0,.4)!important}
+.match-grid button,.match-grid .gem{transition:transform .18s cubic-bezier(.3,1.6,.5,1),filter .2s}
+.match-grid button:hover{transform:scale(1.1) rotate(-4deg);filter:brightness(1.2) drop-shadow(0 0 8px rgba(255,255,255,.6))}
+.pagina-tienda .cash-register{width:100%;margin-top:96px!important;justify-self:center}
+.pagina-tienda .ranura-caja{width:100%}
+
+/* celular: menos margen y juegos aprovechando el ancho */
+.libro.una .pagina{padding:30px 16px 46px}
+.libro.una .pagina-popup{padding:20px 12px 40px;grid-template-rows:minmax(300px,1fr) auto}
+.libro.una .arcade-zona{padding:8px}
+.libro.una .game-panel{padding:6px}
+@media (max-width:700px){
+  .control-magico{grid-template-columns:repeat(3,38px);grid-template-rows:38px 38px auto auto;gap:5px;padding:8px}
+  .cm-soltar{height:40px;font-size:.8rem!important}.cm-pausa{height:30px}
+  .tetris-layout .tetris-frame{padding:34px 6px 10px}
+}
