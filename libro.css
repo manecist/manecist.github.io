@@ -663,3 +663,13 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
 .pagina #constellation-board{height:min(40vh,360px)}
 .pagina .special-guide b{color:#8c2f62}
 .pagina .star-lesson{color:#e9ecf8}.pagina .star-lesson h4{color:#fff}.pagina .star-lesson p{color:#d6dcf2}
+/* la tapa se desactiva al abrir, pero no debe atenuarse: con opacidad < 1 el navegador aplana el 3D
+   y el giro se veía como una portada fantasma sobre la página */
+.libro-tapa:disabled{opacity:1}
+/* apertura en dos tiempos: el libro se centra y crece; luego la tapa gira sobre el lomo y su reverso
+   se desvanece al apoyarse, dejando ver la primera página */
+.libro[data-estado="abriendo"] .libro-tapa{transition:transform 1.3s cubic-bezier(.45,.05,.35,1) .35s}
+.libro[data-estado="abriendo"] .tapa-frente{animation:cara-fuera 1.3s linear .35s both}
+.libro[data-estado="abriendo"] .tapa-dorso{animation:reverso-apoya 1.3s linear .35s both}
+@keyframes reverso-apoya{0%,40%{opacity:0}44%,80%{opacity:1}100%{opacity:0}}
+.libro[data-estado="abierto"] .libro-tapa{transition:visibility 0s}
