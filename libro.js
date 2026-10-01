@@ -2,7 +2,7 @@
    libro.js · el libro mágico
    Tras la intro, una estela cruza el cielo y aparece un libro cerrado, con
    la portada sin emblema. El dragón rosa llega volando, se posa sobre ella,
-   brilla y se convierte en el emblema de Studios Conari. Luego el hada llega
+   brilla y, dibujo a dibujo, se transforma en el emblema rosado de Studios Conari. Luego el hada llega
    volando, toca la tapa con su varita y el libro se abre. Desde
    ahí se elige: leer el portafolio como cuento (páginas que se pasan) o la
    versión clásica (una sola página con el reino de fondo).
@@ -128,7 +128,7 @@
   function abrir() {
     if (abierto) return;
     abierto = true; tapa.disabled = true;
-    libro.classList.remove('espera-emblema'); document.querySelector('.dragon-portada')?.remove();
+    libro.classList.remove('espera-emblema'); document.querySelector('.dragon-portada')?.remove(); libro.querySelector('.tapa-transforma')?.remove();
     $('#escena-pista').classList.add('fuera');
     colocar(Number(leer('mce-pagina-ir') || 0));
     libro.dataset.estado = 'abriendo';
@@ -171,8 +171,11 @@
     volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200);
   }
 
+  // seis dibujos: el dragón aislado, cuatro etapas y el emblema rosado de la portada
+  const FOTOGRAMAS = [0, 1, 2, 3, 4, 5].map(i => `assets/portada/dragon-logo-${i}.webp`), PAUSAS = [420, 300, 300, 300, 300];
   // el dragón rosa vuela desde la izquierda, se posa sobre la portada y se convierte en el emblema
   async function dragonPortada() {
+    FOTOGRAMAS.forEach(src => { new Image().src = src; });   // precarga para que la transformación no parpadee
     const emblema = libro.querySelector('.tapa-emblema');
     if (quieto || !emblema) { libro.classList.remove('espera-emblema'); return; }
     const d = document.createElement('div'); d.className = 'dragon-portada'; d.setAttribute('aria-hidden', 'true');
@@ -199,14 +202,26 @@
     d.classList.add('posado');
     await espera(650);
     if (abierto) { d.remove(); return; }
-    // brilla y se convierte en el emblema
+    // brilla y se funde con el primer dibujo; luego se transforma, etapa por etapa, en el emblema
     d.classList.add('brilla');
-    if (window.Magia) Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 70, vel: 5 });
-    await espera(520);
-    libro.classList.remove('espera-emblema'); libro.classList.add('forma-emblema');
-    d.classList.add('se-va');
-    await espera(900);
-    d.remove(); libro.classList.remove('forma-emblema');
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    if (window.Magia) Magia.chispas(cx, cy, { n: 50, vel: 4 });
+    await espera(380);
+    if (abierto) { d.remove(); return; }
+    const caja = document.createElement('span'); caja.className = 'tapa-transforma'; caja.setAttribute('aria-hidden', 'true');
+    Object.assign(caja.style, { left: emblema.offsetLeft + 'px', top: emblema.offsetTop + 'px', width: emblema.offsetWidth + 'px', height: emblema.offsetHeight + 'px' });
+    const fotos = FOTOGRAMAS.map(src => { const im = new Image(); im.src = src; im.alt = ''; caja.append(im); return im; });
+    emblema.parentElement.append(caja);
+    fotos[0].classList.add('ve'); d.classList.add('se-va');
+    for (let i = 1; i < fotos.length; i++) {
+      await espera(PAUSAS[i - 1]);
+      if (abierto) { caja.remove(); d.remove(); return; }
+      fotos[i].classList.add('ve'); fotos[i - 1].classList.add('sale');
+      if (window.Magia) Magia.chispas(cx, cy, { n: i === fotos.length - 1 ? 60 : 16, vel: i === fotos.length - 1 ? 5 : 2.6 });
+    }
+    await espera(700);
+    libro.classList.remove('espera-emblema');   // el emblema de la tapa ya es el logo rosado
+    caja.remove(); d.remove();
   }
 
   async function escenaInicial() {
