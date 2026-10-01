@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261001a">
-  <link rel="stylesheet" href="libro.css?v=20261001a">
+  <link rel="stylesheet" href="libro.css?v=20261001b">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
   <script>
@@ -24,8 +24,9 @@
   <script src="tetris.js?v=20260927b" defer></script>
   <script src="app.js?v=20261001a" defer></script>
   <script src="magia.js?v=20261001a" defer></script>
-  <script src="secciones.js?v=20261001a" defer></script>
-  <script src="libro.js?v=20261001a" defer></script>
+  <script src="fondo-acuarela.js?v=20261001b" defer></script>
+  <script src="secciones.js?v=20261001b" defer></script>
+  <script src="libro.js?v=20261001b" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -70,15 +71,10 @@
 
 <div id="site" class="site" aria-hidden="true">
 <div class="reino" id="reino" aria-hidden="true">
-  <div class="reino-capa reino-cielo"></div>
-  <canvas class="reino-estrellas" id="reino-estrellas"></canvas>
-  <div class="reino-capa reino-dragon"><span></span></div>
-  <div class="reino-capa reino-personajes">
-    <div class="rp rp-mago"><img src="assets/personajes/rancek-espalda.webp" alt=""></div>
-    <div class="rp rp-pareja"><img class="rp-coen" src="assets/personajes/coen-espalda.webp" alt=""><img class="rp-ari" src="assets/personajes/ari-espalda.webp" alt=""><i class="rp-lazo"></i></div>
-  </div>
+  <canvas class="reino-acuarela" id="reino-acuarela"></canvas>
   <div class="reino-capa reino-petalos" id="reino-petalos"></div>
   <div class="reino-velo"></div>
+  <p class="reino-saltar">Pulsa cualquier tecla o toca para saltar</p>
 </div>
 <header class="topbar">
   <a class="brand" href="#inicio"><span>MCE</span><small>María Inés Cisterna Escobar</small></a>

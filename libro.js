@@ -204,6 +204,8 @@
     site.classList.add('ready'); site.setAttribute('aria-hidden', 'false');
     document.body.classList.remove('bloqueado');
     guardar('mce-modo', 'clasico');
+    // el hada pinta el reino de fondo (no si se llega directo a una sección)
+    window.MCEReino?.mostrar(!hash);
     if (hash && document.querySelector(hash)) document.querySelector(hash).scrollIntoView();
     else scrollTo(0, 0);
     $('#nombre-principal')?.focus({ preventScroll: true });

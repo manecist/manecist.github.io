@@ -292,24 +292,31 @@
   })();
 
   /* ======================================================================
-     4 · El reino de fondo: estrellas, pétalos, dragón y paralaje
+     4 · El reino de fondo: la escena en acuarela, pétalos y paralaje
      ====================================================================== */
   (function reino() {
     const r = $('#reino'); if (!r) return;
-    const cv = $('#reino-estrellas'), c = cv.getContext('2d'); let est = [], w, h;
-    function medir() {
-      w = cv.width = innerWidth; h = cv.height = Math.round(innerHeight * .55);
-      est = Array.from({ length: Math.round(w * h / 6500) }, () => ({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.3 + .3, f: Math.random() * 6, v: .6 + Math.random() * 1.6 }));
+    // la escena se carga solo cuando se elige la versión clásica (pesa ~2 MB)
+    let fondo = null;
+    const site = $('#site');
+    function terminarPintura() {
+      site.classList.remove('pintando'); document.body.classList.remove('bloqueado');
+      removeEventListener('keydown', saltar, true); removeEventListener('pointerdown', saltar, true);
+      try { sessionStorage.setItem('mce-acuarela', '1'); } catch (e) { /* sin almacenamiento */ }
     }
-    medir(); addEventListener('resize', medir);
-    function cielo(t) {
-      c.clearRect(0, 0, w, h);
-      for (const s of est) { const a = .35 + .65 * Math.abs(Math.sin(s.f + t / 1000 * s.v)); c.globalAlpha = a * (1 - s.y / h * .7); c.fillStyle = '#fff6fb'; c.beginPath(); c.arc(s.x, s.y, s.r, 0, 7); c.fill(); }
-      c.globalAlpha = 1;
-      if (!quieto && !document.hidden && $('#site').classList.contains('ready')) requestAnimationFrame(cielo);
-      else setTimeout(() => requestAnimationFrame(cielo), 600);
-    }
-    requestAnimationFrame(cielo);
+    function saltar(e) { if (e) { e.preventDefault(); e.stopImmediatePropagation(); } fondo?.saltar(); }
+    window.MCEReino = {
+      // animar: el hada pinta la escena desde el lineart (una vez por sesión y sin movimiento reducido)
+      mostrar(animar) {
+        if (!window.FondoAcuarela) return;
+        if (!fondo) fondo = FondoAcuarela.montar($('#reino-acuarela'));
+        let visto = false; try { visto = !!sessionStorage.getItem('mce-acuarela'); } catch (e) { /* sin almacenamiento */ }
+        if (!animar || quieto || visto) { fondo.pintada(); return; }
+        site.classList.add('pintando'); document.body.classList.add('bloqueado');
+        addEventListener('keydown', saltar, true); addEventListener('pointerdown', saltar, true);
+        fondo.reproducir().then(terminarPintura);
+      }
+    };
     // pétalos de sakura
     const caja = $('#reino-petalos');
     if (!quieto) for (let i = 0; i < 22; i++) {
@@ -322,6 +329,9 @@
     function mover() {
       tx += (mx - tx) * .06; ty += (my - ty) * .06;
       r.style.setProperty('--px', tx.toFixed(4)); r.style.setProperty('--py', ty.toFixed(4));
+      // al bajar por la página las capas cercanas se desplazan más que las lejanas
+      const largo = Math.max(1, document.documentElement.scrollHeight - innerHeight), s = scrollY / largo;
+      fondo?.mover(tx * 1.6, ty * 1.2 + (s - .5) * 1.4);
       requestAnimationFrame(mover);
     }
     if (!quieto) mover();
