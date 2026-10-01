@@ -232,7 +232,10 @@
     }
     function tabla() {
       const t = $('#lab-tabla'); t.replaceChildren();
-      filas.forEach(r => { const tr = el('tr'); [r.nombre, r.edad, r.color, r.musica].forEach(v => tr.append(el('td', null, String(v)))); t.append(tr); });
+      // en el libro se muestran las primeras filas y se avisa cuántas quedan (en la versión clásica, todas)
+      const MAX = 12;
+      filas.forEach((r, i) => { const tr = el('tr', i >= MAX ? 'fila-extra' : null); [r.nombre, r.edad, r.color, r.musica].forEach(v => tr.append(el('td', null, String(v)))); t.append(tr); });
+      const mas = $('#lab-tabla-mas'); if (mas) mas.textContent = filas.length > MAX ? `… y ${filas.length - MAX} registros más; en la versión clásica se ven todos.` : '';
     }
     function pintar() { kpis(); mapa(); if (sel && !filas.some(r => (sel.color == null || r.color === sel.color) && (sel.tramo == null || tramoDe(r.edad) === sel.tramo))) sel = null; lectura(); marcar(); tabla(); }
     cargarEjemplo();
@@ -258,7 +261,17 @@
       ['regalo-1', 'Regalo', 'regalo', 'Ilustración hecha como regalo.'],
       ['regalo-2', 'Regalo', 'regalo', 'Ilustración hecha como regalo.']
     ];
-    let vista = OBRAS, idx = 0;
+    let vista = OBRAS, idx = 0, hoja = 0;
+    // en el libro la galería se recorre por hojas de seis (en la versión clásica se ven todas)
+    const POR_HOJA = 6, pie = el('div', 'leyendas-hojas'), hAnt = el('button', null, '‹'), hSig = el('button', null, '›'), hTxt = el('span');
+    hAnt.type = hSig.type = 'button'; hAnt.setAttribute('aria-label', 'Ilustraciones anteriores'); hSig.setAttribute('aria-label', 'Más ilustraciones');
+    pie.append(hAnt, hTxt, hSig); grid.after(pie);
+    function paginar(h) {
+      const n = Math.max(1, Math.ceil(vista.length / POR_HOJA)); hoja = (h + n) % n;
+      [...grid.children].forEach((b, i) => b.classList.toggle('fuera-hoja', Math.floor(i / POR_HOJA) !== hoja));
+      hTxt.textContent = `${hoja + 1} / ${n}`; pie.hidden = n < 2;
+    }
+    hAnt.addEventListener('click', () => paginar(hoja - 1)); hSig.addEventListener('click', () => paginar(hoja + 1));
     const visor = $('#visor'), vImg = $('#visor-img'), vTxt = $('#visor-texto');
     function pintar(f) {
       vista = f === 'todas' ? OBRAS : OBRAS.filter(o => o[2] === f);
@@ -270,6 +283,7 @@
         b.addEventListener('click', () => abrir(i));
         grid.append(b);
       });
+      paginar(0);
     }
     function abrir(i) {
       idx = (i + vista.length) % vista.length; const [slug, tit, tipo, txt] = vista[idx];

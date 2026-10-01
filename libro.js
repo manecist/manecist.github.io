@@ -24,6 +24,11 @@
   const guardar = (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) { /* sin almacenamiento */ } };
   const leer = k => { try { return sessionStorage.getItem(k); } catch (e) { return null; } };
 
+  // el índice busca la primera página de cada capítulo: agregar páginas no lo desordena
+  $$('[data-ir-cap]').forEach(b => {
+    const c = b.dataset.irCap, i = paginas.findIndex(p => (p.dataset.cap || '') === c || (p.dataset.cap || '').startsWith(c + ' ·'));
+    if (i >= 0) b.dataset.ir = i;
+  });
   paginas.forEach((p, i) => { p.dataset.n = i; const f = document.createElement('span'); f.className = 'pagina-num'; f.textContent = i ? String(i) : ''; f.setAttribute('aria-hidden', 'true'); p.append(f); });
 
   // ------------------------------------------------------------ medidas
@@ -37,7 +42,7 @@
     libro.classList.toggle('una', una);
   }
   medir();
-  addEventListener('resize', () => { const antes = una; medir(); if (abierto && antes !== una) colocar(una ? actual : actual - actual % 2); });
+  addEventListener('resize', () => { const antes = una; medir(); if (abierto && antes !== una) colocar(una ? actual : actual - actual % 2); else [...izq.children, ...der.children].forEach(ajustar); });
 
   // ------------------------------------------------------------ préstamo de demostraciones
   const origen = new Map();
@@ -47,9 +52,14 @@
       if (!w || r.contains(w)) return;
       if (!origen.has(w)) { const c = document.createComment('vuelve:' + r.dataset.widget); w.before(c); origen.set(w, c); }
       r.append(w);
+      // un desplegable que en el libro tiene su propia página se muestra abierto
+      if (r.hasAttribute('data-abierto') && 'open' in w) { if (w.dataset.antes == null) w.dataset.antes = w.open ? '1' : ''; w.open = true; }
     });
   }
-  function devolver() { origen.forEach((c, w) => c.replaceWith(w)); origen.clear(); }
+  function devolver() {
+    origen.forEach((c, w) => { c.replaceWith(w); if (w.dataset.antes != null) { w.open = !!w.dataset.antes; delete w.dataset.antes; } });
+    origen.clear();
+  }
 
   function despertarHadas(p) {
     if (!window.Magia) return;
@@ -64,13 +74,31 @@
     [...izq.children, ...der.children].forEach(p => almacen.append(p));
     const vis = una ? [paginas[i]] : [paginas[i], paginas[i + 1]];
     if (una) der.append(vis[0]); else { izq.append(vis[0]); if (vis[1]) der.append(vis[1]); }
-    vis.forEach(p => { if (!p) return; prestar(p); despertarHadas(p); p.scrollTop = 0; });
+    vis.forEach(p => { if (!p) return; prestar(p); despertarHadas(p); ajustar(p); p.scrollTop = 0; });
+    vigilar(vis);
     const ref = vis[vis.length - 1] || vis[0];
     folio.textContent = (ref.dataset.cap || '') + ' · ' + (una ? (i + 1) : (i + 1) + '–' + Math.min(paginas.length, i + 2)) + ' / ' + paginas.length;
     $('#libro-prev').disabled = i === 0;
     $('#libro-next').disabled = i + (una ? 1 : 2) >= paginas.length;
     guardar('mce-pagina', String(i));
   }
+
+  // si una página no cabe (pantallas bajas o contenido que crece), su contenido se reduce lo justo
+  const ZOOM_MIN = .7;
+  function ajustar(p) {
+    if (!p || !p.isConnected) return;
+    const hijos = [...p.children].filter(c => !c.classList.contains('pagina-num'));
+    hijos.forEach(c => { c.style.zoom = ''; });
+    let f = 1;
+    for (let k = 0; k < 3 && p.scrollHeight > p.clientHeight && f > ZOOM_MIN; k++) {
+      const cs = getComputedStyle(p), pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      f = Math.max(ZOOM_MIN, f * (p.clientHeight - pad) / Math.max(1, p.scrollHeight - pad) - .02);
+      hijos.forEach(c => { c.style.zoom = f.toFixed(3); });
+    }
+  }
+  let pendiente = 0;
+  const vigia = new ResizeObserver(() => { cancelAnimationFrame(pendiente); pendiente = requestAnimationFrame(() => [...izq.children, ...der.children].forEach(ajustar)); });
+  function vigilar(vis) { vigia.disconnect(); vis.forEach(p => p && p.querySelectorAll('.ranura, .pagina > *').forEach(n => vigia.observe(n))); }
 
   // copia visual de una página (sin ids ni foco) para la hoja que gira
   function clon(p) {
@@ -106,13 +134,13 @@
       frente.append(clon(paginas[actual + 1])); dorso.append(clon(paginas[nuevo]));
       hoja.append(frente, dorso);
       [...der.children].forEach(p => almacen.append(p));
-      if (paginas[nuevo + 1]) { der.append(paginas[nuevo + 1]); prestar(paginas[nuevo + 1]); despertarHadas(paginas[nuevo + 1]); paginas[nuevo + 1].scrollTop = 0; }
+      if (paginas[nuevo + 1]) { der.append(paginas[nuevo + 1]); prestar(paginas[nuevo + 1]); despertarHadas(paginas[nuevo + 1]); ajustar(paginas[nuevo + 1]); paginas[nuevo + 1].scrollTop = 0; }
     } else {
       hoja.className = 'hoja hoja-izq';
       frente.append(clon(paginas[actual])); dorso.append(clon(paginas[nuevo + 1]));
       hoja.append(frente, dorso);
       [...izq.children].forEach(p => almacen.append(p));
-      izq.append(paginas[nuevo]); prestar(paginas[nuevo]); despertarHadas(paginas[nuevo]); paginas[nuevo].scrollTop = 0;
+      izq.append(paginas[nuevo]); prestar(paginas[nuevo]); despertarHadas(paginas[nuevo]); ajustar(paginas[nuevo]); paginas[nuevo].scrollTop = 0;
     }
     cuerpo.append(hoja);
     if (hada && window.Magia) hada.hechizo();

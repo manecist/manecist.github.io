@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261001a">
-  <link rel="stylesheet" href="libro.css?v=20261001l">
+  <link rel="stylesheet" href="libro.css?v=20261001p">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
   <script>
@@ -25,8 +25,8 @@
   <script src="app.js?v=20261001a" defer></script>
   <script src="magia.js?v=20261001a" defer></script>
   <script src="fondo-acuarela.js?v=20261001b" defer></script>
-  <script src="secciones.js?v=20261001c" defer></script>
-  <script src="libro.js?v=20261001d" defer></script>
+  <script src="secciones.js?v=20261001d" defer></script>
+  <script src="libro.js?v=20261001i" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -223,7 +223,7 @@ double resultado = a + b;</code></pre>
     <div class="cash-register" id="caja">
       <div class="register-marquee"><span>MAGICAL STORE · M4</span><output id="register-display" aria-label="Total de la compra">$0</output></div><div class="register-sign">TIENDA JAVA M4 · CAJA 01</div>
       <div class="register-window">
-        <div class="product-picker">
+        <div class="product-picker" id="m4-picker">
           <label>Producto
             <select id="m4-product"><optgroup label="Anillos"><option value="1800000" data-product-id="1">Anillo Magic · $1.800.000</option><option value="800000" data-product-id="2">Anillo Sailor · $800.000</option><option value="200000" data-product-id="3">Anillos Ali · $200.000</option><option value="450000" data-product-id="4">Anillo Moon · $450.000</option></optgroup><optgroup label="Aros"><option value="15000" data-product-id="5">Aros Sailor · $15.000</option><option value="22000" data-product-id="6">Aros Saku · $22.000</option><option value="10000" data-product-id="7">Diges Sailor · $10.000</option><option value="12000" data-product-id="8">Diges Saku · $12.000</option></optgroup><optgroup label="Carteras"><option value="32000" data-product-id="9">Cartera Sailor · $32.000</option><option value="41000" data-product-id="10">Cartera Magic · $41.000</option><option value="37000" data-product-id="11">Cartera Cel · $37.000</option><option value="28000" data-product-id="12">Cartera Moon · $28.000</option></optgroup><optgroup label="Cosmetiqueros"><option value="16000" data-product-id="13">Cosmetiqueros 01 · $16.000</option><option value="10000" data-product-id="14">Cosmetiqueros 02 · $10.000</option><option value="10000" data-product-id="15">Cosmetiqueros 03 · $10.000</option><option value="9000" data-product-id="16">Cosmetiqueros 04 · $9.000</option></optgroup><optgroup label="Perfumes"><option value="18000" data-product-id="17">Perfume R · $18.000</option><option value="20000" data-product-id="18">Perfume S · $20.000</option><option value="27000" data-product-id="19">Perfume M · $27.000</option><option value="15000" data-product-id="20">Perfume C · $15.000</option></optgroup><optgroup label="Relojes"><option value="45000" data-product-id="21">Reloj Mag · $45.000</option><option value="45000" data-product-id="22">Reloj Hom · $45.000</option><option value="33000" data-product-id="23">Reloj Sak · $33.000</option><option value="33000" data-product-id="24">Reloj Dar · $33.000</option></optgroup><optgroup label="Rostros"><option value="18750" data-product-id="25">Bases Col · $18.750</option><option value="11990" data-product-id="26">Conturn Mag · $11.990</option><option value="10870" data-product-id="27">Corrector M · $10.870</option><option value="14550" data-product-id="28">Polvo Mag · $14.550</option></optgroup><optgroup label="Ojos"><option value="8430" data-product-id="29">Delineadores · $8.430</option><option value="10990" data-product-id="30">Rimel Mag · $10.990</option><option value="29380" data-product-id="31">Sombra Ojos · $29.380</option><option value="9000" data-product-id="32">Sombra Gel · $9.000</option></optgroup><optgroup label="Labios"><option value="13000" data-product-id="33">Labial Magic · $13.000</option><option value="7000" data-product-id="34">Labial Sail · $7.000</option><option value="7000" data-product-id="35">Labial Sak · $7.000</option><option value="11000" data-product-id="36">Labial Lapiz · $11.000</option></optgroup><optgroup label="Herramientas"><option value="11670" data-product-id="37">Cepillo Mag · $11.670</option><option value="1000" data-product-id="38">Mascarilla Fac · $1.000</option><option value="28990" data-product-id="39">Secador Pelo · $28.990</option><option value="4800" data-product-id="40">Rizador Mag · $4.800</option></optgroup><optgroup label="Poleras"><option value="19900" data-product-id="41">Blusa corta · $19.900</option><option value="12650" data-product-id="42">Top · $12.650</option><option value="17420" data-product-id="43">Corset top · $17.420</option><option value="21900" data-product-id="44">Blusa larga · $21.900</option></optgroup><optgroup label="Pantalones"><option value="22740" data-product-id="45">Jeans estampado · $22.740</option><option value="17000" data-product-id="46">Faldas Magical · $17.000</option><option value="33760" data-product-id="47">Pantalones de tela · $33.760</option><option value="22400" data-product-id="48">Jeans flare · $22.400</option></optgroup><optgroup label="Conjuntos"><option value="41300" data-product-id="49">Conjunto lila · $41.300</option><option value="72400" data-product-id="50">Conjunto Magical · $72.400</option><option value="22900" data-product-id="51">Pijama · $22.900</option><option value="22000" data-product-id="52">Traje de baño · $22.000</option></optgroup><optgroup label="Vestidos"><option value="17900" data-product-id="53">Vestido ajustado · $17.900</option><option value="23000" data-product-id="54">Vestido blangro · $23.000</option><option value="25900" data-product-id="55">Vestido lilrose · $25.900</option><option value="28000" data-product-id="56">Vestido Magical · $28.000</option></optgroup><optgroup label="Matrimonio"><option value="118000" data-product-id="57">Traje de Hombre · $118.000</option><option value="142000" data-product-id="58">Vestido lilMagic · $142.000</option><option value="345000" data-product-id="59" selected>Vestido Princes · $345.000</option><option value="345000" data-product-id="60">Hombre Princes · $345.000</option></optgroup><optgroup label="Abrigos"><option value="31400" data-product-id="61">Chaqueta · $31.400</option><option value="44700" data-product-id="62">Blazer · $44.700</option><option value="73490" data-product-id="63">Abrigos · $73.490</option><option value="73490" data-product-id="64">Abrigo Largo · $73.490</option></optgroup><optgroup label="Calzado"><option value="82600" data-product-id="65">Zap Magic · $82.600</option><option value="79000" data-product-id="66">Zap Sailor · $79.000</option><option value="81990" data-product-id="67">Zap Magical H · $81.990</option><option value="41580" data-product-id="68">Zapatillas · $41.580</option></optgroup></select>
           </label>
@@ -233,7 +233,7 @@ double resultado = a + b;</code></pre>
           </label>
           <div class="discount-presets" aria-label="Porcentajes rápidos"><button type="button" data-discount="0">0%</button><button type="button" data-discount="10">10%</button><button type="button" data-discount="20">20%</button><button type="button" data-discount="50">50%</button></div><small id="discount-error" role="status">Escribe un porcentaje entre 0 y 100; admite decimales.</small><button id="m4-add" class="register-button">AGREGAR AL CARRITO</button>
         </div>
-        <div class="receipt">
+        <div class="receipt" id="m4-recibo">
           <div class="receipt-head">VISTA PREVIA</div>
           <div id="m4-items" class="receipt-items"><p class="empty">Carrito vacío</p></div>
           <div class="receipt-total"><span>Subtotal</span><b id="m4-subtotal">$0</b></div>
@@ -341,10 +341,11 @@ double total = subtotal - ahorro;</code></pre>
         <div id="lab-mapa" class="mapa"></div>
       </figure>
       <div class="oraculo-lectura" id="lab-lectura" aria-live="polite"></div>
-      <details class="oraculo-tabla"><summary>Ver los registros como tabla</summary><div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Edad</th><th>Color</th><th>Música</th></tr></thead><tbody id="lab-tabla"></tbody></table></div>
+      <details class="oraculo-tabla" id="lab-tabla-det"><summary>Ver los registros como tabla</summary><div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Edad</th><th>Color</th><th>Música</th></tr></thead><tbody id="lab-tabla"></tbody></table></div>
+        <p id="lab-tabla-mas" class="lab-tabla-mas"></p>
         <pre><code>INSERT INTO preferencias (nombre, edad, color, musica)
 VALUES (?, ?, ?, ?);</code></pre></details>
-      <details class="oraculo-ciencia"><summary>✧ Lo que investiga la ciencia sobre color, música y edad</summary>
+      <details class="oraculo-ciencia" id="lab-ciencia-det"><summary>✧ Lo que investiga la ciencia sobre color, música y edad</summary>
         <article><h5>Color, emoción y sonido</h5><p>En un experimento con música clásica, participantes de Estados Unidos y México asociaron piezas rápidas en modo mayor con colores más claros, saturados y amarillos; las emociones compartidas ayudaron a explicarlo. Elegir un color para una canción no es lo mismo que tener un color favorito: no permite concluir «si te gusta el rojo, te gusta el pop».</p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3670360/" target="_blank" rel="noopener noreferrer">Palmer y colaboradores · PNAS, 2013 ↗</a></article>
         <article><h5>Las preferencias cambian con la edad</h5><p>Dos estudios con más de 250.000 personas encontraron diferencias entre adolescencia y mediana edad: en promedio, la música «intensa» y «contemporánea» disminuye con los años y otras aumentan. Son tendencias de grupos, no reglas para cada persona.</p><a href="https://pubmed.ncbi.nlm.nih.gov/23895269/" target="_blank" rel="noopener noreferrer">Bonneville-Roussy y colaboradores · JPSP, 2013 ↗</a></article>
         <p class="small-note">El oráculo solo describe los registros de esta página; las fuentes son contexto y no se usan para inventar resultados.</p>
@@ -444,19 +445,19 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </div>
 
   <div class="game-panel" id="game-match">
-    <div class="gem-welcome"><div><span class="chip">MAGIA PARA JUGAR</span><h3>Cohetes, bombas y bolas disco</h3><p>Empiezas con uno de cada poder. Intercámbialo con una gema vecina para ver su efecto, o aprende a crear los tuyos.</p></div><div id="gem-inventory" aria-label="Poderes disponibles en el tablero"></div></div>
+    <div id="gema-intro" class="gema-intro"><div class="gem-welcome"><div><span class="chip">MAGIA PARA JUGAR</span><h3>Cohetes, bombas y bolas disco</h3><p>Empiezas con uno de cada poder. Intercámbialo con una gema vecina para ver su efecto, o aprende a crear los tuyos.</p></div><div id="gem-inventory" aria-label="Poderes disponibles en el tablero"></div></div>
     <div class="gem-lessons"><span>Retos guiados</span><button type="button" data-gem-lesson="rocket"><img src="assets/gema-rocket.svg" alt="">Crear cohete · 4</button><button type="button" data-gem-lesson="bomb"><img src="assets/gema-bomb.svg" alt="">Crear bomba · 5</button><button type="button" data-gem-lesson="disco"><img src="assets/gema-disco.svg" alt="">Crear bola disco · 6</button><button type="button" data-gem-lesson="bomb-l"><img src="assets/gema-bomb.svg" alt="">Bomba en L · 3 + 3</button><button type="button" data-gem-lesson="bomb-t"><img src="assets/gema-bomb.svg" alt="">Bomba en T · 3 + 3</button><small>Cada reto prepara un tablero nuevo y reinicia los puntos.</small></div>
     <p id="gem-lesson-hint" class="gem-lesson-hint" hidden role="status"></p>
-    <div id="gem-power-message" class="gem-power-message" role="status">Tres poderes te esperan en el tablero.</div>
+    <div id="gem-power-message" class="gem-power-message" role="status">Tres poderes te esperan en el tablero.</div></div>
     <div class="match-layout">
       <div id="match-grid" class="match-grid" aria-label="Tablero de gemas"></div>
-      <aside class="game-side"><h3>Jardín de Gemas</h3><p>Selecciona dos piezas vecinas. Une 3 para puntuar. Con 4 creas un cohete; con 5, una bomba; con 6 o más, una bola disco. Las uniones horizontales y verticales cuentan también cuando se cruzan en L o T: 3 + 3 comparten una gema y forman una bomba de 5. Intercambia un especial con cualquier vecino para activarlo.</p><div class="special-guide"><p><img src="assets/gema-rocket.svg" alt=""> <b>4 · Cohete</b><span>Limpia una fila o columna, según la combinación.</span></p><p><img src="assets/gema-bomb.svg" alt=""> <b>5 · Bomba</b><span>Rompe un área de hasta 5 × 5 casillas.</span></p><p><img src="assets/gema-disco.svg" alt=""> <b>6+ · Bola disco</b><span>Elimina todas las gemas del símbolo vecino.</span></p></div><div class="score-row"><span>Puntos</span><b id="match-score">0000</b></div><button id="match-reset" class="btn primary">Nueva partida</button><div id="match-message" class="match-message" role="status">✦ Crea tu primera combinación ✦</div></aside>
+      <aside class="game-side" id="gema-lado"><h3>Jardín de Gemas</h3><p>Selecciona dos piezas vecinas. Une 3 para puntuar. Con 4 creas un cohete; con 5, una bomba; con 6 o más, una bola disco. Las uniones horizontales y verticales cuentan también cuando se cruzan en L o T: 3 + 3 comparten una gema y forman una bomba de 5. Intercambia un especial con cualquier vecino para activarlo.</p><div class="special-guide" id="gema-guia"><p><img src="assets/gema-rocket.svg" alt=""> <b>4 · Cohete</b><span>Limpia una fila o columna, según la combinación.</span></p><p><img src="assets/gema-bomb.svg" alt=""> <b>5 · Bomba</b><span>Rompe un área de hasta 5 × 5 casillas.</span></p><p><img src="assets/gema-disco.svg" alt=""> <b>6+ · Bola disco</b><span>Elimina todas las gemas del símbolo vecino.</span></p></div><div class="score-row"><span>Puntos</span><b id="match-score">0000</b></div><button id="match-reset" class="btn primary">Nueva partida</button><div id="match-message" class="match-message" role="status">✦ Crea tu primera combinación ✦</div></aside>
     </div>
   </div>
 
   <div class="game-panel" id="game-stars">
-    <div class="atlas-heading"><span class="chip">10 CONSTELACIONES · 8 ILUSTRACIONES OCULTAS</span><h3>Elige el cielo que quieres descubrir</h3><p>Todas están disponibles. Toca una figura para jugar: sus estrellas revelan una ilustración al completar las conexiones.</p></div>
-    <div id="atlas-gallery" class="atlas-gallery" aria-label="Galería de diez constelaciones"></div>
+    <div id="estrellas-intro" class="estrellas-intro"><div class="atlas-heading"><span class="chip">10 CONSTELACIONES · 8 ILUSTRACIONES OCULTAS</span><h3>Elige el cielo que quieres descubrir</h3><p>Todas están disponibles. Toca una figura para jugar: sus estrellas revelan una ilustración al completar las conexiones.</p></div>
+    <div id="atlas-gallery" class="atlas-gallery" aria-label="Galería de diez constelaciones"></div></div>
     <div class="constellation-layout">
       <div id="constellation-board" class="constellation-board">
         <img id="reveal-image" hidden alt="Recompensa oculta">
@@ -466,7 +467,7 @@ VALUES (?, ?, ?, ?);</code></pre></details>
         <div id="star-layer"></div>
         <div id="wand-cursor" class="wand-cursor">✦━━✧</div>
       </div>
-      <aside class="game-side"><span class="chip">ATLAS DE ESTRELLAS</span><h3 id="constellation-name">Constelaciones</h3><label class="constellation-select">Elegir constelación<select id="constellation-select"></select></label><p>Sigue la estrella indicada. Las uniones aparecen al activar sus dos extremos. Completa el trazado y descubre una ilustración de la colección del portafolio.</p><div class="score-row"><span>Progreso</span><b id="star-progress">0 / 7</b></div><button id="star-reset" class="btn primary">Siguiente constelación →</button><div id="star-message" class="match-message" role="status">La primera estrella está brillando.</div><div class="star-lesson"><span class="chip">CONOCE ESTA CONSTELACIÓN</span><h4 id="lesson-title"></h4><p id="lesson-description"></p><p id="constellation-note"></p></div><p id="atlas-progress" role="status"></p><a id="constellation-source" class="source-link" target="_blank" rel="noopener">Consultar carta de la IAU ↗</a><p class="small-note">Figuras tradicionales simplificadas; las constelaciones son regiones del cielo. La ilustración revelada es una recompensa artística; no representa la figura astronómica.</p></aside>
+      <aside class="game-side" id="estrellas-lado"><span class="chip">ATLAS DE ESTRELLAS</span><h3 id="constellation-name">Constelaciones</h3><label class="constellation-select">Elegir constelación<select id="constellation-select"></select></label><p>Sigue la estrella indicada. Las uniones aparecen al activar sus dos extremos. Completa el trazado y descubre una ilustración de la colección del portafolio.</p><div class="score-row"><span>Progreso</span><b id="star-progress">0 / 7</b></div><button id="star-reset" class="btn primary">Siguiente constelación →</button><div id="star-message" class="match-message" role="status">La primera estrella está brillando.</div><div class="star-lesson" id="estrellas-leccion"><span class="chip">CONOCE ESTA CONSTELACIÓN</span><h4 id="lesson-title"></h4><p id="lesson-description"></p><p id="constellation-note"></p></div><p id="atlas-progress" role="status"></p><a id="constellation-source" class="source-link" target="_blank" rel="noopener">Consultar carta de la IAU ↗</a><p class="small-note">Figuras tradicionales simplificadas; las constelaciones son regiones del cielo. La ilustración revelada es una recompensa artística; no representa la figura astronómica.</p></aside>
     </div>
   </div>
   </div>
@@ -515,19 +516,19 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   <article class="pagina pagina-camino" data-cap="Inicio">
     <p class="capitular">¿Cómo quieres conocer esta historia?</p>
     <div class="caminos">
-      <button type="button" class="camino" data-ir="2"><span class="camino-icono">📖</span><b>Leer el cuento</b><small>Página a página, con magia, juegos y cosas que se pueden tocar.</small></button>
+      <button type="button" class="camino" data-ir-cap="I"><span class="camino-icono">📖</span><b>Leer el cuento</b><small>Página a página, con magia, juegos y cosas que se pueden tocar.</small></button>
       <button type="button" class="camino" data-modo="clasico"><span class="camino-icono">✦</span><b>Versión clásica</b><small>El portafolio completo en una sola página, con el paisaje del reino de fondo.</small></button>
     </div>
     <ol class="indice">
-      <li><button type="button" data-ir="2"><span>I</span>La matrona que soñaba con mundos</button></li>
-      <li><button type="button" data-ir="4"><span>II</span>Nace Studios Conari</button></li>
-      <li><button type="button" data-ir="6"><span>III</span>El hechizo de los números</button></li>
-      <li><button type="button" data-ir="8"><span>IV</span>La tienda del mago</button></li>
-      <li><button type="button" data-ir="10"><span>V</span>La gran tienda Magical Alliance</button></li>
-      <li><button type="button" data-ir="12"><span>VI</span>Leyendas dibujadas</button></li>
-      <li><button type="button" data-ir="14"><span>VII</span>El oráculo de los colores</button></li>
-      <li><button type="button" data-ir="16"><span>VIII</span>El salón de los juegos</button></li>
-      <li><button type="button" data-ir="18"><span>✦</span>Y la historia continúa…</button></li>
+      <li><button type="button" data-ir-cap="I"><span>I</span>La matrona que soñaba con mundos</button></li>
+      <li><button type="button" data-ir-cap="II"><span>II</span>Nace Studios Conari</button></li>
+      <li><button type="button" data-ir-cap="III"><span>III</span>El hechizo de los números</button></li>
+      <li><button type="button" data-ir-cap="IV"><span>IV</span>La tienda del mago</button></li>
+      <li><button type="button" data-ir-cap="V"><span>V</span>La gran tienda Magical Alliance</button></li>
+      <li><button type="button" data-ir-cap="VI"><span>VI</span>Leyendas dibujadas</button></li>
+      <li><button type="button" data-ir-cap="VII"><span>VII</span>El oráculo de los colores</button></li>
+      <li><button type="button" data-ir-cap="VIII"><span>VIII</span>El salón de los juegos</button></li>
+      <li><button type="button" data-ir-cap="Y la historia continúa…"><span>✦</span>Y la historia continúa…</button></li>
     </ol>
   </article>
 
@@ -601,7 +602,15 @@ VALUES (?, ?, ?, ?);</code></pre></details>
     <p class="cuento">Rancek, el mago comerciante, atiende su tienda con una caja registradora encantada. Ari y Coen vienen de compras: tú manejas la caja. Agrega productos, aplica un descuento, cobra… ¡y entrega la boleta!</p>
     <p class="cuento nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
   </article>
-  <article class="pagina pagina-scroll" data-cap="IV · La tienda del mago">
+  <article class="pagina pagina-caja" data-cap="IV · La tienda del mago">
+    <p class="caja-paso"><span>1</span>Elige productos y descuento</p>
+    <div class="caja-libro"><div class="ranura" data-widget="#m4-picker"></div></div>
+  </article>
+  <article class="pagina pagina-caja" data-cap="IV · La tienda del mago">
+    <p class="caja-paso"><span>2</span>Revisa el recibo y paga</p>
+    <div class="caja-libro"><div class="ranura" data-widget="#m4-recibo"></div></div>
+  </article>
+  <article class="pagina pagina-caja" data-cap="IV · La tienda del mago">
     <div class="ranura" data-widget="#caja"></div>
   </article>
 
@@ -630,19 +639,26 @@ VALUES (?, ?, ?, ?);</code></pre></details>
     </div>
     <p class="cuento nota">Toca una ilustración para verla en grande. Todas llevan la marca de Studios Conari: son obra original y no se pueden reutilizar.</p>
   </article>
-  <article class="pagina pagina-scroll" data-cap="VI · Leyendas dibujadas">
+  <article class="pagina pagina-leyendas" data-cap="VI · Leyendas dibujadas">
     <div class="ranura" data-widget="#leyendas"></div>
   </article>
 
   <!-- 14 · capítulo VII -->
-  <article class="pagina pagina-scroll" data-cap="VII · El oráculo de los colores">
+  <article class="pagina pagina-oraculo" data-cap="VII · El oráculo de los colores">
     <p class="cap-num">Capítulo VII</p>
     <h2 class="cap-titulo">El oráculo de los colores</h2>
     <p class="cuento">En lo alto de la torre vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan. Cuéntale los tuyos y mira cómo ordena lo que aprende.</p>
     <div class="ranura" data-widget="#lab-form"></div>
   </article>
-  <article class="pagina pagina-scroll" data-cap="VII · El oráculo de los colores">
+  <article class="pagina pagina-oraculo" data-cap="VII · El oráculo de los colores">
     <div class="ranura" data-widget="#lab-viz"></div>
+  </article>
+  <article class="pagina pagina-oraculo" data-cap="VII · El oráculo de los colores">
+    <h3 class="pag-sub">Los registros del oráculo</h3>
+    <div class="ranura" data-widget="#lab-tabla-det" data-abierto></div>
+  </article>
+  <article class="pagina pagina-oraculo" data-cap="VII · El oráculo de los colores">
+    <div class="ranura" data-widget="#lab-ciencia-det" data-abierto></div>
   </article>
 
   <!-- 16 · capítulo VIII -->
@@ -653,8 +669,24 @@ VALUES (?, ?, ?, ?);</code></pre></details>
     <p class="cuento">Cuando el trabajo termina, el hada abre el salón de los juegos: bloques encantados que ella misma rompe con su varita, un jardín de gemas con poderes y un cielo de constelaciones que esconden dibujos.</p>
     <p class="cuento nota">Cada juego está hecho a mano en JavaScript: lógica, estados, eventos y animación.</p>
   </article>
-  <article class="pagina pagina-scroll" data-cap="VIII · El salón de los juegos">
-    <div class="ranura" data-widget="#arcade-zona"></div>
+  <article class="pagina pagina-juego" data-cap="VIII · El salón de los juegos">
+    <div class="ranura" data-widget="#game-tetris"></div>
+  </article>
+  <article class="pagina pagina-juego" data-cap="VIII · El salón de los juegos">
+    <div class="ranura" data-widget="#gema-intro"></div>
+    <div class="ranura" data-widget="#gema-guia"></div>
+  </article>
+  <article class="pagina pagina-juego pagina-tablero" data-cap="VIII · El salón de los juegos">
+    <div class="ranura" data-widget="#match-grid"></div>
+    <div class="ranura" data-widget="#gema-lado"></div>
+  </article>
+  <article class="pagina pagina-juego" data-cap="VIII · El salón de los juegos">
+    <div class="ranura" data-widget="#estrellas-intro"></div>
+    <div class="ranura" data-widget="#estrellas-leccion"></div>
+  </article>
+  <article class="pagina pagina-juego pagina-tablero" data-cap="VIII · El salón de los juegos">
+    <div class="ranura" data-widget="#constellation-board"></div>
+    <div class="ranura" data-widget="#estrellas-lado"></div>
   </article>
 
   <!-- 18 · epílogo -->
