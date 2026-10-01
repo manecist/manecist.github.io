@@ -543,3 +543,123 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
 .tapa-transforma img.ve{opacity:1;animation:transforma-pulso .45s ease-out}
 .tapa-transforma img.sale{opacity:0}
 @keyframes transforma-pulso{0%{transform:scale(.94);filter:brightness(1.8) drop-shadow(0 0 26px #fff)}100%{transform:none}}
+
+/* ---------------------------------------------------------------- demostraciones repartidas en páginas (sin desplazamiento)
+   Las partes se prestan por id; en la versión clásica siguen en su lugar. */
+.gema-intro,.estrellas-intro{display:contents}
+.pagina .gema-intro,.pagina .estrellas-intro{display:block}
+.leyendas-hojas,.lab-tabla-mas{display:none}
+.pagina .game-panel{display:grid}
+.pagina #lab-viz>details{display:none}
+.pag-sub{margin:0 0 10px;text-align:center;font:700 clamp(1.05rem,2.8vh,1.4rem)/1.2 var(--titulo);color:var(--tinta)}
+/* caja de la tienda: pasos numerados */
+.caja-paso{display:flex;align-items:center;gap:10px;margin:0 0 clamp(8px,1.6vh,14px);font:700 clamp(1rem,2.6vh,1.25rem)/1.2 var(--titulo);color:var(--tinta)}
+.caja-paso span{display:grid;place-items:center;width:1.8em;height:1.8em;border-radius:50%;background:linear-gradient(135deg,#f5a8cf,#ba93f0);color:#fff;font-size:.85em}
+.caja-libro{padding:clamp(10px,1.8vh,16px);border-radius:20px;background:linear-gradient(145deg,#ffe4ed,#f0b9db 60%,#dbc4f3);color:#13182a;box-shadow:0 8px 18px rgba(120,60,110,.18)}
+.pagina #caja .register-window{display:none}
+/* galería de leyendas por hojas */
+.pagina .obra.fuera-hoja{display:none}
+.pagina .leyendas-hojas:not([hidden]){display:flex;justify-content:center;align-items:center;gap:14px;margin-top:clamp(6px,1.2vh,10px);font:700 .9rem/1 var(--titulo);color:var(--tinta2)}
+.pagina .leyendas-hojas button{width:34px;height:34px;border-radius:50%;border:1px solid var(--oro);background:#fff8ee;color:#a33a72;font:700 1.2rem/1 var(--titulo);cursor:pointer}
+.pagina .leyendas-hojas button:hover{background:#ffe3f0}
+/* tabla del oráculo: solo las primeras filas */
+.pagina .fila-extra{display:none}
+.pagina .lab-tabla-mas{display:block;margin:6px 0;font-size:.82rem;font-style:italic;color:var(--tinta2)}
+.pagina details.oraculo-tabla>summary{display:none}
+/* caja (página derecha): visor, teclado, cobro y cajón compactos */
+.pagina-caja #caja{margin-top:clamp(44px,9vh,70px);padding:clamp(10px,1.6vh,18px) 14px 12px;border-radius:44px 44px 18px 18px}
+.pagina-caja .register-marquee{top:clamp(-70px,-8.6vh,-50px);height:clamp(48px,8vh,70px);padding:6px 14px}
+.pagina-caja .register-sign{padding-bottom:6px;font-size:.62rem}
+.pagina-caja .register-keypad{width:72%;gap:clamp(5px,.9vh,9px);margin:clamp(8px,1.6vh,18px) auto clamp(6px,1.2vh,14px)}
+.pagina-caja .register-keypad button{min-height:clamp(30px,5vh,42px);font-size:15px}
+.pagina-caja .register-confirm{margin-top:4px;padding:clamp(7px,1.2vh,11px)}
+.pagina-caja .register-clear{margin-top:6px;padding:clamp(6px,1vh,10px)}
+.pagina-caja .receipt-printer{margin-top:clamp(8px,1.4vh,16px)}
+.pagina-caja .cash-drawer{height:clamp(46px,7vh,76px);margin-top:clamp(8px,1.4vh,16px)}
+.pagina-caja .cash-register.drawer-open .cash-drawer{height:clamp(96px,15vh,150px)}
+.pagina-caja .register-message{margin:6px 0 0;font-size:.78rem}
+/* la boleta sale por encima de la página, como un papel que asoma de la máquina */
+.pagina-caja .receipt-printer{position:relative;z-index:6}
+.pagina-caja .printer-output{position:absolute;left:4%;right:4%;top:100%;max-height:calc(var(--ph,600px) * .55);overflow:hidden;box-shadow:0 18px 30px rgba(60,30,60,.35)}
+.pagina-caja .product-picker label{margin-bottom:2px}
+.pagina-caja .product-picker{gap:clamp(4px,1vh,10px)}
+.pagina-caja .receipt-items{max-height:20vh;overflow:hidden}
+
+/* galería M7 */
+.pagina .m7-gallery figure img{max-height:min(237px,27vh);object-fit:cover;object-position:top}
+.pagina .m7-gallery .m7-flow p{font-size:.78rem;line-height:1.35}
+.pagina .m7-gallery .small-note{font-size:.76rem;margin:4px 0}
+
+/* leyendas: tres columnas y dos filas por hoja */
+.pagina .leyendas-cabeza .chip{display:none}
+.pagina .leyendas-cabeza h3{font-size:clamp(1rem,2.6vh,1.35rem);margin:0 0 6px}
+.pagina .leyendas-grid{grid-template-columns:repeat(3,1fr);gap:clamp(6px,1.2vh,12px)}
+.pagina .obra{aspect-ratio:auto;height:clamp(120px,24vh,230px)}
+.pagina .leyendas-aviso{font-size:.68rem;line-height:1.35;margin:6px 0 0}
+
+/* oráculo: formulario y resultados compactos */
+.pagina #lab-form>.chip,.pagina #lab-form>h3{display:none}
+.pagina .oraculo-form{padding:clamp(10px,1.8vh,18px) 16px;gap:clamp(4px,1vh,10px)}
+.pagina .paleta-gotas{grid-template-columns:repeat(auto-fill,minmax(clamp(20px,3.4vh,30px),1fr));gap:clamp(4px,.8vh,7px)}
+.pagina .oraculo-form .btn{padding:clamp(6px,1.1vh,11px) 14px}
+.pagina .lab-privado{font-size:.7rem}
+.pagina-oraculo .cuento{margin-bottom:.4em}
+.pagina .oraculo-kpis .kpi{padding:6px 8px}
+.pagina .oraculo-mapa figcaption span{font-size:.72rem}
+.pagina #lab-mapa{max-height:30vh}
+.pagina .oraculo-lectura{font-size:.86rem}
+
+/* juegos: tablero y controles en la misma página */
+.pagina #game-tetris{background:none;border:0;padding:0}
+.pagina #game-tetris .tetris-layout{grid-template-columns:auto 1fr!important;align-items:start;gap:14px;justify-items:stretch}
+.pagina #game-tetris .tetris-frame{width:auto;padding:30px 12px 14px;border-radius:24px}
+.pagina #play-tetris{height:min(56vh,420px);width:auto;display:block}
+.pagina #game-tetris .game-side h3{font-size:1.1rem;margin:0 0 4px}
+.pagina #game-tetris .game-side p{font-size:.78rem;line-height:1.35;margin:0 0 6px}
+.pagina #game-tetris .lock-help,.pagina #game-tetris .small-note{display:none}
+.pagina #game-tetris .score-row{padding:4px 0}
+@media (pointer:fine){.pagina #game-tetris .touch-controls{display:none}}
+.pagina-tablero{display:grid;align-content:center;justify-items:center;gap:clamp(6px,1.2vh,12px)}
+.pagina-tablero .ranura{width:100%}
+.pagina #match-grid{width:min(100%,50vh);margin:auto}
+.pagina #gema-lado,.pagina #estrellas-lado{background:none;padding:0;color:var(--tinta);display:grid;gap:6px;justify-items:center;text-align:center}
+.pagina #gema-lado>h3,.pagina #gema-lado>p,.pagina #estrellas-lado>.chip,.pagina #estrellas-lado>.constellation-select,.pagina #estrellas-lado>p:not([id]),.pagina #estrellas-lado>.small-note{display:none}
+.pagina #gema-lado .score-row,.pagina #estrellas-lado .score-row{width:min(100%,260px)}
+.pagina #constellation-board{min-height:0;height:min(48vh,380px);width:100%}
+.pagina .gem-welcome{display:block;margin-bottom:8px}
+.pagina .gem-welcome .chip,.pagina .atlas-heading .chip{display:none}
+.pagina .gem-welcome h3,.pagina .atlas-heading h3{font-size:clamp(1.05rem,2.8vh,1.4rem);margin:0 0 4px;color:var(--tinta)}
+.pagina .gem-welcome p,.pagina .atlas-heading p{font-size:.84rem;line-height:1.4;margin:0 0 6px;color:var(--tinta2)}
+.pagina #gem-inventory{max-width:none;margin:4px 0}
+.pagina .gem-lessons{gap:5px;padding:8px}
+.pagina .gem-lessons button{padding:4px 8px;font-size:.74rem}
+.pagina .special-guide{margin:8px 0 0;gap:4px}
+.pagina .special-guide p{margin:0;font-size:.78rem}
+.pagina .atlas-gallery{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.pagina .atlas-gallery button{padding:6px 4px;font-size:.72rem}
+.pagina .atlas-gallery svg{max-height:7vh}
+.pagina .star-lesson{margin-top:8px;font-size:.84rem}
+/* colores: las partes de los juegos ya no están dentro de la zona oscura del arcade */
+.pagina #game-tetris .game-side{color:#e9ecf8}
+.pagina #game-tetris .game-side h3,.pagina #game-tetris .score-row b{color:#fff}
+.pagina #gema-lado .score-row,.pagina #estrellas-lado .score-row{color:var(--tinta)}
+.pagina #gema-lado .score-row b,.pagina #estrellas-lado .score-row b{color:#a33a72}
+.pagina #match-message,.pagina #star-message,.pagina #atlas-progress{color:var(--tinta2);background:none;border-color:rgba(106,77,120,.25)}
+.pagina #estrellas-lado #constellation-name{color:var(--tinta);font-size:1.1rem;margin:0}
+.pagina .special-guide p{color:var(--tinta)}.pagina .special-guide span{color:var(--tinta2)}
+.pagina .gem-power-message{color:#8c2f62;background:rgba(255,255,255,.6);border-color:rgba(215,169,72,.5)}
+.pagina .gem-lesson-hint{color:var(--tinta)}
+/* últimos ajustes de alto */
+.pagina .m7-gallery figure img{max-height:min(237px,24vh)}
+.pagina .obra{height:clamp(110px,21vh,220px)}
+.pagina .paleta-gotas{grid-template-columns:repeat(auto-fill,minmax(clamp(18px,2.9vh,28px),1fr))}
+.pagina .oraculo-form{gap:clamp(3px,.7vh,8px)}
+.pagina .oraculo-form label{gap:2px}
+.pagina-oraculo .cap-titulo{margin-bottom:6px}
+.pagina #lab-mapa{max-height:26vh}
+.pagina #match-grid{width:min(100%,46vh)}
+.pagina .atlas-gallery svg{max-height:5.5vh}
+.pagina .star-lesson .chip{display:none}
+.pagina #constellation-board{height:min(40vh,360px)}
+.pagina .special-guide b{color:#8c2f62}
+.pagina .star-lesson{color:#e9ecf8}.pagina .star-lesson h4{color:#fff}.pagina .star-lesson p{color:#d6dcf2}
