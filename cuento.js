@@ -157,6 +157,9 @@
   });
   $$('[data-popup] .popup-repetir').forEach(b => b.addEventListener('click', () => { limpiar(); const el = b.closest('[data-popup]'); ESCENAS.find(([s]) => s === '[data-popup]')[1](el); }));
 
+  // calculadora y caja aparecen como pop-up desde la página
+  escena('.ranura-pop', el => { el.classList.remove('sube'); void el.offsetWidth; luego(() => el.classList.add('sube'), 250); });
+
   // VI · la tienda: Ari y Coen entran caminando
   escena('[data-tienda]', el => { el.classList.remove('entran'); void el.offsetWidth; luego(() => el.classList.add('entran'), 150); });
 
@@ -215,4 +218,80 @@
     pags.forEach(p => ESCENAS.forEach(([sel, fn]) => p.querySelectorAll(sel).forEach(el => fn(el))));
     narrar(pags.filter(p => !p.hasAttribute('data-narracion-propia') || true));
   });
+})();
+
+/* ==========================================================================
+   Compañeros: Ari salta en la esquina del libro y el dragoncito rosa mira
+   lo que hace quien lee.
+   ========================================================================== */
+(function () {
+  'use strict';
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Ari: al bajar dentro de una página salta con agilidad; al tocarla sube con un dash */
+  const ari = $('#ari-libro');
+  if (ari) {
+    let ultimo = 0, t = 0, enDash = false;
+    const paginaConScroll = () => [...document.querySelectorAll('#pag-izq > .pagina, #pag-der > .pagina')].find(p => p.scrollTop > 40);
+    const salta = cls => { ari.classList.remove('salta', 'aterriza', 'dash', 'agacha'); void ari.offsetWidth; ari.classList.add(cls); };
+    document.addEventListener('scroll', e => {
+      const p = e.target; if (!(p instanceof Element) || !p.matches('.pag > .pagina')) return;
+      const y = p.scrollTop;
+      ari.classList.toggle('visible', !!paginaConScroll() || enDash);
+      if (!enDash && y - ultimo > 8 && performance.now() - t > 650) { t = performance.now(); salta('salta'); }
+      ultimo = y;
+    }, true);
+    ari.addEventListener('click', () => {
+      if (enDash) return; enDash = true; salta('agacha');
+      setTimeout(() => {
+        salta('dash');
+        const r = ari.getBoundingClientRect();
+        if (window.Magia) for (let i = 0; i < 8; i++) setTimeout(() => Magia.estela(r.left + r.width / 2, r.top - i * 50, { n: 4, colores: ['#f5a8cf', '#ff6fa8', '#ffd9ea', '#e2ba53'] }), i * 30);
+        $$('#pag-izq > .pagina, #pag-der > .pagina').forEach(p => p.scrollTo({ top: 0, behavior: quieto ? 'auto' : 'smooth' }));
+      }, quieto ? 0 : 160);
+      setTimeout(() => { salta('aterriza'); enDash = false; ari.classList.toggle('visible', !!paginaConScroll()); }, quieto ? 50 : 1100);
+    });
+    // al pasar la página da un saltito si está a la vista
+    window.addEventListener('cuento-pasa', () => { if (ari.classList.contains('visible')) salta('salta'); setTimeout(() => ari.classList.remove('visible'), 400); });
+  }
+
+  /* Dragoncito: vuela cerca del puntero, mira hacia donde vas y celebra lo que haces */
+  const dr = $('#dragoncito');
+  if (dr) {
+    const globo = dr.querySelector('.dragoncito-globo');
+    let x = innerWidth - 120, y = 90, tx = x, ty = y, mira = -1, ultimoMov = performance.now(), dormido = false;
+    addEventListener('pointermove', e => {
+      // se queda a una distancia prudente, arriba del puntero, sin tapar lo que se toca
+      tx = Math.min(innerWidth - 70, Math.max(10, e.clientX + (e.clientX > innerWidth / 2 ? -150 : 90)));
+      ty = Math.min(innerHeight - 120, Math.max(10, e.clientY - 130));
+      ultimoMov = performance.now();
+      if (dormido) { dormido = false; dr.classList.remove('duerme'); }
+    }, { passive: true });
+    const frases = { calc: ['¡Qué cálculo!', '¡Java mágico!'], caja: ['¡Compra lista!', '¡Qué lindo!'], juego: ['¡Bien jugado!', '¡Wiii!'], pagina: ['✦', '♥', '¡Otra página!'], dato: ['¡Anotado!'] };
+    const decir = tipo => {
+      const f = frases[tipo] || frases.pagina; globo.textContent = f[Math.floor(Math.random() * f.length)];
+      dr.classList.remove('feliz'); void dr.offsetWidth; dr.classList.add('feliz');
+      if (window.Magia) { const r = dr.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 10, vel: 2.4, colores: ['#ff8fc0', '#ffd9ea', '#fff'] }); }
+    };
+    window.addEventListener('cuento-pasa', () => decir('pagina'));
+    document.addEventListener('click', e => {
+      const t = e.target;
+      if (t.closest('.calc-teclas [data-k="="]')) decir('calc');
+      else if (t.closest('#m4-confirm')) decir('caja');
+      else if (t.closest('#lab-form button[type="submit"]')) decir('dato');
+      else if (t.closest('#play-start,.match-grid,.constellation-board')) decir('juego');
+    }, true);
+    (function vuelo(ahora) {
+      if (!quieto) {
+        x += (tx - x) * .035; y += (ty - y) * .035;
+        const vx = tx - x; if (Math.abs(vx) > 6) mira = vx > 0 ? 1 : -1;
+        const flot = Math.sin(ahora / 420) * 8;
+        dr.style.transform = `translate(${x.toFixed(1)}px,${(y + flot).toFixed(1)}px)`;
+        dr.style.setProperty('--mira', mira);
+        if (!dormido && ahora - ultimoMov > 12000) { dormido = true; dr.classList.add('duerme'); globo.textContent = 'z z z'; }
+      } else dr.style.transform = `translate(${innerWidth - 120}px,90px)`;
+      requestAnimationFrame(vuelo);
+    })(performance.now());
+  }
 })();

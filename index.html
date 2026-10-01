@@ -59,6 +59,7 @@
     <div class="libro-cinta" aria-hidden="true"></div>
   </div>
   <div class="hada-viva hada-escena" id="hada-escena" aria-hidden="true"></div>
+  <button type="button" class="ari-libro" id="ari-libro" aria-label="Volver al inicio de la página"><span class="va-estela" aria-hidden="true"></span><img src="assets/personajes/ari-lado.webp" alt="" draggable="false"></button>
   <p class="escena-pista" id="escena-pista">Toca el libro para abrirlo</p>
   <nav class="libro-nav" id="libro-nav" aria-label="Navegación del cuento">
     <button type="button" id="libro-prev" aria-label="Página anterior">‹</button>
@@ -510,6 +511,7 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   <button type="button" class="visor-cerrar" id="visor-cerrar" aria-label="Cerrar">✕</button>
 </dialog>
 <canvas class="magia-canvas" id="magia-canvas" aria-hidden="true"></canvas>
+<div class="dragoncito" id="dragoncito" aria-hidden="true"><span class="dragoncito-spr"></span><i class="dragoncito-globo"></i></div>
 <!-- PÁGINAS DEL CUENTO · pares de páginas (izquierda/derecha) y pliegos anchos que ocupan las dos -->
 <div id="paginas" class="paginas" hidden>
 
@@ -670,7 +672,7 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </article>
   <article class="pagina pagina-centrada" data-cap="V · Noches de código">
     <p class="cuento nota">Pulsa las teclas: la página de la izquierda escribe el mismo cálculo en Java.</p>
-    <div class="ranura" data-widget="#calc-zona"></div>
+    <div class="ranura ranura-pop" data-widget="#calc-zona"></div>
   </article>
 
   <!-- 12 · pliego ancho: la tienda del mago -->
@@ -692,7 +694,7 @@ VALUES (?, ?, ?, ?);</code></pre></details>
         <p class="globo globo-ari" data-globo="ari">¡Algo bonito para la fiesta del reino! ✧</p>
       </div>
     </div>
-    <div class="ranura ranura-caja" data-widget="#caja"></div>
+    <div class="ranura ranura-caja ranura-pop" data-widget="#caja"></div>
     <p class="cuento nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
   </article>
   <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
