@@ -162,3 +162,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,ca
 @media(max-width:600px){.cohort-reading{padding:20px}.cohort-reading p{font-size:14px}.cohort-reading h5{font-size:23px}.age-cohort{padding:18px}.research-grid{grid-template-columns:1fr}.cross-analysis:before{right:17px;font-size:23px}.cohort-key>strong{font-size:32px}}
 .cohort-origin{font-size:12px!important;line-height:1.7;color:#e2c98f!important;border-left:2px solid #d6b67b;padding-left:12px;margin:18px 0}
 
+
+/* v3 · tira de etapas de Ari en la versión clásica */
+.vida-tira{display:flex;gap:6px;overflow-x:auto;padding:16px 6px 10px;margin:8px 0 6px;scroll-snap-type:x mandatory;align-items:flex-end;scrollbar-width:thin}
+.vida-tira figure{flex:0 0 auto;margin:0;width:96px;text-align:center;scroll-snap-align:center;transition:transform .3s}
+.vida-tira img{height:150px;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 6px 6px rgba(0,0,0,.25))}
+.vida-tira figure:hover{transform:translateY(-8px) scale(1.06)}
+.vida-tira figcaption{font-size:.7rem;letter-spacing:.06em;opacity:.85;margin-top:4px}
