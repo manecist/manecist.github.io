@@ -161,8 +161,8 @@
     colocar(Number(leer('mce-pagina-ir') || 0));
     libro.dataset.estado = 'abriendo';
     if (window.Magia) { const r = tapa.getBoundingClientRect(); Magia.chispas(r.left + r.width * .5, r.top + r.height * .45, { n: 60, vel: 6 }); }
-    setTimeout(() => { libro.dataset.estado = 'abierto'; escena.classList.add('leyendo'); posarHada(); }, quieto ? 0 : 1500);
-    setTimeout(() => { tapa.hidden = true; }, quieto ? 0 : 1600);
+    setTimeout(() => { libro.dataset.estado = 'abierto'; escena.classList.add('leyendo'); posarHada(); }, quieto ? 0 : 1750);
+    setTimeout(() => { tapa.hidden = true; }, quieto ? 0 : 1800);
   }
   tapa.addEventListener('click', () => { if (hada && !abierto) hada.hechizo(); abrir(); });
 
