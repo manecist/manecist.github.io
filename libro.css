@@ -536,3 +536,10 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
   .sellos li{font-size:.86rem}
   .cuento{margin-bottom:.45em}
 }
+
+/* fotogramas de la transformación del dragón en el emblema (encima del emblema de la tapa) */
+.tapa-transforma{position:absolute;pointer-events:none}
+.tapa-transforma img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .28s ease;filter:drop-shadow(0 0 18px rgba(245,168,207,.7))}
+.tapa-transforma img.ve{opacity:1;animation:transforma-pulso .45s ease-out}
+.tapa-transforma img.sale{opacity:0}
+@keyframes transforma-pulso{0%{transform:scale(.94);filter:brightness(1.8) drop-shadow(0 0 26px #fff)}100%{transform:none}}
