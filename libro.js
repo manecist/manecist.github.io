@@ -1,7 +1,9 @@
 /* ==========================================================================
    libro.js · el libro mágico
-   Tras la intro, una estela cruza el cielo y aparece un libro cerrado. El
-   hada llega volando, toca la tapa con su varita y el libro se abre. Desde
+   Tras la intro, una estela cruza el cielo y aparece un libro cerrado, con
+   la portada sin emblema. El dragón rosa llega volando, se posa sobre ella,
+   brilla y se convierte en el emblema de Studios Conari. Luego el hada llega
+   volando, toca la tapa con su varita y el libro se abre. Desde
    ahí se elige: leer el portafolio como cuento (páginas que se pasan) o la
    versión clásica (una sola página con el reino de fondo).
    Las demostraciones son las mismas en ambos modos: el libro las «toma
@@ -126,6 +128,7 @@
   function abrir() {
     if (abierto) return;
     abierto = true; tapa.disabled = true;
+    libro.classList.remove('espera-emblema'); document.querySelector('.dragon-portada')?.remove();
     $('#escena-pista').classList.add('fuera');
     colocar(Number(leer('mce-pagina-ir') || 0));
     libro.dataset.estado = 'abriendo';
@@ -168,6 +171,44 @@
     volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200);
   }
 
+  // el dragón rosa vuela desde la izquierda, se posa sobre la portada y se convierte en el emblema
+  async function dragonPortada() {
+    const emblema = libro.querySelector('.tapa-emblema');
+    if (quieto || !emblema) { libro.classList.remove('espera-emblema'); return; }
+    const d = document.createElement('div'); d.className = 'dragon-portada'; d.setAttribute('aria-hidden', 'true');
+    document.body.append(d);
+    const r = emblema.getBoundingClientRect(), esc = r.width * .95 / 254;
+    const meta = [r.left + r.width / 2 - 127, r.top + r.height / 2 - 120 - r.height * .04];
+    const ini = [-300, innerHeight * .25];
+    const ctrl = [[innerWidth * .18, innerHeight * .02], [meta[0] - 160, meta[1] - 190]];
+    await new Promise(fin => {
+      const t0 = performance.now(), dur = 2100;
+      const bez = (t, a, b, c, e) => { const u = 1 - t; return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * e; };
+      (function paso(ahora) {
+        if (abierto) { fin(); return; }
+        const t = Math.min(1, (ahora - t0) / dur), e = 1 - Math.pow(1 - t, 3);
+        const x = bez(e, ini[0], ctrl[0][0], ctrl[1][0], meta[0]), y = bez(e, ini[1], ctrl[0][1], ctrl[1][1], meta[1]);
+        // el sprite mira a la izquierda: se refleja porque vuela hacia la derecha
+        d.style.transform = `translate(${x}px,${y + Math.sin(ahora / 160) * 5 * (1 - t)}px) scale(${-esc * (1.25 - .25 * e)},${esc * (1.25 - .25 * e)})`;
+        if (window.Magia && t < .95) Magia.estela(x + 127, y + 150, { n: 2 });
+        if (t < 1) requestAnimationFrame(paso); else fin();
+      })(t0);
+    });
+    if (abierto) { d.remove(); return; }
+    // se posa: cuadro sentado y un pequeño rebote
+    d.classList.add('posado');
+    await espera(650);
+    if (abierto) { d.remove(); return; }
+    // brilla y se convierte en el emblema
+    d.classList.add('brilla');
+    if (window.Magia) Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 70, vel: 5 });
+    await espera(520);
+    libro.classList.remove('espera-emblema'); libro.classList.add('forma-emblema');
+    d.classList.add('se-va');
+    await espera(900);
+    d.remove(); libro.classList.remove('forma-emblema');
+  }
+
   async function escenaInicial() {
     if (empezo) return; empezo = true;
     escena.classList.add('activa');
@@ -179,8 +220,11 @@
       (function polvo(t) { const k = (t - t0) / 1100; if (k > 1) return; const x = -60 + k * (innerWidth + 120), y = innerHeight * (.18 + .5 * k * k); Magia.chispas(x, y, { n: 4, vel: 1.6, tam: 4 }); requestAnimationFrame(polvo); })(t0);
     }
     await espera(700);
-    libro.classList.add('aparece');
+    libro.classList.add('espera-emblema', 'aparece');
     await espera(900);
+    await dragonPortada();
+    if (abierto) return;
+    await espera(250);
     crearHada();
     const el = $('#hada-escena');
     if (!el || !hada) { $('#escena-pista').classList.add('visible'); return; }
