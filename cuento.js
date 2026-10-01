@@ -140,7 +140,7 @@
   escena('[data-popup]', el => {
     const pasos = [...el.querySelectorAll('[data-paso]')];
     const pagina = el.closest('.pagina'); pagina.setAttribute('data-narracion-propia', '');
-    const tiempos = [0, 4200, 8800, 13600, 17800];
+    const tiempos = [0, 4200, 9000, 15000, 21000];
     el.className = 'popup'; void el.offsetWidth;
     const mio = turno;
     pasos.forEach((p, i) => luego(async () => {
@@ -149,11 +149,11 @@
       if (window.Magia) {
         const r = el.querySelector('.popup-escenario').getBoundingClientRect();
         if (i === 0) for (let k = 0; k < 6; k++) setTimeout(() => Magia.chispas(r.left + r.width * (.2 + k * .12), r.bottom - 30, { n: 12, vel: 3, subir: 2 }), k * 120);
-        if (i === 3) $$('.pp-monstruos .mo', el).forEach((m, k) => setTimeout(() => { const q = m.getBoundingClientRect(); if (q.width) Magia.chispas(q.left + q.width / 2, q.top + q.height / 2, { n: 16, colores: ['#91dcff', '#d9b8ff', '#fff'] }); }, 400 + k * 260));
+        if (i === 3) [...el.querySelectorAll('.pp-monstruos .mo')].forEach((m, k) => setTimeout(() => { const q = m.getBoundingClientRect(); if (q.width) Magia.chispas(q.left + q.width / 2, q.top + q.height / 2, { n: 16, colores: ['#91dcff', '#d9b8ff', '#fff'] }); }, 400 + k * 260));
       }
       if (window.MCENarrador.activo) { if (i === 0) callar(); await decir(p.innerText); }
     }, tiempos[i]));
-    luego(() => el.classList.add('fin'), 23000);
+    luego(() => el.classList.add('fin'), 26500);
   });
   $$('[data-popup] .popup-repetir').forEach(b => b.addEventListener('click', () => { limpiar(); const el = b.closest('[data-popup]'); ESCENAS.find(([s]) => s === '[data-popup]')[1](el); }));
 
@@ -170,14 +170,105 @@
   }
   escena('[data-paseo]', el => {
     const compra = compraActual();
-    const deHombre = n => /hombre|traje de h|magical h|blazer/i.test(n);
-    const paraCoen = compra.filter(deHombre), paraAri = compra.filter(n => !deHombre(n));
-    el.querySelector('[data-ropa="ari"]').textContent = paraAri.length ? 'Ari estrena: ' + paraAri.slice(0, 2).join(' y ') : 'Ari, lista para pasear';
-    el.querySelector('[data-ropa="coen"]').textContent = paraCoen.length ? 'Coen estrena: ' + paraCoen.slice(0, 2).join(' y ') : 'Coen, sin armadura por hoy';
-    const t = el.closest('.pagina').querySelector('[data-paseo-texto]');
-    if (t && !compra.length) t.textContent = 'Aunque esta vez no compraron nada, Ari y Coen dejaron las armaduras y salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.';
+    const cap = el.querySelector('[data-ropa="ari"]');
+    if (cap) cap.textContent = compra.length ? 'Estrenan: ' + compra.slice(0, 3).join(', ') : 'Ari y Coen, listos para pasear';
     el.classList.remove('camina'); void el.offsetWidth; luego(() => el.classList.add('camina'), 200);
   });
+
+  // I · probador: Ari cambia de outfit
+  const OUTFITS = [['etapa-15', 'Pelo ondulado, chaleco peludito y cargo oscuro'], ['etapa-13', 'Short negro, polera lila y chaleco blanco'], ['etapa-14', 'Polerón lila de castillito y short celeste'], ['etapa-12', 'Jeans flare claros y polera rosada'], ['etapa-11', 'Chaqueta de cuero y un mundo en la mano']];
+  $$('[data-probador]').forEach(el => {
+    let k = 0; const img = el.querySelector('.probador-img');
+    el.querySelector('[data-probador-btn]').addEventListener('click', () => {
+      k = (k + 1) % OUTFITS.length;
+      img.classList.remove('activa'); el.classList.remove('gira'); void el.offsetWidth; el.classList.add('gira');
+      setTimeout(() => { img.src = 'assets/cuento/etapas/' + OUTFITS[k][0] + '.webp'; img.alt = 'Ari hoy: ' + OUTFITS[k][1]; img.classList.add('activa'); }, quieto ? 0 : 260);
+      if (window.Magia) { const r = el.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 30, colores: ['#c9a6ff', '#ff8fc0', '#fff', '#f3d48a'] }); }
+    });
+  });
+  escena('[data-probador]', el => { el.classList.remove('gira'); void el.offsetWidth; el.classList.add('gira'); });
+
+  // II · la vida caminando: la monita avanza por el pliego y se transforma
+  const VIDA = [
+    ['etapa-01', '4–6 años', 'Una niña princesa de rulos color miel y lentes gigantes de poto de botella.'],
+    ['etapa-02', '8–10 años', 'Dibujaba en cada cuaderno que encontraba.'],
+    ['etapa-03', '12–14 años', 'Descubrió los videojuegos… siempre en el PC.'],
+    ['etapa-04', '15–18 años', 'Gamer de PC, pelo largo y liso, audífonos de gatito.'],
+    ['etapa-05', '20–22 años', 'Matrona: balayage y uniforme rojo de puntitos.'],
+    ['etapa-06', '23–25 años', 'Platinada, enseñando clínica a sus alumnas.'],
+    ['etapa-07', '26–28 años', 'Puntas fucsia y uniforme de estrellas.'],
+    ['etapa-08', '28 años', 'Vuelve el café… y empieza otro sueño.'],
+    ['etapa-09', '29 años', 'Programadora de noches largas en Java.'],
+    ['etapa-10', '30 años', 'Streamer en ArianesDCoen junto a Coen.'],
+    ['etapa-11', '31 años', 'Creadora de mundos: vuelven sus ondas naturales.'],
+    ['etapa-12', 'Hoy', 'Ilustradora con su tableta rosada.'],
+    ['etapa-13', 'Hoy', 'Feliz, con su estilo de siempre.'],
+    ['etapa-14', 'Hoy', 'Lila por sobre todo.'],
+    ['etapa-15', 'Hoy · 32 años', 'Ari: fundadora de Studios Conari. ¡Y la historia sigue!']
+  ];
+  VIDA.forEach(([s]) => { const i = new Image(); i.src = 'assets/cuento/etapas/' + s + '.webp'; });
+  escena('[data-vida]', el => {
+    const a = el.querySelector('.vida-img'), b = el.querySelector('.vida-img-b'), rango = el.querySelector('.vida-rango');
+    const edad = el.querySelector('.vida-edad'), txt = el.querySelector('.vida-texto'), play = el.querySelector('.vida-play'), andante = el.querySelector('.vida-andante');
+    const pagina = el.closest('.pagina'); pagina.setAttribute('data-narracion-propia', '');
+    let k = -1, pausa = false, frente = a;
+    const mostrar = async (n, hablar) => {
+      if (n === k) return; k = n; rango.value = n;
+      const otra = frente === a ? b : a; otra.src = 'assets/cuento/etapas/' + VIDA[n][0] + '.webp'; otra.alt = 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2];
+      otra.classList.add('visible'); frente.classList.remove('visible'); frente = otra;
+      andante.style.setProperty('--x', (4 + n / (VIDA.length - 1) * 78).toFixed(1) + '%');
+      el.style.setProperty('--hora', n / (VIDA.length - 1));
+      edad.textContent = VIDA[n][1]; txt.textContent = VIDA[n][2];
+      el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
+      if (window.Magia) { const r = andante.getBoundingClientRect(); if (r.width) Magia.chispas(r.left + r.width / 2, r.top + r.height * .45, { n: 22, vel: 3, colores: ['#ff8fc0', '#ffd9ea', '#c9a6ff', '#f3d48a', '#fff'] }); }
+      if (hablar && window.MCENarrador.activo) await decir(VIDA[n][1] + '. ' + VIDA[n][2]);
+    };
+    const avanzar = async () => {
+      if (pausa || !document.body.contains(el)) return;
+      const n = k + 1;
+      if (n >= VIDA.length) { el.classList.add('llego'); play.textContent = '↻'; play.setAttribute('aria-label', 'Volver a caminar'); pausa = true; return; }
+      await mostrar(n, true);
+      luego(avanzar, window.MCENarrador.activo ? 900 : 2300);
+    };
+    el.classList.remove('llego'); play.textContent = '❚❚'; k = -1;
+    mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); decir(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 2600); });
+    play.onclick = () => {
+      if (el.classList.contains('llego')) { el.classList.remove('llego'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); luego(avanzar, 1800); return; }
+      pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir caminando' : 'Pausar la caminata');
+      if (!pausa) luego(avanzar, 300);
+    };
+    rango.oninput = () => { pausa = true; play.textContent = '▶'; el.classList.remove('llego'); mostrar(Number(rango.value), false); };
+  });
+
+  // IV · noches de código: escenas que se suceden
+  escena('[data-escenas]', el => {
+    const cs = [...el.querySelectorAll('.escena-cuadro')], ps = [...el.querySelectorAll('.escenas-puntos i')]; let i = 0;
+    const ver = n => { i = n; cs.forEach((c, j) => c.classList.toggle('activa', j === n)); ps.forEach((p, j) => p.classList.toggle('on', j === n)); };
+    ver(0);
+    const paso = () => { ver((i + 1) % cs.length); luego(paso, 4200); };
+    luego(paso, 4200);
+    el.onclick = () => { limpiar(); ver((i + 1) % cs.length); luego(paso, 5200); };
+  });
+
+  // ✦ currículum con pestañas
+  $$('.cv-tabs').forEach(t => t.addEventListener('click', e => {
+    const b = e.target.closest('[data-cv]'); if (!b) return;
+    const pag = t.closest('.pagina');
+    t.querySelectorAll('[data-cv]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    pag.querySelectorAll('[data-cv-panel]').forEach(p => { p.hidden = p.dataset.cvPanel !== b.dataset.cv; });
+  }));
+
+  // ✦ final: el mundo ideal se dibuja y Ari se transforma en hada
+  escena('[data-final]', el => {
+    const pag = el.closest('.pagina');
+    el.classList.remove('dibuja', 'transforma', 'hada'); pag.classList.remove('l1', 'l2'); void el.offsetWidth;
+    luego(() => el.classList.add('dibuja'), 200);
+    luego(() => pag.classList.add('l1'), 2600);
+    luego(() => pag.classList.add('l2'), 4600);
+    luego(() => { el.classList.add('transforma'); if (window.Magia) { const r = el.querySelector('.final-trans').getBoundingClientRect(); for (let k = 0; k < 5; k++) setTimeout(() => Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 26, vel: 4, colores: ['#ff8fc0', '#ffd9ea', '#c9a6ff', '#f3d48a', '#fff'] }), k * 220); } }, 7000);
+    luego(() => el.classList.add('hada'), 8200);
+  });
+  $$('.final-repetir').forEach(b => b.addEventListener('click', () => { limpiar(); ESCENAS.find(([s]) => s === '[data-final]')[1](b.closest('.pagina').querySelector('[data-final]')); }));
 
   // VII · la ilustración que se dibuja y se pinta
   escena('[data-dibujandose]', el => { el.classList.remove('dibuja', 'pinta'); void el.offsetWidth; luego(() => el.classList.add('dibuja'), 300); luego(() => el.classList.add('pinta'), 3600); });
