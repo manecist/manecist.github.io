@@ -476,3 +476,14 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
   .pagina-calc .calc-java .java-pre{font-size:.74rem}
   .pagina-calc .code-card .btn{padding:5px 10px;font-size:.74rem}
 }
+
+/* ---------------------------------------------------------------- el dragón que se convierte en el emblema de la portada */
+.libro.espera-emblema .tapa-emblema{opacity:0}
+.libro.forma-emblema .tapa-emblema{animation:emblema-nace 1s cubic-bezier(.2,1.3,.4,1) both,emblema-brilla 4s ease-in-out 1s infinite}
+@keyframes emblema-nace{0%{opacity:0;transform:scale(.55) rotate(-8deg);filter:brightness(3) drop-shadow(0 0 40px #fff)}60%{opacity:1;filter:brightness(1.6) drop-shadow(0 0 30px rgba(245,168,207,.9))}100%{opacity:1;transform:none}}
+.dragon-portada{position:fixed;left:0;top:0;z-index:320;width:254px;height:240px;transform-origin:50% 50%;pointer-events:none;
+  background:url("assets/intro/dragon-rosa.webp") 0 0/2286px 240px no-repeat;animation:intro-aleteo .55s steps(8) infinite;
+  filter:drop-shadow(0 0 14px rgba(245,168,207,.65));transition:filter .5s,opacity .7s}
+.dragon-portada.posado{animation:none;background-position:-2032px 0}
+.dragon-portada.brilla{filter:brightness(2.6) drop-shadow(0 0 30px #fff) drop-shadow(0 0 50px rgba(245,168,207,.9))}
+.dragon-portada.se-va{opacity:0}
