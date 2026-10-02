@@ -247,11 +247,13 @@
     const pagina = el.closest('.pagina'); pagina.setAttribute('data-narracion-propia', '');
     let k = -1, pausa = false, frente = a;
     detener(el);
+    // al abrir la página, los recortes del pop-up se despliegan uno tras otro
+    el.classList.remove('abierta'); setTimeout(() => el.classList.add('abierta'), 350);
     const mostrar = async (n, hablar) => {
       if (n === k) return; k = n; rango.value = n;
       const otra = frente === a ? b : a; otra.dataset.etapa = VIDA[n][0]; otra.style.setProperty('--tira', 'url(' + tiraDe(VIDA[n][0]) + ')'); if (!el._raf) ponerCuadro(otra, 0); otra.setAttribute('aria-label', 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2]);
       otra.classList.add('visible'); frente.classList.remove('visible'); frente = otra;
-      andante.style.setProperty('--x', (4 + n / (VIDA.length - 1) * 78).toFixed(1) + '%');
+      el.style.setProperty('--x', (4 + n / (VIDA.length - 1) * 70).toFixed(1) + '%');   // la monita y su sombra avanzan juntas
       el.style.setProperty('--hora', n / (VIDA.length - 1));
       edad.textContent = VIDA[n][1]; txt.textContent = VIDA[n][2];
       el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
