@@ -32,7 +32,7 @@
 .escena.leyendo .libro{transform:translateY(-22px)}
 /* ✦ pliegos pop-up: el libro entero se acuesta sobre la mesa y lo miramos con la cámara baja */
 .escena{perspective:1500px;perspective-origin:50% 66%}
-.escena.leyendo .libro.acostado{--inclina:64deg;transform:translateY(14vh) rotateX(var(--inclina)) scale(.86);transform-style:preserve-3d;perspective:none}
+.escena.leyendo .libro.acostado{--inclina:64deg;transform:translateY(25vh) rotateX(var(--inclina)) scale(.7);transform-style:preserve-3d;perspective:none}
 .libro.acostado .libro-cuerpo,.libro.acostado .pag,.libro.acostado .pagina-pop,.libro.acostado .pop-escena{transform-style:preserve-3d}
 .libro.acostado .pag,.libro.acostado .pagina-pop{overflow:visible}
 .libro.acostado .libro-sombra{opacity:0}
@@ -1231,9 +1231,11 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 @media (max-height:640px){.pagina .cv-lista li>span{display:none}}
 
 /* ✦ teatro de papel: los recuadros cuelgan de hilos desde el techo mientras el libro está acostado */
-.teatro{position:absolute;left:0;right:0;top:0;height:62%;z-index:6;display:grid;grid-template-columns:repeat(var(--cols,2),1fr);gap:3vw;padding:0 5vw;pointer-events:none}
-.teatro[data-lados="1"]{--cols:1}
-.teatro-lado{display:flex;flex-wrap:wrap;justify-content:center;align-content:flex-start;align-items:flex-start;gap:6px 16px}
+/* zonas: el texto en el cielo arriba a la izquierda, los recuadros colgando a la derecha, el libro abajo */
+.teatro{position:absolute;right:2vw;top:0;width:min(46vw,700px);height:58%;z-index:6;pointer-events:none}
+.teatro-lado{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;align-items:start}
+.teatro-lado .colgante{width:auto}
+.teatro-lado .colgante:nth-child(even){margin-top:calc(var(--hilo) + 14px)}
 .colgante{position:relative;width:min(300px,42vw);margin-top:var(--hilo);padding:3px;border-radius:16px;background:linear-gradient(160deg,#fffaf1,#f3e3c8);box-shadow:0 14px 26px rgba(10,6,30,.45),inset 0 0 0 1px rgba(215,169,72,.6);
   pointer-events:auto;transform-origin:50% -60vh;transform:translateY(-120vh);transition:transform 1.15s cubic-bezier(.3,1.35,.5,1) calc(var(--i)*.13s)}
 .colgante::before,.colgante::after{content:"";position:absolute;bottom:100%;width:2px;height:120vh;background:linear-gradient(rgba(255,240,250,0),rgba(255,236,248,.85));pointer-events:none}
@@ -1244,7 +1246,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante .poderes li{background:transparent;border:0;padding:8px 12px}
 .colgante .poderes small{font-size:.82rem}
 .colgante .botonera{margin:0;padding:8px;justify-content:center}
-@media (max-width:860px){.teatro{height:54%;padding:0 3vw}.colgante{width:min(250px,44vw)}.colgante .poderes small{display:none}}
+@media (max-width:860px){.teatro{left:3vw;right:3vw;width:auto;height:50%}.colgante .poderes small{display:none}}
 @media (prefers-reduced-motion:reduce){.colgante{transition:none}.teatro.baja .colgante{animation:none}}
 
 /* el texto suelto se escribe sobre la hoja: letra por letra, con un leve desenfoque de tinta */
@@ -1258,3 +1260,18 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .escena.leyendo .libro.una.aparece.acostado{transform:translateY(16vh) rotateX(58deg) scale(.92);transform-style:preserve-3d;perspective:none}
 .por-escribir:not(.escribe){opacity:0}
 .por-colgar{visibility:hidden}
+
+/* el texto del capítulo, escrito en el cielo de galaxia detrás del libro */
+.teatro-cielo{position:absolute;left:4vw;top:3vh;width:min(46vw,680px);z-index:0;pointer-events:none;opacity:0;transition:opacity .6s}
+.teatro-cielo.visible{opacity:1}
+.cielo-bloque{color:#f7ecff;text-shadow:0 0 14px rgba(200,160,255,.55),0 2px 6px rgba(10,6,30,.8);margin-bottom:1.2em}
+.cielo-bloque .cap-num{text-align:left;color:#f3d48a}
+.cielo-bloque .cap-titulo{text-align:left;color:#fff;font-size:clamp(1.6rem,2.8vw,2.4rem);margin-bottom:.4em}
+.cielo-bloque .cuento{font:500 clamp(.98rem,1.1vw,1.1rem)/1.5 var(--serif);max-width:40em;margin-bottom:.5em}
+.cielo-bloque .cuento b{color:#ffb3d6}.cielo-bloque .cuento em{color:#d9c2ff}
+.cielo-bloque .letra{color:#ff9cc9;text-shadow:0 0 16px rgba(255,140,200,.7)}
+.cielo-bloque .adorno,.cielo-bloque hr{display:none}
+.libro{z-index:1}
+@media (max-width:860px){.teatro-cielo{left:5vw;right:5vw;width:auto;top:3vh}.cielo-bloque .cuento{font-size:.98rem}}
+.cielo-bloque .cap-titulo::before,.cielo-bloque .cap-titulo::after{display:none}
+.colgante .probador-btn{position:static;display:block;margin:6px auto;font-size:.9rem;padding:9px 16px}
