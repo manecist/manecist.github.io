@@ -1052,11 +1052,25 @@ html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/noche.webp")}
 .vida-cielo{position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,hsl(calc(330 - var(--hora)*90),70%,calc(88% - var(--hora)*10%)),hsl(calc(300 - var(--hora)*60),65%,92%) 70%);transition:background 1s}
 html[data-cielo="noche"] .vida-cielo{background:linear-gradient(180deg,hsl(calc(250 - var(--hora)*20),45%,calc(18% + var(--hora)*8%)),hsl(calc(290 - var(--hora)*20),45%,32%) 75%)}
 .vida-cielo::after{content:"";position:absolute;inset:0;background:radial-gradient(1.5px 1.5px at 12% 20%,#fff,transparent),radial-gradient(1px 1px at 30% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 25%,#ffd9ea,transparent),radial-gradient(1px 1px at 75% 15%,#fff,transparent),radial-gradient(1.5px 1.5px at 90% 28%,#fff,transparent);animation:latido 3s infinite}
-.vida-suelo{position:absolute;left:-5%;right:-5%;bottom:0;height:22%;z-index:-1;border-radius:50% 50% 0 0/30% 30% 0 0;background:linear-gradient(180deg,#f7d9e9,#e9b8d3);box-shadow:inset 0 6px 0 rgba(255,255,255,.6)}
-html[data-cielo="noche"] .vida-suelo{background:linear-gradient(180deg,#4a3a7c,#2c2356)}
-.vida-huellas{position:absolute;left:0;right:0;bottom:12%;height:4px;z-index:-1;background:repeating-linear-gradient(90deg,rgba(199,76,134,.35) 0 10px,transparent 10px 26px);-webkit-mask:linear-gradient(90deg,#000 calc(var(--hora)*80% + 6%),transparent calc(var(--hora)*80% + 8%));mask:linear-gradient(90deg,#000 calc(var(--hora)*80% + 6%),transparent calc(var(--hora)*80% + 8%))}
-.vida-andante{--x:4%;position:absolute;left:var(--x);bottom:8%;height:72%;aspect-ratio:.8;transition:left 4s linear}   /* = 2 ciclos de caminata */
-.vida-img{position:absolute;inset:0;opacity:0;transition:opacity .7s;filter:drop-shadow(0 8px 8px rgba(60,30,60,.35))}
+/* el pliego es un libro pop-up abierto visto desde una cámara baja: las hojas hacen de suelo */
+.vida{perspective:900px;perspective-origin:50% 5%}
+.vida-libro3d{--x:4%;position:absolute;left:9%;right:9%;bottom:12%;height:104%;transform-origin:50% 100%;transform:rotateX(71deg);transform-style:preserve-3d}
+.vida-tapa{position:absolute;inset:-2.5% -1.4% -3%;border-radius:10px;background:linear-gradient(90deg,#d94f86,#f07aa8 49%,#b83a6c 50%,#f07aa8 51%,#d94f86);transform:translateZ(-14px);box-shadow:0 30px 40px rgba(60,20,50,.35)}
+.vida-hoja{position:absolute;inset:0;border-radius:3px 3px 6px 6px;background:linear-gradient(90deg,rgba(120,90,60,.10),transparent 8% 42%,rgba(120,90,60,.18) 48.6%,rgba(90,60,40,.38) 50%,rgba(120,90,60,.18) 51.4%,transparent 58% 92%,rgba(120,90,60,.10)),radial-gradient(120% 90% at 50% 100%,#fffaf1,#f3e7d4)}
+html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
+.vida-canto{position:absolute;left:.4%;right:.4%;bottom:0;height:22px;transform-origin:50% 100%;transform:rotateX(-90deg);background:repeating-linear-gradient(180deg,#fffdf8 0 2px,#e4d4bd 2px 3px);border-radius:0 0 3px 3px}
+.vida-sombra{position:absolute;left:var(--x);bottom:15%;width:12%;height:6%;margin-left:.6%;border-radius:50%;background:radial-gradient(closest-side,rgba(70,40,60,.35),transparent);transition:left 4s linear}
+/* recortes de cartón: se paran perpendiculares a la hoja (y al abrir el libro se despliegan) */
+.vida-pop,.vida-andante{position:absolute;transform-origin:50% 100%;transform:rotateX(-4deg);transition:transform .9s cubic-bezier(.3,1.45,.55,1) var(--d,0s)}
+.vida.abierta .vida-pop,.vida.abierta .vida-andante{transform:rotateX(-90deg)}
+.vida-pop{display:block;height:auto;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 6px 6px rgba(60,30,50,.3))}
+.pop-montes{left:10%;bottom:86%;width:80%}
+.pop-castillo{right:2%;bottom:62%;width:17%}
+.pop-arbol{width:14%}
+.pop-a1{left:1%;bottom:66%}
+.pop-a2{left:46%;bottom:74%;width:11%}
+.vida-andante{left:var(--x);bottom:16%;width:21%;aspect-ratio:.8;transition:transform .9s cubic-bezier(.3,1.45,.55,1) var(--d,0s),left 4s linear}   /* = 2 ciclos de caminata */
+.vida-img{position:absolute;inset:0;opacity:0;transition:opacity .7s;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff)}
 .vida-img.visible{opacity:1}
 /* ciclo de caminata: 6 cuadros; quieta, se queda en el primero */
 .vida-img i{position:absolute;inset:0;background:var(--tira) no-repeat 0 100%/calc(var(--n,6) * 100%) 100%}
@@ -1073,8 +1087,8 @@ html[data-cielo="noche"] .vida-suelo{background:linear-gradient(180deg,#4a3a7c,#
 .vida-controles .btn{padding:4px 10px;min-height:0;font-size:.85rem}
 .vida-rango{width:min(220px,30vw);accent-color:#c74c86}
 .libro.una .pagina-camino-vida{padding:16px 10px 34px;grid-template-rows:auto minmax(360px,1fr)}
-.libro.una .vida-cartel{top:auto;bottom:24%;left:8px;max-width:58%}
-.libro.una .vida-andante{height:60%}
+.libro.una .vida-cartel{top:64px;bottom:auto;left:8px;max-width:78%}
+.libro.una .vida-andante{width:24%}
 .libro.una .vida-rango{width:110px}
 
 /* III · matronas */
@@ -1139,7 +1153,7 @@ html[data-cielo="noche"] .vida-suelo{background:linear-gradient(180deg,#4a3a7c,#
 .pagina-final .final-l1{font-size:1.35rem}
 .pagina-final.l1 .final-l1,.pagina-final.l2 .final-l2{opacity:1;transform:none}
 .final-repetir{justify-self:center}
-@media (prefers-reduced-motion:reduce){.final-img{clip-path:none;filter:none}.vida-andante{transition:none}}
+@media (prefers-reduced-motion:reduce){.final-img{clip-path:none;filter:none}.vida-andante,.vida-pop,.vida-sombra{transition:none}}
 /* v3 · pop-up y paseo en el celular */
 .libro.una .pagina-popup{grid-template-rows:auto auto}
 .libro.una .popup-escenario{aspect-ratio:4/5;height:auto}
