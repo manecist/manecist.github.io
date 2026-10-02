@@ -397,6 +397,14 @@
   /* Dragoncito: vuela cerca del puntero, mira hacia donde vas y celebra lo que haces */
   const dr = $('#dragoncito');
   if (dr) {
+    // solo acompaña en la versión clásica, y recién cuando el hada terminó de pintar el reino desde el lineart
+    // (nunca en la intro ni dentro del libro)
+    const sitio = $('#site'), libroEscena = $('#escena');
+    const ver = () => dr.classList.toggle('visible', !!sitio && sitio.classList.contains('ready') && !sitio.classList.contains('pintando')
+      && sitio.getAttribute('aria-hidden') !== 'true' && (!libroEscena || libroEscena.classList.contains('oculta')));
+    const obs = new MutationObserver(ver);
+    [sitio, libroEscena].forEach(n => n && obs.observe(n, { attributes: true, attributeFilter: ['class', 'aria-hidden'] }));
+    ver();
     const globo = dr.querySelector('.dragoncito-globo');
     let x = innerWidth - 120, y = 90, tx = x, ty = y, mira = -1, ultimoMov = performance.now(), dormido = false;
     addEventListener('pointermove', e => {
