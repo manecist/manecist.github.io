@@ -400,7 +400,11 @@
     const escenaLibro = $('#escena'); if (!escenaLibro) return;
     const teatro = document.createElement('div'); teatro.className = 'teatro'; teatro.setAttribute('aria-hidden', 'false');
     escenaLibro.append(teatro);
-    const COLGAR = '.poderes > li, .botonera';
+    // el cielo: el texto del capítulo se escribe en la galaxia, detrás del libro (las hojas quedan lisas)
+    const cielo = document.createElement('div'); cielo.className = 'teatro-cielo';
+    $('#libro').before(cielo);
+    let enCielo = [];
+    const COLGAR = '.poderes > li, .botonera, .probador-btn';
     const ESCRIBIR = '.cap-num, .cap-titulo, .cuento';
     let colgados = [], turno = 0;
     // cada letra en su propia cajita (una sola vez por elemento); se respetan negritas y la letra capital
@@ -417,22 +421,34 @@
       caminar(el);
     };
     const escribir = paginas => {
-      let k = 0;
-      paginas.forEach(p => p.querySelectorAll(ESCRIBIR).forEach(el => {
-        letras(el); el.classList.add('escribe');
-        el.querySelectorAll('.ch').forEach(s => s.style.setProperty('--k', k++));
-      }));
+      let k = 0; cielo.innerHTML = ''; enCielo = [];
+      paginas.forEach(p => {
+        const bloque = document.createElement('div'); bloque.className = 'cielo-bloque';
+        p.querySelectorAll(ESCRIBIR).forEach(el => {
+          const marca = document.createComment('cielo'); el.before(marca); enCielo.push({ el, marca });
+          letras(el); el.classList.add('escribe'); el.classList.remove('por-escribir');
+          el.querySelectorAll('.ch').forEach(s => s.style.setProperty('--k', k++));
+          bloque.append(el);
+        });
+        if (bloque.children.length) cielo.append(bloque);
+      });
+      cielo.classList.add('visible');
+    };
+    const bajarDelCielo = () => {
+      cielo.classList.remove('visible');
+      enCielo.forEach(({ el, marca }) => { if (marca.isConnected) marca.replaceWith(el); });
+      enCielo = []; cielo.innerHTML = '';
     };
     const borrarEscritura = () => document.querySelectorAll('.escribe, .por-escribir, .por-colgar').forEach(e => e.classList.remove('escribe', 'por-escribir', 'por-colgar'));
     const colgar = paginas => {
       teatro.innerHTML = ''; colgados = [];
-      const lados = paginas.map(() => { const l = document.createElement('div'); l.className = 'teatro-lado'; teatro.append(l); return l; });
-      teatro.dataset.lados = lados.length;
+      const zona = document.createElement('div'); zona.className = 'teatro-lado'; teatro.append(zona);
+      const lados = paginas.map(() => zona);
       let i = 0;
       paginas.forEach((p, j) => p.querySelectorAll(COLGAR).forEach(el => {
         const marca = document.createComment('colgante'); el.before(marca); el.classList.remove('por-colgar');
         const c = document.createElement('div'); c.className = 'colgante';
-        c.style.setProperty('--i', i); c.style.setProperty('--hilo', (12 + ((i * 37) % 70)) + 'px'); i++;
+        c.style.setProperty('--i', i); c.style.setProperty('--hilo', (6 + ((i * 29) % 34)) + 'px'); i++;
         const padre = marca.parentElement;
         if (/^(UL|OL)$/.test(padre.tagName)) { const w = document.createElement(padre.tagName); w.className = padre.className; w.append(el); c.append(w); } else c.append(el);
         lados[j].append(c); colgados.push({ el, marca });
@@ -445,12 +461,12 @@
       const devolver = () => { lista.forEach(({ el, marca }) => { if (marca.isConnected) { marca.replaceWith(el); } }); if (mio === turno) teatro.innerHTML = ''; };
       if (inmediato || quieto) devolver(); else setTimeout(devolver, 650);
     };
-    window.addEventListener('cuento-levanta', () => { descolgar(); borrarEscritura(); });
-    window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); borrarEscritura(); });
+    window.addEventListener('cuento-levanta', () => { descolgar(); bajarDelCielo(); borrarEscritura(); });
+    window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
       const ps = e.detail.paginas, pop = ps.some(p => p.classList.contains('pagina-pop'));
       if (colgados.length) descolgar(true);
-      borrarEscritura();
+      bajarDelCielo(); borrarEscritura();
       if (!pop) return;
       // mientras el libro se acuesta, el texto y los recuadros esperan escondidos (no se ven planos y luego desaparecen)
       ps.forEach(p => { p.querySelectorAll(ESCRIBIR).forEach(el => el.classList.add('por-escribir')); p.querySelectorAll(COLGAR).forEach(el => el.classList.add('por-colgar')); });
