@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261004b">
+  <link rel="stylesheet" href="libro.css?v=20261004f">
   <link rel="stylesheet" href="tema-claro.css?v=20261002a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
@@ -31,8 +31,8 @@
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261002a" defer></script>
   <script src="secciones.js?v=20261002a" defer></script>
-  <script src="libro.js?v=20261004b" defer></script>
-  <script src="cuento.js?v=20261004b" defer></script>
+  <script src="libro.js?v=20261004f" defer></script>
+  <script src="cuento.js?v=20261004f" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -559,10 +559,14 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   <article class="pagina pagina-ilustrada pagina-pop" data-cap="I · Hola, soy Ari">
     <!-- pop-up sobre la hoja: al acostarse el libro, el probador y los sakuras se levantan al fondo de la página -->
     <div class="pop-escena pop-probador" data-probador>
-      <img class="pop probador-sakura probador-s1" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.1s">
-      <img class="pop probador-sakura probador-s2" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.2s">
+      <img class="pop probador-sakura probador-s3" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.05s">
+      <img class="pop probador-sakura probador-s4" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.1s">
+      <img class="pop probador-sakura probador-s1" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.2s">
+      <img class="pop probador-sakura probador-s2" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.25s">
+      <span class="pop pasto pasto-medio" aria-hidden="true" style="--d:.3s"></span>
       <span class="pop-sombra probador-sombra" aria-hidden="true"></span>
-      <div class="pop probador-pop" style="--d:.4s"><span class="probador-espejo" aria-hidden="true"></span><img class="probador-img activa" src="assets/cuento/etapas/etapa-15.webp" alt="Ari hoy, feliz, con pelo ondulado, chaleco blanco peludito y pantalón cargo"></div>
+      <div class="pop probador-pop" style="--d:.45s"><img class="probador-img activa" src="assets/cuento/etapas/etapa-15.webp" alt="Ari hoy, feliz, con pelo ondulado, chaleco blanco peludito y pantalón cargo"></div>
+      <span class="pop pasto pasto-frente" aria-hidden="true" style="--d:.15s"></span>
       <span class="probador-brillo" aria-hidden="true"></span>
       <button type="button" class="probador-btn" data-probador-btn aria-label="Cambiar el outfit de Ari">✦ Otro outfit</button>
     </div>
@@ -572,11 +576,11 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </article>
   <article class="pagina pagina-perfil" data-cap="I · Hola, soy Ari">
     <ul class="poderes">
-      <li><span aria-hidden="true">🏰</span><b>Empresa</b><small>Socia fundadora y administradora de Studios Conari SpA: dirección creativa, gestión y propuestas.</small></li>
-      <li><span aria-hidden="true">☕</span><b>Desarrollo</b><small>Full Stack Java certificada (480 h, junio 2026): Java, Spring Boot, Security, MySQL, HTML, CSS y JavaScript.</small></li>
-      <li><span aria-hidden="true">🎨</span><b>Diseño e ilustración</b><small>Personajes, identidad visual, diseño editorial, mundos y modelado 3D para videojuegos.</small></li>
-      <li><span aria-hidden="true">📊</span><b>Datos</b><small>Estudiando y perfeccionándome en el Certificado de Análisis de Datos de Google en Coursera.</small></li>
-      <li><span aria-hidden="true">🩺</span><b>Salud</b><small>Matrona titulada con distinción y cerca de cinco años de experiencia clínica y de gestión.</small></li>
+      <li data-corto="Fundadora de Studios Conari" data-color="rosa"><span aria-hidden="true">🏰</span><b>Empresa</b><small>Socia fundadora y administradora de Studios Conari SpA: dirección creativa, gestión y propuestas.</small></li>
+      <li data-corto="Full Stack Java certificada" data-color="lila"><span aria-hidden="true">☕</span><b>Desarrollo</b><small>Full Stack Java certificada (480 h, junio 2026): Java, Spring Boot, Security, MySQL, HTML, CSS y JavaScript.</small></li>
+      <li data-corto="Personajes, mundos y 3D" data-color="durazno"><span aria-hidden="true">🎨</span><b>Diseño e ilustración</b><small>Personajes, identidad visual, diseño editorial, mundos y modelado 3D para videojuegos.</small></li>
+      <li data-corto="Google Data Analytics" data-color="celeste"><span aria-hidden="true">📊</span><b>Datos</b><small>Estudiando y perfeccionándome en el Certificado de Análisis de Datos de Google en Coursera.</small></li>
+      <li data-corto="Matrona con distinción" data-color="menta"><span aria-hidden="true">🩺</span><b>Salud</b><small>Matrona titulada con distinción y cerca de cinco años de experiencia clínica y de gestión.</small></li>
     </ul>
     <p class="cuento">Cada una de esas vidas tiene su capítulo. Pero para entender cómo llegué hasta aquí… hay que volver al principio.</p>
     <p class="botonera"><button type="button" class="btn primary" data-ir-cap="✦ Medallas, streams y mi currículum">Ver mi currículum ✦</button><a class="btn ghost" href="assets/cv.pdf" target="_blank" rel="noopener">Descargar PDF ↗</a></p>

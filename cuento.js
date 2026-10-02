@@ -442,8 +442,8 @@
     const borrarEscritura = () => document.querySelectorAll('.escribe, .por-escribir, .por-colgar').forEach(e => e.classList.remove('escribe', 'por-escribir', 'por-colgar'));
     const colgar = paginas => {
       teatro.innerHTML = ''; colgados = [];
-      const zona = document.createElement('div'); zona.className = 'teatro-lado'; teatro.append(zona);
-      const lados = paginas.map(() => zona);
+      const angosto = matchMedia('(max-width: 860px)').matches;
+      const zonas = (angosto ? ['der'] : ['izq', 'der']).map(n => { const z = document.createElement('div'); z.className = 'teatro-lado teatro-' + n; teatro.append(z); return z; });
       let i = 0;
       paginas.forEach((p, j) => p.querySelectorAll(COLGAR).forEach(el => {
         const marca = document.createComment('colgante'); el.before(marca); el.classList.remove('por-colgar');
@@ -451,7 +451,7 @@
         c.style.setProperty('--i', i); c.style.setProperty('--hilo', (6 + ((i * 29) % 34)) + 'px'); i++;
         const padre = marca.parentElement;
         if (/^(UL|OL)$/.test(padre.tagName)) { const w = document.createElement(padre.tagName); w.className = padre.className; w.append(el); c.append(w); } else c.append(el);
-        lados[j].append(c); colgados.push({ el, marca });
+        zonas[(i - 1) % zonas.length].append(c); colgados.push({ el, marca });
       }));
       requestAnimationFrame(() => requestAnimationFrame(() => teatro.classList.add('baja')));
     };
