@@ -1232,10 +1232,12 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 
 /* ✦ teatro de papel: los recuadros cuelgan de hilos desde el techo mientras el libro está acostado */
 /* zonas: el texto en el cielo arriba a la izquierda, los recuadros colgando a la derecha, el libro abajo */
-.teatro{position:absolute;right:2vw;top:0;width:min(46vw,700px);height:58%;z-index:6;pointer-events:none}
-.teatro-lado{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;align-items:start}
-.teatro-lado .colgante{width:auto}
-.teatro-lado .colgante:nth-child(even){margin-top:calc(var(--hilo) + 14px)}
+.teatro{position:absolute;inset:0 0 auto;height:66%;z-index:6;pointer-events:none}
+.teatro-lado{position:absolute;top:0;width:min(21vw,300px);display:flex;flex-direction:column;align-items:center;gap:2px}
+.teatro-izq{left:2vw}.teatro-der{right:2vw}
+.teatro-lado .colgante{width:100%}
+.teatro-lado .colgante:nth-child(even){margin-left:14%;width:86%}
+.teatro-lado .colgante:nth-child(odd){margin-right:14%;width:86%}
 .colgante{position:relative;width:min(300px,42vw);margin-top:var(--hilo);padding:3px;border-radius:16px;background:linear-gradient(160deg,#fffaf1,#f3e3c8);box-shadow:0 14px 26px rgba(10,6,30,.45),inset 0 0 0 1px rgba(215,169,72,.6);
   pointer-events:auto;transform-origin:50% -60vh;transform:translateY(-120vh);transition:transform 1.15s cubic-bezier(.3,1.35,.5,1) calc(var(--i)*.13s)}
 .colgante::before,.colgante::after{content:"";position:absolute;bottom:100%;width:2px;height:120vh;background:linear-gradient(rgba(255,240,250,0),rgba(255,236,248,.85));pointer-events:none}
@@ -1246,7 +1248,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante .poderes li{background:transparent;border:0;padding:8px 12px}
 .colgante .poderes small{font-size:.82rem}
 .colgante .botonera{margin:0;padding:8px;justify-content:center}
-@media (max-width:860px){.teatro{left:auto;right:3vw;width:46vw;height:40%}.teatro-lado{grid-template-columns:1fr}.colgante .poderes small{display:none}}
+@media (max-width:860px){.teatro-lado{width:46vw;right:3vw}.teatro-lado .colgante{width:100%!important;margin-left:0!important;margin-right:0!important}}
 @media (prefers-reduced-motion:reduce){.colgante{transition:none}.teatro.baja .colgante{animation:none}}
 
 /* el texto suelto se escribe sobre la hoja: letra por letra, con un leve desenfoque de tinta */
@@ -1262,17 +1264,17 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .por-colgar{visibility:hidden}
 
 /* el texto del capítulo, escrito en el cielo de galaxia detrás del libro */
-.teatro-cielo{position:absolute;left:4vw;top:3vh;width:min(46vw,680px);z-index:0;pointer-events:none;opacity:0;transition:opacity .6s}
+.teatro-cielo{position:absolute;left:50%;top:2vh;width:min(46vw,700px);translate:-50% 0;text-align:center;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s}
 .teatro-cielo.visible{opacity:1}
 .cielo-bloque{color:#f7ecff;text-shadow:0 0 14px rgba(200,160,255,.55),0 2px 6px rgba(10,6,30,.8);margin-bottom:1.2em}
-.cielo-bloque .cap-num{text-align:left;color:#f3d48a}
-.cielo-bloque .cap-titulo{text-align:left;color:#fff;font-size:clamp(1.6rem,2.8vw,2.4rem);margin-bottom:.4em}
+.cielo-bloque .cap-num{text-align:center;color:#f3d48a}
+.cielo-bloque .cap-titulo{text-align:center;color:#fff;font-size:clamp(1.6rem,2.8vw,2.4rem);margin-bottom:.4em}
 .cielo-bloque .cuento{font:500 clamp(.98rem,1.1vw,1.1rem)/1.5 var(--serif);max-width:40em;margin-bottom:.5em}
 .cielo-bloque .cuento b{color:#ffb3d6}.cielo-bloque .cuento em{color:#d9c2ff}
 .cielo-bloque .letra{color:#ff9cc9;text-shadow:0 0 16px rgba(255,140,200,.7)}
 .cielo-bloque .adorno,.cielo-bloque hr{display:none}
 .libro{z-index:1}
-@media (max-width:860px){.teatro-cielo{left:5vw;right:5vw;width:auto;top:11vh}.cielo-bloque .cuento{font-size:.98rem}}
+@media (max-width:860px){.teatro-cielo{left:5vw;right:5vw;width:auto;top:11vh;translate:none;text-align:left}.teatro-cielo .cap-num,.teatro-cielo .cap-titulo{text-align:left}.cielo-bloque .cuento{font-size:.98rem}}
 .cielo-bloque .cap-titulo::before,.cielo-bloque .cap-titulo::after{display:none}
 .colgante .probador-btn{position:static;display:block;margin:6px auto;font-size:.9rem;padding:9px 16px}
 
@@ -1288,3 +1290,66 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.acostado .libro-cinta{display:none}
 .libro.una .bloque-lomo,.libro.una .bloque-der{display:none}
 .libro.una .bloque-izq{width:100%;border-radius:0 0 18px 18px/0 0 10px 10px}
+
+/* ✦ capítulo I en escritorio: el piso es un jardín (pasto y un caminito de adoquines por el lomo) */
+.libro.acostado .pag{background:
+  radial-gradient(circle at 20% 30%,rgba(255,255,255,.08) 0 2px,transparent 3px) 0 0/22px 22px,
+  radial-gradient(circle at 70% 60%,rgba(20,60,20,.25) 0 2px,transparent 3px) 0 0/17px 17px,
+  linear-gradient(180deg,#4f9a4c,#3f8a45 60%,#357a3c)}
+.libro.acostado .pag::before,.libro.acostado .pag::after,.libro.acostado .libro-lomo,.libro.acostado .pagina-num,.libro.acostado .doblez{opacity:0}
+.libro.acostado .pag-izq,.libro.acostado .pag-der{box-shadow:0 20px 50px rgba(0,0,0,.5)}
+/* adoquines: una franja a cada lado del lomo forma un camino que llega hasta Ari */
+.libro.acostado .pag::after{content:"";opacity:1!important;position:absolute;top:0;bottom:0;width:20%;z-index:0;
+  background:radial-gradient(ellipse 46% 40% at 50% 50%,#c9b9a6 0 60%,#a8968a 72%,transparent 74%) 0 0/34px 26px,
+  radial-gradient(ellipse 46% 40% at 50% 50%,#d8c9b6 0 60%,#ad9c8f 72%,transparent 74%) 17px 13px/34px 26px,#7d6e66;
+  -webkit-mask:linear-gradient(180deg,transparent 4%,#000 20%);mask:linear-gradient(180deg,transparent 4%,#000 20%)}
+.libro.acostado .pag-izq::after{right:0;border-radius:0}
+.libro.acostado .pag-der::after{left:0}
+.libro.una.acostado .pag::after{left:40%;right:auto}
+/* en escritorio la escena ocupa los dos lados: Ari justo sobre el lomo */
+.libro.acostado:not(.una) .pagina-pop .pop-escena{position:absolute;left:0;top:14%;width:calc(var(--pw) * 2);height:46%;margin:0}
+.libro.acostado:not(.una) .probador-pop{left:calc(50% - 11%);width:22%;bottom:6%}
+.libro.acostado:not(.una) .probador-sombra{left:calc(50% - 8%);width:16%;bottom:3%}
+.probador-sakura{width:16%}
+.probador-s1{left:20%;bottom:16%}.probador-s2{right:20%;bottom:16%}
+.probador-s3{left:5%;bottom:40%;width:13%}.probador-s4{right:5%;bottom:40%;width:13%}
+.libro.una .probador-s3,.libro.una .probador-s4{display:none}
+.libro.una .probador-s1{left:2%;width:26%}.libro.una .probador-s2{right:2%;width:26%}
+/* pasto que se levanta: una franja al frente (no queda vacío) y otra entre los árboles */
+.pasto{height:46px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%2260%22%20viewBox%3D%220%200%20120%2060%22%3E%3Cg%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%2060%20Q6%2030%202%2012%22%20stroke%3D%22%233f8f4a%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M14%2060%20Q18%2034%2026%2018%22%20stroke%3D%22%235fb35a%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M22%2060%20Q20%2028%2014%206%22%20stroke%3D%22%232f7a3e%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M34%2060%20Q38%2036%2032%2020%22%20stroke%3D%22%236cc35e%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M44%2060%20Q48%2030%2058%2010%22%20stroke%3D%22%233f8f4a%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M54%2060%20Q52%2038%2046%2024%22%20stroke%3D%22%2386d06a%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M64%2060%20Q66%2026%2062%204%22%20stroke%3D%22%232f7a3e%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M74%2060%20Q80%2036%2088%2022%22%20stroke%3D%22%235fb35a%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M84%2060%20Q82%2032%2076%2014%22%20stroke%3D%22%233f8f4a%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M96%2060%20Q100%2040%2096%2024%22%20stroke%3D%22%236cc35e%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M106%2060%20Q110%2030%20118%2012%22%20stroke%3D%22%232f7a3e%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M116%2060%20Q114%2036%20108%2026%22%20stroke%3D%22%2386d06a%22%20stroke-width%3D%225%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2222%22%20r%3D%223.5%22%20fill%3D%22%23ffb3d6%22%2F%3E%3Ccircle%20cx%3D%2290%22%20cy%3D%2218%22%20r%3D%223%22%20fill%3D%22%23fff4b0%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2230%22%20r%3D%222.5%22%20fill%3D%22%23ffd9ea%22%2F%3E%3C%2Fsvg%3E") repeat-x 0 100%/120px 100%;filter:none}
+.pasto-frente{left:-1%;right:-1%;bottom:-100%;height:56px}
+.pasto-medio{left:8%;right:8%;bottom:28%;height:34px;opacity:.95}
+.libro.una .pasto-frente{bottom:-110%}
+
+/* carteles colgados: resumidos y llamativos */
+.colgante .poderes li{grid-template-columns:52px 1fr;padding:10px 14px}
+.colgante .poderes li small{display:none}
+.colgante .poderes li::after{content:attr(data-corto);grid-column:2;font:600 .9rem/1.3 var(--sans);color:#5b3a63}
+.colgante .poderes span{width:52px;height:52px;font-size:1.7rem;box-shadow:0 0 0 3px #fff,0 4px 10px rgba(120,60,140,.3)}
+.colgante .poderes b{font-size:1.12rem;letter-spacing:.02em}
+.colgante:has([data-color="rosa"]){background:linear-gradient(160deg,#ffe7f2,#ffc6df)}
+.colgante:has([data-color="lila"]){background:linear-gradient(160deg,#f1e6ff,#d8c2ff)}
+.colgante:has([data-color="durazno"]){background:linear-gradient(160deg,#fff0e2,#ffd0a8)}
+.colgante:has([data-color="celeste"]){background:linear-gradient(160deg,#e6f6ff,#bfe3ff)}
+.colgante:has([data-color="menta"]){background:linear-gradient(160deg,#e6fff2,#b8f0d4)}
+.colgante{border-radius:20px;box-shadow:0 14px 26px rgba(10,6,30,.45),inset 0 0 0 2px rgba(255,255,255,.8),0 0 18px rgba(255,190,230,.35)}
+/* el ajuste automático de tamaño de la página no debe achicar la escena ni el texto del cielo */
+.libro.acostado .pagina-pop > .pop-escena,.cielo-bloque > *,.colgante *{zoom:1!important}
+.libro.acostado .pag-izq::after{left:auto!important;right:0!important}
+.libro.acostado .pag-der::after{right:auto!important;left:0!important}
+/* adoquines con forma de piedra, juntas oscuras y un borde de piedritas */
+.libro.acostado .pag::after{
+  background:
+    radial-gradient(ellipse 44% 38% at 50% 50%,#d9cab7 0 55%,#b9a693 64%,transparent 70%) 0 0/36px 28px,
+    radial-gradient(ellipse 44% 38% at 50% 50%,#e3d6c4 0 55%,#bfae9b 64%,transparent 70%) 18px 14px/36px 28px,
+    linear-gradient(#6c5d55,#5c4f49)!important;
+  box-shadow:inset 3px 0 0 #8a7a6c,inset -3px 0 0 #8a7a6c}
+.teatro-izq{left:1.2vw}.teatro-der{right:1.2vw}
+.teatro-lado .colgante:nth-child(even){margin-left:10%;width:90%}
+.teatro-lado .colgante:nth-child(odd){margin-right:10%;width:90%}
+.libro.acostado:not(.una) .probador-pop{left:calc(50% - 7.5%);width:15%;bottom:8%}
+.libro.acostado:not(.una) .probador-sombra{left:calc(50% - 6%);width:12%}
+.libro.acostado:not(.una) .probador-s1{left:22%;width:12%;bottom:20%}.libro.acostado:not(.una) .probador-s2{right:22%;width:12%;bottom:20%}
+.libro.acostado:not(.una) .probador-s3{left:8%;width:10%}.libro.acostado:not(.una) .probador-s4{right:8%;width:10%}
+.libro.acostado .pag::after{background-size:62px 44px,62px 44px,auto!important;background-position:0 0,31px 22px,0 0!important}
+.libro.una.acostado .pag-der::after{left:40%!important;right:auto!important;width:20%}
