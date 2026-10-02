@@ -214,8 +214,8 @@
   ];
   // cada etapa camina de verdad: una tira de 6 cuadros (ciclo de caminata) que se recorre con steps()
   const tiraDe = s => 'assets/cuento/caminata/' + s + '.webp';
-  // ciclo de caminata completo en 1,3 s; cada cuadro se funde brevemente con el siguiente
-  const CICLO = 1300, CICLOS_POR_TRAMO = 2, TRAMO = CICLO * CICLOS_POR_TRAMO;
+  // ciclo de caminata completo en 2 s (paso tranquilo); cada cuadro se funde brevemente con el siguiente
+  const CICLO = 2000, CICLOS_POR_TRAMO = 2, TRAMO = CICLO * CICLOS_POR_TRAMO;
   const ponerCuadro = (capa, p) => {   // p: avance en cuadros (puede tener decimales)
     const n = cuadrosDe[capa.dataset.etapa] || 6, [c1, c2] = capa.children, k = Math.floor(p) % n, f = p - Math.floor(p), mezcla = Math.max(0, (f - .7) / .3);   // fundido corto: sin piernas dobles
     capa.style.setProperty('--n', n);
