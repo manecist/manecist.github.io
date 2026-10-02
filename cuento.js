@@ -124,6 +124,11 @@
   /* ------------------------------------------------------------ escenas */
   const ESCENAS = [];
   const escena = (sel, fn) => ESCENAS.push([sel, fn]);
+  // pop-up: los recortes se acuestan de golpe sobre la hoja y, ya con la página quieta, se levantan uno tras otro
+  const abrirPop = (el, espera = 550) => {
+    el.classList.add('sin-trans'); el.classList.remove('abierta'); void el.offsetWidth; el.classList.remove('sin-trans');
+    luego(() => el.classList.add('abierta'), espera);
+  };
 
   // I · la monita crece: niña → adolescente → hoy
   escena('[data-crece]', el => {
@@ -184,15 +189,17 @@
   // I · probador: Ari cambia de outfit
   const OUTFITS = [['etapa-15', 'Pelo ondulado, chaleco peludito y cargo oscuro'], ['etapa-13', 'Short negro, polera lila y chaleco blanco'], ['etapa-14', 'Polerón lila de castillito y short celeste'], ['etapa-12', 'Jeans flare claros y polera rosada'], ['etapa-11', 'Chaqueta de cuero y un mundo en la mano']];
   $$('[data-probador]').forEach(el => {
-    let k = 0; const img = el.querySelector('.probador-img');
+    let k = 0; const img = el.querySelector('.probador-img'), figura = el.querySelector('.probador-pop');
+    OUTFITS.forEach(([s]) => { const i = new Image(); i.src = 'assets/cuento/etapas/' + s + '.webp'; });
     el.querySelector('[data-probador-btn]').addEventListener('click', () => {
       k = (k + 1) % OUTFITS.length;
-      img.classList.remove('activa'); el.classList.remove('gira'); void el.offsetWidth; el.classList.add('gira');
-      setTimeout(() => { img.src = 'assets/cuento/etapas/' + OUTFITS[k][0] + '.webp'; img.alt = 'Ari hoy: ' + OUTFITS[k][1]; img.classList.add('activa'); }, quieto ? 0 : 260);
+      // la figura de cartón se pliega sobre la hoja, cambia de ropa y se vuelve a levantar
+      figura.classList.add('pliega'); el.classList.remove('gira'); void el.offsetWidth; el.classList.add('gira');
+      setTimeout(() => { img.src = 'assets/cuento/etapas/' + OUTFITS[k][0] + '.webp'; img.alt = 'Ari hoy: ' + OUTFITS[k][1]; figura.classList.remove('pliega'); }, quieto ? 0 : 380);
       if (window.Magia) { const r = el.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 30, colores: ['#c9a6ff', '#ff8fc0', '#fff', '#f3d48a'] }); }
     });
   });
-  escena('[data-probador]', el => { el.classList.remove('gira'); void el.offsetWidth; el.classList.add('gira'); });
+  escena('[data-probador]', el => { el.classList.remove('gira'); abrirPop(el); luego(() => el.classList.add('gira'), 1400); });
 
   // II · la vida caminando: la monita avanza por el pliego y se transforma
   const VIDA = [
@@ -248,7 +255,7 @@
     let k = -1, pausa = false, frente = a;
     detener(el);
     // al abrir la página, los recortes del pop-up se despliegan uno tras otro
-    el.classList.remove('abierta'); setTimeout(() => el.classList.add('abierta'), 350);
+    abrirPop(el);
     const mostrar = async (n, hablar) => {
       if (n === k) return; k = n; rango.value = n;
       const otra = frente === a ? b : a; otra.dataset.etapa = VIDA[n][0]; otra.style.setProperty('--tira', 'url(' + tiraDe(VIDA[n][0]) + ')'); if (!el._raf) ponerCuadro(otra, 0); otra.setAttribute('aria-label', 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2]);
