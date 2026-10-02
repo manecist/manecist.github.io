@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261003i">
+  <link rel="stylesheet" href="libro.css?v=20261003j">
   <link rel="stylesheet" href="tema-claro.css?v=20261002a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
@@ -32,7 +32,7 @@
   <script src="fondo-acuarela.js?v=20261002a" defer></script>
   <script src="secciones.js?v=20261002a" defer></script>
   <script src="libro.js?v=20261002a" defer></script>
-  <script src="cuento.js?v=20261003i" defer></script>
+  <script src="cuento.js?v=20261003j" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -557,8 +557,18 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   <article class="pagina pagina-ilustrada" data-cap="I · Hola, soy Ari">
     <p class="cap-num">Capítulo I</p>
     <h2 class="cap-titulo">Hola, soy Ari</h2>
-    <div class="vineta vineta-probador" data-probador>
-      <img class="probador-img activa" src="assets/cuento/etapas/etapa-15.webp" alt="Ari hoy, feliz, con pelo ondulado, chaleco blanco peludito y pantalón cargo">
+    <div class="vineta vineta-probador popbook" data-probador>
+      <!-- libro pop-up en ángulo: el espejo del probador y Ari se levantan sobre la hoja -->
+      <div class="popbook-libro">
+        <div class="popbook-tapa" aria-hidden="true"></div>
+        <div class="popbook-hoja" aria-hidden="true"></div>
+        <div class="popbook-canto" aria-hidden="true"></div>
+        <span class="pop probador-espejo" style="--d:.05s" aria-hidden="true"></span>
+        <img class="pop probador-sakura probador-s1" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.25s">
+        <img class="pop probador-sakura probador-s2" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.35s">
+        <span class="popbook-sombra probador-sombra" aria-hidden="true"></span>
+        <div class="pop probador-pop" style="--d:.55s"><img class="probador-img activa" src="assets/cuento/etapas/etapa-15.webp" alt="Ari hoy, feliz, con pelo ondulado, chaleco blanco peludito y pantalón cargo"></div>
+      </div>
       <span class="probador-brillo" aria-hidden="true"></span>
       <button type="button" class="probador-btn" data-probador-btn aria-label="Cambiar el outfit de Ari">✦ Otro outfit</button>
     </div>

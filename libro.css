@@ -1033,10 +1033,30 @@ html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/noche.webp")}
 /* ==========================================================================
    v3 · Ari hoy, la vida caminando, noches de código, logros, currículum y final
    ========================================================================== */
-/* I · probador de outfits */
-.vineta-probador{width:min(300px,82%);aspect-ratio:1;margin-inline:auto;display:grid;place-items:center;background:radial-gradient(circle at 50% 58%,#fff4fb,#f1d6ef 58%,#d9b9e6)}
-.probador-img{height:92%;width:auto;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(80,40,70,.3));opacity:0;transform:scale(.9) rotate(-3deg);transition:opacity .35s,transform .45s cubic-bezier(.3,1.4,.5,1)}
-.probador-img.activa{opacity:1;transform:none}   /* quieta dentro del cuadro: sin vaivén */
+/* ✦ escenario pop-up reutilizable: libro abierto visto con cámara baja; los .pop se levantan sobre la hoja */
+.popbook{perspective:760px;perspective-origin:50% 0%;background:radial-gradient(120% 90% at 50% 0%,#fff6fb,#f4dcef 55%,#dcc0ea);isolation:isolate}
+html[data-cielo="noche"] .popbook{background:radial-gradient(120% 90% at 50% 0%,#5a4a8c,#3a2f6c 60%,#2a2152)}
+.popbook-libro{position:absolute;left:7%;right:7%;bottom:13%;height:100%;transform-origin:50% 100%;transform:rotateX(68deg);transform-style:preserve-3d}
+.popbook-tapa{position:absolute;inset:-3% -1.6% -3.5%;border-radius:10px;background:linear-gradient(90deg,#d94f86,#f07aa8 49%,#b83a6c 50%,#f07aa8 51%,#d94f86);transform:translateZ(-12px);box-shadow:0 26px 34px rgba(60,20,50,.35)}
+.popbook-hoja{position:absolute;inset:0;border-radius:3px 3px 6px 6px;background:linear-gradient(90deg,rgba(120,90,60,.10),transparent 8% 42%,rgba(120,90,60,.18) 48.6%,rgba(90,60,40,.38) 50%,rgba(120,90,60,.18) 51.4%,transparent 58% 92%,rgba(120,90,60,.10)),radial-gradient(120% 90% at 50% 100%,#fffaf1,#f3e7d4)}
+html[data-cielo="noche"] .popbook-hoja{filter:brightness(.94)}
+.popbook-canto{position:absolute;left:.4%;right:.4%;bottom:0;height:18px;transform-origin:50% 100%;transform:rotateX(-90deg);background:repeating-linear-gradient(180deg,#fffdf8 0 2px,#e4d4bd 2px 3px);border-radius:0 0 3px 3px}
+.popbook-sombra{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(70,40,60,.35),transparent)}
+.pop{position:absolute;display:block;transform-origin:50% 100%;transform:rotateX(-4deg);transition:transform .9s cubic-bezier(.3,1.45,.55,1) var(--d,0s)}
+.popbook.abierta .pop{transform:rotateX(-90deg)}
+.sin-trans .pop,.sin-trans .vida-pop,.sin-trans .vida-andante{transition:none!important}
+img.pop,.pop>img{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 5px 5px rgba(60,30,50,.28))}
+@media (prefers-reduced-motion:reduce){.pop{transition:none}}
+
+/* I · probador de outfits, como pop-up */
+.vineta-probador{width:min(520px,96%);aspect-ratio:4/3;margin-inline:auto}
+.probador-espejo{left:30%;bottom:46%;width:40%;aspect-ratio:.62;border-radius:999px 999px 8px 8px;background:radial-gradient(120% 80% at 35% 25%,rgba(255,255,255,.95),#e9f1ff 35%,#cfdcf6 70%,#b8c8ec);border:7px solid #e7b6d3;box-shadow:inset 0 0 0 3px #fff,0 0 0 2px #fff}
+.probador-sakura{width:26%;height:auto;bottom:40%}
+.probador-s1{left:2%}.probador-s2{right:2%}
+.probador-sombra{left:38%;bottom:13%;width:24%;height:9%}
+.probador-pop{left:29%;bottom:16%;width:42%;aspect-ratio:.62;transition-duration:.9s}
+.popbook.abierta .probador-pop.pliega{transform:rotateX(-6deg);transition:transform .35s cubic-bezier(.5,0,.8,.4)}
+.probador-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%}
 .probador-brillo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.9),transparent 55%);opacity:0}
 .vineta-probador.gira .probador-brillo{animation:destello .7s ease-out}
 @keyframes destello{0%{opacity:0;transform:scale(.4)}40%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
