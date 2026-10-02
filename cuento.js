@@ -212,19 +212,31 @@
     ['etapa-14', 'Hoy', 'Lila por sobre todo.'],
     ['etapa-15', 'Hoy · 32 años', 'Ari: fundadora de Studios Conari. ¡Y la historia sigue!']
   ];
-  // cada etapa camina de verdad: una tira de 6 cuadros (ciclo de caminata) que se recorre con steps()
+  // cada etapa camina de verdad: una tira con un ciclo completo de caminata (sacado de video)
   const tiraDe = s => 'assets/cuento/caminata/' + s + '.webp';
-  // ciclo de caminata completo en 2 s (paso tranquilo); cada cuadro se funde brevemente con el siguiente
+  // ciclo de caminata completo en 2 s (paso tranquilo); cada cuadro se funde brevemente con el siguiente.
+  // Entre etapas no hay pausa: el paso sigue corriendo y la etapa nueva entra en la misma fase del paso.
   const CICLO = 2000, CICLOS_POR_TRAMO = 2, TRAMO = CICLO * CICLOS_POR_TRAMO;
   const ponerCuadro = (capa, p) => {   // p: avance en cuadros (puede tener decimales)
     const n = cuadrosDe[capa.dataset.etapa] || 6, [c1, c2] = capa.children, k = Math.floor(p) % n, f = p - Math.floor(p), mezcla = Math.max(0, (f - .7) / .3);   // fundido corto: sin piernas dobles
     capa.style.setProperty('--n', n);
     c1.style.backgroundPositionX = k / (n - 1) * 100 + '%'; c2.style.backgroundPositionX = (k + 1) % n / (n - 1) * 100 + '%'; c2.style.opacity = mezcla.toFixed(3);
   };
-  const caminar = (el, capa) => {      // camina ciclos completos y se detiene en el primer cuadro
-    cancelAnimationFrame(el._raf); const t0 = performance.now();
-    const cuadro = t => { const dt = t - t0; if (dt >= TRAMO || !document.body.contains(el)) { ponerCuadro(capa, 0); el.classList.remove('andando'); return; } ponerCuadro(capa, dt / CICLO * (cuadrosDe[capa.dataset.etapa] || 6)); el._raf = requestAnimationFrame(cuadro); };
+  // paso continuo: las dos capas (la etapa que sale y la que entra) avanzan en la misma fase del ciclo
+  const andar = el => {
+    if (el._raf || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const t0 = performance.now(), capas = [...el.querySelectorAll('.vida-img')];
+    const cuadro = t => {
+      if (!document.body.contains(el)) { el._raf = 0; return; }
+      const fase = ((t - t0) / CICLO) % 1;
+      capas.forEach(c => { if (c.dataset.etapa) ponerCuadro(c, fase * (cuadrosDe[c.dataset.etapa] || 6)); });
+      el._raf = requestAnimationFrame(cuadro);
+    };
     el.classList.add('andando'); el._raf = requestAnimationFrame(cuadro);
+  };
+  const detener = el => {                // se queda parada en el primer cuadro
+    cancelAnimationFrame(el._raf); el._raf = 0; el.classList.remove('andando');
+    el.querySelectorAll('.vida-img').forEach(c => { if (c.dataset.etapa) ponerCuadro(c, 0); });
   };
   // cuántos cuadros trae cada tira (celdas de proporción 0,8): se lee del tamaño de la imagen
   const cuadrosDe = {};
@@ -234,12 +246,12 @@
     const edad = el.querySelector('.vida-edad'), txt = el.querySelector('.vida-texto'), play = el.querySelector('.vida-play'), andante = el.querySelector('.vida-andante');
     const pagina = el.closest('.pagina'); pagina.setAttribute('data-narracion-propia', '');
     let k = -1, pausa = false, frente = a;
+    detener(el);
     const mostrar = async (n, hablar) => {
       if (n === k) return; k = n; rango.value = n;
-      const otra = frente === a ? b : a; otra.dataset.etapa = VIDA[n][0]; otra.style.setProperty('--tira', 'url(' + tiraDe(VIDA[n][0]) + ')'); ponerCuadro(otra, 0); otra.setAttribute('aria-label', 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2]);
+      const otra = frente === a ? b : a; otra.dataset.etapa = VIDA[n][0]; otra.style.setProperty('--tira', 'url(' + tiraDe(VIDA[n][0]) + ')'); if (!el._raf) ponerCuadro(otra, 0); otra.setAttribute('aria-label', 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2]);
       otra.classList.add('visible'); frente.classList.remove('visible'); frente = otra;
       andante.style.setProperty('--x', (4 + n / (VIDA.length - 1) * 78).toFixed(1) + '%');
-      if (n > 0 && !matchMedia('(prefers-reduced-motion: reduce)').matches) caminar(el, otra);
       el.style.setProperty('--hora', n / (VIDA.length - 1));
       edad.textContent = VIDA[n][1]; txt.textContent = VIDA[n][2];
       el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
@@ -249,18 +261,21 @@
     const avanzar = async () => {
       if (pausa || !document.body.contains(el)) return;
       const n = k + 1;
-      if (n >= VIDA.length) { el.classList.add('llego'); play.textContent = '↻'; play.setAttribute('aria-label', 'Volver a caminar'); pausa = true; return; }
+      if (n >= VIDA.length) { detener(el); el.classList.add('llego'); play.textContent = '↻'; play.setAttribute('aria-label', 'Volver a caminar'); pausa = true; return; }
+      andar(el); const inicio = performance.now();
       await mostrar(n, true);
-      luego(avanzar, window.MCENarrador.activo ? 900 : TRAMO + 900);
+      // la próxima etapa llega justo cuando termina el tramo (si el narrador habló más, sigue de inmediato)
+      luego(avanzar, Math.max(0, TRAMO - (performance.now() - inicio)));
     };
     el.classList.remove('llego'); play.textContent = '❚❚'; k = -1;
     mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); decir(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 2600); });
     play.onclick = () => {
-      if (el.classList.contains('llego')) { el.classList.remove('llego'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); luego(avanzar, 1800); return; }
+      if (el.classList.contains('llego')) { el.classList.remove('llego'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); andar(el); luego(avanzar, 1200); return; }
       pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir caminando' : 'Pausar la caminata');
+      if (pausa) detener(el);
       if (!pausa) luego(avanzar, 300);
     };
-    rango.oninput = () => { pausa = true; play.textContent = '▶'; el.classList.remove('llego'); mostrar(Number(rango.value), false); };
+    rango.oninput = () => { pausa = true; detener(el); play.textContent = '▶'; el.classList.remove('llego'); mostrar(Number(rango.value), false); };
   });
 
   // IV · noches de código: escenas que se suceden
