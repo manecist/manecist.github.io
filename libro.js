@@ -98,6 +98,9 @@
     $('#libro-prev').disabled = i === 0;
     $('#libro-next').disabled = i + (una ? 1 : 2) >= orden.length;
     guardar('mce-pagina', ref.dataset.n);
+    // pliegos pop-up: el libro entero se acuesta (cámara baja) y los recortes se paran sobre la hoja
+    const esPop = vis.some(p => p && p.classList.contains('pagina-pop'));
+    if (esPop) requestAnimationFrame(() => libro.classList.add('acostado')); else libro.classList.remove('acostado');
     window.dispatchEvent(new CustomEvent('cuento-paginas', { detail: { paginas: vis.filter(Boolean) } }));
   }
 
@@ -132,12 +135,23 @@
   }
 
   // ------------------------------------------------------------ pasar páginas
+  let levantando = false;
   function ir(nuevo, dir) {
     if (animando || !abierto) return;
     if (!una) nuevo -= nuevo % 2;
     nuevo = Math.max(0, Math.min(orden.length - 1, nuevo));
     dir = dir || Math.sign(nuevo - actual);
     if (!dir || nuevo === actual) return;
+    // si el libro está acostado, primero se pliegan los recortes y el libro se levanta; después gira la hoja
+    if (libro.classList.contains('acostado') && !quieto) {
+      if (levantando) return;
+      levantando = true;
+      document.querySelectorAll('.pop-escena.abierta').forEach(e => e.classList.remove('abierta'));
+      window.dispatchEvent(new Event('cuento-levanta'));
+      setTimeout(() => libro.classList.remove('acostado'), 350);
+      setTimeout(() => { levantando = false; ir(nuevo, dir); }, 1300);
+      return;
+    }
     window.dispatchEvent(new Event('cuento-pasa'));
     if (quieto) { colocar(nuevo); return; }
     animando = true;
@@ -311,6 +325,7 @@
   // ------------------------------------------------------------ modos
   function aClasico(hash) {
     devolver();
+    window.dispatchEvent(new Event('cuento-levanta')); libro.classList.remove('acostado');
     escena.classList.remove('activa', 'leyendo'); escena.classList.add('oculta');
     escena.setAttribute('aria-hidden', 'true');
     site.classList.add('ready'); site.setAttribute('aria-hidden', 'false');

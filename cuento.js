@@ -199,7 +199,7 @@
       if (window.Magia) { const r = el.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 30, colores: ['#c9a6ff', '#ff8fc0', '#fff', '#f3d48a'] }); }
     });
   });
-  escena('[data-probador]', el => { el.classList.remove('gira'); abrirPop(el); luego(() => el.classList.add('gira'), 1400); });
+  escena('[data-probador]', el => { el.classList.remove('gira'); abrirPop(el, quieto ? 0 : 1250); luego(() => el.classList.add('gira'), 2200); });
 
   // II · la vida caminando: la monita avanza por el pliego y se transforma
   const VIDA = [
@@ -393,6 +393,71 @@
     // al pasar la página da un saltito si está a la vista
     window.addEventListener('cuento-pasa', () => { if (ari.classList.contains('visible')) salta('salta'); setTimeout(() => ari.classList.remove('visible'), 400); });
   }
+
+  /* Teatro de papel: con el libro acostado, los recuadros bajan colgados de hilos desde el techo
+     y el texto suelto se va escribiendo sobre la hoja, como un cuento que está naciendo */
+  (() => {
+    const escenaLibro = $('#escena'); if (!escenaLibro) return;
+    const teatro = document.createElement('div'); teatro.className = 'teatro'; teatro.setAttribute('aria-hidden', 'false');
+    escenaLibro.append(teatro);
+    const COLGAR = '.poderes > li, .botonera';
+    const ESCRIBIR = '.cap-num, .cap-titulo, .cuento';
+    let colgados = [], turno = 0;
+    // cada letra en su propia cajita (una sola vez por elemento); se respetan negritas y la letra capital
+    const letras = el => {
+      if (el.dataset.letras) return;
+      el.dataset.letras = '1';
+      const caminar = n => [...n.childNodes].forEach(h => {
+        if (h.nodeType === 3) {
+          const f = document.createDocumentFragment();
+          for (const ch of h.textContent) { if (/\s/.test(ch)) { f.append(ch); continue; } const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; f.append(s); }
+          h.replaceWith(f);
+        } else if (h.nodeType === 1 && !h.classList.contains('ch')) caminar(h);
+      });
+      caminar(el);
+    };
+    const escribir = paginas => {
+      let k = 0;
+      paginas.forEach(p => p.querySelectorAll(ESCRIBIR).forEach(el => {
+        letras(el); el.classList.add('escribe');
+        el.querySelectorAll('.ch').forEach(s => s.style.setProperty('--k', k++));
+      }));
+    };
+    const borrarEscritura = () => document.querySelectorAll('.escribe, .por-escribir, .por-colgar').forEach(e => e.classList.remove('escribe', 'por-escribir', 'por-colgar'));
+    const colgar = paginas => {
+      teatro.innerHTML = ''; colgados = [];
+      const lados = paginas.map(() => { const l = document.createElement('div'); l.className = 'teatro-lado'; teatro.append(l); return l; });
+      teatro.dataset.lados = lados.length;
+      let i = 0;
+      paginas.forEach((p, j) => p.querySelectorAll(COLGAR).forEach(el => {
+        const marca = document.createComment('colgante'); el.before(marca); el.classList.remove('por-colgar');
+        const c = document.createElement('div'); c.className = 'colgante';
+        c.style.setProperty('--i', i); c.style.setProperty('--hilo', (12 + ((i * 37) % 70)) + 'px'); i++;
+        const padre = marca.parentElement;
+        if (/^(UL|OL)$/.test(padre.tagName)) { const w = document.createElement(padre.tagName); w.className = padre.className; w.append(el); c.append(w); } else c.append(el);
+        lados[j].append(c); colgados.push({ el, marca });
+      }));
+      requestAnimationFrame(() => requestAnimationFrame(() => teatro.classList.add('baja')));
+    };
+    const descolgar = inmediato => {
+      const mio = ++turno, lista = colgados; colgados = [];
+      teatro.classList.remove('baja');
+      const devolver = () => { lista.forEach(({ el, marca }) => { if (marca.isConnected) { marca.replaceWith(el); } }); if (mio === turno) teatro.innerHTML = ''; };
+      if (inmediato || quieto) devolver(); else setTimeout(devolver, 650);
+    };
+    window.addEventListener('cuento-levanta', () => { descolgar(); borrarEscritura(); });
+    window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); borrarEscritura(); });
+    window.addEventListener('cuento-paginas', e => {
+      const ps = e.detail.paginas, pop = ps.some(p => p.classList.contains('pagina-pop'));
+      if (colgados.length) descolgar(true);
+      borrarEscritura();
+      if (!pop) return;
+      // mientras el libro se acuesta, el texto y los recuadros esperan escondidos (no se ven planos y luego desaparecen)
+      ps.forEach(p => { p.querySelectorAll(ESCRIBIR).forEach(el => el.classList.add('por-escribir')); p.querySelectorAll(COLGAR).forEach(el => el.classList.add('por-colgar')); });
+      const mio = turno;
+      setTimeout(() => { if (mio !== turno || !$('#libro').classList.contains('acostado')) return; colgar(ps); escribir(ps); }, quieto ? 0 : 1100);
+    });
+  })();
 
   /* Dragoncito: vuela cerca del puntero, mira hacia donde vas y celebra lo que haces */
   const dr = $('#dragoncito');

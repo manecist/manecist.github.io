@@ -30,6 +30,12 @@
 .libro.aparece{opacity:1;transform:translateX(calc(var(--pw)*-.5)) scale(.62)}
 .libro.aparece[data-estado="abriendo"],.libro.aparece[data-estado="abierto"]{transform:translateY(-22px) scale(1)}
 .escena.leyendo .libro{transform:translateY(-22px)}
+/* ✦ pliegos pop-up: el libro entero se acuesta sobre la mesa y lo miramos con la cámara baja */
+.escena{perspective:1500px;perspective-origin:50% 66%}
+.escena.leyendo .libro.acostado{--inclina:64deg;transform:translateY(14vh) rotateX(var(--inclina)) scale(.86);transform-style:preserve-3d;perspective:none}
+.libro.acostado .libro-cuerpo,.libro.acostado .pag,.libro.acostado .pagina-pop,.libro.acostado .pop-escena{transform-style:preserve-3d}
+.libro.acostado .pag,.libro.acostado .pagina-pop{overflow:visible}
+.libro.acostado .libro-sombra{opacity:0}
 .libro-sombra{position:absolute;left:50%;right:0;bottom:-22px;height:40px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.6),transparent 70%);transition:left 1.4s}
 .libro[data-estado="abierto"] .libro-sombra,.libro[data-estado="abriendo"] .libro-sombra{left:0}
 .libro-cuerpo{position:absolute;inset:0;transform-style:preserve-3d;opacity:0;transition:opacity .3s .1s}
@@ -1053,17 +1059,25 @@ html[data-cielo="noche"] .popbook-hoja{filter:brightness(.94)}
 img.pop,.pop>img{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 5px 5px rgba(60,30,50,.28))}
 @media (prefers-reduced-motion:reduce){.pop{transition:none}}
 
-/* I · probador de outfits, como pop-up */
-.vineta-probador{width:min(520px,96%);aspect-ratio:4/3;margin-inline:auto}
+/* recortes que se paran sobre la hoja del libro (solo se ven al levantarse) */
+.pop-escena{position:relative;width:100%;margin:4px auto 10px}
+.pop-escena .pop{position:absolute;display:block;transform-origin:50% 100%;transform:rotateX(0deg);opacity:0;transition:transform .9s cubic-bezier(.3,1.45,.55,1) var(--d,0s),opacity .2s linear var(--d,0s)}
+.pop-escena.abierta .pop{transform:rotateX(-90deg);opacity:1}
+.pop-escena.sin-trans .pop{transition:none!important}
+.pop-sombra{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(70,40,60,.32),transparent);opacity:0;transition:opacity .6s .6s}
+.pop-escena.abierta .pop-sombra{opacity:1}
+
+/* I · probador de outfits, de pie sobre la página */
+.pop-probador{height:clamp(200px,36%,300px)}
 .probador-espejo{position:absolute;left:4%;right:4%;bottom:3%;top:8%;border-radius:999px 999px 8px 8px;background:radial-gradient(120% 80% at 35% 25%,rgba(255,255,255,.95),#e9f1ff 35%,#cfdcf6 70%,#b8c8ec);border:7px solid #e7b6d3;box-shadow:inset 0 0 0 3px #fff,0 0 0 2px #fff}
-.probador-sakura{width:26%;height:auto;bottom:40%}
-.probador-s1{left:2%}.probador-s2{right:2%}
-.probador-sombra{left:38%;bottom:13%;width:24%;height:9%}
-.probador-pop{left:27%;bottom:16%;width:46%;aspect-ratio:.62;transition-duration:.9s}
-.popbook.abierta .probador-pop.pliega{transform:rotateX(-6deg);transition:transform .35s cubic-bezier(.5,0,.8,.4)}
+.probador-sakura{width:24%;height:auto;bottom:34%}
+.probador-s1{left:3%}.probador-s2{right:3%}
+.probador-sombra{left:34%;bottom:4%;width:32%;height:12%}
+.probador-pop{left:28%;bottom:10%;width:44%;aspect-ratio:.62}
+.pop-escena.abierta .probador-pop.pliega{transform:rotateX(-6deg);transition:transform .35s cubic-bezier(.5,0,.8,.4)}
 .probador-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%}
 .probador-brillo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.9),transparent 55%);opacity:0}
-.vineta-probador.gira .probador-brillo{animation:destello .7s ease-out}
+.pop-probador.gira .probador-brillo{animation:destello .7s ease-out}
 @keyframes destello{0%{opacity:0;transform:scale(.4)}40%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
 .probador-btn{position:absolute;right:8px;bottom:8px;border:0;border-radius:99px;padding:7px 12px;background:linear-gradient(135deg,#c9a6ff,#ff8fc0);color:#fff;font:700 .78rem/1 var(--titulo);letter-spacing:.06em;cursor:pointer;box-shadow:0 4px 12px rgba(120,60,140,.35)}
 .probador-btn:hover{filter:brightness(1.08)}.probador-btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
@@ -1215,3 +1229,32 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
   .pagina .huellas li{padding-top:4px;padding-bottom:4px;font-size:.84rem;line-height:1.3}
 }
 @media (max-height:640px){.pagina .cv-lista li>span{display:none}}
+
+/* ✦ teatro de papel: los recuadros cuelgan de hilos desde el techo mientras el libro está acostado */
+.teatro{position:absolute;left:0;right:0;top:0;height:62%;z-index:6;display:grid;grid-template-columns:repeat(var(--cols,2),1fr);gap:3vw;padding:0 5vw;pointer-events:none}
+.teatro[data-lados="1"]{--cols:1}
+.teatro-lado{display:flex;flex-wrap:wrap;justify-content:center;align-content:flex-start;align-items:flex-start;gap:6px 16px}
+.colgante{position:relative;width:min(300px,42vw);margin-top:var(--hilo);padding:3px;border-radius:16px;background:linear-gradient(160deg,#fffaf1,#f3e3c8);box-shadow:0 14px 26px rgba(10,6,30,.45),inset 0 0 0 1px rgba(215,169,72,.6);
+  pointer-events:auto;transform-origin:50% -60vh;transform:translateY(-120vh);transition:transform 1.15s cubic-bezier(.3,1.35,.5,1) calc(var(--i)*.13s)}
+.colgante::before,.colgante::after{content:"";position:absolute;bottom:100%;width:2px;height:120vh;background:linear-gradient(rgba(255,240,250,0),rgba(255,236,248,.85));pointer-events:none}
+.colgante::before{left:16%}.colgante::after{right:16%}
+.teatro.baja .colgante{transform:translateY(0);animation:balanceo 3.6s ease-in-out calc(1.2s + var(--i)*.13s) infinite alternate}
+@keyframes balanceo{from{rotate:-.8deg}to{rotate:.8deg}}
+.colgante .poderes{margin:0}
+.colgante .poderes li{background:transparent;border:0;padding:8px 12px}
+.colgante .poderes small{font-size:.82rem}
+.colgante .botonera{margin:0;padding:8px;justify-content:center}
+@media (max-width:860px){.teatro{height:54%;padding:0 3vw}.colgante{width:min(250px,44vw)}.colgante .poderes small{display:none}}
+@media (prefers-reduced-motion:reduce){.colgante{transition:none}.teatro.baja .colgante{animation:none}}
+
+/* el texto suelto se escribe sobre la hoja: letra por letra, con un leve desenfoque de tinta */
+.escribe .ch{opacity:0;animation:tinta .55s ease-out forwards;animation-delay:calc(var(--k) * 16ms + .2s)}
+@keyframes tinta{from{opacity:0;filter:blur(3px)}to{opacity:1;filter:none}}
+@media (prefers-reduced-motion:reduce){.escribe .ch{animation:none;opacity:1}}
+.colgante{color:var(--tinta)}
+.colgante .poderes b{color:#6a2c55}
+.colgante .btn.ghost{color:var(--tinta);border-color:rgba(106,77,120,.35);background:rgba(255,255,255,.45)}
+/* en el celular el libro también se acuesta (una sola página) */
+.escena.leyendo .libro.una.aparece.acostado{transform:translateY(16vh) rotateX(58deg) scale(.92);transform-style:preserve-3d;perspective:none}
+.por-escribir:not(.escribe){opacity:0}
+.por-colgar{visibility:hidden}
