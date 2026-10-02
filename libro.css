@@ -1052,11 +1052,11 @@ img.pop,.pop>img{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) dro
 
 /* I · probador de outfits, como pop-up */
 .vineta-probador{width:min(520px,96%);aspect-ratio:4/3;margin-inline:auto}
-.probador-espejo{left:31%;bottom:21%;width:38%;aspect-ratio:.62;border-radius:999px 999px 8px 8px;background:radial-gradient(120% 80% at 35% 25%,rgba(255,255,255,.95),#e9f1ff 35%,#cfdcf6 70%,#b8c8ec);border:7px solid #e7b6d3;box-shadow:inset 0 0 0 3px #fff,0 0 0 2px #fff}
+.probador-espejo{position:absolute;left:4%;right:4%;bottom:3%;top:8%;border-radius:999px 999px 8px 8px;background:radial-gradient(120% 80% at 35% 25%,rgba(255,255,255,.95),#e9f1ff 35%,#cfdcf6 70%,#b8c8ec);border:7px solid #e7b6d3;box-shadow:inset 0 0 0 3px #fff,0 0 0 2px #fff}
 .probador-sakura{width:26%;height:auto;bottom:40%}
 .probador-s1{left:2%}.probador-s2{right:2%}
 .probador-sombra{left:38%;bottom:13%;width:24%;height:9%}
-.probador-pop{left:29%;bottom:16%;width:42%;aspect-ratio:.62;transition-duration:.9s}
+.probador-pop{left:27%;bottom:16%;width:46%;aspect-ratio:.62;transition-duration:.9s}
 .popbook.abierta .probador-pop.pliega{transform:rotateX(-6deg);transition:transform .35s cubic-bezier(.5,0,.8,.4)}
 .probador-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%}
 .probador-brillo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.9),transparent 55%);opacity:0}
