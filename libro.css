@@ -31,8 +31,8 @@
 .libro.aparece[data-estado="abriendo"],.libro.aparece[data-estado="abierto"]{transform:translateY(-22px) scale(1)}
 .escena.leyendo .libro{transform:translateY(-22px)}
 /* ✦ pliegos pop-up: el libro entero se acuesta sobre la mesa y lo miramos con la cámara baja */
-.escena{perspective:1500px;perspective-origin:50% 66%}
-.escena.leyendo .libro.acostado{--inclina:64deg;transform:translateY(25vh) rotateX(var(--inclina)) scale(.7);transform-style:preserve-3d;perspective:none}
+.escena{perspective:1500px;perspective-origin:50% 62%}
+.escena.leyendo .libro.acostado{--inclina:77deg;transform:translateY(19vh) rotateX(var(--inclina)) scale(.68);transform-style:preserve-3d;perspective:none}
 .libro.acostado .libro-cuerpo,.libro.acostado .pag,.libro.acostado .pagina-pop,.libro.acostado .pop-escena{transform-style:preserve-3d}
 .libro.acostado .pag,.libro.acostado .pagina-pop{overflow:visible}
 .libro.acostado .libro-sombra{opacity:0}
@@ -1246,7 +1246,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante .poderes li{background:transparent;border:0;padding:8px 12px}
 .colgante .poderes small{font-size:.82rem}
 .colgante .botonera{margin:0;padding:8px;justify-content:center}
-@media (max-width:860px){.teatro{left:3vw;right:3vw;width:auto;height:50%}.colgante .poderes small{display:none}}
+@media (max-width:860px){.teatro{left:auto;right:3vw;width:46vw;height:40%}.teatro-lado{grid-template-columns:1fr}.colgante .poderes small{display:none}}
 @media (prefers-reduced-motion:reduce){.colgante{transition:none}.teatro.baja .colgante{animation:none}}
 
 /* el texto suelto se escribe sobre la hoja: letra por letra, con un leve desenfoque de tinta */
@@ -1257,7 +1257,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante .poderes b{color:#6a2c55}
 .colgante .btn.ghost{color:var(--tinta);border-color:rgba(106,77,120,.35);background:rgba(255,255,255,.45)}
 /* en el celular el libro también se acuesta (una sola página) */
-.escena.leyendo .libro.una.aparece.acostado{transform:translateY(16vh) rotateX(58deg) scale(.92);transform-style:preserve-3d;perspective:none}
+.escena.leyendo .libro.una.aparece.acostado{transform:translateY(13vh) rotateX(74deg) scale(.92);transform-style:preserve-3d;perspective:none}
 .por-escribir:not(.escribe){opacity:0}
 .por-colgar{visibility:hidden}
 
@@ -1272,6 +1272,19 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .cielo-bloque .letra{color:#ff9cc9;text-shadow:0 0 16px rgba(255,140,200,.7)}
 .cielo-bloque .adorno,.cielo-bloque hr{display:none}
 .libro{z-index:1}
-@media (max-width:860px){.teatro-cielo{left:5vw;right:5vw;width:auto;top:3vh}.cielo-bloque .cuento{font-size:.98rem}}
+@media (max-width:860px){.teatro-cielo{left:5vw;right:5vw;width:auto;top:11vh}.cielo-bloque .cuento{font-size:.98rem}}
 .cielo-bloque .cap-titulo::before,.cielo-bloque .cap-titulo::after{display:none}
 .colgante .probador-btn{position:static;display:block;margin:6px auto;font-size:.9rem;padding:9px 16px}
+
+/* ✦ libro acostado visto a ras de la mesa: bloque de páginas al frente, tapa oscura y lomo redondo */
+.libro-bloque{display:none}
+.libro.acostado .libro-bloque{display:block;position:absolute;left:0;right:0;top:100%;height:calc(var(--ph) * .085);transform-origin:50% 0;transform:rotateX(-90deg);pointer-events:none}
+.libro-bloque i{position:absolute;top:0;bottom:9px;width:calc(50% - 4px);background:repeating-linear-gradient(180deg,#f3e6cd 0 2px,#d9c6a2 2px 3px);box-shadow:inset 0 6px 8px rgba(255,255,255,.4),inset 0 -6px 10px rgba(90,60,30,.25)}
+.bloque-izq{left:0;border-radius:0 0 0 18px/0 0 0 10px;background-image:linear-gradient(90deg,transparent 80%,rgba(90,60,30,.28)),repeating-linear-gradient(180deg,#f3e6cd 0 2px,#d9c6a2 2px 3px)!important}
+.bloque-der{right:0;border-radius:0 0 18px 0/0 0 10px 0;background-image:linear-gradient(270deg,transparent 80%,rgba(90,60,30,.28)),repeating-linear-gradient(180deg,#f3e6cd 0 2px,#d9c6a2 2px 3px)!important}
+.libro-bloque::after{content:"";position:absolute;left:-1.2%;right:-1.2%;bottom:0;height:11px;border-radius:0 0 8px 8px;background:linear-gradient(#4a3a5e,#2e2440);box-shadow:0 10px 18px rgba(0,0,0,.45)}
+.bloque-lomo{position:absolute;left:calc(50% - 38px);bottom:-14px;width:76px;height:40px;border-radius:40px 40px 0 0;background:radial-gradient(circle at 50% 100%,#e2554a 0 42%,#2e2440 43%);z-index:1}
+.bloque-cinta{position:absolute;left:31%;top:-2px;width:20px;height:58%;background:linear-gradient(90deg,#c0392b,#e2554a 50%,#c0392b);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%)}
+.libro.acostado .libro-cinta{display:none}
+.libro.una .bloque-lomo,.libro.una .bloque-der{display:none}
+.libro.una .bloque-izq{width:100%;border-radius:0 0 18px 18px/0 0 10px 10px}
