@@ -290,8 +290,11 @@
         if (cruza) { const oC = ((.5 - x0) / (x1 - x0)) * 100; el.style.transformOrigin = oC.toFixed(2) + '% 100%'; }
         // distancia al lomo / alto: hasta dónde puede estar de pie sin que la hoja lo atraviese
         const dist = Math.max(.012, esIzq ? lomo - x1 : x0 - lomo) * W, ratio = dist / Math.max(1, el.offsetHeight);
+        // primer plano (junto al borde delantero de la página): se pliega hacia atrás para no colgar fuera del libro
+        let yb = 0, ey = el; while (ey && ey !== pag) { yb += ey.offsetTop; ey = ey.offsetParent; }
+        const atras = el.classList.contains('pasto-frente') || (yb + el.offsetHeight) / Math.max(1, pag.offsetHeight) > .72;
         el.dataset.giro = '1';
-        piezas.push({ el, grupo, cara, rapido, cruza, ratio });
+        piezas.push({ el, grupo, cara, rapido, cruza, ratio, atras });
       });
     });
     piezas.forEach(p => { p.suf = sufijo(p.el); });
@@ -300,7 +303,7 @@
     const paso = ahora => {
       const t = Math.min(1, (ahora - t0) / DUR_GIRO), th = 180 * suave(t), f = th / 180;
       hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
-      piezas.forEach(({ el, grupo, cara, rapido, bisagra, ratio, viajero, suf }) => {
+      piezas.forEach(({ el, grupo, cara, rapido, bisagra, ratio, viajero, suf, atras }) => {
         if (bisagra) {
           // Doblez real: cada mitad queda pegada a su página (la de la hoja gira con ella) y el pliegue del centro se
           // inclina hacia la cámara; al cerrarse el pliego, el fondo termina aplastado entre las dos páginas.
@@ -343,7 +346,8 @@
         // nunca más de pie que el fondo: todos los recortes se recuestan juntos, al mismo ritmo que el doblez en V
         const lev = grupo === 'A' ? th : 180 - th;
         psi = Math.max(2, Math.min(psi, 90 - Math.pow(Math.min(1, lev / 110), .6) * 90));
-        el.style.transform = 'rotateX(' + (-psi).toFixed(2) + 'deg)' + suf;
+        // se recuesta hacia adelante (hacia la cámara), igual que el fondo doblado en V: no cae hacia atrás sobre él
+        el.style.transform = 'rotateX(' + (atras ? -psi : psi - 180).toFixed(2) + 'deg)' + suf;
         const clp = v => Math.max(0, Math.min(1, v));
         el.style.opacity = (cara ? clp((psi - 8) / 16) : grupo === 'A' ? clp((165 - th) / 20) : clp((th - 55) / 25)).toFixed(3);   // como el fondo: se va recién bajo la hoja
         if (cara) el.style.visibility = (cara === 'frente') === (th < 90) ? 'visible' : 'hidden';   // la cara de abajo de la hoja no se ve
