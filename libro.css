@@ -1933,3 +1933,13 @@ html.pantalla-corta .teatro-app{width:94vw}
 html.pantalla-corta .cielo-lado{top:12vh}html.pantalla-corta .cielo-lado li b{font-size:.62rem}html.pantalla-corta .cielo-lado li .corto{font-size:.56rem}html.pantalla-corta .cielo-lado li > span:not(.ch){width:34px;height:34px}html.pantalla-corta .cielo-lado{transform:none;width:22vw;gap:4px}
 html.pantalla-corta .teatro-cielo:has(.cielo-lado li){width:52vw}html.pantalla-corta .cielo-izq{left:-24vw}html.pantalla-corta .cielo-der{right:-24vw}html.pantalla-corta .cielo-lado{width:22vw;top:13vh}
 html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-22vw}html.pantalla-corta .hada-escena.posada{top:auto!important;bottom:8px!important}
+
+/* la hoja no muestra la otra mitad de su pliego: sin capas de piso propias (el piso lo pinta la cara de la hoja) */
+.libro.giro-pop .hoja :is(.hitos-suelo,.vida-suelo){display:none!important}
+.libro.giro-pop .hoja .pagina-pop{overflow:visible}
+.vida.abierta .vida-pop.ya,.hitos.abierta .hito-pop.ya{transition:none}
+/* la vitrina y otras aplicaciones con imágenes grandes caben en el cuadro */
+.colgante-app .m7-gallery img{max-height:44vh;width:auto;max-width:100%;margin:0 auto;display:block;object-fit:contain}
+.colgante-app .m7-gallery figure{margin:0}
+.libro.giro-pop .clon-bajo{clip-path:none!important;background:none!important}
+.libro.giro-pop .clon-bajo :is(.hitos-suelo,.vida-suelo){display:none!important}
