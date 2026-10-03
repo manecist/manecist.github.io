@@ -1571,7 +1571,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.una.acostado .hito-actor{bottom:38%}
 .hito-actor.delante{bottom:24%}
 /* mientras no haya video de caminata, un balanceo suave de paso */
-.hito-actor.camina-fija > i{animation:hito-paso .5s ease-in-out infinite alternate}
+.hito-actor.camina-fija > *:not(.hito-rotulo){animation:hito-paso .5s ease-in-out infinite alternate}
 @keyframes hito-paso{from{transform:translateY(0)}to{transform:translateY(-2.5%)}}
 .teatro-cielo.ancho{width:min(82vw,1180px)}
 .teatro-cielo.ancho .cap-titulo{white-space:nowrap}
@@ -1613,3 +1613,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 @media (max-width:860px){.colgante-app .app-doble{grid-template-columns:1fr}}
 .hito-rotulo{position:absolute;left:50%;top:0;translate:-50% calc(-100% - 6px);white-space:nowrap;padding:4px 10px;border:3px solid #fff;border-radius:10px;background:#fff6ea;color:#6a2c55;font:700 clamp(.5rem,.75vw,.8rem)/1.1 var(--sans);box-shadow:0 4px 10px rgba(40,20,40,.3);animation:rotulo-nace .5s cubic-bezier(.3,1.5,.5,1) both}
 @keyframes rotulo-nace{from{opacity:0;transform:scale(.4)}}
+.hito-actor.vuela{bottom:34%}.hito-actor.vuela > :not(.hito-rotulo){translate:0 -75%}
+.hito-actor.en-cielo{bottom:56%}.hito-actor.en-cielo > :not(.hito-rotulo){translate:0 -330%}
+.hito-actor.salto > *{animation:hito-brinco 1.1s cubic-bezier(.3,0,.4,1) infinite}
+@keyframes hito-brinco{0%,100%{transform:translateY(0)}45%{transform:translateY(-14%)}}
