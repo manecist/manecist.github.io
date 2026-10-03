@@ -1951,3 +1951,13 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 
 /* el cuadro colgante se achica desde su borde de arriba (cuelga del mismo hilo) */
 .teatro-app .colgante-app{transform-origin:50% 0}
+
+
+/* capítulo II: los panoramas más altos se angostan para quedar todos del mismo alto (no tapan el texto de arriba) */
+.vida-pop.amb-fondo[src*="/g01-fondo"]{left:8.0%;width:84.0%}
+.vida-pop.amb-fondo[src*="/g03-fondo"]{left:5.5%;width:88.9%}
+.vida-pop.amb-fondo[src*="/g05e-fondo"]{left:2.5%;width:95.1%}
+.vida-pop.amb-fondo[src*="/g06-fondo"]{left:4.4%;width:91.2%}
+.vida-pop.amb-fondo[src*="/g07-fondo"]{left:8.0%;width:84.0%}
+.vida-pop.amb-fondo[src*="/g07b-fondo"]{left:1.9%;width:96.1%}
+.vida-pop.amb-fondo[src*="/g10-fondo"]{left:1.4%;width:97.1%}
