@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261007h">
+  <link rel="stylesheet" href="libro.css?v=20261007j">
   <link rel="stylesheet" href="tema-claro.css?v=20261002a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
@@ -31,8 +31,8 @@
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261002a" defer></script>
   <script src="secciones.js?v=20261002a" defer></script>
-  <script src="libro.js?v=20261007h" defer></script>
-  <script src="cuento.js?v=20261007h" defer></script>
+  <script src="libro.js?v=20261007j" defer></script>
+  <script src="cuento.js?v=20261007j" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -733,50 +733,32 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </article>
   <article class="pagina pagina-hueco" data-cap="✦ El reino que salió del libro"></article>
 
-  <!-- 16 · capítulo VI: la tienda del mago (historia y caja repartidas en dos pliegos) -->
-  <article class="pagina pagina-ilustrada pagina-tienda-texto" data-cap="VI · La tienda del mago">
-    <div class="tienda-cabeza">
-      <div>
-        <p class="cap-num">Capítulo VI</p>
-        <h2 class="cap-titulo">La tienda del mago</h2>
-        <p class="cuento">Un día, Ari y Coen caminaron hasta la tienda mágica de <b>Rancek</b>. Ahí el mago vende de todo: joyas, vestidos, perfumes y trajes encantados. Tú manejas la caja: elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!</p>
-      </div>
-      <div class="tienda-escena" data-tienda>
-        <div class="tienda-fachada" aria-hidden="true"><span>✦ Tienda Mágica de Rancek ✦</span></div>
-        <div class="tienda-estantes" aria-hidden="true"><i>💎</i><i>👗</i><i>💄</i><i>👠</i><i>⌚</i><i>🌙</i></div>
-        <img class="t-mago" src="assets/personajes/rancek-frente.webp" alt="Rancek, el mago comerciante, detrás del mostrador">
-        <div class="t-mostrador" aria-hidden="true"><span>Caja 01</span></div>
-        <img class="t-coen" src="assets/personajes/coen-frente.webp" alt="Coen entra a la tienda">
-        <img class="t-ari" src="assets/personajes/ari-frente.webp" alt="Ari entra a la tienda">
-        <p class="globo globo-mago" data-globo="mago">¡Bienvenidos a mi tienda! ¿Qué se les ofrece?</p>
-        <p class="globo globo-ari" data-globo="ari">¡Algo bonito para la fiesta del reino! ✧</p>
-      </div>
+  <!-- 16 · capítulo VI: la tienda del mago (pliego pop-up; la caja baja colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-tienda.webp" data-cap="VI · La tienda del mago">
+    <p class="cap-num">Capítulo VI</p>
+    <h2 class="cap-titulo">La tienda del mago</h2>
+    <p class="cuento">Un día, Ari y Coen caminaron hasta la tienda mágica de <b>Rancek</b>. Ahí el mago vende de todo: joyas, vestidos, perfumes y trajes encantados. Tú manejas la caja: elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!</p>
+    <div class="hitos" data-hitos="vi">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
     </div>
-    <p class="cuento nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
+    <div class="colgar-app app-caja" data-app="la caja">
+      <p class="cuento nota app-nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
+      <div class="app-doble"><div><p class="caja-paso"><span>1</span>Elige productos y descuento</p><div class="ranura" data-widget="#m4-picker"></div></div><div><p class="caja-paso"><span>2</span>Revisa el recibo y paga</p><div class="ranura" data-widget="#m4-recibo"></div></div></div>
+      <div class="ranura" data-widget="#caja"></div>
+    </div>
   </article>
-  <article class="pagina pagina-caja" data-cap="VI · La tienda del mago">
-    <p class="caja-paso"><span>1</span>Elige productos y descuento</p>
-    <div class="caja-libro"><div class="ranura" data-widget="#m4-picker"></div></div>
-  </article>
-  <article class="pagina pagina-caja" data-cap="VI · La tienda del mago">
-    <p class="caja-paso"><span>2</span>Revisa el recibo y paga</p>
-    <div class="caja-libro"><div class="ranura" data-widget="#m4-recibo"></div></div>
-  </article>
-  <article class="pagina pagina-caja" data-cap="VI · La tienda del mago">
-    <div class="ranura" data-widget="#caja"></div>
-  </article>
+  <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
 
-  <!-- 18 · pliego ancho: salen de compras -->
-  <article class="pagina pagina-ancha pagina-paseo" data-cap="VI · La tienda del mago">
-    <div class="paseo" data-paseo>
-      <div class="paseo-suelo" aria-hidden="true"></div>
-      <div class="paseo-grupo">
-        <figure class="paseo-pj paseo-pareja"><img src="assets/cuento/paseo.webp" alt="Ari con su vestido de chica mágica y Coen con ropa sport caminan de la mano con sus bolsas"><figcaption data-ropa="ari">Ari y Coen estrenan su compra</figcaption></figure>
-      </div>
-      <figure class="paseo-pj paseo-rancek"><img src="assets/cuento/rancek-corre.webp" alt="Rancek corre detrás de ellos"></figure>
-      <p class="globo globo-rancek">¡Espérenme! ¡Yo también voy!</p>
+  <!-- 18 · pliego ancho: salen de paseo con la ropa nueva -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-paseo.webp" data-cap="VI · La tienda del mago">
+    <p class="cap-num">✦</p>
+    <h2 class="cap-titulo">Ari y Coen estrenan su compra</h2>
+    <p class="cuento">Con sus compras puestas —Ari con su vestido de chica mágica y sus botas de plataforma, Coen con su jogger blanco y su polera burdeo— salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.</p>
+    <div class="hitos" data-hitos="paseo">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
     </div>
-    <p class="cuento paseo-texto" data-paseo-texto>Con sus compras puestas —Ari con su vestido de chica mágica y sus botas de plataforma, Coen con su jogger blanco y su polera burdeo— salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.</p>
   </article>
   <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
 

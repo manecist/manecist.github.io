@@ -390,6 +390,22 @@
         { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', camina: [0, 0], desde: 2, x: 34, alto: 23, ms: 4200, delante: true }
       ] }
     ] },
+    vi: { carpeta: 'cap6/', hitos: [
+      { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
+        { nombre: 'mago', img: 'assets/personajes/rancek-frente.webp', x: 40, alto: 23, fila: 'medio', ms: 900 },                    // Rancek atiende detrás del mostrador
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', camina: [0, 0], desde: 96, x: 74, alto: 24, ms: 3200, delante: true, junto: true },
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', camina: [0, 0], desde: 90, x: 62, alto: 22, ms: 3000, delante: true },   // Ari y Coen entran
+        { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', efecto: 'salta', ms: 2200 },
+        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari', efecto: 'salta', ms: 2200 },
+        { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: true, ms: 600 }
+      ] }
+    ] },
+    paseo: { carpeta: 'cap6/', hitos: [
+      { fondo: 'fondo-paseo.webp', suelo: 'suelo-paseo.webp', titulo: 'Con sus compras puestas…', texto: 'Ari con su vestido de chica mágica y sus botas de plataforma; Coen con su jogger blanco y su polera burdeo.', pasos: [
+        { nombre: 'pareja', img: 'assets/cuento/paseo.webp', camina: [0, 0], desde: 12, x: 58, alto: 23, ms: 5200, delante: true },   // salen a pasear por el reino
+        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', img: 'assets/cuento/rancek-corre.webp', camina: [0, 0], desde: 4, x: 34, alto: 22, ms: 2600, delante: true }   // y Rancek corre detrás
+      ] }
+    ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
