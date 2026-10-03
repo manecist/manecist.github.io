@@ -22,7 +22,7 @@
   const esAncha = p => p && p.classList.contains('pagina-ancha');
   const posDe = n => Math.max(0, orden.indexOf(paginas[n]) >= 0 ? orden.indexOf(paginas[n]) : orden.indexOf(paginas[n - 1]));
   const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const mqUna = matchMedia('(max-width: 860px)');
+  const mqUna = matchMedia('(max-width: 860px) and (orientation: portrait), (max-width: 560px)');   // en horizontal, el libro siempre abierto a dos páginas
   let una = mqUna.matches, actual = 0, abierto = false, animando = false, hada = null, empezo = false;
   const espera = ms => new Promise(r => setTimeout(r, quieto ? 0 : ms));
   const guardar = (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) { /* sin almacenamiento */ } };
@@ -43,7 +43,10 @@
   function medir() {
     una = mqUna.matches;
     const navH = 64, vw = innerWidth, vh = innerHeight;
-    const ph = Math.max(420, Math.min(900, vh - navH - (una ? 22 : 46)));
+    // pantallas bajas (celular en horizontal): el libro se ajusta a la altura disponible
+    const corto = !una && vh < 520;
+    const ph = corto ? Math.max(240, vh - 74) : Math.max(420, Math.min(900, vh - navH - (una ? 22 : 46)));
+    libro.classList.toggle('corto', corto); document.documentElement.classList.toggle('pantalla-corta', corto);
     const pw = una ? Math.min(vw - 20, 620) : Math.min(660, (vw - 70) / 2, ph * .92);
     libro.style.setProperty('--pw', Math.round(pw) + 'px');
     libro.style.setProperty('--ph', Math.round(ph) + 'px');
@@ -419,6 +422,7 @@
 
   // ------------------------------------------------------------ modos
   function aClasico(hash, opc = {}) {
+    if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
     devolver();
     window.dispatchEvent(new Event('cuento-levanta')); libro.classList.remove('acostado');
     escena.classList.remove('activa', 'leyendo'); escena.classList.add('oculta');
@@ -455,6 +459,22 @@
   $('#libro-next').addEventListener('click', () => pasar(1));
   $('#libro-indice').addEventListener('click', () => ir(posDe(1)));
   $('#libro-clasico').addEventListener('click', () => aClasico());
+  // en el celular, el cuento se lee en horizontal (como un libro abierto)
+  const esTelefono = () => matchMedia('(pointer: coarse) and (max-width: 950px), (pointer: coarse) and (max-height: 500px)').matches;
+  function horizontal() {
+    if (!esTelefono()) return;
+    const raizDoc = document.documentElement;
+    const bloquear = () => screen.orientation && screen.orientation.lock ? screen.orientation.lock('landscape').catch(() => {}) : null;
+    if (!document.fullscreenElement && raizDoc.requestFullscreen) raizDoc.requestFullscreen({ navigationUI: 'hide' }).then(bloquear, () => {});
+    else bloquear();
+  }
+  // un toque para leer el cuento (desde la página, la tapa o el índice) pide la horizontal
+  ['#abrir-cuento', '#libro-tapa'].forEach(sel => $(sel)?.addEventListener('click', horizontal));
+  escena.addEventListener('click', e => { if (e.target.closest('.camino[data-ir-cap]')) horizontal(); });
+  const aviso = document.createElement('div'); aviso.className = 'gira-telefono'; aviso.setAttribute('role', 'dialog'); aviso.setAttribute('aria-live', 'polite');
+  aviso.innerHTML = '<div class="gira-dibujo" aria-hidden="true"><i></i></div><p><b>Gira tu teléfono</b>El cuento se lee en horizontal, como un libro abierto.</p><small>Si no gira, activa la rotación automática.</small>';
+  aviso.addEventListener('click', horizontal);
+  document.body.append(aviso);
   $('#abrir-cuento').addEventListener('click', () => aLibro(1));
 
   // esquinas para pasar la página
