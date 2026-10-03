@@ -381,6 +381,7 @@
     if (!empezo) { if (pagina != null) guardar('mce-pagina-ir', String(pagina)); escenaInicial(); return; }
     escena.classList.add('activa');
     if (!abierto) { if (pagina != null) guardar('mce-pagina-ir', String(pagina)); abrir(); return; }
+    escena.classList.add('leyendo');   // al volver desde la versión clásica, el libro vuelve a poder acostarse
     colocar(pagina != null ? posDe(pagina) : actual);
     if (escena.classList.contains('leyendo')) posarHada();
   }

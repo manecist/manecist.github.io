@@ -157,7 +157,7 @@
       if (!nombre) { msg.textContent = 'Escribe un nombre (puede ser inventado).'; $('#lab-nombre').focus(); return; }
       if (!Number.isInteger(edad) || edad < 1 || edad > 120) { msg.textContent = 'La edad debe ser un número entero entre 1 y 120.'; $('#lab-edad').focus(); return; }
       if (!musica) { msg.textContent = 'Escribe el género musical.'; $('#lab-otra').focus(); return; }
-      if (origen === 'ejemplo') { filas = []; origen = 'propio'; }
+      if (origen === 'ejemplo' && !form.closest('.colgante-app')) { filas = []; origen = 'propio'; }   // en el libro se suma al ejemplo
       filas.push({ nombre, edad, color, musica });
       sel = { color, tramo: tramoDe(edad) };
       form.reset(); $('#lab-otra-wrap').hidden = true; sMus.value = 'Pop';
@@ -240,7 +240,7 @@
     function pintar() { kpis(); mapa(); if (sel && !filas.some(r => (sel.color == null || r.color === sel.color) && (sel.tramo == null || tramoDe(r.edad) === sel.tramo))) sel = null; lectura(); marcar(); tabla();
       // el libro levanta estos conteos como barras de papel (capítulo IX)
       const datos = frec(filas, 'color').map(([c, n]) => ({ c, n, hex: HEX[c] || '#ccacd9' }));
-      window.MCEOraculo = { datos }; window.dispatchEvent(new CustomEvent('oraculo-datos', { detail: datos }));
+      window.MCEOraculo = { datos, filas: filas.slice(), hex: HEX }; window.dispatchEvent(new CustomEvent('oraculo-datos', { detail: datos }));
     }
     cargarEjemplo();
   })();
