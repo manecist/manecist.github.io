@@ -1844,3 +1844,17 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* al subir la caja, la boleta que salía por la ranura sube con ella (no queda colgando abajo) */
 .colgante-app.arriba .printer-output{visibility:hidden;opacity:0;transition:opacity .2s,visibility 0s .2s}
 .colgante-app .printer-output{transition:height 1.1s ease,opacity .3s}
+/* las aplicaciones esperan arriba sin moverse al entrar al capítulo; solo se deslizan cuando se bajan o se suben */
+.teatro-app .colgante-app{transition:none;animation:none!important}
+.teatro-app .colgante-app.arriba{transform:translateY(calc(-100% - var(--hilo) - 2vh - 6px))}
+.teatro-app .colgante-app.mueve{transition:transform .9s cubic-bezier(.3,1.25,.5,1)}
+/* galería colgante: todas las obras caben en el cuadro (una fila ancha de láminas) */
+.colgante-app .leyendas{margin-top:0}
+.colgante-app .leyendas-cabeza{margin-bottom:8px;gap:6px}
+.colgante-app .leyendas-cabeza h3{font:700 1.15rem 'Mali',sans-serif;color:#6a2c55!important;margin:0}
+.colgante-app .leyendas-grid{grid-template-columns:repeat(6,1fr);gap:8px}
+.colgante-app .leyendas-grid .obra{aspect-ratio:3/4;height:auto;min-height:0;grid-column:auto!important;grid-row:auto!important}
+.colgante-app .obra-nombre{font:700 .62rem/1.15 'Mali',sans-serif;padding:4px 6px;bottom:5px;left:5px;right:5px}
+.colgante-app .leyendas-aviso{font-size:.62rem;margin:6px 0 0}
+.colgante-app .leyendas-filtros button{font-family:'Mali',sans-serif;color:#6a2c55!important}
+.colgante-app .leyendas-grid{grid-template-columns:repeat(7,1fr)}
