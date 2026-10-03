@@ -1552,11 +1552,6 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .tapa-morfosis.ve{opacity:1}
 
 /* ✦ capítulo III: pliego pop-up donde cada huella se actúa (fondo, piso y actores que se despliegan) */
-.libro.acostado .pag:has(.pagina-hitos){background:url("assets/cuento/cap3/suelo-cesfam.webp") 0 0/100% 100% no-repeat!important}
-.libro.acostado .hoja-cara:has(.pagina-hitos){background:url("assets/cuento/cap3/suelo-cesfam.webp") 0 0/200% 100% no-repeat!important}
-.libro.acostado .hoja-cara:has(.clon-mitad-der.pagina-hitos){background-position:100% 0!important}
-.libro.acostado .pag:has(> .clon-bajo.clon-mitad-der.pagina-hitos){background-size:200% 100%!important;background-position:100% 0!important}
-.libro.acostado .pag:has(> .clon-bajo.pagina-hitos:not(.clon-mitad-der)){background-size:200% 100%!important;background-position:0 0!important}
 .libro.acostado .pagina-hitos{display:block;padding:0;overflow:visible;transform-style:preserve-3d}
 .libro.acostado .pagina-hitos .hitos{position:absolute;inset:0;transform-style:preserve-3d}
 .hitos-escena{display:none}
@@ -1582,3 +1577,32 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .teatro-cielo.ancho .cap-titulo{white-space:nowrap}
 .teatro-cielo.ancho .cielo-bloque .cuento{max-width:none;margin-left:auto;margin-right:auto;font-size:clamp(.9rem,1.05vw,1.08rem);line-height:1.5;margin-bottom:.35em}
 @media (max-width:860px){.teatro-cielo.ancho{width:auto}.teatro-cielo.ancho .cap-titulo{white-space:normal}}
+
+/* ✦ motor de escenarios: el piso viaja con cada pliego (también en la hoja que gira y bajo la esquina) */
+.libro.acostado .pagina-pop.pagina-hitos{background:var(--suelo) 0 0/100% 100% no-repeat}
+.hitos.abierta .hito-pop.ya{transition:none}
+.hito-actor.fila-atras{bottom:52%}.hito-actor.fila-medio{bottom:40%}
+.hito-fija > img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+/* se dibuja solo: la línea baja de arriba hacia abajo y después llega el color */
+.hito-fija .hito-linea{opacity:0}
+.hito-fija.dibuja > img:first-child{opacity:0}
+.hito-fija.dibuja .hito-linea{opacity:1;clip-path:inset(0 0 100% 0);animation:hito-traza calc(var(--dur,3000ms) * .6) linear forwards}
+.hito-fija.colorea > img:first-child{opacity:1;transition:opacity calc(var(--dur,3000ms) * .4) ease}
+.hito-fija.colorea .hito-linea{opacity:0;transition:opacity calc(var(--dur,3000ms) * .4) ease}
+@keyframes hito-traza{to{clip-path:inset(0 0 0 0)}}
+.hito-actor.salta > *{animation:hito-salta .9s ease-in-out infinite}
+.hito-actor.brilla{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 0 18px #ffd9ea) drop-shadow(0 0 30px #f3d48a)}
+.hito-actor.flota > *{animation:hito-flota 2.6s ease-in-out infinite alternate}
+@keyframes hito-salta{0%,100%{transform:translateY(0)}50%{transform:translateY(-6%)}}
+@keyframes hito-flota{from{transform:translateY(0)}to{transform:translateY(-4%)}}
+
+/* ✦ los carteles colgantes son recortes de papel: borde blanco grueso como el pop-up */
+.colgante{border:5px solid #fff;box-shadow:0 14px 26px rgba(10,6,30,.45),0 0 0 1px rgba(215,169,72,.5)}
+/* aplicaciones: un recorte grande que baja desde arriba al centro; arriba solo asoma su pestaña */
+.teatro-app{position:absolute;left:50%;top:0;translate:-50% 0;width:min(860px,64vw);z-index:30;pointer-events:none;display:grid;justify-items:center}
+.teatro-app .colgante-app{width:100%;pointer-events:auto;margin-top:calc(var(--hilo) + 2vh);max-height:min(76vh,720px);display:flex;flex-direction:column;transition:transform .9s cubic-bezier(.3,1.25,.5,1)}
+.teatro-app .colgante-app > :not(.app-pestana){overflow:auto;max-height:min(70vh,680px);border-radius:12px}
+.teatro.baja .teatro-app .colgante-app.arriba{transform:translateY(calc(-100% + 18px));animation:none}
+.app-pestana{position:absolute;left:50%;top:100%;translate:-50% -2px;padding:8px 18px;border:4px solid #fff;border-top:0;border-radius:0 0 16px 16px;background:linear-gradient(160deg,#ffd9ea,#e7d6ff);color:#5b3a63;font:700 .92rem/1 var(--sans);cursor:pointer;box-shadow:0 8px 16px rgba(10,6,30,.35);white-space:nowrap}
+.app-pestana:hover{filter:brightness(1.05)}
+@media (max-width:860px){.teatro-app{width:94vw}}
