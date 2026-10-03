@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261007a">
+  <link rel="stylesheet" href="libro.css?v=20261007e">
   <link rel="stylesheet" href="tema-claro.css?v=20261002a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
@@ -31,8 +31,8 @@
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261002a" defer></script>
   <script src="secciones.js?v=20261002a" defer></script>
-  <script src="libro.js?v=20261007a" defer></script>
-  <script src="cuento.js?v=20261007a" defer></script>
+  <script src="libro.js?v=20261007e" defer></script>
+  <script src="cuento.js?v=20261007e" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -641,23 +641,21 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </article>
   <article class="pagina pagina-hueco" data-cap="III · Mis huellas"></article>
 
-  <!-- 8 · capítulo IV: noches de código -->
-  <article class="pagina pagina-ilustrada pagina-calc" data-cap="IV · Noches de código">
+  <!-- 8 · capítulo IV: noches de código (pliego pop-up; la calculadora baja colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap4/suelo-noche.webp" data-cap="IV · Noches de código">
     <p class="cap-num">Capítulo IV</p>
     <h2 class="cap-titulo">Noches de código</h2>
-    <div class="vineta vineta-escenas" data-escenas>
-      <figure class="escena-cuadro activa"><img src="assets/cuento/escenas/trasnoche.webp" alt="Ari programando de noche sobre su cama, con su perrito durmiendo al lado"><figcaption>Las 2 de la mañana… y un error más</figcaption></figure>
-      <figure class="escena-cuadro"><img src="assets/cuento/escenas/dormida.webp" alt="Ari dormida sobre sus cuadernos de Java"><figcaption>z z z… se quedó dormida estudiando</figcaption></figure>
-      <figure class="escena-cuadro"><img src="assets/cuento/escenas/coen-despierta.webp" alt="Coen despierta a Ari con un café para que siga programando"><figcaption>«Despierta, que vas a lograrlo» ☕</figcaption></figure>
-      <div class="escenas-puntos" aria-hidden="true"><i></i><i></i><i></i></div>
-    </div>
     <p class="cuento"><span class="letra">P</span>ara construir mi reino tuve que aprender el idioma de las máquinas. Noches enteras sobre la cama, con mi mesita, mi jarro gigante y mi perrito dormido al lado… hasta quedarme dormida entre cuadernos. Y cada mañana, Coen me despertaba con un café para seguir.</p>
-    <div class="ranura" data-widget="#calc-java"></div>
+    <div class="hitos" data-hitos="iv">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+    </div>
+    <div class="colgar-app" data-app="la calculadora">
+      <p class="cuento nota app-nota">Mi primer conjuro en Java fue una calculadora. Pulsa las teclas: al lado se escribe el mismo cálculo en Java.</p>
+      <div class="app-doble"><div class="ranura" data-widget="#calc-zona"></div><div class="ranura" data-widget="#calc-java"></div></div>
+    </div>
   </article>
-  <article class="pagina pagina-centrada pagina-calc" data-cap="IV · Noches de código">
-    <p class="cuento nota">Mi primer conjuro en Java fue una calculadora. Pulsa las teclas: la página de la izquierda escribe el mismo cálculo en Java.</p>
-    <div class="ranura" data-widget="#calc-zona"></div>
-  </article>
+  <article class="pagina pagina-hueco" data-cap="IV · Noches de código"></article>
 
   <!-- 10 · logros + currículum -->
   <article class="pagina pagina-logros" data-cap="✦ Medallas, streams y mi currículum">
@@ -709,28 +707,19 @@ VALUES (?, ?, ?, ?);</code></pre></details>
     <p class="botonera"><a class="btn primary" href="assets/cv.pdf" target="_blank" rel="noopener">Descargar currículum (PDF) ↗</a><a class="btn ghost" href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a></p>
   </article>
 
-  <!-- 12 · capítulo V: Ari y Coen -->
-  <article class="pagina pagina-ilustrada" data-cap="V · Ari, Coen y el nacimiento de Conari">
+  <!-- 12 · capítulo V: Ari y Coen (pliego pop-up: se dibujan, nace Conari y se une un tercero) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap5/suelo-estudio.webp" data-cap="V · Ari, Coen y el nacimiento de Conari">
     <p class="cap-num">Capítulo V</p>
     <h2 class="cap-titulo">Ari, Coen y el nacimiento de Conari</h2>
-    <div class="vineta vineta-pareja" data-pareja>
-      <div class="pj pj-ari"><img class="pj-linea" src="assets/personajes/ari-frente-lineart.webp" alt=""><img class="pj-color" src="assets/personajes/ari-frente.webp" alt="Ari, la asesina de cintas rosadas"></div>
-      <div class="pj pj-coen"><img class="pj-linea" src="assets/personajes/coen-frente-lineart.webp" alt=""><img class="pj-color" src="assets/personajes/coen-frente.webp" alt="Coen, el caballero de capa carmesí"></div>
-      <span class="pareja-corazon" aria-hidden="true">♥</span>
-    </div>
     <p class="cuento">Kevin y yo jugábamos, hacíamos stream y soñábamos juntos. Un día, el trazo de un lápiz dio vida a nuestros héroes: <b>Ari</b>, la asesina ágil de cintas rosadas, y <b>Coen</b>, el caballero de capa carmesí. Línea a línea, color a color, se encontraron… y se tomaron de la mano.</p>
-  </article>
-  <article class="pagina pagina-estudio" data-cap="V · Ari, Coen y el nacimiento de Conari">
-    <img class="logo-oficial" src="assets/logo-conari-circulo.webp" alt="Logo de Studios Conari: un dragón azul y dorado rodea un árbol, un castillo, la cordillera, el sol, la luna y un libro abierto">
-    <img class="logo-palabra" src="assets/logo-conari-eslogan.webp" alt="Studios Conari · Donde nacen mundos y leyendas eternas">
     <p class="cuento">Juntos fundamos <b>Studios Conari SpA</b>, un estudio creativo chileno que une narrativa, diseño, programación, datos y arte 3D para convertir ideas en videojuegos, aplicaciones y mundos propios.</p>
-    <div class="trio">
-      <figure><img src="assets/equipo-maria.webp" alt=""><figcaption><b>María Inés</b>Dirección creativa · Full Stack Java</figcaption></figure>
-      <figure><img src="assets/equipo-kevin.webp" alt=""><figcaption><b>Kevin Alexis</b>Dirección técnica · videojuegos y datos</figcaption></figure>
-      <figure><img src="assets/equipo-elias.webp" alt=""><figcaption><b>Elías Alejandro</b>Animación y arte 3D</figcaption></figure>
+    <div class="hitos" data-hitos="v">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
     </div>
     <p class="botonera"><a class="btn gold-btn" href="mailto:studiosconari@gmail.com?subject=Consulta%20Studios%20Conari">Escribir al estudio</a><a class="btn ghost" href="https://studiosconari.github.io/" target="_blank" rel="noopener">Sitio oficial ↗</a></p>
   </article>
+  <article class="pagina pagina-hueco" data-cap="V · Ari, Coen y el nacimiento de Conari"></article>
 
   <!-- 14 · pliego ancho: el reino sale del libro (pop-up 3D) -->
   <article class="pagina pagina-ancha pagina-popup" data-cap="✦ El reino que salió del libro">
