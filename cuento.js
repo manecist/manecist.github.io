@@ -490,7 +490,8 @@
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, alto: 16, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
         { actor: 'muro', x: 74, alto: 17, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
-        { actor: 'pac', camina: [0, 1], desde: 92, x: 82, alto: 16.5, ms: 3400, delante: true },   // una paciente llega caminando desde la derecha…
+        { actor: 'pac', camina: [0, 1], desde: 92, x: 82, alto: 16.5, ms: 3400, delante: true, pausa: 0 },   // una paciente llega caminando desde la derecha…
+        { actor: 'pac', de: 1, a: 2, ms: 450, pausa: 0 },                             // …y sin detenerse pasa de la caminata a estirar la mano (fundido)
         { actor: 'pac', de: 2, a: 3, ms: 3000 }                                       // …saca uno del dispensador y sonríe
       ] },
       { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
