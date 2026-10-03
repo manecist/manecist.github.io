@@ -259,46 +259,37 @@
   const cuadrosDe = {};
   VIDA.forEach(([s]) => { const i = new Image(); i.onload = () => { cuadrosDe[s] = Math.max(1, Math.round(i.naturalWidth / (i.naturalHeight * .8))); }; i.src = tiraDe(s); });
   const AMB = n => 'assets/cuento/cap2/' + n + '.webp';
-  const AMBIENTES = [
-    [['a-escuela-1', -1, 'atras', 15], ['a-escuela-2', 1, 'frente', 7]],
-    [['a-escuela-4', -1, 'atras', 12], ['a-escuela-3', 1, 'atras', 11]],
-    [['b-juegos-1', -1, 'atras', 11], ['b-juegos-2', 1, 'frente', 8]],
-    [['b-juegos-3', 1, 'atras', 8], ['b-juegos-4', -1, 'frente', 9]],
-    [['c-matrona-1', -1, 'atras', 13], ['c-matrona-2', 1, 'frente', 8]],
-    [['c-matrona-3', 1, 'atras', 11], ['c-matrona-1', -1, 'atras', 13]],
-    [['c-matrona-3', 1, 'atras', 11], ['c-matrona-2', -1, 'frente', 8]],
-    [['c-matrona-4', -1, 'atras', 10], ['d-codigo-1', 1, 'frente', 10]],
-    [['d-codigo-1', -1, 'atras', 12], ['d-codigo-2', 1, 'atras', 9], ['d-codigo-3', 1, 'frente', 8]],
-    [['e-stream-1', -1, 'atras', 7], ['e-stream-3', 1, 'atras', 13], ['e-stream-2', 1, 'frente', 7]],
-    [['f-creadora-1', 1, 'atras', 12], ['d-codigo-4', -1, 'frente', 6]],
-    [['f-creadora-2', -1, 'atras', 12], ['f-creadora-3', 1, 'frente', 8]],
-    [['f-creadora-3', -1, 'atras', 10], ['d-codigo-4', 1, 'frente', 6]],
-    [['f-creadora-4', 1, 'atras', 13], ['f-creadora-3', -1, 'frente', 8]],
-    [['castillo', 1, 'atras', 14, 'assets/cuento/popup/castillo.webp'], ['f-creadora-5', -1, 'atras', 9]]
-  ];
-  AMBIENTES.flat().forEach(([n, , , , src]) => { const i = new Image(); i.src = src || AMB(n); });
+  // ambiente de cada etapa: g01..g11 (fondo = gNN-fondo, objetos = gNN-1..3)
+  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05', 'g05', 'g06', 'g07', 'g08', 'g09', 'g10', 'g10', 'g11', 'g11'];
+  [...new Set(GRUPO)].forEach(g => ['fondo', 1, 2, 3].forEach(k => { const i = new Image(); i.src = AMB(g + '-' + k); }));
   escena('[data-vida]', el => {
     const a = el.querySelector('.vida-img'), b = el.querySelector('.vida-img-b'), rango = el.querySelector('.vida-rango');
     const edad = el.querySelector('.vida-edad'), txt = el.querySelector('.vida-texto'), play = el.querySelector('.vida-play'), andante = el.querySelector('.vida-andante');
     const pagina = el.closest('.pagina'); pagina.setAttribute('data-narracion-propia', '');
     let k = -1, pausa = false, frente = a;
     detener(el);
-    const ambiente = el.querySelector('.vida-ambiente'); let ambActual = -1;
-    // al cambiar de etapa: los recortes del ambiente anterior se pliegan y los nuevos se levantan cerca de Ari
+    const ambiente = el.querySelector('.vida-ambiente'); let ambActual = -1, grupoActual = '';
+    const levantar = (im, d) => { im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); ambiente.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
+    const plegar = sel => [...ambiente.querySelectorAll(sel)].forEach(p => { p.classList.add('pliega'); setTimeout(() => p.remove(), 900); });
+    // al cambiar de etapa: los objetos se pliegan y se levantan otros junto a Ari; el panorama de fondo cambia con el ambiente
     const ponerAmbiente = n => {
       if (!ambiente || n === ambActual) return; ambActual = n;
-      [...ambiente.children].forEach(p => { p.classList.add('pliega'); setTimeout(() => p.remove(), 900); });
-      const x = 4 + n / (VIDA.length - 1) * 70 + 5;   // centro de Ari (en % del ancho)
-      AMBIENTES[n].forEach(([nombre, lado, fila, ancho, src], j) => {
-        const im = document.createElement('img'); im.src = src || AMB(nombre); im.alt = '';
-        im.className = 'vida-pop amb amb-' + fila + ' pliega';
-        const dist = fila === 'atras' ? 14 + j * 3 : 12;
-        let centro = x + 3 + lado * dist;
-        if (centro - ancho / 2 < 0 || centro + ancho / 2 > 100) centro = x + 3 - lado * dist;   // si no cabe a ese lado, va al otro
+      const g = GRUPO[n];
+      if (g !== grupoActual) {
+        grupoActual = g; plegar('.amb-fondo');
+        const f = document.createElement('img'); f.src = AMB(g + '-fondo'); f.alt = ''; f.className = 'vida-pop amb amb-fondo'; levantar(f, .05);
+      }
+      plegar('.amb-obj');
+      const x = 4 + n / (VIDA.length - 1) * 70 + 6.5;   // centro de Ari (en % del ancho)
+      [[-1, 'atras', 15], [1, 'atras', 15], [1, 'frente', 11]].forEach(([lado, fila, ancho], j) => {
+        const im = document.createElement('img'); im.src = AMB(g + '-' + (j + 1)); im.alt = '';
+        im.className = 'vida-pop amb amb-obj amb-' + fila;
+        const dist = fila === 'atras' ? 15 : 13;
+        let centro = x + lado * dist;
+        if (centro - ancho / 2 < 0 || centro + ancho / 2 > 100) centro = x - lado * (dist + (fila === 'frente' ? 6 : 0));
         im.style.left = Math.max(0, Math.min(100 - ancho, centro - ancho / 2)).toFixed(1) + '%';
-        im.style.width = ancho + '%'; im.style.setProperty('--d', (.15 + j * .18).toFixed(2) + 's');
-        ambiente.append(im);
-        requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega')));
+        im.style.width = ancho + '%';
+        levantar(im, .25 + j * .2);
       });
     };
     // al abrir la página, los recortes del pop-up se despliegan uno tras otro (cuando el libro ya se acostó)

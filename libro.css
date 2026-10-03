@@ -1498,3 +1498,11 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
   .colgante .vida-cartel{padding:6px 10px}.colgante .vida-cartel .vida-texto{font-size:.85rem;line-height:1.3}
   .colgante .vida-controles{padding:4px 8px}
 }
+
+/* capítulo II: panorama de fondo a todo el ancho y objetos grandes */
+.vida-pop.amb-fondo{left:1%;width:98%;bottom:80%}
+.vida-pop.amb-obj.amb-atras{bottom:60%}
+.vida-pop.amb-obj.amb-frente{bottom:20%}
+.libro.una.acostado .vida-pop.amb-obj{width:30%!important}
+.libro.una.acostado .vida-pop.amb-fondo{width:98%!important}
+.libro.una.acostado .vida-pop.amb-obj.amb-frente{width:21%!important}
