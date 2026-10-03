@@ -358,7 +358,7 @@
   }
 
   // ------------------------------------------------------------ modos
-  function aClasico(hash) {
+  function aClasico(hash, opc = {}) {
     devolver();
     window.dispatchEvent(new Event('cuento-levanta')); libro.classList.remove('acostado');
     escena.classList.remove('activa', 'leyendo'); escena.classList.add('oculta');
@@ -367,7 +367,7 @@
     document.body.classList.remove('bloqueado');
     guardar('mce-modo', 'clasico');
     // el hada pinta el reino de fondo (no si se llega directo a una sección)
-    window.MCEReino?.mostrar(!hash);
+    window.MCEReino?.mostrar(!hash, opc.pintar);
     if (hash && document.querySelector(hash)) document.querySelector(hash).scrollIntoView();
     else scrollTo(0, 0);
     $('#nombre-principal')?.focus({ preventScroll: true });
