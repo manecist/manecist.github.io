@@ -127,6 +127,7 @@
   const escena = (sel, fn) => ESCENAS.push([sel, fn]);
   // pop-up: los recortes se acuestan de golpe sobre la hoja y, ya con la página quieta, se levantan uno tras otro
   const abrirPop = (el, espera = 550) => {
+    if (document.getElementById('libro')?.classList.contains('recien-girado')) { el.classList.add('sin-trans', 'abierta'); void el.offsetWidth; requestAnimationFrame(() => el.classList.remove('sin-trans')); return; }
     el.classList.add('sin-trans'); el.classList.remove('abierta'); void el.offsetWidth; el.classList.remove('sin-trans');
     luego(() => el.classList.add('abierta'), espera);
   };
@@ -635,7 +636,8 @@
     else if (play) play.onclick = () => { pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir' : 'Pausar'); if (!pausa && el.classList.contains('llego')) mostrar(0); };
     // al abrir: el pliego se despliega cuando el libro ya se acostó
     zona.querySelectorAll('.hito-pop').forEach(p => p.remove()); Object.keys(actores).forEach(k => delete actores[k]);
-    el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : 1250);
+    const girado = document.getElementById('libro')?.classList.contains('recien-girado');
+    el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : girado ? 150 : 1250);
   });
 
   // IX · el análisis del oráculo: cruza edad, color y música, los dibuja a mano y saca una conclusión

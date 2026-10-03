@@ -146,8 +146,11 @@
     nuevo = Math.max(0, Math.min(orden.length - 1, nuevo));
     dir = dir || Math.sign(nuevo - actual);
     if (!dir || nuevo === actual) return;
-    // si el libro está acostado, los recortes se pliegan y el libro se levanta MIENTRAS gira la hoja
-    if (libro.classList.contains('acostado') && !quieto) {
+    // de un pliego pop-up a otro el libro queda acostado: los recortes se pliegan y despliegan con la hoja (como un libro real)
+    const destino0 = una ? [orden[nuevo]] : [orden[nuevo], orden[nuevo + 1]];
+    const giroPop = !una && !quieto && libro.classList.contains('acostado') && destino0.some(p => p && p.classList.contains('pagina-pop'));
+    // si el libro está acostado y el destino no es pop-up, los recortes se pliegan y el libro se levanta MIENTRAS gira la hoja
+    if (!giroPop && libro.classList.contains('acostado') && !quieto) {
       if (levantando) return;
       levantando = true;
       document.querySelectorAll('.pop-escena.abierta').forEach(e => e.classList.remove('abierta'));
@@ -158,7 +161,7 @@
     // el pliego de destino es pop-up: el libro se acuesta mientras gira la hoja (no antes ni después)
     const destino = una ? [orden[nuevo]] : [orden[nuevo], orden[nuevo + 1]];
     const vaPop = destino.some(p => p && p.classList.contains('pagina-pop'));
-    libro.classList.remove('pop-listo');
+    if (!giroPop) libro.classList.remove('pop-listo');
     if (!quieto) libro.classList.toggle('acostado', vaPop);
     libro.classList.remove('hay-sig', 'invita');   // la esquina doblada se esconde mientras gira la hoja
     window.dispatchEvent(new Event('cuento-pasa'));
@@ -196,6 +199,7 @@
     }
     cuerpo.append(hoja);
     if (hada && window.Magia) hada.hechizo();
+    if (giroPop) { girarPop(hoja, frente, dorso, dir, actAncha, nuevaAncha, nuevo); return; }
     requestAnimationFrame(() => requestAnimationFrame(() => hoja.classList.add('gira')));
     const fin = () => { if (!hoja.isConnected) return; hoja.remove(); if (!una) colocar(nuevo); animando = false; };
     hoja.addEventListener('transitionend', e => { if (e.target === hoja) fin(); }, { once: true });
@@ -203,6 +207,61 @@
     if (window.Magia) { const r = libro.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height * .15, { n: 10, vel: 2.4 }); }
   }
   const pasar = d => ir(actual + d * (una ? 1 : 2), d);
+
+  // ------------------------------------------------------------ giro pop-up
+  // Como en un libro pop-up real: el pliego que se cierra (A) aplasta sus recortes durante todo el giro y el que se
+  // abre (B) los va parando; cada recorte va pegado a su página (los que viajan en la hoja giran con ella) y los que
+  // cruzan el centro se dividen en dos mitades, una en cada página (doblez en V).
+  const PIEZAS = '.pop-escena .pop, .vida-pop, .vida-andante, .hito-pop';
+  const DUR_GIRO = 1500;
+  function girarPop(hoja, frente, dorso, dir, actAncha, nuevaAncha, nuevo) {
+    libro.classList.add('giro-pop');
+    hoja.style.transition = 'none';
+    const pi = izq.firstElementChild, pd = der.firstElementChild, pf = frente.firstElementChild, pdo = dorso.firstElementChild;
+    // cada página visible muestra un tramo de su pliego (0–1 de su ancho) y pertenece a A o a B
+    const inst = dir > 0
+      ? [[pi, actAncha ? [0, .5] : [0, 1], 'A'], [pf, actAncha ? [.5, 1] : [0, 1], 'A', 'frente'], [pdo, nuevaAncha ? [0, .5] : [0, 1], 'B', 'dorso'], [pd, nuevaAncha ? [.5, 1] : [0, 1], 'B']]
+      : [[pf, actAncha ? [0, .5] : [0, 1], 'A', 'frente'], [pd, actAncha ? [.5, 1] : [0, 1], 'A'], [pi, nuevaAncha ? [0, .5] : [0, 1], 'B'], [pdo, nuevaAncha ? [.5, 1] : [0, 1], 'B', 'dorso']];
+    const piezas = [];
+    inst.forEach(([pag, [a, b], grupo, cara]) => {
+      if (!pag || !pag.classList.contains('pagina-pop')) return;
+      // el piso de las páginas con escenario viaja con la cara de la hoja
+      if (cara) { const suelo = pag.style.getPropertyValue('--suelo'), f = cara === 'frente' ? frente : dorso; if (suelo) { f.style.setProperty('background-image', suelo, 'important'); f.style.setProperty('background-size', (b - a < 1 ? '200%' : '100%') + ' 100%', 'important'); f.style.setProperty('background-position', (a >= .5 ? '100%' : '0') + ' 0', 'important'); } }
+      const W = pag.offsetWidth || 1;
+      pag.querySelectorAll(PIEZAS).forEach(el => {
+        // los recortes que se crean al llegar (escenarios y ambientes) se levantan solos después: aquí no se muestran
+        if (grupo === 'B' && (el.classList.contains('hito-pop') || el.classList.contains('amb'))) { el.style.visibility = 'hidden'; return; }
+        let x = 0, e = el; while (e && e !== pag) { x += e.offsetLeft; e = e.offsetParent; }
+        const x0 = x / W, x1 = (x + el.offsetWidth) / W;
+        // fuera del tramo: en un pliego ancho lo muestra la otra copia; en una página suelta (recorte que invade la vecina) se aplasta antes de que pase la hoja
+        let rapido = false;
+        if (x1 <= a + .002 || x0 >= b - .002) { if (b - a < 1) { el.style.visibility = 'hidden'; return; } rapido = true; }
+        if (x0 < a || x1 > b) { const L = Math.max(0, (a - x0) / (x1 - x0)) * 100, Rr = Math.max(0, (x1 - b) / (x1 - x0)) * 100; el.style.clipPath = 'inset(0 ' + Rr.toFixed(2) + '% 0 ' + L.toFixed(2) + '%)'; }
+        el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
+        piezas.push({ el, grupo, cara, rapido });
+      });
+    });
+    const suave = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const t0 = performance.now();
+    const paso = ahora => {
+      const t = Math.min(1, (ahora - t0) / DUR_GIRO), th = 180 * suave(t), f = th / 180;
+      hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
+      piezas.forEach(({ el, grupo, cara, rapido }) => {
+        const g = rapido ? (grupo === 'A' ? Math.min(1, f / .35) : Math.max(0, (f - .65) / .35)) : f;
+        el.style.transform = 'rotateX(' + (-90 * (grupo === 'A' ? 1 - g : g)).toFixed(2) + 'deg)';
+        if (cara) el.style.visibility = (cara === 'frente') === (th < 90) ? 'visible' : 'hidden';   // la cara de abajo de la hoja no se ve
+      });
+      if (t < 1) { requestAnimationFrame(paso); return; }
+      // al aterrizar: las páginas reales toman el lugar de las copias con sus recortes ya parados
+      piezas.forEach(({ el }) => { el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = ''; });
+      libro.classList.add('recien-girado');
+      hoja.remove(); colocar(nuevo); animando = false;
+      libro.classList.remove('giro-pop');
+      setTimeout(() => libro.classList.remove('recien-girado'), 400);
+    };
+    requestAnimationFrame(paso);
+    if (window.Magia) { const r = libro.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height * .15, { n: 10, vel: 2.4 }); }
+  }
 
   // ------------------------------------------------------------ abrir el libro
   function abrir() {
