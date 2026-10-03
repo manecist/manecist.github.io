@@ -1416,3 +1416,8 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.acostado:not(.una) .pm1{left:11%}.libro.acostado:not(.una) .pm2{left:59%}
 .libro.una .probador-s1{left:-6%;width:40%;bottom:16%}.libro.una .probador-s2{right:-6%;width:40%;bottom:16%}
 .libro.una .pasto-medio{width:44%;bottom:12%}.libro.una .pm1{left:-4%}.libro.una .pm2{left:60%}
+/* al abrir la portada: la página izquierda (ex libris) aparece recién cuando la tapa pasa por encima */
+.libro:not(.una)[data-estado="abriendo"] .pag-izq,.libro:not(.una)[data-estado="abriendo"] .libro-lomo{animation:izq-tras-tapa 1.65s linear both}
+@keyframes izq-tras-tapa{0%,62%{opacity:0}85%,100%{opacity:1}}
+/* las páginas pop-up nunca se muestran planas: mientras la hoja gira o el libro no está acostado, se ven vacías */
+.libro:not(.acostado) .pagina-pop > *,.hoja .pagina-pop > *{visibility:hidden!important}
