@@ -406,6 +406,45 @@
         { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', img: 'assets/cuento/rancek-corre.webp', camina: [0, 0], desde: 4, x: 34, alto: 22, ms: 2600, delante: true }   // y Rancek corre detrás
       ] }
     ] },
+    vii: { carpeta: 'cap7/', hitos: [
+      { fondo: 'fondo-mercado.webp', suelo: 'suelo-mercado.webp', titulo: 'La tiendita creció…', texto: '…hasta convertirse en un mercado entero.', pasos: [
+        { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 22, fila: 'medio', efecto: 'brilla', ms: 1800,
+          texto: { titulo: 'Magical Alliance', texto: 'Mi proyecto final Full Stack Java: roles, catálogo, carrito, cupones, pedidos, stock y panel de administración.' } },
+        { nombre: 'ari', img: 'assets/cuento/ari-casual.webp', x: 28, alto: 20, delante: true, ms: 1200 },                       // Ari llega como clienta…
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 76, alto: 23, delante: true, ms: 1200,
+          texto: { titulo: 'Clienta o administradora', texto: 'Llena el carrito y mira cómo cambia el stock.' } },                     // …y Coen la acompaña
+        { nombre: 'ari', efecto: 'salta', ms: 1400 },
+        { app: true, ms: 400 }
+      ] }
+    ] },
+    viii: { carpeta: 'cap8/', hitos: [
+      { fondo: 'fondo-taller.webp', suelo: 'suelo-taller.webp', titulo: 'Aprendí sola', texto: 'Primero con papel, lápices y pintura…', pasos: [
+        { nombre: 'papel1', img: 'assets/galeria/papel-luna-sakura.webp', x: 16, alto: 9, fila: 'atras', clase: 'cuadro', ms: 300, pausa: 200 },
+        { nombre: 'papel2', img: 'assets/galeria/papel-amerikano.webp', x: 84, alto: 10, fila: 'atras', clase: 'cuadro', ms: 900 },
+        { actor: 'atril', x: 32, alto: 20, de: 0, a: 1, ms: 4000, texto: { titulo: 'Después con tableta…', texto: '…redibujando hasta encontrar mi propio trazo.' } },
+        { nombre: 'lienzo', img: 'assets/galeria/regalo-1.webp', linea: 'assets/galeria/regalo-1-lineart.webp', x: 66, alto: 21, clase: 'cuadro', ms: 4600,
+          texto: { titulo: 'Así nace cada ilustración', texto: 'Primero la línea… y después el color.' } }
+      ] }
+    ] },
+    galeria: { carpeta: 'cap8/', hitos: [
+      { fondo: 'fondo-galeria.webp', suelo: 'suelo-galeria.webp', pasos: [
+        { nombre: 'achachila', img: 'assets/galeria/achachila.webp', x: 9.0, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'alicanto', img: 'assets/galeria/alicanto.webp', x: 20.7, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'lascar', img: 'assets/galeria/lascar.webp', x: 32.4, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'lica', img: 'assets/galeria/lica.webp', x: 44.1, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'puma', img: 'assets/galeria/puma.webp', x: 55.8, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'reina-noche', img: 'assets/galeria/reina-noche.webp', x: 67.5, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'supai', img: 'assets/galeria/supai.webp', x: 79.2, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'tirana-1', img: 'assets/galeria/tirana-1.webp', x: 90.9, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
+        { app: true, ms: 300 }
+      ] }
+    ] },
+    ix: { carpeta: 'cap9/', hitos: [
+      { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'En lo alto de la torre…', texto: 'vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan.', pasos: [
+        { nombre: 'oraculo', img: 'oraculo.webp', x: 22, alto: 20, efecto: 'flota', clase: 'brilla', ms: 2200 },
+        { texto: { titulo: 'Cuéntale los tuyos', texto: 'Cada color que le cuentas se levanta aquí como una barra de papel: así ordeno los datos.' }, app: true, ms: 400 }
+      ] }
+    ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
@@ -557,6 +596,23 @@
     el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : 1250);
   });
 
+  // IX · los datos del oráculo se levantan como barras de papel (los 8 colores más elegidos)
+  escena('[data-barras]', el => {
+    const pintar = datos => {
+      const top = (datos || []).slice(0, 8), max = Math.max(1, ...top.map(d => d.n));
+      el.replaceChildren(...top.map((d, i) => {
+        const b = document.createElement('div'); b.className = 'barra-papel';
+        b.style.left = (40 + i * (54 / Math.max(top.length, 4))).toFixed(1) + '%';
+        b.style.setProperty('--h', (d.n / max).toFixed(3)); b.style.setProperty('--c', d.hex); b.style.setProperty('--d', (.3 + i * .12) + 's');
+        b.innerHTML = '<span>' + d.n + '</span><b>' + d.c + '</b>';
+        return b;
+      }));
+    };
+    pintar(window.MCEOraculo && window.MCEOraculo.datos);
+    if (el._oir) window.removeEventListener('oraculo-datos', el._oir);
+    el._oir = e => pintar(e.detail); window.addEventListener('oraculo-datos', el._oir);
+  });
+
   // IV · noches de código: escenas que se suceden
   escena('[data-escenas]', el => {
     const cs = [...el.querySelectorAll('.escena-cuadro')], ps = [...el.querySelectorAll('.escenas-puntos i')]; let i = 0;
@@ -603,6 +659,7 @@
 
   // VII · la galería saluda con vocecitas
   const SALUDOS = { 'Achachila': '¡Hola! Soy el Achachila, cuido los cerros.', 'Alicanto': '¡Hola! Soy el Alicanto, ¡mis alas brillan!', 'Supai': 'Hola… soy Supai, del mundo de abajo.', 'Láscar': '¡Soy Láscar, el volcán!', 'La Tirana': '¡Hola! ¡A bailar en La Tirana!', 'Reina de la Noche': 'Buenas noches… soy la Reina de la Noche.', 'Lica': '¡Hola, hola! Soy Lica.', 'Puma': '¡Grrr… hola! Soy el Puma.', 'Emilia': '¡Hola! ¡Soy Emilia!', 'Regalo': '¡Hola! Soy un regalo hecho con cariño.' };
+  $$('[data-saludar]').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.hitos-escena .hito-actor.cuadro').forEach((a, i) => { a.classList.remove('saluda'); void a.offsetWidth; a.style.setProperty('--k', i); a.classList.add('saluda'); setTimeout(() => a.classList.remove('saluda'), 3200); }); }));
   $$('[data-saludar]').forEach(b => b.addEventListener('click', async () => {
     const obras = $$('#leyendas .obra'); b.disabled = true;
     for (const [i, o] of obras.entries()) {

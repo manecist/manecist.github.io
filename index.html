@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261007j">
+  <link rel="stylesheet" href="libro.css?v=20261007k">
   <link rel="stylesheet" href="tema-claro.css?v=20261002a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
@@ -30,9 +30,9 @@
   <script src="app.js?v=20261002a" defer></script>
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261002a" defer></script>
-  <script src="secciones.js?v=20261002a" defer></script>
-  <script src="libro.js?v=20261007j" defer></script>
-  <script src="cuento.js?v=20261007j" defer></script>
+  <script src="secciones.js?v=20261007a" defer></script>
+  <script src="libro.js?v=20261007k" defer></script>
+  <script src="cuento.js?v=20261007k" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -762,60 +762,67 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </article>
   <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
 
-  <!-- 20 · capítulo VII: M7 -->
-  <article class="pagina" data-cap="VII · La gran tienda Magical Alliance">
+  <!-- 20 · capítulo VII: Magical Alliance (pliego pop-up; la vitrina baja colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap7/suelo-mercado.webp" data-cap="VII · La gran tienda Magical Alliance">
     <p class="cap-num">Capítulo VII</p>
     <h2 class="cap-titulo">La gran tienda Magical Alliance</h2>
     <p class="cuento"><span class="letra">L</span>a tiendita creció hasta convertirse en un mercado entero: <b>Magical Alliance</b>, mi proyecto final Full Stack Java. Tiene registro e inicio de sesión por roles, catálogo con filtros, carrito, cupones, pedidos, historial de compras, control de stock y un panel para administrar todo.</p>
-    <div class="stack-cloud"><span>Java 17</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>Thymeleaf</span></div>
-    <p class="cuento nota">En la vitrina mágica puedes recorrer la tienda como clienta o como administradora, llenar el carrito y ver cómo cambia el stock.</p>
+    <div class="hitos" data-hitos="vii">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+    </div>
+    <div class="stack-cloud colgar"><span>Java 17</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>Thymeleaf</span></div>
     <p class="botonera"><a class="btn primary" href="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/" target="_blank" rel="noopener">Abrir la vitrina mágica ↗</a><a class="btn ghost" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Código ↗</a></p>
+    <div class="colgar-app" data-app="la vitrina">
+      <p class="cuento nota app-nota">En la vitrina mágica puedes recorrer la tienda como clienta o como administradora, llenar el carrito y ver cómo cambia el stock.</p>
+      <div class="ranura" data-widget="#m7-galeria"></div>
+    </div>
   </article>
-  <article class="pagina pagina-centrada" data-cap="VII · La gran tienda Magical Alliance">
-    <div class="ranura" data-widget="#m7-galeria"></div>
-  </article>
+  <article class="pagina pagina-hueco" data-cap="VII · La gran tienda Magical Alliance"></article>
 
-  <!-- 22 · capítulo VIII: ilustraciones -->
-  <article class="pagina" data-cap="VIII · Leyendas dibujadas">
+  <!-- 22 · capítulo VIII: el taller (pliego pop-up: Ari pinta y un lienzo se dibuja solo) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap8/suelo-taller.webp" data-cap="VIII · Leyendas dibujadas">
     <p class="cap-num">Capítulo VIII</p>
     <h2 class="cap-titulo">Leyendas dibujadas</h2>
     <p class="cuento"><span class="letra">N</span>unca dejé de dibujar. Aprendí sola: primero con papel, lápices y pintura; después con tableta, redibujando hasta encontrar mi propio trazo.</p>
-    <div class="papeles" data-papeles></div>
-  </article>
-  <article class="pagina pagina-centrada" data-cap="VIII · Leyendas dibujadas">
-    <p class="cuento">Así nace cada ilustración: primero la línea… y después el color.</p>
-    <div class="dibujandose" data-dibujandose>
-      <img class="dj-linea" src="assets/galeria/regalo-1-lineart.webp" alt="">
-      <img class="dj-color" src="assets/galeria/regalo-1.webp" alt="Ilustración que se dibuja y se pinta">
-      <span class="dj-pincel" aria-hidden="true"></span>
+    <div class="hitos" data-hitos="viii">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+      <div class="vida-controles hitos-controles"><button type="button" class="btn ghost hito-play" aria-label="Dibujar otra vez">↻ Dibujar otra vez</button></div>
     </div>
-    <button type="button" class="btn ghost dj-repetir">↻ Dibujar otra vez</button>
-  </article>
-
-  <!-- 24 · pliego ancho: la galería saluda -->
-  <article class="pagina pagina-ancha pagina-galeria" data-cap="VIII · Leyendas dibujadas">
-    <div class="galeria-cabeza"><p class="cuento">Y un día, todas mis criaturas se juntaron en una misma página para saludarte.</p><button type="button" class="btn primary" data-saludar>✦ ¡Que saluden!</button></div>
-    <div class="ranura" data-widget="#leyendas"></div>
   </article>
   <article class="pagina pagina-hueco" data-cap="VIII · Leyendas dibujadas"></article>
 
-  <!-- 26 · capítulo IX: datos -->
-  <article class="pagina pagina-oraculo" data-cap="IX · El oráculo de los colores">
+  <!-- 24 · pliego ancho: la galería saluda (las criaturas se levantan; la galería baja colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap8/suelo-galeria.webp" data-cap="VIII · Leyendas dibujadas">
+    <p class="cap-num">✦</p>
+    <h2 class="cap-titulo">Criaturas y espíritus de Chile y los Andes</h2>
+    <p class="cuento">Y un día, todas mis criaturas se juntaron en una misma página para saludarte.</p>
+    <div class="hitos" data-hitos="galeria">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+    </div>
+    <p class="botonera"><button type="button" class="btn primary" data-saludar>✦ ¡Que saluden!</button></p>
+    <div class="colgar-app" data-app="la galería">
+      <div class="ranura" data-widget="#leyendas"></div>
+    </div>
+  </article>
+  <article class="pagina pagina-hueco" data-cap="VIII · Leyendas dibujadas"></article>
+
+  <!-- 26 · capítulo IX: datos (pliego pop-up; los colores se levantan como barras y el oráculo baja colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap9/suelo-torre.webp" data-cap="IX · El oráculo de los colores">
     <p class="cap-num">Capítulo IX</p>
     <h2 class="cap-titulo">El oráculo de los colores</h2>
     <p class="cuento">En lo alto de la torre vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan. Cuéntale los tuyos y mira cómo ordena lo que aprende: así trabajo con los datos.</p>
-    <div class="ranura" data-widget="#lab-form"></div>
+    <div class="hitos" data-hitos="ix">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div><div class="barras-oraculo" data-barras></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+    </div>
+    <div class="colgar-app" data-app="el oráculo">
+      <div class="app-doble"><div class="ranura" data-widget="#lab-form"></div><div class="ranura" data-widget="#lab-viz"></div></div>
+      <div class="app-doble"><div><h3 class="pag-sub">Los registros del oráculo</h3><div class="ranura" data-widget="#lab-tabla-det" data-abierto></div></div><div class="ranura" data-widget="#lab-ciencia-det" data-abierto></div></div>
+    </div>
   </article>
-  <article class="pagina pagina-oraculo" data-cap="IX · El oráculo de los colores">
-    <div class="ranura" data-widget="#lab-viz"></div>
-  </article>
-  <article class="pagina pagina-oraculo" data-cap="IX · El oráculo de los colores">
-    <h3 class="pag-sub">Los registros del oráculo</h3>
-    <div class="ranura" data-widget="#lab-tabla-det" data-abierto></div>
-  </article>
-  <article class="pagina pagina-oraculo" data-cap="IX · El oráculo de los colores">
-    <div class="ranura" data-widget="#lab-ciencia-det" data-abierto></div>
-  </article>
+  <article class="pagina pagina-hueco" data-cap="IX · El oráculo de los colores"></article>
 
   <!-- 28 · capítulo X: un pliego por juego -->
   <article class="pagina pagina-ilustrada" data-cap="X · El salón de los juegos">
