@@ -1838,3 +1838,6 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .fin-contacto .fin-texto{font-size:.88rem;margin:0 0 8px;color:#5b3a63}
 /* la tapa cerrada va limpia, sin el cordón rosado encima */
 .libro[data-estado="cerrado"] .libro-cinta{display:none}
+/* capítulo I: con las características en el cielo, el cartel cuelga más abajo (bajo las esferas, junto al libro) y sus hilos se desvanecen antes de llegar a ellas */
+.escena:has(.cielo-lado li) .teatro-der{top:56vh}
+.escena:has(.cielo-lado li) .teatro-der .colgante::before,.escena:has(.cielo-lado li) .teatro-der .colgante::after{height:16vh}
