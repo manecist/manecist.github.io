@@ -189,7 +189,8 @@
       dorso.append(nuevaAncha ? clon(orden[nuevo], true) : clon(orden[nuevo + 1]));
       hoja.append(frente, dorso);
       [...izq.children, ...(actAncha ? [] : [])].forEach(p => almacen.append(p));
-      if (actAncha) libro.classList.remove('pliego-ancho');
+      // al volver desde un pliego ancho, su mitad derecha sigue a la vista mientras gira la hoja (no papel en blanco)
+      if (actAncha) { libro.classList.remove('pliego-ancho'); [...der.children].forEach(p => p.classList.contains('clon-bajo') ? p.remove() : almacen.append(p)); const d = clon(orden[actual], true); d.classList.add('clon-bajo'); der.append(d); }
       if (nuevaAncha) { const c = clon(orden[nuevo]); c.classList.add('clon-bajo'); izq.append(c); }
       if (!nuevaAncha) { izq.append(orden[nuevo]); prestar(orden[nuevo]); despertarHadas(orden[nuevo]); ajustar(orden[nuevo]); orden[nuevo].scrollTop = 0; }
     }

@@ -1828,3 +1828,6 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante-app .atlas-gallery button :is(strong,b,span,small){font-family:'Mali',sans-serif}
 .colgante-app #gem-inventory > *,.colgante-app #gem-inventory button,.colgante-app #gem-inventory span{background:#fff6fb!important;color:#6a2c55!important;border:2px solid #f0d6e8!important;box-shadow:0 2px 0 #e2c4dc!important;font-family:'Mali',sans-serif!important}
 .colgante-app .gem-power-message,.colgante-app .gem-lesson-hint{color:#8c2f62!important;background:transparent!important;border-color:#f0d6e8!important;font-family:'Mali',sans-serif}
+/* bajo la hoja que gira, el pliego que llega muestra solo su mitad: no se desborda sobre la página que se va */
+.clon-bajo.clon-mitad-der{clip-path:inset(0 0 0 50%)}
+.clon-bajo:not(.clon-mitad-der){clip-path:inset(0 50% 0 0)}
