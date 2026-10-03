@@ -647,7 +647,9 @@
     };
     pintar(window.MCEOraculo && window.MCEOraculo.datos);
     if (el._oir) window.removeEventListener('oraculo-datos', el._oir);
-    el._oir = e => pintar(e.detail); window.addEventListener('oraculo-datos', el._oir);
+    const cartel = el.closest('.hitos')?.querySelector('.hito-texto'), tit = el.closest('.hitos')?.querySelector('.hito-titulo');
+    const contar = datos => { if (!cartel || !datos || !datos.length) return; const total = datos.reduce((s, d) => s + d.n, 0); tit.textContent = 'El oráculo aprendió'; cartel.textContent = 'De ' + total + (total === 1 ? ' persona' : ' personas') + ', el color favorito es ' + datos[0].c + ' (' + datos[0].n + ').'; };
+    el._oir = e => { pintar(e.detail); contar(e.detail); }; window.addEventListener('oraculo-datos', el._oir);
   });
 
   // ✦ Final: el báculo dibuja trazos de luz por toda la pantalla, la cámara entra al dibujo con un brillo
@@ -690,6 +692,11 @@
   };
   window.addEventListener('cuento-dibuja-mundo', e => { const z = e.detail && e.detail.zona; dibujarMundo(z && z.querySelector('.hito-actor')); });
   document.addEventListener('click', e => { if (e.target.closest('[data-entrar-mundo]')) { e.preventDefault(); dibujarMundo(document.querySelector('[data-hitos="final"] .hito-actor')); } });
+
+  document.addEventListener('submit', e => {
+    if (e.target.id !== 'lab-form' || !e.target.closest('.colgante-app')) return;
+    const n = document.getElementById('lab-nombre'); if (n && !n.value.trim()) n.value = 'Visitante ' + (1 + Math.floor(Math.random() * 99));
+  }, true);
 
   // IV · noches de código: escenas que se suceden
   escena('[data-escenas]', el => {
