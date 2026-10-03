@@ -238,6 +238,24 @@
     volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200);
   }
 
+  // el hada vuela hasta quedar sobre un personaje, le lanza su hechizo desde arriba y vuelve a su lugar
+  let hadaEnVuelo = false;
+  async function hadaMagia(objetivo, alTocar) {
+    const el = $('#hada-escena');
+    if (!el || !hada || hadaEnVuelo || hada.ocupada) { alTocar && alTocar(null); return; }
+    hadaEnVuelo = true;
+    const m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, 0, innerHeight]).slice(1).map(Number);
+    el.classList.remove('posada'); el.classList.add('vuela');
+    const r = objetivo.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
+    // la punta de la varita (abajo a la izquierda del cuadro al lanzar) queda justo sobre la cabeza
+    const x = r.left + r.width * .5 - w * .1, y = r.top - h * .7;
+    await volar(el, [m, [m[0] + 160, m[1] - 260], [x + 220, y - 140], [x, y]], quieto ? 0 : 1500);
+    el.classList.remove('vuela');
+    await hada.hechizo(p => alTocar && alTocar(p));
+    hadaEnVuelo = false;
+    posarHada();
+  }
+
   // seis dibujos: el dragón aislado, cuatro etapas y el emblema rosado de la portada
   const FOTOGRAMAS = [0, 1, 2, 3, 4, 5].map(i => `assets/portada/dragon-logo-${i}.webp`), PAUSAS = [420, 300, 300, 300, 300];
   // el dragón rosa vuela desde la izquierda, se posa sobre la portada y se convierte en el emblema
@@ -398,5 +416,5 @@
     else arrancar();
   }
   if (document.readyState === 'complete') cuandoListo(); else addEventListener('load', cuandoListo, { once: true });
-  window.MCELibro = { ir, pasar, aClasico, aLibro, abrir, visibles: () => [...izq.children, ...der.children] };
+  window.MCELibro = { ir, pasar, aClasico, aLibro, abrir, hadaMagia, visibles: () => [...izq.children, ...der.children] };
 })();

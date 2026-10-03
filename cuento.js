@@ -191,12 +191,20 @@
   $$('[data-probador]').forEach(el => {
     let k = 0; const img = el.querySelector('.probador-img'), figura = el.querySelector('.probador-pop');
     OUTFITS.forEach(([s]) => { const i = new Image(); i.src = 'assets/cuento/etapas/' + s + '.webp'; });
-    const cambiar = () => {
+    let cambiando = false;
+    // el hada llega volando y le tira polvos mágicos desde arriba: Ari brilla y aparece con otra ropa
+    const transformar = () => {
       k = (k + 1) % OUTFITS.length;
-      // la figura de cartón se pliega sobre la hoja, cambia de ropa y se vuelve a levantar
-      figura.classList.add('pliega'); el.classList.remove('gira'); void el.offsetWidth; el.classList.add('gira');
-      setTimeout(() => { img.src = 'assets/cuento/etapas/' + OUTFITS[k][0] + '.webp'; img.alt = 'Ari hoy: ' + OUTFITS[k][1]; figura.classList.remove('pliega'); }, quieto ? 0 : 380);
-      if (window.Magia) { const r = el.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 30, colores: ['#c9a6ff', '#ff8fc0', '#fff', '#f3d48a'] }); }
+      const r = figura.getBoundingClientRect(), POLVO = ['#ffe9a8', '#ffd9ea', '#fff', '#c9a6ff', '#ff8fc0'];
+      if (window.Magia) for (let i = 0; i < 9; i++) setTimeout(() => Magia.chispas(r.left + r.width * (.15 + Math.random() * .7), r.top + r.height * (.05 + i * .02), { n: 14, vel: 1.4, angulo: Math.PI / 2, abertura: 1.4, subir: -.6, grav: .05, colores: POLVO }), i * 70);
+      figura.classList.add('magia');
+      setTimeout(() => { img.src = 'assets/cuento/etapas/' + OUTFITS[k][0] + '.webp'; img.alt = 'Ari hoy: ' + OUTFITS[k][1]; }, quieto ? 0 : 520);
+      setTimeout(() => { figura.classList.remove('magia'); cambiando = false; if (window.Magia) Magia.chispas(r.left + r.width / 2, r.top + r.height * .45, { n: 34, vel: 4, colores: POLVO }); }, quieto ? 0 : 1100);
+    };
+    const cambiar = () => {
+      if (cambiando) return; cambiando = true;
+      if (window.MCELibro?.hadaMagia && document.getElementById('libro').classList.contains('acostado')) MCELibro.hadaMagia(figura, transformar);
+      else transformar();
     };
     figura.addEventListener('click', cambiar);
     figura.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cambiar(); } });
