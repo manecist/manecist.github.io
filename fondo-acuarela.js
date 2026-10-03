@@ -1,6 +1,7 @@
 /* ==========================================================================
    Fondo en parallax: del lineart a la acuarela
-   La escena empieza dibujada en blanco y negro. El hada, pequeña, vuela por
+   La escena empieza como una hoja en blanco: el hada recorre todo el cuadro
+   dibujando el lineart y, cuando está completo, vuela por
    las capas y las pinta con manchas de acuarela, de la más cercana a la más
    lejana; el fondo lo pinta con un hechizo desde la luna. Al terminar queda
    como fondo en parallax.
@@ -12,7 +13,8 @@
    ========================================================================== */
 window.FondoAcuarela = (() => {
   const W = 1660, H = 948;                         // marco común de todas las capas
-  const DURACION = 13;                             // segundos de la animación de pintado
+  const DURACION = 13;                             // segundos de la animación de pintado (desde el lineart)
+  const TRAZO = 5.2;                               // segundos previos: el hada dibuja el lineart sobre la hoja en blanco
 
   // generador pseudoaleatorio con semilla: el resultado es siempre el mismo
   const azar = semilla => () => { semilla |= 0; semilla = semilla + 0x6D2B79F5 | 0; let t = Math.imul(semilla ^ semilla >>> 15, 1 | semilla); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
@@ -140,7 +142,7 @@ window.FondoAcuarela = (() => {
   }
   const DESPLAZA = 38;                              // desplazamiento máximo del parallax, en px del marco
 
-  function render(ctx, t, px = 0, py = 0) {
+  function pintar(ctx, t, px = 0, py = 0) {
     if (!listos) return;
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
     // cámara: plano general al inicio; se acerca y hace paneo siguiendo al hada mientras pinta cada capa;
@@ -217,6 +219,34 @@ window.FondoAcuarela = (() => {
     }
   }
 
+  // ---------------------------------------------------------- el trazo: la hoja en blanco se llena de línea
+  // recorrido en zigzag que cubre todo el cuadro y termina donde el hada empieza a pintar (fuera, a la derecha)
+  const RUTA_TRAZO = curva([[W + 140, 120], [1420, 140], [980, 110], [520, 170], [110, 150], [180, 340], [620, 300], [1080, 360], [1540, 330], [1500, 540], [1020, 580], [560, 520], [120, 600], [210, 820], [700, 860], [1160, 800], [1560, 880], [W + 140, 760]]);
+  const marcasTrazo = (() => { const lista = [], rr = azar(31), pasos = Math.ceil(RUTA_TRAZO.total / 95); for (let i = 0; i <= pasos; i++) { const f = i / pasos, [x, y] = RUTA_TRAZO.en(f); lista.push({ x: x + (rr() - .5) * 50, y: y + (rr() - .5) * 50, R: 250 + rr() * 90, nace: .35 + f * (TRAZO - 1), v: rr() * 4 | 0 }); } return lista; })();
+  const mascaraTrazo = lienzo(W / 2, H / 2), lineaTrazo = lienzo(W, H);
+  function trazar(ctx, t, px, py) {
+    if (!listos) return;
+    const cw = ctx.canvas.width, ch = ctx.canvas.height, k = Math.max(cw / W, ch / H) * 1.14;
+    const ox = (cw - W * k) / 2, oy = (ch - H * k) / 2;
+    ctx.fillStyle = '#f4f1ea'; ctx.fillRect(0, 0, cw, ch);
+    // la máscara crece por donde pasa la varita; al final el lineart queda completo
+    const g = mascaraTrazo.getContext('2d'); g.clearRect(0, 0, W / 2, H / 2);
+    for (const m of marcasTrazo) { if (t < m.nace) continue; const Rm = m.R * (.3 + .7 * suave((t - m.nace) / .5)) / 2; g.drawImage(sellos[m.v], m.x / 2 - Rm, m.y / 2 - Rm, Rm * 2, Rm * 2); }
+    const listo = suave((t - (TRAZO - .7)) / .6); if (listo > 0) { g.globalAlpha = listo; g.fillRect(0, 0, W / 2, H / 2); g.globalAlpha = 1; }
+    const lg = lineaTrazo.getContext('2d');
+    CAPAS.forEach(c => {
+      lg.globalCompositeOperation = 'source-over'; lg.clearRect(0, 0, W, H); lg.drawImage(img[c.id].bn, 0, 0);
+      lg.globalCompositeOperation = 'destination-in'; lg.drawImage(mascaraTrazo, 0, 0, W, H); lg.globalCompositeOperation = 'source-over';
+      ctx.drawImage(lineaTrazo, ox - px * 38 * c.prof * k, oy - py * 38 * c.prof * k, W * k, H * k);
+    });
+    // el hada con su varita al frente del trazo, dejando destellos
+    const f = Math.min(1, t / TRAZO), p = RUTA_TRAZO.en(f), e = HADA_ESC * k;
+    for (let q = Math.max(0, f - .03); q <= f; q += .003) { const pq = RUTA_TRAZO.en(q), a = 1 - (f - q) / .03, tam = (5 + 6 * a) * k; ctx.globalAlpha = a * .85; ctx.drawImage(destello, ox + pq[0] * k - tam, oy + pq[1] * k - tam, tam * 2, tam * 2); }
+    ctx.globalAlpha = 1;
+    const [pxh, pyh] = PUNTA[3]; ctx.drawImage(hada[3], ox + p[0] * k - pxh * e, oy + p[1] * k - pyh * e + Math.sin(t * 3.4) * 3 * k, 360 * e, 480 * e);
+  }
+  function render(ctx, t, px = 0, py = 0) { if (t < TRAZO) trazar(ctx, t, px, py); else pintar(ctx, t - TRAZO, px, py); }
+
   function montar(canvas, temaInicial = 'noche') {
     const ctx = canvas.getContext('2d');
     let t0 = null, t = 0, fin = null, saltado = false, px = 0, py = 0, vivo = true;
@@ -228,9 +258,9 @@ window.FondoAcuarela = (() => {
       if (!vivo) return;
       requestAnimationFrame(bucle);
       if (document.hidden) return;
-      if (t0 !== null && !saltado) { t = (ahora - t0) / 1000; if (t >= DURACION && fin) { const f = fin; fin = null; f(); } }
+      if (t0 !== null && !saltado) { t = (ahora - t0) / 1000; if (t >= TRAZO + DURACION && fin) { const f = fin; fin = null; f(); } }
       // tras la animación el tiempo sigue corriendo solo para que el dragón y el mago floten
-      if (saltado || t0 === null) t = DURACION + 2 + ahora / 1000;
+      if (saltado || t0 === null) t = TRAZO + DURACION + 2 + ahora / 1000;
       // al cambiar de modo, la escena anterior se funde con la nueva durante 0,9 s
       const a = anterior ? Math.min(1, (ahora - fundidoIni) / 900) : 1;
       if (a < 1) { img = anterior; render(ctx, t, px, py); ctx.globalAlpha = a; }
@@ -254,5 +284,5 @@ window.FondoAcuarela = (() => {
     };
   }
 
-  return { preparar, render, montar, DURACION };
+  return { preparar, render, montar, DURACION: TRAZO + DURACION };
 })();
