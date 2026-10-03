@@ -237,7 +237,11 @@
       filas.forEach((r, i) => { const tr = el('tr', i >= MAX ? 'fila-extra' : null); [r.nombre, r.edad, r.color, r.musica].forEach(v => tr.append(el('td', null, String(v)))); t.append(tr); });
       const mas = $('#lab-tabla-mas'); if (mas) mas.textContent = filas.length > MAX ? `… y ${filas.length - MAX} registros más; en la versión clásica se ven todos.` : '';
     }
-    function pintar() { kpis(); mapa(); if (sel && !filas.some(r => (sel.color == null || r.color === sel.color) && (sel.tramo == null || tramoDe(r.edad) === sel.tramo))) sel = null; lectura(); marcar(); tabla(); }
+    function pintar() { kpis(); mapa(); if (sel && !filas.some(r => (sel.color == null || r.color === sel.color) && (sel.tramo == null || tramoDe(r.edad) === sel.tramo))) sel = null; lectura(); marcar(); tabla();
+      // el libro levanta estos conteos como barras de papel (capítulo IX)
+      const datos = frec(filas, 'color').map(([c, n]) => ({ c, n, hex: HEX[c] || '#ccacd9' }));
+      window.MCEOraculo = { datos }; window.dispatchEvent(new CustomEvent('oraculo-datos', { detail: datos }));
+    }
     cargarEjemplo();
   })();
 
