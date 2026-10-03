@@ -911,7 +911,7 @@
       const zonas = (angosto ? ['der'] : ['izq', 'der']).map(n => { const z = document.createElement('div'); z.className = 'teatro-lado teatro-' + n; teatro.append(z); return z; });
       let i = 0;
       paginas.forEach((p, j) => p.querySelectorAll(COLGAR).forEach(el => {
-        if (el.parentElement.closest('.colgar-app')) return;   // lo que va dentro de una aplicación cuelga con ella
+        if (el.parentElement.closest('.colgar-app')) { el.classList.remove('por-colgar'); return; }   // lo que va dentro de una aplicación cuelga con ella
         const marca = document.createComment('colgante'); el.before(marca); el.classList.remove('por-colgar');
         const c = document.createElement('div'); c.className = 'colgante';
         c.style.setProperty('--i', i); c.style.setProperty('--hilo', (6 + ((i * 29) % 34)) + 'px'); i++;
