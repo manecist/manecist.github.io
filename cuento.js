@@ -191,13 +191,15 @@
   $$('[data-probador]').forEach(el => {
     let k = 0; const img = el.querySelector('.probador-img'), figura = el.querySelector('.probador-pop');
     OUTFITS.forEach(([s]) => { const i = new Image(); i.src = 'assets/cuento/etapas/' + s + '.webp'; });
-    el.querySelector('[data-probador-btn]').addEventListener('click', () => {
+    const cambiar = () => {
       k = (k + 1) % OUTFITS.length;
       // la figura de cartón se pliega sobre la hoja, cambia de ropa y se vuelve a levantar
       figura.classList.add('pliega'); el.classList.remove('gira'); void el.offsetWidth; el.classList.add('gira');
       setTimeout(() => { img.src = 'assets/cuento/etapas/' + OUTFITS[k][0] + '.webp'; img.alt = 'Ari hoy: ' + OUTFITS[k][1]; figura.classList.remove('pliega'); }, quieto ? 0 : 380);
       if (window.Magia) { const r = el.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 30, colores: ['#c9a6ff', '#ff8fc0', '#fff', '#f3d48a'] }); }
-    });
+    };
+    figura.addEventListener('click', cambiar);
+    figura.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cambiar(); } });
   });
   escena('[data-probador]', el => { el.classList.remove('gira'); abrirPop(el, quieto ? 0 : 1250); luego(() => el.classList.add('gira'), 2200); });
 
@@ -404,7 +406,7 @@
     const cielo = document.createElement('div'); cielo.className = 'teatro-cielo';
     $('#libro').before(cielo);
     let enCielo = [];
-    const COLGAR = '.poderes > li, .botonera, .probador-btn';
+    const COLGAR = '.botonera';
     const ESCRIBIR = '.cap-num, .cap-titulo, .cuento';
     let colgados = [], turno = 0;
     // cada letra en su propia cajita (una sola vez por elemento); se respetan negritas y la letra capital
@@ -422,6 +424,19 @@
     };
     const escribir = paginas => {
       let k = 0; cielo.innerHTML = ''; enCielo = [];
+      const angosto = matchMedia('(max-width: 860px)').matches;
+      const lados = angosto ? [] : ['izq', 'der'].map(n => { const d = document.createElement('div'); d.className = 'cielo-lado cielo-' + n; cielo.append(d); return d; });
+      let nl = 0;
+      const estrellas = [];
+      paginas.forEach(p => p.querySelectorAll('.poderes > li').forEach(li => estrellas.push(li)));
+      const escribirEstrellas = () => estrellas.forEach(li => {
+        if (angosto) return;
+        const marca = document.createComment('cielo'); li.before(marca); enCielo.push({ el: li, marca });
+        li.classList.remove('por-colgar');
+        letras(li); li.classList.add('escribe', 'estrella');
+        li.querySelectorAll('.ch').forEach(s => s.style.setProperty('--k', k++));
+        lados[nl++ % 2].append(li);
+      });
       paginas.forEach(p => {
         const bloque = document.createElement('div'); bloque.className = 'cielo-bloque';
         p.querySelectorAll(ESCRIBIR).forEach(el => {
@@ -432,6 +447,7 @@
         });
         if (bloque.children.length) cielo.append(bloque);
       });
+      escribirEstrellas();
       cielo.classList.add('visible');
     };
     const bajarDelCielo = () => {
@@ -439,7 +455,7 @@
       enCielo.forEach(({ el, marca }) => { if (marca.isConnected) marca.replaceWith(el); });
       enCielo = []; cielo.innerHTML = '';
     };
-    const borrarEscritura = () => document.querySelectorAll('.escribe, .por-escribir, .por-colgar').forEach(e => e.classList.remove('escribe', 'por-escribir', 'por-colgar'));
+    const borrarEscritura = () => document.querySelectorAll('.escribe, .por-escribir, .por-colgar, .estrella').forEach(e => e.classList.remove('escribe', 'por-escribir', 'por-colgar', 'estrella'));
     const colgar = paginas => {
       teatro.innerHTML = ''; colgados = [];
       const angosto = matchMedia('(max-width: 860px)').matches;
@@ -451,7 +467,7 @@
         c.style.setProperty('--i', i); c.style.setProperty('--hilo', (6 + ((i * 29) % 34)) + 'px'); i++;
         const padre = marca.parentElement;
         if (/^(UL|OL)$/.test(padre.tagName)) { const w = document.createElement(padre.tagName); w.className = padre.className; w.append(el); c.append(w); } else c.append(el);
-        zonas[(i - 1) % zonas.length].append(c); colgados.push({ el, marca });
+        zonas[zonas.length - 1].append(c); colgados.push({ el, marca });
       }));
       requestAnimationFrame(() => requestAnimationFrame(() => teatro.classList.add('baja')));
     };
@@ -469,7 +485,7 @@
       bajarDelCielo(); borrarEscritura();
       if (!pop) return;
       // mientras el libro se acuesta, el texto y los recuadros esperan escondidos (no se ven planos y luego desaparecen)
-      ps.forEach(p => { p.querySelectorAll(ESCRIBIR).forEach(el => el.classList.add('por-escribir')); p.querySelectorAll(COLGAR).forEach(el => el.classList.add('por-colgar')); });
+      ps.forEach(p => { p.querySelectorAll(ESCRIBIR).forEach(el => el.classList.add('por-escribir')); p.querySelectorAll(COLGAR + ', .poderes > li').forEach(el => el.classList.add('por-colgar')); });
       const mio = turno;
       setTimeout(() => { if (mio !== turno || !$('#libro').classList.contains('acostado')) return; colgar(ps); escribir(ps); }, quieto ? 0 : 1100);
     });
