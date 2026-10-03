@@ -352,12 +352,12 @@
         { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', linea: 'assets/personajes/ari-frente-lineart.webp', x: 40, alto: 16, ms: 4200, pausa: 400 },
         { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', linea: 'assets/personajes/coen-frente-lineart.webp', x: 60, alto: 17, ms: 4200,
           texto: { titulo: '…y a Coen,', texto: 'el caballero de capa carmesí.' } },
-        { nombre: 'pareja', img: 'assets/cuento/pareja-heroes.webp', x: 50, alto: 17, reemplaza: ['ari', 'coen'], efecto: 'brilla', ms: 1800,
+        { nombre: 'pareja', actor: 'pareja', x: 50, alto: 17, reemplaza: ['ari', 'coen'], efecto: 'brilla', ms: 1800, bucle: [0, 1], cicloMs: 3000,
           texto: { titulo: 'Línea a línea, color a color…', texto: 'se encontraron y se tomaron de la mano.' } },
         { nombre: 'pareja', mueve: 27, ms: 1400, pausa: 100 },                                         // la pareja le hace espacio al logo
         { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', x: 50, alto: 14, efecto: 'brilla', ms: 2600,
           texto: { titulo: 'Y juntos fundamos Studios Conari', texto: 'Un estudio creativo chileno: narrativa, diseño, programación, datos y arte 3D.' } },
-        { nombre: 'pareja', img: 'assets/cuento/pareja-heroes.webp', ms: 300, rotulo: 'María Inés · Kevin' },
+        { nombre: 'pareja', actor: 'pareja', ms: 300, rotulo: 'María Inés · Kevin' },
         { nombre: 'rancek', img: 'assets/personajes/rancek-frente.webp', x: 73, alto: 17, ms: 2400,
           rotulo: 'Elías · animación y arte 3D',
           texto: { titulo: '…y se unió al equipo un tercero', texto: 'María Inés (dirección creativa · Full Stack Java), Kevin (dirección técnica · videojuegos y datos) y Elías (animación y arte 3D).' } }
@@ -378,7 +378,7 @@
         { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 72, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
         { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 82, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
         { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 91, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
-        { nombre: 'ari', img: 'assets/cuento/popup/ari-salta.webp', x: 38, alto: 16, delante: true, clase: 'salto', ms: 900, pausa: 200 },
+        { nombre: 'ari', actor: 'ari-salta', x: 38, alto: 18, delante: true, de: 0, a: 1, ms: 2600, pausa: 200 },
         { nombre: 'coen', img: 'assets/cuento/popup/coen-ataca.webp', x: 50, alto: 16, delante: true, ms: 1600 },
         { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo, y el dragón lanzó su fuego rosado. ¡Los monstruitos huyeron!' }, ms: 200 },
         { nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: 26, alto: 13, clase: 'vuela', efecto: 'flota', ms: 900 },
@@ -403,8 +403,8 @@
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-paseo.webp', suelo: 'suelo-paseo.webp', titulo: 'Con sus compras puestas…', texto: 'Ari con su vestido de chica mágica y sus botas de plataforma; Coen con su jogger blanco y su polera burdeo.', pasos: [
-        { nombre: 'pareja', img: 'assets/cuento/paseo.webp', camina: [0, 0], desde: 12, x: 58, alto: 17, ms: 5200, delante: true },   // salen a pasear por el reino
-        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', img: 'assets/cuento/rancek-corre.webp', camina: [0, 0], desde: 4, x: 32, alto: 12, ms: 2600, delante: true }   // y Rancek corre detrás
+        { nombre: 'pareja', actor: 'paseo', camina: [0, 1], cicloMs: 1500, desde: 12, x: 58, alto: 17, ms: 5200, delante: true },   // salen a pasear por el reino
+        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', actor: 'rancek-corre', camina: [0, 1], cicloMs: 900, desde: 4, x: 32, alto: 13, ms: 2600, delante: true }   // y Rancek corre detrás
       ] }
     ] },
     vii: { carpeta: 'cap7/', hitos: [
@@ -568,12 +568,14 @@
       return a;
     };
     const tramo = (a, de, al, ms, mia) => new Promise(fin => {
-      const t0 = performance.now();
+      const t0 = performance.now(); a._vive = null;
       const paso = t => { if (mia !== vuelta || !a.isConnected) { fin(false); return; } const u = Math.min(1, (t - t0) / ms); cuadro(a, de + (al - de) * u); if (u < 1) requestAnimationFrame(paso); else fin(true); };
       if (quieto) { cuadro(a, al); fin(true); } else requestAnimationFrame(paso);
     });
+    // animación que sigue viva en bucle (ida y vuelta, sin salto) mientras la escena esté a la vista
+    const vivir = (a, c0, c1, ms, mia) => { if (quieto || c1 <= c0) return; const t0 = performance.now(); a._vive = t0; const paso = t => { if (mia !== vuelta || !a.isConnected || a._vive !== t0) return; const u = ((t - t0) % (2 * ms)) / ms; cuadro(a, c0 + (c1 - c0) * (u < 1 ? u : 2 - u)); requestAnimationFrame(paso); }; requestAnimationFrame(paso); };
     const caminar = (a, p, mia) => new Promise(fin => {
-      const m = a._m, c0 = m ? m.marcas[p.camina[0]] : 0, c1 = m ? m.marcas[p.camina[1]] : 0, t0 = performance.now(), CICLO = 1000;
+      const m = a._m, c0 = m ? m.marcas[p.camina[0]] : 0, c1 = m ? m.marcas[p.camina[1]] : 0, t0 = performance.now(), CICLO = p.cicloMs || 1000; a._vive = null;
       a.classList.add('camina'); a.classList.toggle('camina-fija', c1 <= c0);
       const paso = t => {
         if (mia !== vuelta || !a.isConnected) { fin(false); return; }
@@ -628,6 +630,7 @@
         else if (a._m && p.a != null) ok = await tramo(a, a._m.marcas[p.de ?? 0], a._m.marcas[p.a], p.ms, mia);
         else ok = await espera(p.ms || 600, mia);
         if (!ok) return;
+        if (p.bucle && a._m) vivir(a, a._m.marcas[p.bucle[0]], a._m.marcas[p.bucle[1]], p.cicloMs || 2600, mia);
         if (!(await espera(p.pausa ?? 1300, mia))) return;
       }
       if (!(await espera(1800, mia))) return;
