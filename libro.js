@@ -153,7 +153,8 @@
     if (!dir || nuevo === actual) return;
     // de un pliego pop-up a otro el libro queda acostado: los recortes se pliegan y despliegan con la hoja (como un libro real)
     const destino0 = una ? [orden[nuevo]] : [orden[nuevo], orden[nuevo + 1]];
-    const giroPop = !una && !quieto && libro.classList.contains('acostado') && destino0.some(p => p && p.classList.contains('pagina-pop'));
+    // (también desde un pliego plano, como el índice: el libro se acuesta mientras la hoja trae los recortes desplegándose)
+    const giroPop = !una && !quieto && destino0.some(p => p && p.classList.contains('pagina-pop'));
     // si el libro está acostado y el destino no es pop-up, los recortes se pliegan y el libro se levanta MIENTRAS gira la hoja
     if (!giroPop && libro.classList.contains('acostado') && !quieto) {
       if (levantando) return;
@@ -240,7 +241,14 @@
     // recorte horizontal en coordenadas del mundo (si el recorte está reflejado, sus lados se invierten)
     const recortar = (el, der, izq) => { const e = escalas.get(el); if (e && e.sx < 0) [der, izq] = [izq, der]; el.style.clipPath = 'inset(0 ' + der.toFixed(2) + '% 0 ' + izq.toFixed(2) + '%)'; };
     const sufijo = el => { const e = escalas.get(el); if (!e) return ''; const o = getComputedStyle(el).transformOrigin.split(' ').map(parseFloat); return ' translate(' + ((1 - e.sx) * (e.ox0 - o[0])).toFixed(2) + 'px,' + ((1 - e.sy) * (e.oy0 - o[1])).toFixed(2) + 'px) scale(' + e.sx + ',' + e.sy + ')'; };
-    const izquierdas = dir > 0 ? [pi, pdo] : [pf, pi];
+    // página suelta que llega en el dorso con recortes que se asoman a la derecha (el capítulo I desde el índice): esos recortes
+    // se doblan desde una copia invisible en la posición final de la página, en V entre la hoja y la página derecha
+    let virt = null;
+    if (dir > 0 && !nuevaAncha && pdo && pdo.classList.contains('pagina-pop')) {
+      const caja = document.createElement('div'); caja.className = izq.className + ' giro-virtual'; caja.removeAttribute('id'); caja.setAttribute('aria-hidden', 'true');
+      virt = pdo.cloneNode(true); caja.append(virt); izq.after(caja); inst.push([virt, [0, 1], 'B']);
+    }
+    const izquierdas = dir > 0 ? [pi, pdo, virt] : [pf, pi];
     inst.forEach(([pag, [a, b], grupo, cara]) => {
       const esIzq = b - a < 1 ? a < .5 : izquierdas.includes(pag), lomo = b - a < 1 ? .5 : esIzq ? 1 : 0;
       if (!pag || !pag.classList.contains('pagina-pop')) return;
@@ -264,6 +272,8 @@
         // fondo que cruza el centro de un pliego ancho: lo mueve la página fija como bisagra (en la hoja no se muestra)
         const pl = b - a < 1 ? .5 : lomo;   // dónde está el pliegue del libro, en fracción de esta página
         const ancho = x0 < pl - .005 && x1 > pl + .005;   // todo recorte que cruza el pliegue se dobla en V (fondos y personajes)
+        const asoma = b - a >= 1 && (ancho || (esIzq ? x0 >= pl - .005 : x1 <= pl + .005));
+        if (virt && ((pag === virt && !asoma) || (pag === pdo && asoma))) { el.style.visibility = 'hidden'; return; }
         if (ancho) {
           if (cara) { el.style.visibility = 'hidden'; return; }
           prep(el);
@@ -332,7 +342,7 @@
           const cl = v => Math.max(0, Math.min(1, v));
           const enCara = mueve ? (grupo === 'A' ? cl((95 - th) / 15) : cl((th - 85) / 15)) : 1;
           const libre = grupo === 'A' ? cl((165 - th) / 20) : cl((th - (mueve ? 15 : 55)) / 25);
-          el.style.opacity = (viajero ? enCara : enCara * libre).toFixed(3);
+          el.style.opacity = (viajero ? (mueve ? enCara : libre) : enCara * libre).toFixed(3);   // el que espera en la página fija aparece cuando la hoja ya pasó
           return;
         }
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
@@ -355,7 +365,7 @@
       if (t < 1) { requestAnimationFrame(paso); return; }
       // al aterrizar: las páginas reales toman el lugar de las copias con sus recortes ya parados
       piezas.forEach(({ el }) => { delete el.dataset.giro; el.style.scale = ''; el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = el.style.transformOrigin = ''; });
-      document.querySelectorAll('.giro-fondo, .giro-gemelo').forEach(e => e.remove());
+      document.querySelectorAll('.giro-fondo, .giro-gemelo, .giro-virtual').forEach(e => e.remove());
       document.querySelectorAll('[data-piso-giro]').forEach(c => { c.style.removeProperty('background-image'); c.style.removeProperty('background-size'); c.style.removeProperty('background-position'); delete c.dataset.pisoGiro; });
       libro.classList.add('recien-girado');
       hoja.remove(); colocar(nuevo); animando = false;
