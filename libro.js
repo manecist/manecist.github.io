@@ -304,7 +304,7 @@
         let psi = 90;
         if (phi < Math.PI / 2) psi = Math.asin(Math.min(1, ratio * Math.tan(Math.max(0, phi)) * .92)) * 180 / Math.PI;
         el.style.transform = 'rotateX(' + (-psi).toFixed(2) + 'deg)';
-        el.style.opacity = Math.min(1, psi / 14).toFixed(3);   // ya aplastado queda bajo la hoja: no se asoma por encima
+        el.style.opacity = (phi < .2 ? 0 : Math.max(0, Math.min(1, (psi - 8) / 16))).toFixed(3);   // ya aplastado queda bajo la hoja: no se asoma por encima
         if (cara) el.style.visibility = (cara === 'frente') === (th < 90) ? 'visible' : 'hidden';   // la cara de abajo de la hoja no se ve
       });
       if (t < 1) { requestAnimationFrame(paso); return; }
