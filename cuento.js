@@ -335,6 +335,7 @@
   // ✦ Escenarios pop-up: cada pliego acostado tiene una o varias escenas (fondo + piso + actores que se levantan).
   // Los actores son hojas de cuadros (videos Wan con fondo verde, recortados) o imágenes fijas; cada paso los hace actuar.
   // alto: altura del actor en % del ancho del pliego (todos a la misma escala); x: centro en %; desde: entra caminando desde ahí.
+  const ESCALA_PJ = 1.35;
   const ESCENARIOS = {
     iv: { carpeta: 'cap4/', hitos: [
       { fondo: 'fondo-noche.webp', suelo: 'suelo-noche.webp', titulo: 'Las 2 de la mañana', texto: '…y un error más.', pasos: [
@@ -384,20 +385,20 @@
         // Ari llega corriendo, ataca a los cuatro con su daga y vuelve de un salto hacia atrás
         { texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', img: 'assets/personajes/ari-lado.webp', x: -6, alto: 16, delante: true, clase: 'corre', entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
         { nombre: 'ari', actor: 'ari-salta', x: 54, alto: 18, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
-          ruta: [[0, 54, 0], [.1, 57, 9], [.2, 60, 1], [.32, 65, 9], [.44, 68, 1], [.56, 73, 9], [.68, 76, 1], [.8, 81, 9], [.92, 84, 1], [1, 84, 1]],
+          ruta: [[0, 54, 0], [.1, 57, 6], [.2, 60, 1], [.32, 65, 6], [.44, 68, 1], [.56, 73, 6], [.68, 76, 1], [.8, 81, 6], [.92, 84, 1], [1, 84, 1]],
           fx: [{ tipo: 'tajo', x: 63, ancho: 8, y: 4, tras: 480, golpe: 'mo1' }, { tipo: 'tajo', x: 71, ancho: 8, y: 4, tras: 1100, golpe: 'mo2' }, { tipo: 'tajo', x: 79, ancho: 8, y: 4, tras: 1720, golpe: 'mo3' }, { tipo: 'tajo', x: 87, ancho: 8, y: 4, tras: 2340, golpe: 'mo4' }] },
-        { nombre: 'ari', ruta: [[0, 84, 1, 0], [.5, 62, 26, -200], [1, 38, 0, -360]], ms: 1100, suave: 'ease-out', pausa: 200 },
+        { nombre: 'ari', ruta: [[0, 84, 1, 0], [.5, 56, 18, -200], [1, 26, 0, -360]], ms: 1300, suave: 'ease-out', pausa: 200 },
         // Coen llega, salta al centro de los monstruos, los golpea con una onda de choque y vuelve a cubrir a Ari
         { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', img: 'assets/personajes/coen-lado.webp', x: -6, alto: 17, delante: true, clase: 'corre', entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
         { nombre: 'coen', actor: 'coen-ataca', x: 24, alto: 16, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 1400, suave: 'cubic-bezier(.3,0,.7,1)', pausa: 0,
-          ruta: [[0, 24, 0], [.55, 58, 30], [1, 75, 0]], fx: { tipo: 'onda', x: 75, ancho: 40, ms: 1000, tras: 1400, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
-        { nombre: 'coen', ruta: [[0, 75, 0], [.5, 60, 20], [1, 45, 0]], ms: 1000, suave: 'ease-out', pausa: 300 },
+          ruta: [[0, 24, 0], [.55, 58, 17], [1, 75, 0]], fx: { tipo: 'onda', x: 75, ancho: 40, ms: 1000, tras: 1400, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
+        { nombre: 'coen', ruta: [[0, 75, 0], [.5, 58, 13], [1, 41, 0]], ms: 1100, suave: 'ease-out', pausa: 300 },
         // Rancek llega volando sobre su báculo: círculo mágico bajo los monstruos y picos de hielo
-        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: -12, alto: 15, entra: true, ruta: [[0, -12, 30], [1, 24, 15]], ms: 1600, suave: 'ease-out', pausa: 0 },
+        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: -12, alto: 15, entra: true, ruta: [[0, -12, 20], [1, 10, 9]], ms: 1600, suave: 'ease-out', pausa: 0 },
         { fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
-        { nombre: 'rancek', ruta: [[0, 24, 15], [1, 41, 20]], ms: 1100, suave: 'ease-in-out', pausa: 200 },
+        { nombre: 'rancek', ruta: [[0, 10, 9], [1, 10, 7]], ms: 700, suave: 'ease-in-out', pausa: 200 },
         // el dragón vuelve y les lanza su fuego
-        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: -20, alto: 14, clase: 'vuela espejo', entra: true, ruta: [[0, -20, 6], [1, 44, 0]], ms: 1600, suave: 'ease-out', pausa: 0,
+        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: -20, alto: 14, clase: 'vuela espejo', entra: true, ruta: [[0, -20, 10], [1, 50, 3]], ms: 1600, suave: 'ease-out', pausa: 0,
           fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 1500, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
         { quita: ['ari', 'coen', 'rancek', 'fuego'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 400 },
@@ -576,7 +577,9 @@
         a.innerHTML = '<img alt="" src="' + ruta(esc, p.img) + '">' + (p.linea ? '<img class="hito-linea" alt="" src="' + ruta(esc, p.linea) + '">' : '');
         if (p.linea) a.classList.add('por-dibujar');
       }
-      a._ancho = p.ancho ?? p.alto * w / hh;
+      // los personajes (animados o recortes de personaje) van más grandes que el escenario, todos en la misma proporción
+      const esPj = p.pj ?? (!!p.actor || /personajes\/|\/(ari-|coen-|rancek|pareja|paseo|medalla|baculo|streamers|publico|dragon-fuego|mo-\d)/.test(p.img || ''));
+      a._ancho = p.ancho ?? p.alto * (esPj ? ESCALA_PJ : 1) * w / hh;
       a.classList.add('hito-pop', 'hito-actor'); if (p.delante) a.classList.add('delante'); if (p.fila) a.classList.add('fila-' + p.fila); if (p.clase) a.classList.add(...p.clase.split(' '));
       a.style.left = ((p.desde ?? p.x) - a._ancho / 2) + '%'; a.style.width = a._ancho + '%'; a.style.aspectRatio = w + ' / ' + hh;
       if (a._m) cuadro(a, a._m.marcas[p.camina ? p.camina[0] : (p.de ?? 0)]);
