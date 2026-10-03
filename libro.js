@@ -263,13 +263,7 @@
         let rapido = false;
         // fondo que cruza el centro de un pliego ancho: lo mueve la página fija como bisagra (en la hoja no se muestra)
         const pl = b - a < 1 ? .5 : lomo;   // dónde está el pliegue del libro, en fracción de esta página
-        const ancho = x0 < pl - .005 && x1 > pl + .005;   // los fondos que cruzan el pliegue se doblan en V
-        // un personaje u objeto angosto sobre el lomo no se parte: queda entero en la página fija y se aplasta apenas se le acerca la hoja
-        if (ancho && !/fondo/.test(el.className) && (x1 - x0) < (b - a < 1 ? .3 : .6)) {
-          if (cara) { el.style.visibility = 'hidden'; return; }
-          prep(el); el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
-          el.dataset.giro = '1'; piezas.push({ el, grupo, ratio: .02 }); return;
-        }
+        const ancho = x0 < pl - .005 && x1 > pl + .005;   // todo recorte que cruza el pliegue se dobla en V (fondos y personajes)
         if (ancho) {
           if (cara) { el.style.visibility = 'hidden'; return; }
           prep(el);
@@ -322,7 +316,7 @@
           let c = [Math.cos(beta) * Math.cos(tau), Math.sin(tau), Math.sin(beta) * Math.cos(tau)];
           if (viajero) {
             // se recuesta sobre su hoja apenas ésta se levanta (de pie se montaría sobre la página vecina)
-            const psiV = (1 - Math.min(1, (grupo === 'A' ? th : 180 - th) / 45)) * Math.PI / 2;
+            const psiV = (4 + 86 * (1 - Math.min(1, (grupo === 'A' ? th : 180 - th) / 70))) * rad;
             const fi = Math.atan2(d[2], d[0]), frenteN = dir > 0 ? [-Math.sin(fi), 0, Math.cos(fi)] : [Math.sin(fi), 0, -Math.cos(fi)];
             const nf = mueve ? (grupo === 'A' ? frenteN : frenteN.map(v => -v)) : [0, 0, 1];
             c = [nf[0] * Math.sin(psiV), Math.cos(psiV), nf[2] * Math.sin(psiV)];
@@ -335,7 +329,7 @@
           const cl = v => Math.max(0, Math.min(1, v));
           const enCara = mueve ? (grupo === 'A' ? cl((95 - th) / 15) : cl((th - 85) / 15)) : 1;
           const libre = grupo === 'A' ? cl((165 - th) / 20) : cl((th - (mueve ? 15 : 55)) / 25);
-          el.style.opacity = (viajero ? Math.min(1, Math.max(0, (1 - (grupo === 'A' ? th : 180 - th) / 45) * 4)) : enCara * libre).toFixed(3);
+          el.style.opacity = (viajero ? enCara : enCara * libre).toFixed(3);
           return;
         }
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
