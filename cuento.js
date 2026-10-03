@@ -401,20 +401,41 @@
         { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: -20, alto: 14, clase: 'vuela espejo', entra: true, ruta: [[0, -20, 10], [1, 50, 3]], ms: 1600, suave: 'ease-out', pausa: 0,
           fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 1500, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
-        { quita: ['ari', 'coen', 'rancek', 'fuego'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 400 },
-        { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', camina: [0, 0], desde: 16, x: 50, alto: 16, ms: 4200, delante: true, junto: true },
-        { nombre: 'pcoen', img: 'assets/personajes/coen-lado.webp', camina: [0, 0], desde: 8, x: 42, alto: 17, ms: 4200, delante: true, junto: true },
-        { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', camina: [0, 0], desde: 2, x: 34, alto: 17, ms: 4200, delante: true }
+        // la niebla se despeja: el castillo se pliega y a la derecha se levanta su entrada, a la escala de los héroes
+        { quita: ['fuego', 'castillo'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 700 },
+        { nombre: 'entrada', img: 'entrada.webp', x: 76, alto: 40, ms: 900, pausa: 0 },
+        { nombre: 'rancek', ruta: [[0, 10, 7], [1, 12, 0]], ms: 700, suave: 'ease-in', pausa: 0 },
+        // los mismos tres que pelearon caminan hasta la puerta…
+        { nombre: 'pcoen', img: 'assets/personajes/coen-lado.webp', x: 41, alto: 17, delante: true, clase: 'anda', reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 80]], ms: 3600, junto: true },
+        { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', x: 26, alto: 16, delante: true, clase: 'anda', reemplaza: 'ari', sigue: true, ruta: [[0, 26], [1, 75]], ms: 4000, junto: true },
+        { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', x: 12, alto: 17, delante: true, clase: 'anda', reemplaza: 'rancek', sigue: true, ruta: [[0, 12], [1, 70]], ms: 4400, pausa: 0 },
+        // …y entran
+        { nombre: 'pcoen', clase: 'adentro', ms: 350, pausa: 0 },
+        { nombre: 'pari', clase: 'adentro', ms: 350, pausa: 0 },
+        { nombre: 'prancek', clase: 'adentro', fx: { tipo: 'destello', x: 76, ancho: 16, y: 10, tras: 500, ms: 1200 }, ms: 1600, pausa: 600 }
       ] }
     ] },
     vi: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
-        { nombre: 'mago', img: 'assets/personajes/rancek-frente.webp', x: 40, alto: 16, fila: 'medio', ms: 900 },                    // Rancek atiende detrás del mostrador
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', camina: [0, 0], desde: 96, x: 74, alto: 17, ms: 3200, delante: true, junto: true },
-        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', camina: [0, 0], desde: 90, x: 62, alto: 16, ms: 3000, delante: true },   // Ari y Coen entran
-        { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', efecto: 'salta', ms: 2200 },
-        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari', efecto: 'salta', ms: 2200 },
-        { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: true, ms: 600 }
+        { nombre: 'mago', img: 'assets/personajes/rancek-frente.webp', x: 50, alto: 16, fila: 'medio', ms: 900 },                    // Rancek atiende detrás del mostrador
+        // Ari y Coen entran caminando por la derecha
+        { texto: { titulo: 'Un día…', texto: 'Ari y Coen entraron a la tienda mágica de Rancek.' }, nombre: 'ari-c', img: 'assets/personajes/ari-lado.webp', x: 106, alto: 16, delante: true, clase: 'anda', entra: true, ruta: [[0, 106, 0, 0, -1], [1, 64, 0, 0, -1]], ms: 2600, junto: true, sigue: true },
+        { nombre: 'coen-c', img: 'assets/personajes/coen-lado.webp', x: 116, alto: 17, delante: true, clase: 'anda', entra: true, ruta: [[0, 116, 0, 0, -1], [1, 77, 0, 0, -1]], ms: 2800, pausa: 0 },
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', x: 64, alto: 16, delante: true, reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0 },
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 77, alto: 17, delante: true, reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 200 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'saluda', fx: { tipo: 'destello', x: 50, ancho: 10, y: 14 }, ms: 1800 },
+        // Ari va a mirar los vestidos y Coen la sigue
+        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari-c', img: 'assets/personajes/ari-lado.webp', x: 64, alto: 16, delante: true, clase: 'anda', reemplaza: 'ari', sigue: true, ruta: [[0, 64, 0, 0, -1], [1, 22, 0, 0, -1]], ms: 2200, junto: true },
+        { nombre: 'coen-c', img: 'assets/personajes/coen-lado.webp', x: 77, alto: 17, delante: true, clase: 'anda', reemplaza: 'coen', sigue: true, ruta: [[0, 77, 0, 0, -1], [1, 36, 0, 0, -1]], ms: 2600, pausa: 0 },
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', x: 22, alto: 16, delante: true, reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0, fx: { tipo: 'destello', x: 12, ancho: 9, y: 12 } },
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 36, alto: 17, delante: true, reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 300 },
+        { texto: { titulo: 'Coen:', texto: '«…yo pago 😅»' }, nombre: 'coen', clase: 'saluda', ms: 1600 },
+        { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: true, ms: 600 },
+        { espera: 'tienda-boleta', cierraApp: true, ms: 900 },                                                                  // cuando se entrega la boleta…
+        // …se ponen lo que compraron, y Rancek cierra la tienda para ir con ellos
+        { texto: { titulo: '¡Con sus compras puestas!', texto: 'Ari con su vestido de chica mágica y Coen con su jogger blanco y su polera burdeo.' }, nombre: 'ari2', img: 'ari-paseo.webp', x: 22, alto: 17.5, delante: true, reemplaza: 'ari', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 22, ancho: 16, y: 6, ms: 1100 }, ms: 900, pausa: 0 },
+        { nombre: 'coen2', img: 'coen-paseo.webp', x: 36, alto: 18, delante: true, reemplaza: 'coen', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 36, ancho: 16, y: 6, ms: 1100 }, ms: 1400 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek2', img: 'rancek-paseo.webp', x: 62, alto: 18, delante: true, reemplaza: 'mago', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 62, ancho: 16, y: 6, ms: 1100 }, ms: 1800 }
       ] }
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
@@ -495,10 +516,10 @@
         { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp', x: 20, alto: 9, fila: 'medio', rotulo: '2019', ms: 2300, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
         { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', x: 32, alto: 10, rotulo: '2019 – 2021', ms: 2300, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
         { nombre: 'lugar3', img: 'assets/cuento/logros/lugar3.webp', x: 44, alto: 9, fila: 'medio', rotulo: '2021', ms: 2300, texto: { titulo: '2021 · Matrona · CESFAM O\'Higgins', texto: 'Atención integral, planillas de PAP y mamografía, campañas educativas.' } },
-        { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', x: 56, alto: 10, rotulo: '2022 – 2023', ms: 2300, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
-        { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', x: 68, alto: 9, fila: 'medio', rotulo: '2024', ms: 2300, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
-        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', x: 80, alto: 10, rotulo: '2025 – 2026', ms: 2300, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
-        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', x: 92, alto: 9, fila: 'medio', rotulo: '2026 – hoy', ms: 2300, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
+        { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', x: 54, alto: 10, rotulo: '2022 – 2023', ms: 2300, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
+        { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', x: 67.5, alto: 12, rotulo: '2024', ms: 2300, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
+        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', x: 79.5, alto: 10, rotulo: '2025 – 2026', ms: 2300, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
+        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', x: 91.5, alto: 14, fila: 'medio', rotulo: '2026 – hoy', ms: 2300, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
         { texto: { titulo: 'Mi currículum completo', texto: 'Experiencia, formación y habilidades.' }, app: true, ms: 400 }
       ] }
     ] },
@@ -553,6 +574,13 @@
     const total = esc.hitos.length;
     let h = -1, pausa = false, vuelta = 0, fondoActual = '';
     const actores = {};
+    // lo que pasa en la caja se cuenta en el cartel y el que habla da un saltito
+    window.addEventListener('tienda-dice', e => {
+      if (!el.isConnected || !actores.mago) return;
+      const { quien, txt } = e.detail, a = quien === 'mago' ? actores.mago : (/Coen|pago|oro/.test(txt) ? actores.coen : actores.ari);
+      if (titulo) titulo.textContent = quien === 'mago' ? 'Rancek:' : (a === actores.coen ? 'Coen:' : 'Ari:'); if (texto) texto.textContent = txt;
+      if (a) { a.classList.remove('saluda'); void a.offsetWidth; a.classList.add('saluda'); }
+    });
     const nombre = p => p.nombre || p.actor || p.img;
     const levantar = (im, d) => { if (document.getElementById('libro')?.classList.contains('recien-girado') && /fondo/.test(im.className)) { im.classList.add('ya'); (im.classList.contains('amb') ? el.querySelector('.vida-ambiente') : zona).append(im); return; } im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); zona.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
     const plegar = n => { const a = n.nodeType ? n : actores[n]; if (!a) return; a.classList.add('pliega'); setTimeout(() => a.remove(), 900); if (!n.nodeType) delete actores[n]; };
@@ -652,6 +680,9 @@
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
         if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
+        if (p.cierraApp) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: false } }));
+        // espera a que pase algo afuera del cuento (por ejemplo, que se entregue la boleta en la caja)
+        if (p.espera) { const ok = await new Promise(fin => { const f = () => { clearInterval(vig); removeEventListener(p.espera, f); fin(mia === vuelta); }; const vig = setInterval(() => { if (mia !== vuelta) { clearInterval(vig); removeEventListener(p.espera, f); fin(false); } }, 500); addEventListener(p.espera, f); }); if (!ok) return; }
         if (p.fx) [].concat(p.fx).forEach(f => luego(() => { if (mia !== vuelta) return; efecto(f.tipo, f.x, f.ancho, f.y, f.ms); [].concat(f.golpe || []).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } }); }, f.tras || 0));
         if (p.golpe) [].concat(p.golpe).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } });
         if (p.muere) [].concat(p.muere).forEach((n, i) => { const g = actores[n]; if (!g) return; delete actores[n]; luego(() => { const x = parseFloat(g.style.left) + g._ancho / 2; g.classList.add('muere'); efecto('humo', x, g._ancho * 1.4, 0, 1000); setTimeout(() => g.remove(), 700); }, i * 120); });
@@ -662,6 +693,7 @@
         if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
         if (!(nuevo ? p.entra || (p.reemplaza && p.sigue) : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;   // sigue: encadenado al paso anterior, sin respiro
         if (p.efecto) a.classList.add(p.efecto);
+        if (!nuevo && p.clase) { const cs = p.clase.split(' '); a.classList.remove(...cs); void a.offsetWidth; a.classList.add(...cs); }   // vuelve a hacer su gesto
         if (p.abre && !a.dataset.abre) { a.dataset.abre = p.abre; a.classList.add('clicable'); a.addEventListener('click', () => window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.abre } }))); }
         if (p.rotulo && !a.querySelector('.hito-rotulo')) { const r = document.createElement('span'); r.className = 'hito-rotulo'; r.textContent = p.rotulo; a.append(r); }
         let ok;
