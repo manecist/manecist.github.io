@@ -371,15 +371,12 @@
     reino: { carpeta: 'reino/', hitos: [
       { fondo: null, suelo: 'suelo-reino.webp', titulo: 'Entonces…', texto: 'el libro se abrió de par en par y de sus páginas brotó un humo mágico.', pasos: [
         { nombre: 'humo', img: 'humo.webp', x: 50, alto: 18, efecto: 'flota', ms: 2600 },
-        { quita: 'humo', texto: { titulo: 'Del humo nacieron…', texto: 'la cordillera de los Andes, el gran árbol de sakura, el sol, la luna y un castillo en lo alto. Y el dragón rosado despertó.' }, ms: 300 },
+        { quita: 'humo', texto: { titulo: 'Del humo nacieron…', texto: 'la cordillera de los Andes, el sol, la luna y un gran castillo en lo alto.' }, ms: 300 },
         { nombre: 'andes', img: 'assets/cuento/popup/andes.webp', x: 50, ancho: 94, fila: 'atras', ms: 200, pausa: 300 },
         { nombre: 'sol', img: 'sol.webp', x: 12, alto: 8, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
         { nombre: 'luna', img: 'luna.webp', x: 89, alto: 7, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
-        { nombre: 'arbol', img: 'assets/cuento/popup/arbol.webp', x: 21, alto: 22, fila: 'medio', ms: 300, pausa: 200 },
-        { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 76, alto: 19, fila: 'medio', ms: 300, pausa: 300 },
-        { actor: 'dragon', camina: [0, 1], desde: 50, x: 50, alto: 10, clase: 'vuela', ms: 2600 },          // el dragón despierta y aletea
+        { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 50, alto: 34, fila: 'medio', ms: 300, pausa: 300 },
         { texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos.' }, ms: 300 },
-        { actor: 'dragon', ruta: [[0, 50, 0], [1, -16, 8]], ms: 1300, suave: 'ease-in', pausa: 0 },          // el dragón se asusta y se va volando
         { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 63, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
         { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 71, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
         { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 79, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
@@ -400,12 +397,10 @@
         { fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
         { nombre: 'rancek', ruta: [[0, 24, 15], [1, 41, 20]], ms: 1100, suave: 'ease-in-out', pausa: 200 },
         // el dragón vuelve y les lanza su fuego
-        { texto: { titulo: 'Y el dragón rosado…', texto: 'volvió volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, actor: 'dragon', ruta: [[0, -16, 8], [1, 40, 4]], ms: 1500, suave: 'ease-out', pausa: 0 },
-        { nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: 44, alto: 14, clase: 'vuela espejo', reemplaza: 'dragon', sigue: true, ms: 200, pausa: 0,
-          fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 150, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
+        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: -20, alto: 14, clase: 'vuela espejo', entra: true, ruta: [[0, -20, 6], [1, 44, 0]], ms: 1600, suave: 'ease-out', pausa: 0,
+          fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 1500, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
         { quita: ['ari', 'coen', 'rancek', 'fuego'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 400 },
-        { actor: 'dragon', camina: [0, 1], desde: 34, x: 70, alto: 10, clase: 'vuela', ms: 4400, junto: true },   // y vuela hacia el castillo
         { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', camina: [0, 0], desde: 16, x: 50, alto: 16, ms: 4200, delante: true, junto: true },
         { nombre: 'pcoen', img: 'assets/personajes/coen-lado.webp', camina: [0, 0], desde: 8, x: 42, alto: 17, ms: 4200, delante: true, junto: true },
         { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', camina: [0, 0], desde: 2, x: 34, alto: 17, ms: 4200, delante: true }
