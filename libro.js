@@ -100,6 +100,10 @@
     guardar('mce-pagina', ref.dataset.n);
     // pliegos pop-up: el libro entero se acuesta (cámara baja) y los recortes se paran sobre la hoja
     const esPop = vis.some(p => p && p.classList.contains('pagina-pop'));
+    // la esquina inferior derecha se dobla un poco: debajo asoma el piso del pliego que viene (o el papel)
+    const sig = orden[i + (una ? 1 : 2)];
+    libro.classList.toggle('hay-sig', !!sig); libro.classList.remove('invita');
+    libro.style.setProperty('--suelo-sig', sig && sig.dataset.suelo ? 'url("' + sig.dataset.suelo + '")' : 'none');
     if (esPop) { libro.classList.add('acostado'); requestAnimationFrame(() => libro.classList.add('pop-listo')); } else libro.classList.remove('acostado', 'pop-listo');
     window.dispatchEvent(new CustomEvent('cuento-paginas', { detail: { paginas: vis.filter(Boolean) } }));
   }
@@ -430,5 +434,6 @@
     else arrancar();
   }
   if (document.readyState === 'complete') cuandoListo(); else addEventListener('load', cuandoListo, { once: true });
+  libro.querySelector('.libro-esquina')?.addEventListener('click', () => pasar(1));
   window.MCELibro = { ir, pasar, aClasico, aLibro, abrir, hadaMagia, visibles: () => [...izq.children, ...der.children] };
 })();

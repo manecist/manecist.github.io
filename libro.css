@@ -1115,7 +1115,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .vida-img i{position:absolute;inset:0;background:var(--tira) no-repeat 0 100%/calc(var(--n,6) * 100%) 100%}
 .vida-img i+i{opacity:0}
 .vida.cambia .vida-andante::after{content:"";position:absolute;inset:-10%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,180,220,.5) 35%,transparent 65%);animation:destello .8s ease-out forwards;pointer-events:none}
-.vida.llego .vida-img.visible{animation:salto-feliz 1.2s ease-in-out infinite}
+
 @keyframes salto-feliz{0%,100%{transform:none}30%{transform:translateY(-8%) rotate(-2deg)}}
 .vida-cartel{position:absolute;left:12px;top:12px;max-width:min(380px,70%);padding:8px 14px;border-radius:14px;background:rgba(255,250,242,.92);box-shadow:0 6px 16px rgba(80,40,70,.2);display:grid;gap:2px}
 .vida-edad{font:700 .78rem/1.1 var(--titulo);letter-spacing:.14em;text-transform:uppercase;color:#a3346f}
@@ -1518,3 +1518,19 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.acostado .pag:has(> .clon-bajo.pagina-camino-vida:not(.clon-mitad-der)){background-size:200% 100%!important;background-position:0 0!important}
 .libro.acostado .vida .pasto-frente{transition:opacity .6s ease}
 .libro.acostado .vida:not(.afuera) .pasto-frente{opacity:0!important}
+
+/* al final del camino Ari se queda quieta y apunta a la esquina de la página */
+.vida-apunta{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .5s;pointer-events:none;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff)}
+.vida.llego .vida-apunta{opacity:1}
+.vida.llego .vida-img{opacity:0!important}
+/* esquina inferior derecha doblada: la punta se levanta como una hoja que se empieza a dar vuelta;
+   debajo y en el dorso asoma el piso del pliego que viene (o el papel) */
+.libro-esquina{display:none;position:absolute;--t:calc(var(--pw) * .2);right:calc(100% - var(--pw) * 2);bottom:calc(100% - var(--ph));width:var(--t);height:var(--t);padding:0;border:0;background:none;cursor:pointer;transform:translateZ(1px);transform-style:preserve-3d;z-index:5}
+.libro.acostado.pop-listo.hay-sig .libro-esquina{display:block}
+.libro-esquina i{position:absolute;inset:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.esq-bajo{background:var(--papel);background-image:linear-gradient(315deg,rgba(0,0,0,0) 30%,rgba(40,20,30,.4) 50%),var(--suelo-sig);background-size:100% 100%,500% 500%;background-position:0 0,100% 100%}
+.esq-doblez{background:var(--papel);background-image:linear-gradient(315deg,rgba(255,255,255,.5),rgba(255,255,255,0) 30%,rgba(0,0,0,.15) 50%),var(--suelo-sig);background-size:100% 100%,500% 500%;background-position:0 0,0 100%;transform-origin:50% 50%;transform:rotate3d(1,-1,0,var(--alza,50deg));animation:esquina-respira 2.8s ease-in-out infinite}
+.libro.invita .esq-doblez{animation:esquina-llama 1.3s ease-in-out infinite}
+@keyframes esquina-respira{0%,100%{--alza:45deg}50%{--alza:65deg}}
+@keyframes esquina-llama{0%,100%{--alza:60deg}50%{--alza:105deg}}
+@property --alza{syntax:'<angle>';inherits:false;initial-value:50deg}
