@@ -1836,3 +1836,5 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .teatro-der{top:26vh}
 .teatro-cielo.ancho ~ * .teatro-der,.escena:has(.teatro-cielo.ancho) .teatro-der{top:30vh}
 .fin-contacto .fin-texto{font-size:.88rem;margin:0 0 8px;color:#5b3a63}
+/* la tapa cerrada va limpia, sin el cordón rosado encima */
+.libro[data-estado="cerrado"] .libro-cinta{display:none}
