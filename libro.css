@@ -1944,3 +1944,7 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .libro.giro-pop .clon-bajo{clip-path:none!important;background:none!important}
 .libro.giro-pop .clon-bajo :is(.hitos-suelo,.vida-suelo){display:none!important}
 .libro.giro-pop :is(.pop-escena .pop,.vida-pop,.vida-andante,.hito-pop):not([data-giro]){visibility:hidden!important}
+
+/* capítulo I: jardín de sakuras de fondo, detrás de los árboles (solo con el libro acostado) */
+.probador-fondo{display:none}
+.libro.acostado:not(.una) .probador-fondo{display:block;left:1%;width:98%;bottom:30%;height:auto}
