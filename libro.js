@@ -272,12 +272,19 @@
       hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
       piezas.forEach(({ el, grupo, cara, rapido, bisagra }) => {
         if (bisagra) {
-          // A: las mitades se cierran sobre el pliegue mientras sube la hoja y el par se acuesta antes de que aterrice.
-          // B: el par se para cerrado y se abre mientras la hoja baja.
-          const c = v => Math.max(0, Math.min(1, v));
-          const de = grupo === 'A' ? 1 - c((th - 100) / 60) : c((th - 55) / 45);
-          const al = 88 * (grupo === 'A' ? c(th / 100) : 1 - c((th - 100) / 75));
-          el.style.transform = 'rotateX(' + (-90 * de).toFixed(2) + 'deg) rotateY(' + ((bisagra === 'L' ? 1 : -1) * 1 * al).toFixed(2) + 'deg)';
+          // Doblez real: cada mitad queda pegada a su página (la de la hoja gira con ella) y el pliegue del centro se
+          // inclina hacia la cámara; al cerrarse el pliego, el fondo termina aplastado entre las dos páginas.
+          const rad = Math.PI / 180, t = th * rad;
+          const mueve = (grupo === 'A') === (dir > 0) ? bisagra === 'R' : bisagra === 'L';
+          const hoja = dir > 0 ? [Math.cos(t), 0, Math.sin(t)] : [-Math.cos(t), 0, Math.sin(t)];
+          const fija = bisagra === 'L' ? [-1, 0, 0] : [1, 0, 0];
+          const d = mueve ? hoja : fija;
+          const a = bisagra === 'L' ? d.map(v => -v) : d;                    // eje horizontal del dibujo
+          const tau = (grupo === 'A' ? th / 180 : 1 - th / 180) * 90 * rad;  // inclinación del pliegue hacia la cámara
+          const c = [0, Math.sin(tau), Math.cos(tau)], b = c.map(v => -v);    // eje vertical del dibujo (hacia arriba = c)
+          let n = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+          const ln = Math.hypot(...n) || 1; n = n.map(v => v / ln);
+          el.style.transform = 'matrix3d(' + [...a, 0, ...b, 0, ...n, 0, 0, 0, 0, 1].map(v => v.toFixed(4)).join(',') + ')';
           return;
         }
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
