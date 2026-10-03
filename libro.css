@@ -1371,7 +1371,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .probador-pop:focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:12px}
 
 /* ✦ piso del jardín pintado (prado con sendero de piedras) en lugar de la textura anterior */
-.libro.acostado .pag{background:url("assets/cuento/popup/suelo-jardin.webp") no-repeat!important;background-size:calc(var(--pw) * 2) 100%!important}
+.libro.acostado .pag:has(.pagina-pop),.libro.acostado .hoja-cara:has(.pagina-pop){background:url("assets/cuento/popup/suelo-jardin.webp") no-repeat!important;background-size:calc(var(--pw) * 2) 100%!important}
 .libro.acostado .pag-izq{background-position:0 0!important}
 .libro.acostado .pag-der{background-position:calc(var(--pw) * -1) 0!important}
 .libro.una.acostado .pag-der{background-size:cover!important;background-position:center!important}
@@ -1423,3 +1423,16 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro:not(.pop-listo) .pagina-pop > *,.hoja .pagina-pop > *{visibility:hidden!important}
 .libro:not(.una)[data-estado="abriendo"] .libro-cuerpo::before{animation:izq-tras-tapa 1.65s linear both}
 .libro:not(.una)[data-estado="cerrado"] .libro-cuerpo::before{opacity:0}
+
+/* al girar la hoja: solo la cara que gira y la página nueva tienen el jardín (la vieja queda de papel hasta taparse) */
+.libro.acostado .pag:not(:has(.pagina-pop)){background:var(--papel)!important}
+.libro.acostado .hoja-der .hoja-dorso:has(.pagina-pop){background-position:0 0!important}
+.libro.acostado .hoja-izq .hoja-dorso:has(.pagina-pop){background-position:calc(var(--pw) * -1) 0!important}
+.libro.acostado .hoja-der .hoja-frente:has(.pagina-pop){background-position:calc(var(--pw) * -1) 0!important}
+.libro.acostado .hoja-izq .hoja-frente:has(.pagina-pop){background-position:0 0!important}
+/* firmamento: las esferas llegan volando desde el lado contrario y luego se escriben las letras */
+.cielo-lado li{--desde:-70vw}.cielo-izq li{--desde:70vw}
+.cielo-lado li.escribe > span:not(.ch){animation:esfera-llega 1.4s cubic-bezier(.22,.8,.3,1) calc(var(--base) - 1.4s) both,titila 3s ease-in-out var(--base) infinite}
+@keyframes esfera-llega{0%{transform:translate(var(--desde),-22vh) scale(.35);opacity:0;filter:blur(2px) brightness(2)}12%{opacity:1}70%{transform:translate(calc(var(--desde) * -.04),2vh) scale(1.15);filter:brightness(1.6)}100%{transform:none;opacity:1;filter:none}}
+.cielo-lado li.escribe .ch{animation-delay:calc(var(--base) + var(--kl) * 24ms)}
+@media (prefers-reduced-motion:reduce){.cielo-lado li.escribe > span:not(.ch){animation:none}}

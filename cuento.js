@@ -442,7 +442,9 @@
         const marca = document.createComment('cielo'); li.before(marca); enCielo.push({ el: li, marca });
         li.classList.remove('por-colgar');
         letras(li); li.classList.add('escribe', 'estrella');
-        li.querySelectorAll('.ch').forEach(s => s.style.setProperty('--k', k++));
+        // cada característica llega como una esfera volando desde el lado contrario; después se escriben sus letras
+        let kl = 0; li.style.setProperty('--base', (1.9 + nl * .45).toFixed(2) + 's');
+        li.querySelectorAll('.ch').forEach(s => s.style.setProperty('--kl', kl++));
         lados[nl++ % 2].append(li);
       });
       paginas.forEach(p => {
