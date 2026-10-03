@@ -226,7 +226,9 @@
       ? [[pi, actAncha ? [0, .5] : [0, 1], 'A'], [pf, actAncha ? [.5, 1] : [0, 1], 'A', 'frente'], [pdo, nuevaAncha ? [0, .5] : [0, 1], 'B', 'dorso'], [pd, nuevaAncha ? [.5, 1] : [0, 1], 'B']]
       : [[pf, actAncha ? [0, .5] : [0, 1], 'A', 'frente'], [pd, actAncha ? [.5, 1] : [0, 1], 'A'], [pi, nuevaAncha ? [0, .5] : [0, 1], 'B'], [pdo, nuevaAncha ? [.5, 1] : [0, 1], 'B', 'dorso']];
     const piezas = [];
+    const izquierdas = dir > 0 ? [pi, pdo] : [pf, pi];
     inst.forEach(([pag, [a, b], grupo, cara]) => {
+      const esIzq = b - a < 1 ? a < .5 : izquierdas.includes(pag), lomo = b - a < 1 ? .5 : esIzq ? 1 : 0;
       if (!pag || !pag.classList.contains('pagina-pop')) return;
       // el piso de las páginas con escenario viaja con la cara de la hoja
       if (cara) { const suelo = pag.style.getPropertyValue('--suelo'), f = cara === 'frente' ? frente : dorso; if (suelo) { f.style.setProperty('background-image', suelo, 'important'); f.style.setProperty('background-size', (b - a < 1 ? '200%' : '100%') + ' 100%', 'important'); f.style.setProperty('background-position', (a >= .5 ? '100%' : '0') + ' 0', 'important'); } }
@@ -262,7 +264,9 @@
         // si cruza el centro, su doblez queda justo en el pliegue del libro (las dos mitades giran unidas por ahí)
         const cruza = x0 < .5 && x1 > .5 && (b - a < 1);
         if (cruza) el.style.transformOrigin = (((.5 - x0) / (x1 - x0)) * 100).toFixed(2) + '% 100%';
-        piezas.push({ el, grupo, cara, rapido, cruza });
+        // distancia al lomo / alto: hasta dónde puede estar de pie sin que la hoja lo atraviese
+        const dist = Math.max(.012, esIzq ? lomo - x1 : x0 - lomo) * W, ratio = dist / Math.max(1, el.offsetHeight);
+        piezas.push({ el, grupo, cara, rapido, cruza, ratio });
       });
     });
     const suave = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -270,7 +274,7 @@
     const paso = ahora => {
       const t = Math.min(1, (ahora - t0) / DUR_GIRO), th = 180 * suave(t), f = th / 180;
       hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
-      piezas.forEach(({ el, grupo, cara, rapido, bisagra }) => {
+      piezas.forEach(({ el, grupo, cara, rapido, bisagra, ratio }) => {
         if (bisagra) {
           // Doblez real: cada mitad queda pegada a su página (la de la hoja gira con ella) y el pliegue del centro se
           // inclina hacia la cámara; al cerrarse el pliego, el fondo termina aplastado entre las dos páginas.
@@ -281,7 +285,7 @@
           const d = mueve ? hoja : fija;
           const a = bisagra === 'L' ? d.map(v => -v) : d;                    // eje horizontal del dibujo
           // el pliegue queda siempre dentro del ángulo entre las dos páginas (en su bisectriz) y se inclina hacia la cámara al cerrarse
-          const angHoja = dir > 0 ? th : 180 - th, angFija = (grupo === 'A') === (dir > 0) ? (dir > 0 ? 180 : 0) : (dir > 0 ? 0 : 180);
+          const angHoja = dir > 0 ? th : 180 - th, angFija = (grupo === 'A') === (dir > 0) ? 180 : 0;   // la página fija: izquierda (180°) o derecha (0°)
           const beta = (angHoja + angFija) / 2 * rad, tau = (grupo === 'A' ? th / 180 : 1 - th / 180) * 55 * rad;
           const c = [Math.cos(beta) * Math.cos(tau), Math.sin(tau), Math.sin(beta) * Math.cos(tau)], b = c.map(v => -v);
           let n = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
@@ -294,8 +298,12 @@
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
         // B: espera plano bajo la hoja y se para cuando la hoja ya se alejó (o, en el dorso, mientras la hoja baja).
         const sube = c => Math.max(0, Math.min(1, c));
-        const g = rapido ? (grupo === 'A' ? sube(f / .35) : sube((f - .65) / .35)) : grupo === 'A' ? sube((th - 105) / 65) : sube(cara ? (th - 95) / 70 : (th - 60) / 75);
-        el.style.transform = 'rotateX(' + (-90 * (grupo === 'A' ? 1 - g : g)).toFixed(2) + 'deg)';
+        // como en papel: cada recorte se mantiene de pie hasta que la hoja se le acerca y entonces se aplasta bajo ella
+        // (el viejo, entre la hoja y su página al cerrarse; el nuevo se levanta a medida que la hoja se aleja)
+        const phi = (grupo === 'A' ? 180 - th : th) * Math.PI / 180;
+        let psi = 90;
+        if (phi < Math.PI / 2) psi = Math.asin(Math.min(1, ratio * Math.tan(Math.max(0, phi)) * .92)) * 180 / Math.PI;
+        el.style.transform = 'rotateX(' + (-psi).toFixed(2) + 'deg)';
         if (cara) el.style.visibility = (cara === 'frente') === (th < 90) ? 'visible' : 'hidden';   // la cara de abajo de la hoja no se ve
       });
       if (t < 1) { requestAnimationFrame(paso); return; }
