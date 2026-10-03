@@ -340,11 +340,11 @@
     });
     window.MCEReino = {
       // animar: el hada pinta la escena desde el lineart (una vez por sesión y sin movimiento reducido)
-      mostrar(animar) {
+      mostrar(animar, forzar) {
         if (!window.FondoAcuarela) return;
         if (!fondo) fondo = FondoAcuarela.montar($('#reino-acuarela'), document.documentElement.dataset.tema === 'claro' ? 'dia' : 'noche');
         let visto = false; try { visto = !!sessionStorage.getItem('mce-acuarela'); } catch (e) { /* sin almacenamiento */ }
-        if (!animar || quieto || visto) { fondo.pintada(); return; }
+        if (!animar || quieto || (visto && !forzar)) { fondo.pintada(); return; }
         site.classList.add('pintando'); document.body.classList.add('bloqueado');
         addEventListener('keydown', saltar, true); addEventListener('pointerdown', saltar, true);
         fondo.reproducir().then(terminarPintura);

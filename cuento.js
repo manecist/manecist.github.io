@@ -445,6 +445,20 @@
         { texto: { titulo: 'Cuéntale los tuyos', texto: 'Cada color que le cuentas se levanta aquí como una barra de papel: así ordeno los datos.' }, app: true, ms: 400 }
       ] }
     ] },
+    x: { carpeta: 'cap10/', hitos: [
+      { fondo: 'fondo-juegos.webp', suelo: 'suelo-juegos.webp', titulo: 'El salón de los juegos', texto: 'Toca una máquina para jugar.', pasos: [
+        { nombre: 'a1', img: 'arcade1.webp', x: 25, alto: 20, fila: 'medio', abre: 'bloques', rotulo: 'Bloques encantados', ms: 300, pausa: 200 },
+        { nombre: 'a2', img: 'arcade2.webp', x: 50, alto: 20, fila: 'medio', abre: 'gemas', rotulo: 'Jardín de gemas lunares', ms: 300, pausa: 200 },
+        { nombre: 'a3', img: 'arcade3.webp', x: 75, alto: 20, fila: 'medio', abre: 'estrellas', rotulo: 'Cielo de constelaciones', ms: 300 }
+      ] }
+    ] },
+    final: { carpeta: 'final/', hitos: [
+      { fondo: 'fondo-cima.webp', suelo: 'suelo-cima.webp', titulo: 'No es el fin…', texto: '…es solo el inicio.', pasos: [
+        { nombre: 'ari', img: 'baculo.webp', x: 50, alto: 23, efecto: 'brilla', ms: 2600,
+          texto: { titulo: 'A pesar de los obstáculos…', texto: 'siempre debes alcanzar tu sueño.' } },
+        { evento: 'cuento-dibuja-mundo', ms: 6500 }                                           // un rato para leer, y Ari dibuja su mundo
+      ] }
+    ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
@@ -564,12 +578,14 @@
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
         if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
+        if (p.evento) { const ev = p.evento; luego(() => { if (mia === vuelta) window.dispatchEvent(new CustomEvent(ev, { detail: { zona } })); }, p.ms || 400); }
         if (!nombre(p)) { if (!(await espera(p.ms || 600, mia))) return; continue; }
         const nuevo = !actores[nombre(p)];
         const a = await actor(p, p.d ?? .1, !!p.reemplaza);
         if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
         if (!(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;
         if (p.efecto) a.classList.add(p.efecto);
+        if (p.abre && !a.dataset.abre) { a.dataset.abre = p.abre; a.classList.add('clicable'); a.addEventListener('click', () => window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.abre } }))); }
         if (p.rotulo && !a.querySelector('.hito-rotulo')) { const r = document.createElement('span'); r.className = 'hito-rotulo'; r.textContent = p.rotulo; a.append(r); }
         let ok;
         if (p.junto) { if (p.camina) caminar(a, p, mia); await espera(120, mia); continue; }
@@ -612,6 +628,47 @@
     if (el._oir) window.removeEventListener('oraculo-datos', el._oir);
     el._oir = e => pintar(e.detail); window.addEventListener('oraculo-datos', el._oir);
   });
+
+  // ✦ Final: el báculo dibuja trazos de luz por toda la pantalla, la cámara entra al dibujo con un brillo
+  // y aparece la versión clásica, donde el hada dibuja el lineart desde la hoja en blanco y luego lo pinta
+  let dibujando = false;
+  const dibujarMundo = origen => {
+    if (dibujando) return; dibujando = true;
+    const capa = document.createElement('div'); capa.className = 'mundo-dibujo'; capa.setAttribute('aria-hidden', 'true');
+    const cv = document.createElement('canvas'), brillo = document.createElement('i'); capa.append(cv, brillo); document.body.append(capa);
+    const d = Math.min(devicePixelRatio || 1, 1.5), W = cv.width = Math.round(innerWidth * d), H = cv.height = Math.round(innerHeight * d), g = cv.getContext('2d');
+    const r = origen ? origen.getBoundingClientRect() : null, x0 = (r ? r.left + r.width * .62 : innerWidth / 2) * d, y0 = (r ? r.top + r.height * .04 : innerHeight / 2) * d;
+    const COL = ['#ffd9ea', '#ff8fc0', '#f3d48a', '#c9a6ff', '#ffffff', '#9fe3ff'];
+    // trazos: espirales y curvas que nacen del báculo y se abren hasta cubrir la pantalla
+    const trazos = Array.from({ length: 44 }, (_, i) => ({ a: i / 44 * Math.PI * 2 + Math.random() * .3, giro: (Math.random() < .5 ? -1 : 1) * (1.2 + Math.random() * 2.6), largo: Math.hypot(W, H) * (.8 + Math.random() * .7), c: COL[i % COL.length], w: (2 + Math.random() * 4) * d, ini: Math.random() * .35 }));
+    const DUR = quieto ? 0 : 3400, t0 = performance.now();
+    const paso = ahora => {
+      const t = Math.min(1, (ahora - t0) / Math.max(1, DUR));
+      g.globalCompositeOperation = 'lighter';
+      trazos.forEach(s => {
+        const u = Math.max(0, Math.min(1, (t - s.ini) / (1 - s.ini))); if (u <= 0) return;
+        const p = q => { const rr = q * s.largo, an = s.a + s.giro * q; return [x0 + Math.cos(an) * rr, y0 + Math.sin(an) * rr * .8]; };
+        const [ax, ay] = p(Math.max(0, u - .04)), [bx, by] = p(u);
+        g.strokeStyle = s.c; g.lineWidth = s.w; g.lineCap = 'round'; g.shadowColor = s.c; g.shadowBlur = 14 * d;
+        g.beginPath(); g.moveTo(ax, ay); g.lineTo(bx, by); g.stroke();
+        if (window.Magia && Math.random() < .25) Magia.estela(bx / d, by / d, { n: 1, colores: COL });
+      });
+      if (t < 1) requestAnimationFrame(paso);
+      else entrar();
+    };
+    // zoom hacia dentro del dibujo con la pantalla brillando; en el blanco cambia a la versión clásica
+    const entrar = () => {
+      capa.classList.add('entra');
+      setTimeout(() => {
+        window.MCELibro?.aClasico(null, { pintar: true });
+        capa.classList.add('sale');
+        setTimeout(() => { capa.remove(); dibujando = false; }, 1100);
+      }, quieto ? 0 : 1500);
+    };
+    requestAnimationFrame(paso);
+  };
+  window.addEventListener('cuento-dibuja-mundo', e => { const z = e.detail && e.detail.zona; dibujarMundo(z && z.querySelector('.hito-actor')); });
+  document.addEventListener('click', e => { if (e.target.closest('[data-entrar-mundo]')) { e.preventDefault(); dibujarMundo(document.querySelector('[data-hitos="final"] .hito-actor')); } });
 
   // IV · noches de código: escenas que se suceden
   escena('[data-escenas]', el => {
@@ -833,11 +890,11 @@
         const padre = marca.parentElement;
         if (/^(UL|OL)$/.test(padre.tagName)) { const w = document.createElement(padre.tagName); w.className = padre.className; w.append(el); c.append(w); } else c.append(el);
         if (el.classList.contains('colgar-app')) {
-          c.classList.add('colgante-app', 'arriba');
+          c.classList.add('colgante-app', 'arriba'); c.dataset.app = el.dataset.appId || '';
           const tab = document.createElement('button'); tab.type = 'button'; tab.className = 'app-pestana';
-          const nom = el.dataset.app || 'la aplicación';
-          const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ Usar ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
-          tab.addEventListener('click', () => { c.classList.toggle('arriba'); rotular(); });
+          const nom = el.dataset.app || 'la aplicación', verbo = el.dataset.verbo || 'Usar';
+          const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ ' + verbo + ' ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
+          tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); });
           c._rotular = rotular; rotular(); c.append(tab);
           let centro = teatro.querySelector('.teatro-app');
           if (!centro) { centro = document.createElement('div'); centro.className = 'teatro-app'; teatro.append(centro); }
@@ -845,6 +902,8 @@
         } else zonas[zonas.length - 1].append(c);
         colgados.push({ el, marca });
       }));
+      const apps = [...teatro.querySelectorAll('.colgante-app')]; apps.forEach((c, k) => c.style.setProperty('--tab', (93 - (apps.length - 1 - k) * 24) + '%'));
+      teatro.querySelector('.teatro-app')?.classList.toggle('varias', apps.length > 1);   // con varias, se abren desde la escena
       requestAnimationFrame(() => requestAnimationFrame(() => teatro.classList.add('baja')));
     };
     const descolgar = inmediato => {
@@ -854,7 +913,7 @@
       if (inmediato || quieto) devolver(); else setTimeout(devolver, 650);
     };
     window.addEventListener('cuento-levanta', () => { descolgar(); bajarDelCielo(); borrarEscritura(); });
-    window.addEventListener('cuento-app', e => { teatro.querySelectorAll('.colgante-app').forEach(c => { c.classList.toggle('arriba', !e.detail.abrir); c._rotular && c._rotular(); }); });
+    window.addEventListener('cuento-app', e => { const id = e.detail.abrir; teatro.querySelectorAll('.colgante-app').forEach(c => { const mia = id === true || (typeof id === 'string' && c.dataset.app === id); c.classList.toggle('arriba', !(id && mia)); c._rotular && c._rotular(); }); });
     window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
       const ps = e.detail.paginas, pop = ps.some(p => p.classList.contains('pagina-pop'));
