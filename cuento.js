@@ -260,7 +260,7 @@
   VIDA.forEach(([s]) => { const i = new Image(); i.onload = () => { cuadrosDe[s] = Math.max(1, Math.round(i.naturalWidth / (i.naturalHeight * .8))); }; i.src = tiraDe(s); });
   const AMB = n => 'assets/cuento/cap2/' + n + '.webp';
   // ambiente de cada etapa: g01..g11 (fondo = gNN-fondo, objetos = gNN-1..3)
-  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05e', 'g05f', 'g06', 'g07b', 'g08', 'g09', 'g10', 'g12', 'g13', 'g11'];
+  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05e', 'g05f', 'g06b', 'g07b', 'g08', 'g09', 'g10', 'g12', 'g13', 'g11'];
   [...new Set(GRUPO)].forEach(g => ['fondo', 1, 2, 3].forEach(k => { const i = new Image(); i.src = AMB(g + '-' + k); }));
   escena('[data-vida]', el => {
     const a = el.querySelector('.vida-img'), b = el.querySelector('.vida-img-b'), rango = el.querySelector('.vida-rango');
@@ -280,15 +280,12 @@
         const f = document.createElement('img'); f.src = AMB(g + '-fondo'); f.alt = ''; f.className = 'vida-pop amb amb-fondo'; levantar(f, .05);
       }
       plegar('.amb-obj');
-      const x = 4 + n / (VIDA.length - 1) * 70 + 6.5;   // centro de Ari (en % del ancho)
-      [[-1, 'atras', 15], [1, 'atras', 15], [1, 'frente', 11]].forEach(([lado, fila, ancho], j) => {
+      // los 3 objetos se reparten parejo a lo ancho del libro, detrás de Ari y delante del panorama
+      [18, 50, 82].forEach((centro, j) => {
         const im = document.createElement('img'); im.src = AMB(g + '-' + (j + 1)); im.alt = '';
-        im.className = 'vida-pop amb amb-obj amb-' + fila;
-        const dist = fila === 'atras' ? 15 : 13;
-        let centro = x + lado * dist;
-        if (centro - ancho / 2 < 0 || centro + ancho / 2 > 100) centro = x - lado * (dist + (fila === 'frente' ? 6 : 0));
-        im.style.left = Math.max(0, Math.min(100 - ancho, centro - ancho / 2)).toFixed(1) + '%';
-        im.style.width = ancho + '%';
+        im.className = 'vida-pop amb amb-obj amb-atras';
+        im.style.left = (centro - 8).toFixed(1) + '%';
+        im.style.width = '16%';
         levantar(im, .25 + j * .2);
       });
     };
