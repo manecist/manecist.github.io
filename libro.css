@@ -1948,3 +1948,6 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 /* capítulo I: jardín de sakuras de fondo, detrás de los árboles (solo con el libro acostado) */
 .probador-fondo{display:none}
 .libro.acostado:not(.una) .probador-fondo{display:block;left:1%;width:98%;bottom:30%;height:auto}
+
+/* el cuadro colgante se achica desde su borde de arriba (cuelga del mismo hilo) */
+.teatro-app .colgante-app{transform-origin:50% 0}
