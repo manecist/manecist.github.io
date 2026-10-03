@@ -1967,3 +1967,44 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .giro-virtual::before,.giro-virtual::after,.giro-virtual > .pagina::before,.giro-virtual > .pagina::after{display:none!important}
 .giro-virtual > .pagina > :not(.pop-escena),.giro-virtual .pop-escena > :not([data-giro]){visibility:hidden!important}
 .libro.acostado .pag.giro-virtual.giro-virtual{background:none!important}
+
+/* ✦ capítulo V: el dibujo empieza en blanco y se traza antes de colorearse */
+.hito-fija.por-dibujar > img{opacity:0}
+/* ✦ batalla del reino: correr, recibir golpes, desaparecer y los efectos dibujados */
+.hito-actor.corre > *{animation:hito-corre .3s ease-in-out infinite alternate}
+@keyframes hito-corre{from{transform:translateY(0) rotate(2deg)}to{transform:translateY(-6%) rotate(-3deg)}}
+.hito-actor.espejo > :not(.hito-rotulo){scale:-1 1}
+.hito-actor.golpeado{animation:hito-golpe .45s ease-out}
+.hito-actor.golpeado > *{animation:hito-sacude .45s ease-out}
+@keyframes hito-sacude{25%{translate:-6% 0}50%{translate:6% 0}75%{translate:-3% 0}}
+@keyframes hito-golpe{0%{filter:brightness(3) drop-shadow(0 0 10px #fff)}100%{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff)}}
+.hito-actor.muere{transition:transform .6s ease-in,opacity .6s ease-in!important;transform:rotateX(-90deg) scale(.1) rotate(25deg)!important;opacity:0!important}
+.hito-fx{position:absolute;bottom:30%;pointer-events:none;z-index:7;transform-origin:50% 100%;transform:translateZ(var(--z,0px)) rotateX(-90deg)}
+.hito-fx:is(.fx-onda,.fx-circulo){transform:translateZ(1px)}
+.libro.una.acostado .hito-fx{bottom:38%}
+/* tajo de daga: media luna blanca con brillo rosado */
+.fx-tajo{aspect-ratio:1;border-radius:50%;border-top:5px solid #fff;border-right:3px solid #ffe3f1;filter:drop-shadow(0 0 6px #ff9fd0) drop-shadow(0 0 12px #fff);animation:fx-tajo var(--ms) ease-out forwards}
+@keyframes fx-tajo{0%{transform:rotate(-80deg) scale(.4);opacity:0}25%{opacity:1}100%{transform:rotate(70deg) scale(1.15);opacity:0}}
+/* onda de choque: anillo sobre el piso que se expande, con polvo */
+.fx-onda{aspect-ratio:2.2/1;translate:0 40%;border-radius:50%;border:5px solid #fff;box-shadow:0 0 0 3px #f3b0d4,0 0 22px 6px #ffd6ec,inset 0 0 18px #ffd6ec;animation:fx-onda var(--ms) cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes fx-onda{0%{transform:scale(.1);opacity:1}70%{opacity:.9}100%{transform:scale(1.25);opacity:0}}
+/* círculo mágico: anillos de tinta celeste que giran bajo los monstruos */
+.fx-circulo{aspect-ratio:2.2/1;translate:0 40%;border-radius:50%;border:4px double #bfe9ff;background:radial-gradient(ellipse at center,rgba(170,225,255,.35),rgba(120,190,255,.15) 55%,transparent 70%);box-shadow:0 0 18px 4px #9fdcff,inset 0 0 0 10px rgba(255,255,255,.12),inset 0 0 0 12px #d6f2ff;animation:fx-circulo var(--ms) ease-in-out forwards}
+@keyframes fx-circulo{0%{transform:scale(0) rotate(0);opacity:0}15%{transform:scale(1) rotate(40deg);opacity:1}80%{opacity:1}100%{transform:scale(1.08) rotate(160deg);opacity:0}}
+/* picos de hielo que brotan del círculo */
+.fx-picos{aspect-ratio:2.2/1;display:flex;align-items:flex-end;justify-content:space-around;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 0 10px #a9e3ff)}
+.fx-picos i{width:12%;height:0;clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(180deg,#fff 0,#d9f5ff 25%,#8fd2f5 70%,#5aa9dc);animation:fx-pico var(--ms) cubic-bezier(.2,1.4,.4,1) forwards}
+.fx-picos i:nth-child(2){animation-delay:.08s;width:10%}.fx-picos i:nth-child(3){animation-delay:.16s;width:14%}.fx-picos i:nth-child(4){animation-delay:.04s}.fx-picos i:nth-child(5){animation-delay:.12s;width:11%}.fx-picos i:nth-child(6){animation-delay:.2s;width:13%}.fx-picos i:nth-child(7){animation-delay:.1s;width:9%}
+@keyframes fx-pico{0%{height:0}35%{height:100%}75%{height:95%;opacity:1}100%{height:95%;opacity:0}}
+.fx-picos i:nth-child(odd){--h:100%}
+/* llamas rosadas sobre los monstruos */
+.fx-llamas{aspect-ratio:3/1;display:flex;align-items:flex-end;justify-content:space-around}
+.fx-llamas i{width:20%;height:100%;border-radius:50% 50% 45% 45% / 65% 65% 35% 35%;background:radial-gradient(ellipse at 50% 80%,#fff6b0 0,#ffc65c 25%,#ff7fb5 55%,#e0459a 80%,transparent 82%);transform-origin:50% 100%;filter:drop-shadow(0 0 8px #ff9fd0);animation:fx-llama .35s ease-in-out infinite alternate,fx-llama-sale var(--ms) ease-in forwards}
+.fx-llamas i:nth-child(2n){animation-delay:.12s,0s;height:80%}.fx-llamas i:nth-child(3n){animation-delay:.22s,0s;height:90%}
+@keyframes fx-llama{from{transform:scaleY(.85) skewX(-4deg)}to{transform:scaleY(1.08) skewX(5deg)}}
+@keyframes fx-llama-sale{0%{opacity:0}12%{opacity:1}80%{opacity:1}100%{opacity:0}}
+/* humo de papel cuando un monstruo desaparece */
+.fx-humo{aspect-ratio:1.4/1;display:flex;align-items:flex-end;justify-content:center;flex-wrap:wrap}
+.fx-humo i{width:42%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0,#f2e6ff 55%,rgba(230,215,255,0) 72%);margin:-8%;animation:fx-humo var(--ms) ease-out forwards}
+.fx-humo i:nth-child(2n){animation-delay:.08s}.fx-humo i:nth-child(3n){animation-delay:.16s}
+@keyframes fx-humo{0%{transform:scale(.2);opacity:0}30%{opacity:1}100%{transform:scale(1.4) translateY(-30%);opacity:0}}
