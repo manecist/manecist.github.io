@@ -1465,8 +1465,9 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .cielo-lado li > span.esfera-vuela{background:radial-gradient(circle,#fff 0 18%,rgba(255,220,245,.95) 30%,rgba(201,166,255,.6) 55%,transparent 72%)!important;box-shadow:0 0 26px 10px rgba(255,190,240,.75),0 0 60px 20px rgba(160,140,255,.35)!important}
 
 /* ✦ capítulo II en el libro grande acostado: la escena ocupa el pliego y Ari cruza el prado de izquierda a derecha */
-.libro.acostado .pag:has(.pagina-camino-vida){background:url("assets/cuento/cap2/suelo-h.webp") 0 0/100% 100% no-repeat!important}
-.libro.acostado .hoja-cara:has(.pagina-camino-vida){background:url("assets/cuento/cap2/suelo-h.webp") 0 0/200% 100% no-repeat!important}
+.libro.acostado .pag:has(.pagina-camino-vida){background:var(--suelo-vida,url("assets/cuento/cap2/g01-suelo.webp")) 0 0/100% 100% no-repeat!important}
+.libro.acostado .hoja-cara:has(.pagina-camino-vida){background:var(--suelo-vida,url("assets/cuento/cap2/g01-suelo.webp")) 0 0/200% 100% no-repeat!important}
+.libro.acostado .hoja-cara:has(.clon-mitad-der.pagina-camino-vida){background-position:100% 0!important}
 .libro.acostado .pagina-camino-vida{display:block;padding:0;overflow:visible;transform-style:preserve-3d}
 .libro.acostado .pagina-camino-vida .vida{position:absolute;inset:0;min-height:0;perspective:none;overflow:visible;border-radius:0;background:none;isolation:auto;transform-style:preserve-3d}
 .libro.acostado .vida-cielo,.libro.acostado .vida-tapa,.libro.acostado .vida-hoja,.libro.acostado .vida-canto{display:none}
@@ -1507,3 +1508,13 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.una.acostado .vida-pop.amb-fondo{width:98%!important}
 .libro.una.acostado .vida-pop.amb-obj.amb-frente{width:21%!important}
 .libro.una.acostado .vida-pop.amb-obj.amb-atras{width:26%!important;margin-left:-5%}
+
+/* capítulo II: el piso cambia con cada ambiente (fundido) y bajo la hoja que gira se ve la otra mitad del pliego */
+.vida-suelo{display:none}
+.libro.acostado .vida-suelo{display:block;position:absolute;inset:0}
+.vida-suelo i{position:absolute;inset:0;background:0 0/100% 100% no-repeat;opacity:0;transition:opacity 1s ease}
+.vida-suelo i.ver{opacity:1}
+.libro.acostado .pag:has(> .clon-bajo.clon-mitad-der.pagina-camino-vida){background-size:200% 100%!important;background-position:100% 0!important}
+.libro.acostado .pag:has(> .clon-bajo.pagina-camino-vida:not(.clon-mitad-der)){background-size:200% 100%!important;background-position:0 0!important}
+.libro.acostado .vida .pasto-frente{transition:opacity .6s ease}
+.libro.acostado .vida:not(.afuera) .pasto-frente{opacity:0!important}

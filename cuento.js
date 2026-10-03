@@ -261,7 +261,11 @@
   const AMB = n => 'assets/cuento/cap2/' + n + '.webp';
   // ambiente de cada etapa: g01..g11 (fondo = gNN-fondo, objetos = gNN-1..3)
   const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05e', 'g05f', 'g06b', 'g07b', 'g08', 'g09', 'g10', 'g12', 'g13', 'g11'];
-  [...new Set(GRUPO)].forEach(g => ['fondo', 1, 2, 3].forEach(k => { const i = new Image(); i.src = AMB(g + '-' + k); }));
+  // ambientes al aire libre: ahí sí va el pasto delante
+  const AFUERA = ['g05f', 'g09', 'g11', 'g12', 'g13'];
+  // al salir del capítulo II el piso vuelve al de la primera etapa (para la próxima vez que se gire hacia él)
+  window.addEventListener('cuento-paginas', e => { if (!e.detail.paginas.some(p => p.classList.contains('pagina-camino-vida'))) { document.getElementById('libro')?.style.removeProperty('--suelo-vida'); document.querySelectorAll('.vida-suelo i').forEach((c, i) => { c.classList.toggle('ver', !i); if (!i) c.style.backgroundImage = 'url("' + AMB('g01-suelo') + '")'; }); } });
+  [...new Set(GRUPO)].forEach(g => ['fondo', 'suelo', 1, 2, 3].forEach(k => { const i = new Image(); i.src = AMB(g + '-' + k); }));
   escena('[data-vida]', el => {
     const a = el.querySelector('.vida-img'), b = el.querySelector('.vida-img-b'), rango = el.querySelector('.vida-rango');
     const edad = el.querySelector('.vida-edad'), txt = el.querySelector('.vida-texto'), play = el.querySelector('.vida-play'), andante = el.querySelector('.vida-andante');
@@ -277,6 +281,11 @@
       const g = GRUPO[n];
       if (g !== grupoActual) {
         grupoActual = g; plegar('.amb-fondo');
+        // el piso del libro cambia con el ambiente (fundido entre dos capas); la hoja que gira usa el mismo piso
+        const capas = el.querySelectorAll('.vida-suelo i');
+        if (capas.length) { const nueva = [...capas].find(c => !c.classList.contains('ver')) || capas[0]; nueva.style.backgroundImage = 'url("' + AMB(g + '-suelo') + '")'; capas.forEach(c => c.classList.toggle('ver', c === nueva)); }
+        document.getElementById('libro')?.style.setProperty('--suelo-vida', 'url("' + AMB(g + '-suelo') + '")');
+        el.classList.toggle('afuera', AFUERA.includes(g));
         const f = document.createElement('img'); f.src = AMB(g + '-fondo'); f.alt = ''; f.className = 'vida-pop amb amb-fondo'; levantar(f, .05);
       }
       plegar('.amb-obj');
