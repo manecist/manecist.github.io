@@ -285,6 +285,8 @@
           let n = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
           const ln = Math.hypot(...n) || 1; n = n.map(v => v / ln);
           el.style.transform = 'matrix3d(' + [...a, 0, ...b, 0, ...n, 0, 0, 0, 0, 1].map(v => v.toFixed(4)).join(',') + ')';
+          // aplastado entre las dos páginas queda tapado por la hoja: se desvanece justo antes (sin asomarse por encima)
+          el.style.opacity = (grupo === 'A' ? Math.max(0, Math.min(1, (165 - th) / 20)) : Math.max(0, Math.min(1, (th - 15) / 20))).toFixed(3);
           return;
         }
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
