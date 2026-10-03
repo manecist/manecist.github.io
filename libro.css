@@ -1832,3 +1832,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .clon-bajo.clon-mitad-der{clip-path:inset(0 0 0 50%)}
 .clon-bajo:not(.clon-mitad-der){clip-path:inset(0 50% 0 0)}
 .hito-actor.primer{bottom:6%}
+/* la columna de carteles cuelga más arriba (bajo el texto del cielo) */
+.teatro-der{top:26vh}
+.teatro-cielo.ancho ~ * .teatro-der,.escena:has(.teatro-cielo.ancho) .teatro-der{top:30vh}
+.fin-contacto .fin-texto{font-size:.88rem;margin:0 0 8px;color:#5b3a63}

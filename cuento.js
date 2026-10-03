@@ -947,6 +947,9 @@
         } else zonas[zonas.length - 1].append(c);
         colgados.push({ el, marca });
       }));
+      // los carteles de cada lado siempre caben en la pantalla (si son muchos, se achican lo justo)
+      const caber = () => zonas.forEach(z => { z.style.zoom = ''; const r = z.getBoundingClientRect(), disp = innerHeight * .9 - r.top; if (z.scrollHeight > disp && disp > 120) z.style.zoom = Math.max(.6, disp / z.scrollHeight).toFixed(3); });
+      requestAnimationFrame(caber); setTimeout(caber, 700);
       const apps = [...teatro.querySelectorAll('.colgante-app')]; apps.forEach((c, k) => c.style.setProperty('--tab', (93 - (apps.length - 1 - k) * 24) + '%'));
       teatro.querySelector('.teatro-app')?.classList.toggle('varias', apps.length > 1);   // con varias, se abren desde la escena
       requestAnimationFrame(() => requestAnimationFrame(() => teatro.classList.add('baja')));
