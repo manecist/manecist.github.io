@@ -133,6 +133,8 @@
     if (!p || p.classList.contains('pagina-hueco')) { const v = document.createElement('div'); v.className = 'pagina pagina-vacia'; return v; }
     const c = p.cloneNode(true);
     if (mitadDerecha) c.classList.add('clon-mitad-der');
+    // un pop-up guardado puede traer el zoom de cuando no cabía (fuera del libro acostado): la copia va a tamaño real
+    if (c.classList.contains('pagina-pop')) [...c.children].forEach(n => { n.style.zoom = ''; });
     c.removeAttribute('id'); c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
     c.setAttribute('aria-hidden', 'true'); c.inert = true;
     const a = p.querySelectorAll('canvas'), b = c.querySelectorAll('canvas');
@@ -226,10 +228,23 @@
       ? [[pi, actAncha ? [0, .5] : [0, 1], 'A'], [pf, actAncha ? [.5, 1] : [0, 1], 'A', 'frente'], [pdo, nuevaAncha ? [0, .5] : [0, 1], 'B', 'dorso'], [pd, nuevaAncha ? [.5, 1] : [0, 1], 'B']]
       : [[pf, actAncha ? [0, .5] : [0, 1], 'A', 'frente'], [pd, actAncha ? [.5, 1] : [0, 1], 'A'], [pi, nuevaAncha ? [0, .5] : [0, 1], 'B'], [pdo, nuevaAncha ? [.5, 1] : [0, 1], 'B', 'dorso']];
     const piezas = [];
+    // la propiedad scale (recortes dibujados en espejo) se aplica fuera de la transformación y alrededor del punto de giro:
+    // al mover ese punto al lomo, el recorte saltaría al otro lado. Se quita y se refleja dentro, alrededor de su centro.
+    const escalas = new Map();
+    const prep = el => {
+      if (escalas.has(el)) return;
+      const cs = getComputedStyle(el); let esc = null;
+      if (cs.scale && cs.scale !== 'none') { const v = cs.scale.split(' ').map(parseFloat), o = cs.transformOrigin.split(' ').map(parseFloat); esc = { sx: v[0], sy: v.length > 1 ? v[1] : v[0], ox0: o[0], oy0: o[1] }; el.style.scale = 'none'; }
+      escalas.set(el, esc);
+    };
+    // recorte horizontal en coordenadas del mundo (si el recorte está reflejado, sus lados se invierten)
+    const recortar = (el, der, izq) => { const e = escalas.get(el); if (e && e.sx < 0) [der, izq] = [izq, der]; el.style.clipPath = 'inset(0 ' + der.toFixed(2) + '% 0 ' + izq.toFixed(2) + '%)'; };
+    const sufijo = el => { const e = escalas.get(el); if (!e) return ''; const o = getComputedStyle(el).transformOrigin.split(' ').map(parseFloat); return ' translate(' + ((1 - e.sx) * (e.ox0 - o[0])).toFixed(2) + 'px,' + ((1 - e.sy) * (e.oy0 - o[1])).toFixed(2) + 'px) scale(' + e.sx + ',' + e.sy + ')'; };
     const izquierdas = dir > 0 ? [pi, pdo] : [pf, pi];
     inst.forEach(([pag, [a, b], grupo, cara]) => {
       const esIzq = b - a < 1 ? a < .5 : izquierdas.includes(pag), lomo = b - a < 1 ? .5 : esIzq ? 1 : 0;
       if (!pag || !pag.classList.contains('pagina-pop')) return;
+      [...pag.children].forEach(n => { n.style.zoom = ''; });   // las medidas de abajo son en tamaño real
       // el piso de las páginas con escenario viaja con la cara de la hoja
       if (cara) { const suelo = pag.style.getPropertyValue('--suelo'), f = cara === 'frente' ? frente : dorso; if (suelo) { f.style.setProperty('background-image', suelo, 'important'); f.style.setProperty('background-size', (b - a < 1 ? '200%' : '100%') + ' 100%', 'important'); f.style.setProperty('background-position', (a >= .5 ? '100%' : '0') + ' 0', 'important'); } }
       // la copia bajo la hoja no se recorta (eso aplanaría sus recortes): el piso de su mitad lo pinta la página que la contiene
@@ -248,40 +263,50 @@
         let rapido = false;
         // fondo que cruza el centro de un pliego ancho: lo mueve la página fija como bisagra (en la hoja no se muestra)
         const pl = b - a < 1 ? .5 : lomo;   // dónde está el pliegue del libro, en fracción de esta página
-        const ancho = x0 < pl - .005 && x1 > pl + .005;   // todo recorte que cruza el pliegue se dobla en V (fondos y personajes)
+        const ancho = x0 < pl - .005 && x1 > pl + .005;   // los fondos que cruzan el pliegue se doblan en V
+        // un personaje u objeto angosto sobre el lomo no se parte: queda entero en la página fija y se aplasta apenas se le acerca la hoja
+        if (ancho && !/fondo/.test(el.className) && (x1 - x0) < (b - a < 1 ? .3 : .6)) {
+          if (cara) { el.style.visibility = 'hidden'; return; }
+          prep(el); el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
+          el.dataset.giro = '1'; piezas.push({ el, grupo, ratio: .02 }); return;
+        }
         if (ancho) {
           if (cara) { el.style.visibility = 'hidden'; return; }
+          prep(el);
           const cr = ((pl - x0) / (x1 - x0)) * 100, gemelo = el.cloneNode(true);
-          gemelo.classList.add('giro-gemelo'); el.after(gemelo);
-          [[el, 'L', 'inset(0 ' + (100 - cr).toFixed(2) + '% 0 0)'], [gemelo, 'R', 'inset(0 0 0 ' + cr.toFixed(2) + '%)']].forEach(([n, lado, clip]) => {
-            n.style.clipPath = clip; n.style.transformOrigin = cr.toFixed(2) + '% 100%'; n.style.transition = 'none'; n.style.opacity = '1'; n.style.visibility = 'visible';
+          gemelo.classList.add('giro-gemelo'); el.after(gemelo); escalas.set(gemelo, escalas.get(el));
+                    [[el, 'L', 100 - cr, 0], [gemelo, 'R', 0, cr]].forEach(([n, lado, der, izq]) => {
+            recortar(n, der, izq); n.style.transformOrigin = cr.toFixed(2) + '% 100%'; n.style.transition = 'none'; n.style.opacity = '1'; n.style.visibility = 'visible';
             n.dataset.giro = '1'; piezas.push({ el: n, grupo, bisagra: lado });
           });
           return;
         }
         if (b - a >= 1 && !cara && ((esIzq && x0 >= pl - .005) || (!esIzq && x1 <= pl + .005))) {
-          el.style.transformOrigin = (((pl - x0) / (x1 - x0)) * 100).toFixed(2) + '% 100%'; el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
+          prep(el); const oV = ((pl - x0) / (x1 - x0)) * 100;
+          el.style.transformOrigin = oV.toFixed(2) + '% 100%'; el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
           const ratioV = Math.max(.012, esIzq ? x0 - pl : pl - x1) * W / Math.max(1, el.offsetHeight);
           el.dataset.giro = '1'; piezas.push({ el, grupo, bisagra: esIzq ? 'R' : 'L', viajero: true, ratio: ratioV }); return;
         }
         if (x1 <= a + .002 || x0 >= b - .002) { if (b - a < 1) { el.style.visibility = 'hidden'; return; } rapido = true; }
-        if (x0 < a || x1 > b) { const L = Math.max(0, (a - x0) / (x1 - x0)) * 100, Rr = Math.max(0, (x1 - b) / (x1 - x0)) * 100; el.style.clipPath = 'inset(0 ' + Rr.toFixed(2) + '% 0 ' + L.toFixed(2) + '%)'; }
+        prep(el);
+        if (x0 < a || x1 > b) { const L = Math.max(0, (a - x0) / (x1 - x0)) * 100, Rr = Math.max(0, (x1 - b) / (x1 - x0)) * 100; recortar(el, Rr, L); }
         el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
         // si cruza el centro, su doblez queda justo en el pliegue del libro (las dos mitades giran unidas por ahí)
         const cruza = x0 < .5 && x1 > .5 && (b - a < 1);
-        if (cruza) el.style.transformOrigin = (((.5 - x0) / (x1 - x0)) * 100).toFixed(2) + '% 100%';
+        if (cruza) { const oC = ((.5 - x0) / (x1 - x0)) * 100; el.style.transformOrigin = oC.toFixed(2) + '% 100%'; }
         // distancia al lomo / alto: hasta dónde puede estar de pie sin que la hoja lo atraviese
         const dist = Math.max(.012, esIzq ? lomo - x1 : x0 - lomo) * W, ratio = dist / Math.max(1, el.offsetHeight);
         el.dataset.giro = '1';
         piezas.push({ el, grupo, cara, rapido, cruza, ratio });
       });
     });
+    piezas.forEach(p => { p.suf = sufijo(p.el); });
     const suave = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     const t0 = performance.now();
     const paso = ahora => {
       const t = Math.min(1, (ahora - t0) / DUR_GIRO), th = 180 * suave(t), f = th / 180;
       hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
-      piezas.forEach(({ el, grupo, cara, rapido, bisagra, ratio, viajero }) => {
+      piezas.forEach(({ el, grupo, cara, rapido, bisagra, ratio, viajero, suf }) => {
         if (bisagra) {
           // Doblez real: cada mitad queda pegada a su página (la de la hoja gira con ella) y el pliegue del centro se
           // inclina hacia la cámara; al cerrarse el pliego, el fondo termina aplastado entre las dos páginas.
@@ -296,8 +321,8 @@
           const beta = (angHoja + angFija) / 2 * rad, tau = Math.pow(Math.min(1, (grupo === 'A' ? th : 180 - th) / 110), .6) * 90 * rad   /* se recuesta sobre su página: queda pegado a la hoja */;
           let c = [Math.cos(beta) * Math.cos(tau), Math.sin(tau), Math.sin(beta) * Math.cos(tau)];
           if (viajero) {
-            const phiV = (grupo === 'A' ? 180 - th : th) * rad;
-            const psiV = phiV < Math.PI / 2 ? Math.asin(Math.min(1, ratio * Math.tan(Math.max(0, phiV)) * .92)) : Math.PI / 2;
+            // se recuesta sobre su hoja apenas ésta se levanta (de pie se montaría sobre la página vecina)
+            const psiV = (1 - Math.min(1, (grupo === 'A' ? th : 180 - th) / 45)) * Math.PI / 2;
             const fi = Math.atan2(d[2], d[0]), frenteN = dir > 0 ? [-Math.sin(fi), 0, Math.cos(fi)] : [Math.sin(fi), 0, -Math.cos(fi)];
             const nf = mueve ? (grupo === 'A' ? frenteN : frenteN.map(v => -v)) : [0, 0, 1];
             c = [nf[0] * Math.sin(psiV), Math.cos(psiV), nf[2] * Math.sin(psiV)];
@@ -305,12 +330,12 @@
           const b = c.map(v => -v);
           let n = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
           const ln = Math.hypot(...n) || 1; n = n.map(v => v / ln);
-          el.style.transform = 'matrix3d(' + [...a, 0, ...b, 0, ...n, 0, 0, 0, 0, 1].map(v => v.toFixed(4)).join(',') + ')';
+          el.style.transform = 'matrix3d(' + [...a, 0, ...b, 0, ...n, 0, 0, 0, 0, 1].map(v => v.toFixed(4)).join(',') + ')' + suf;
           // aplastado entre las dos páginas queda tapado por la hoja: se desvanece justo antes (sin asomarse por encima)
           const cl = v => Math.max(0, Math.min(1, v));
           const enCara = mueve ? (grupo === 'A' ? cl((95 - th) / 15) : cl((th - 85) / 15)) : 1;
           const libre = grupo === 'A' ? cl((165 - th) / 20) : cl((th - (mueve ? 15 : 55)) / 25);
-          el.style.opacity = (enCara * libre).toFixed(3);
+          el.style.opacity = (viajero ? Math.min(1, Math.max(0, (1 - (grupo === 'A' ? th : 180 - th) / 45) * 4)) : enCara * libre).toFixed(3);
           return;
         }
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
@@ -321,13 +346,13 @@
         const phi = (grupo === 'A' ? 180 - th : th) * Math.PI / 180;
         let psi = 90;
         if (phi < Math.PI / 2) psi = Math.asin(Math.min(1, ratio * Math.tan(Math.max(0, phi)) * .92)) * 180 / Math.PI;
-        el.style.transform = 'rotateX(' + (-psi).toFixed(2) + 'deg)';
+        el.style.transform = 'rotateX(' + (-psi).toFixed(2) + 'deg)' + suf;
         el.style.opacity = (phi < .2 ? 0 : Math.max(0, Math.min(1, (psi - 8) / 16))).toFixed(3);   // ya aplastado queda bajo la hoja: no se asoma por encima
         if (cara) el.style.visibility = (cara === 'frente') === (th < 90) ? 'visible' : 'hidden';   // la cara de abajo de la hoja no se ve
       });
       if (t < 1) { requestAnimationFrame(paso); return; }
       // al aterrizar: las páginas reales toman el lugar de las copias con sus recortes ya parados
-      piezas.forEach(({ el }) => { delete el.dataset.giro; el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = el.style.transformOrigin = ''; });
+      piezas.forEach(({ el }) => { delete el.dataset.giro; el.style.scale = ''; el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = el.style.transformOrigin = ''; });
       document.querySelectorAll('.giro-fondo, .giro-gemelo').forEach(e => e.remove());
       document.querySelectorAll('[data-piso-giro]').forEach(c => { c.style.removeProperty('background-image'); c.style.removeProperty('background-size'); c.style.removeProperty('background-position'); delete c.dataset.pisoGiro; });
       libro.classList.add('recien-girado');
