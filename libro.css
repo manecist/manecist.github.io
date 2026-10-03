@@ -1771,3 +1771,46 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .app-calc .calc-java{position:relative}
 .app-calc .calc-java .botonera{position:absolute;left:8%;top:40%;width:36%;flex-direction:column;align-items:stretch;gap:10px;margin:0}
 .app-calc .calc-java .botonera .btn{text-align:center;background:#fff6fb;color:#6a2c55;border:2px solid #f0d6e8;box-shadow:0 3px 0 #ead0e2}
+
+/* ✦ juegos en dos partes: explicación (máquina dibujada + instrucciones) → al jugar, el tablero ocupa el cuadro */
+.app-juego .juego-acciones{display:flex;justify-content:center;margin:0 0 10px}
+.app-juego .juego-acciones .btn{font:700 .95rem 'Mali',sans-serif;border-radius:18px;padding:9px 22px;background:#c98bb8!important;color:#fff!important;border:3px solid #fff!important;box-shadow:0 4px 0 #a26a94!important}
+.app-juego .juego-volver,.app-juego.jugando .juego-empezar{display:none}
+.app-juego.jugando .juego-volver{display:inline-block}
+.app-juego.jugando .juego-acciones{justify-content:flex-end;margin:0 0 6px}
+.app-juego.jugando .juego-acciones .btn{background:#fff6fb!important;color:#6a2c55!important;box-shadow:0 3px 0 #e2c4dc!important;font-size:.8rem;padding:6px 14px}
+/* parte 1: la máquina es solo el dibujo de portada (el tablero aparece al jugar) */
+.app-juego:not(.jugando) .arcade-dibujo > .ranura{display:none}
+.app-juego:not(.jugando) .app-doble{grid-template-columns:minmax(200px,280px) 1fr;align-items:center}
+/* parte 2: el tablero grande, sin la máquina; al lado solo puntaje y controles */
+.app-juego.jugando .app-doble{grid-template-columns:auto minmax(220px,280px);align-items:start;justify-content:center;gap:22px}
+.app-juego.jugando .arcade-dibujo{background:none;aspect-ratio:auto;width:auto}
+.app-juego.jugando .arcade-dibujo > .ranura{position:static}
+.app-gemas.jugando .match-grid{position:static;translate:none;height:min(58vh,540px);width:auto;aspect-ratio:1;padding:6px;border-radius:18px;background:#1a1838!important;border:5px solid #fff!important;box-shadow:0 0 0 3px #f0bcd9,0 10px 22px rgba(90,40,90,.3)!important}
+.app-gemas.jugando .juego-papel :is(.gem-welcome > :not(#gem-inventory),.gem-lessons,.gem-lesson-hint,#gema-guia,#gema-lado > h3,#gema-lado > p){display:none}
+.app-gemas:not(.jugando) .juego-papel :is(#gema-lado .score-row,#match-reset,#match-message,#gem-inventory,#gem-power-message){display:none}
+.app-estrellas.jugando .constellation-board{position:relative!important;top:auto;left:auto;width:min(60vw,640px);height:min(56vh,480px)}
+.app-estrellas.jugando .juego-papel #estrellas-intro,.app-estrellas.jugando .juego-papel .star-lesson :is(#constellation-note,.small-note,#constellation-source){display:none}
+.app-estrellas:not(.jugando) .juego-papel :is(#estrellas-lado,#estrellas-leccion){display:none}
+.app-estrellas:not(.jugando) .atlas-gallery button,.app-estrellas:not(.jugando) .atlas-gallery > *{cursor:pointer}
+/* tetris: portada dibujada y explicación; al jugar, el tablero alto en grande y el puntaje al lado */
+.app-bloques .arcade-portada{display:none}
+.app-bloques:not(.jugando){display:grid;grid-template-columns:minmax(180px,230px) 1fr;grid-template-areas:"acc acc" "img juego";gap:6px 22px;align-items:center}
+.app-bloques:not(.jugando) .juego-acciones{grid-area:acc}
+.app-bloques:not(.jugando) .arcade-portada{display:block;grid-area:img;width:100%}
+.app-bloques:not(.jugando) > .ranura{grid-area:juego}
+.app-bloques:not(.jugando) .tetris-frame,.app-bloques:not(.jugando) .game-side :is(.score-row,#play-start,#landing-status,#tetris-magic-demo,#play-status){display:none}
+.app-bloques:not(.jugando) .tetris-layout{display:block}
+.app-bloques.jugando .tetris-layout{grid-template-columns:auto minmax(220px,280px);justify-content:center;align-items:start}
+.app-bloques.jugando .tetris-frame{aspect-ratio:auto;width:auto;background:none!important;padding:0}
+.app-bloques.jugando #play-tetris{position:static;translate:none;height:min(60vh,560px);width:auto;border-radius:14px;border:5px solid #fff;box-shadow:0 0 0 3px #d9c2f0,0 10px 22px rgba(90,40,90,.3)}
+.app-bloques.jugando .game-side :is(.como-jugar-tactil,.small-note,.lock-help){display:none}
+/* calculadora: el código en la hoja izquierda del cuaderno y los botones en la derecha */
+.app-calc .calc-java{padding:6% 56% 7% 7%}
+.app-calc .calc-java .botonera{left:57%;top:38%;width:35%}
+.app-estrellas.jugando .constellation-board{height:min(50vh,440px);width:min(56vw,600px)}
+.app-estrellas.jugando #estrellas-leccion :is(.chip,#constellation-note,#atlas-progress,#constellation-source,.small-note){display:none}
+.app-estrellas.jugando #estrellas-lado > .chip,.app-estrellas.jugando #estrellas-lado .small-note,.app-estrellas.jugando #estrellas-lado > p:not(.match-message){display:none}
+.app-estrellas.jugando .juego-papel{gap:6px}
+.app-estrellas.jugando #lesson-description{font-size:.74rem;line-height:1.35}
+.app-calc .calc-java{padding:11% 56% 7% 8%}
