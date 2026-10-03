@@ -160,6 +160,7 @@
     const vaPop = destino.some(p => p && p.classList.contains('pagina-pop'));
     libro.classList.remove('pop-listo');
     if (!quieto) libro.classList.toggle('acostado', vaPop);
+    libro.classList.remove('hay-sig', 'invita');   // la esquina doblada se esconde mientras gira la hoja
     window.dispatchEvent(new Event('cuento-pasa'));
     if (quieto) { colocar(nuevo); return; }
     animando = true;

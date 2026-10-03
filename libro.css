@@ -1526,7 +1526,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* esquina inferior derecha doblada: la punta se levanta como una hoja que se empieza a dar vuelta;
    debajo y en el dorso asoma el piso del pliego que viene (o el papel) */
 .libro-esquina{display:none;position:absolute;--t:calc(var(--pw) * .2);right:calc(100% - var(--pw) * 2);bottom:calc(100% - var(--ph));width:var(--t);height:var(--t);padding:0;border:0;background:none;cursor:pointer;transform:translateZ(1px);transform-style:preserve-3d;z-index:5}
-.libro.acostado.pop-listo.hay-sig .libro-esquina{display:block}
+.libro.acostado.pop-listo.hay-sig .libro-esquina,.libro[data-estado="abierto"]:not(.acostado).hay-sig .libro-esquina{display:block}
 .libro-esquina i{position:absolute;inset:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
 .esq-bajo{background:var(--papel);background-image:linear-gradient(315deg,rgba(0,0,0,0) 30%,rgba(40,20,30,.4) 50%),var(--suelo-sig);background-size:100% 100%,500% 500%;background-position:0 0,100% 100%}
 .esq-doblez{background:var(--papel);background-image:linear-gradient(315deg,rgba(255,255,255,.5),rgba(255,255,255,0) 30%,rgba(0,0,0,.15) 50%),var(--suelo-sig);background-size:100% 100%,500% 500%;background-position:0 0,0 100%;transform-origin:50% 50%;transform:rotate3d(1,-1,0,var(--alza,50deg));animation:esquina-respira 2.8s ease-in-out infinite}
@@ -1534,3 +1534,15 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 @keyframes esquina-respira{0%,100%{--alza:45deg}50%{--alza:65deg}}
 @keyframes esquina-llama{0%,100%{--alza:60deg}50%{--alza:105deg}}
 @property --alza{syntax:'<angle>';inherits:false;initial-value:50deg}
+
+/* íconos ilustrados de las características (reemplazan los emojis) */
+.poderes > li > span:not(.ch) img{width:100%;height:100%;object-fit:contain;display:block}
+.poderes > li > span:not(.ch):has(img){background:none!important;box-shadow:none!important;border-radius:0}
+.poderes li:nth-child(6){animation-delay:.6s}
+.cielo-lado li > span:not(.ch){width:78px;height:78px;filter:drop-shadow(0 0 10px rgba(255,200,240,.55))}
+.libro.una .cielo-lado li > span:not(.ch){width:54px;height:54px}
+/* con el libro de frente (índice y páginas clásicas) la punta va doblada sobre la hoja, como oreja de libro */
+.libro:not(.acostado) .libro-esquina{--t:calc(var(--pw) * .12)}
+.libro:not(.acostado) .esq-doblez{animation:esquina-oreja 3s ease-in-out infinite;box-shadow:none}
+.libro:not(.acostado) .esq-bajo{background-image:linear-gradient(315deg,rgba(0,0,0,0) 25%,rgba(60,30,40,.45) 50%),var(--suelo-sig)}
+@keyframes esquina-oreja{0%,100%{--alza:150deg}50%{--alza:128deg}}
