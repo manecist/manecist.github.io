@@ -1602,7 +1602,14 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .teatro-app{position:absolute;left:50%;top:0;translate:-50% 0;width:min(860px,64vw);z-index:30;pointer-events:none;display:grid;justify-items:center}
 .teatro-app .colgante-app{width:100%;pointer-events:auto;margin-top:calc(var(--hilo) + 2vh);max-height:min(76vh,720px);display:flex;flex-direction:column;transition:transform .9s cubic-bezier(.3,1.25,.5,1)}
 .teatro-app .colgante-app > :not(.app-pestana){overflow:auto;max-height:min(70vh,680px);border-radius:12px}
-.teatro.baja .teatro-app .colgante-app.arriba{transform:translateY(calc(-100% + 18px));animation:none}
-.app-pestana{position:absolute;left:50%;top:100%;translate:-50% -2px;padding:8px 18px;border:4px solid #fff;border-top:0;border-radius:0 0 16px 16px;background:linear-gradient(160deg,#ffd9ea,#e7d6ff);color:#5b3a63;font:700 .92rem/1 var(--sans);cursor:pointer;box-shadow:0 8px 16px rgba(10,6,30,.35);white-space:nowrap}
+.teatro.baja .teatro-app .colgante-app.arriba{transform:translateY(calc(-100% - var(--hilo) - 2vh - 6px));animation:none}
+.app-pestana{position:absolute;left:84%;top:100%;translate:-50% -2px;padding:8px 18px;border:4px solid #fff;border-top:0;border-radius:0 0 16px 16px;background:linear-gradient(160deg,#ffd9ea,#e7d6ff);color:#5b3a63;font:700 .92rem/1 var(--sans);cursor:pointer;box-shadow:0 8px 16px rgba(10,6,30,.35);white-space:nowrap}
 .app-pestana:hover{filter:brightness(1.05)}
 @media (max-width:860px){.teatro-app{width:94vw}}
+
+/* aplicaciones colgantes de dos paneles (p. ej. calculadora + código Java) */
+.colgante-app .app-nota{margin:10px 14px 6px;font-size:.95rem;color:var(--tinta);text-align:center}
+.colgante-app .app-doble{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:8px 12px 14px;align-items:start}
+@media (max-width:860px){.colgante-app .app-doble{grid-template-columns:1fr}}
+.hito-rotulo{position:absolute;left:50%;top:0;translate:-50% calc(-100% - 6px);white-space:nowrap;padding:4px 10px;border:3px solid #fff;border-radius:10px;background:#fff6ea;color:#6a2c55;font:700 clamp(.5rem,.75vw,.8rem)/1.1 var(--sans);box-shadow:0 4px 10px rgba(40,20,40,.3);animation:rotulo-nace .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes rotulo-nace{from{opacity:0;transform:scale(.4)}}

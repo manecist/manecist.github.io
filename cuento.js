@@ -335,6 +335,33 @@
   // Los actores son hojas de cuadros (videos Wan con fondo verde, recortados) o imágenes fijas; cada paso los hace actuar.
   // alto: altura del actor en % del ancho del pliego (todos a la misma escala); x: centro en %; desde: entra caminando desde ahí.
   const ESCENARIOS = {
+    iv: { carpeta: 'cap4/', hitos: [
+      { fondo: 'fondo-noche.webp', suelo: 'suelo-noche.webp', titulo: 'Las 2 de la mañana', texto: '…y un error más.', pasos: [
+        { actor: 'cama', x: 34, alto: 17, de: 0, a: 1, ms: 4500 },                                         // a la izquierda: programa en la cama… y se duerme
+        { texto: { titulo: 'z z z…', texto: 'Se quedó dormida estudiando.' }, ms: 900 },
+        { actor: 'coen', camina: [0, 1], desde: 92, x: 51, alto: 19, ms: 3800, delante: true,
+          texto: { titulo: 'Y cada mañana…', texto: 'Coen llegaba con un café.' } },                        // Coen llega caminando con el café
+        { actor: 'coen', de: 2, a: 3, ms: 2600, pausa: 200 },                                               // se lo ofrece…
+        { actor: 'cama', de: 1, a: 2, ms: 3500, texto: { titulo: '«Despierta, que vas a lograrlo» ☕', texto: '' } },   // …y ella despierta con el café en la mano
+        { app: true, ms: 400 }                                                                              // baja la calculadora
+      ] }
+    ] },
+    v: { carpeta: 'cap5/', hitos: [
+      { fondo: 'fondo-estudio.webp', suelo: 'suelo-estudio.webp', titulo: 'Un trazo de lápiz…', texto: 'dio vida a Ari, la asesina ágil de cintas rosadas.', pasos: [
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', linea: 'assets/personajes/ari-frente-lineart.webp', x: 40, alto: 24, ms: 4200, pausa: 400 },
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', linea: 'assets/personajes/coen-frente-lineart.webp', x: 60, alto: 25, ms: 4200,
+          texto: { titulo: '…y a Coen,', texto: 'el caballero de capa carmesí.' } },
+        { nombre: 'pareja', img: 'assets/cuento/pareja-heroes.webp', x: 50, alto: 25, reemplaza: ['ari', 'coen'], efecto: 'brilla', ms: 1800,
+          texto: { titulo: 'Línea a línea, color a color…', texto: 'se encontraron y se tomaron de la mano.' } },
+        { nombre: 'pareja', mueve: 27, ms: 1400, pausa: 100 },                                         // la pareja le hace espacio al logo
+        { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', x: 50, alto: 20, efecto: 'brilla', ms: 2600,
+          texto: { titulo: 'Y juntos fundamos Studios Conari', texto: 'Un estudio creativo chileno: narrativa, diseño, programación, datos y arte 3D.' } },
+        { nombre: 'pareja', img: 'assets/cuento/pareja-heroes.webp', ms: 300, rotulo: 'María Inés · Kevin' },
+        { nombre: 'rancek', img: 'assets/personajes/rancek-frente.webp', x: 73, alto: 25, ms: 2400,
+          rotulo: 'Elías · animación y arte 3D',
+          texto: { titulo: '…y se unió al equipo un tercero', texto: 'María Inés (dirección creativa · Full Stack Java), Kevin (dirección técnica · videojuegos y datos) y Elías (animación y arte 3D).' } }
+      ] }
+    ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
@@ -459,8 +486,10 @@
         if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
         if (!(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;
         if (p.efecto) a.classList.add(p.efecto);
+        if (p.rotulo && !a.querySelector('.hito-rotulo')) { const r = document.createElement('span'); r.className = 'hito-rotulo'; r.textContent = p.rotulo; a.append(r); }
         let ok;
-        if (p.camina) ok = await caminar(a, p, mia);
+        if (p.mueve != null) ok = await new Promise(fin => { a.style.transition = 'left ' + (p.ms || 1200) + 'ms cubic-bezier(.45,0,.3,1)'; a.style.left = (p.mueve - a._ancho / 2) + '%'; luego(() => { a.style.transition = ''; fin(mia === vuelta); }, p.ms || 1200); });
+        else if (p.camina) ok = await caminar(a, p, mia);
         else if (p.linea) ok = await dibujar(a, p.ms || 3000, mia);
         else if (a._m && p.a != null) ok = await tramo(a, a._m.marcas[p.de ?? 0], a._m.marcas[p.a], p.ms, mia);
         else ok = await espera(p.ms || 600, mia);
@@ -693,6 +722,7 @@
       const zonas = (angosto ? ['der'] : ['izq', 'der']).map(n => { const z = document.createElement('div'); z.className = 'teatro-lado teatro-' + n; teatro.append(z); return z; });
       let i = 0;
       paginas.forEach((p, j) => p.querySelectorAll(COLGAR).forEach(el => {
+        if (el.parentElement.closest('.colgar-app')) return;   // lo que va dentro de una aplicación cuelga con ella
         const marca = document.createComment('colgante'); el.before(marca); el.classList.remove('por-colgar');
         const c = document.createElement('div'); c.className = 'colgante';
         c.style.setProperty('--i', i); c.style.setProperty('--hilo', (6 + ((i * 29) % 34)) + 'px'); i++;
