@@ -337,7 +337,8 @@
     { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
       { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
       { actor: 'muro', x: 76, ancho: 21, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
-      { actor: 'muro', de: 1, a: 2, ms: 3500 }                                      // llega una paciente y saca uno
+      { actor: 'pac', camina: [0, 1], desde: 93, x: 80, ancho: 14.5, ms: 3400, delante: true },   // una paciente llega caminando desde la derecha…
+      { actor: 'pac', de: 2, a: 3, ms: 3000 }                                       // …saca uno del dispensador y sonríe
     ] }
   ];
   const hojas = {};
@@ -359,15 +360,27 @@
     const actor = async (p, d) => {
       if (actores[p.actor]) return actores[p.actor];
       const m = await hojaDe(p.actor), a = document.createElement('div'); a._m = m;
-      a.className = 'hito-pop hito-actor'; a.style.left = (p.x - p.ancho / 2) + '%'; a.style.width = p.ancho + '%'; a.style.aspectRatio = m.w + ' / ' + m.h;
+      a.className = 'hito-pop hito-actor' + (p.delante ? ' delante' : ''); a.style.left = ((p.desde ?? p.x) - p.ancho / 2) + '%'; a.style.width = p.ancho + '%'; a.style.aspectRatio = m.w + ' / ' + m.h;
       a.innerHTML = '<i></i><i></i>';
       [...a.children].forEach(c => { c.style.backgroundImage = 'url(' + C3(p.actor + '.webp') + ')'; c.style.backgroundSize = (m.cols * 100) + '% ' + (Math.ceil(m.n / m.cols) * 100) + '%'; });
-      cuadro(a, m.marcas[p.de]); actores[p.actor] = a; levantar(a, d); return a;
+      cuadro(a, m.marcas[p.camina ? p.camina[0] : p.de]); actores[p.actor] = a; levantar(a, d); return a;
     };
     const tramo = (a, de, al, ms, mia) => new Promise(fin => {
       const t0 = performance.now();
       const paso = t => { if (mia !== vuelta || !a.isConnected) { fin(false); return; } const u = Math.min(1, (t - t0) / ms); cuadro(a, de + (al - de) * u); if (u < 1) requestAnimationFrame(paso); else fin(true); };
       if (quieto) { cuadro(a, al); fin(true); } else requestAnimationFrame(paso);
+    });
+    const caminar = (a, p, mia) => new Promise(fin => {
+      const m = a._m, c0 = m.marcas[p.camina[0]], c1 = m.marcas[p.camina[1]], t0 = performance.now(), CICLO = 1000;
+      a.classList.add('camina'); a.classList.toggle('camina-fija', c1 <= c0);
+      const paso = t => {
+        if (mia !== vuelta || !a.isConnected) { fin(false); return; }
+        const u = Math.min(1, (t - t0) / p.ms);
+        a.style.left = (p.desde + (p.x - p.desde) * u - p.ancho / 2).toFixed(2) + '%';
+        if (c1 > c0) cuadro(a, c0 + (((t - t0) % CICLO) / CICLO) * (c1 - c0));
+        if (u < 1) requestAnimationFrame(paso); else { a.classList.remove('camina', 'camina-fija'); fin(true); }
+      };
+      if (quieto) { a.style.left = (p.x - p.ancho / 2) + '%'; fin(true); } else requestAnimationFrame(paso);
     });
     const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms));
     const suelo = src => { const capas = zona.querySelectorAll('.hitos-suelo i'), nueva = [...capas].find(c => !c.classList.contains('ver')) || capas[0]; nueva.style.backgroundImage = 'url("' + C3(src) + '")'; capas.forEach(c => c.classList.toggle('ver', c === nueva)); };
@@ -384,7 +397,7 @@
         const a = await actor(p, .1);
         if (!(await espera(actores[p.actor] === a && a.dataset.listo ? 300 : 1100, mia))) return;
         a.dataset.listo = '1';
-        if (!(await tramo(a, a._m.marcas[p.de], a._m.marcas[p.a], p.ms, mia))) return;
+        if (!(await (p.camina ? caminar(a, p, mia) : tramo(a, a._m.marcas[p.de], a._m.marcas[p.a], p.ms, mia)))) return;
         if (!(await espera(1300, mia))) return;
       }
       if (!(await espera(1800, mia))) return;
