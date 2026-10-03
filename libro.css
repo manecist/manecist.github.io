@@ -1943,3 +1943,4 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .colgante-app .m7-gallery figure{margin:0}
 .libro.giro-pop .clon-bajo{clip-path:none!important;background:none!important}
 .libro.giro-pop .clon-bajo :is(.hitos-suelo,.vida-suelo){display:none!important}
+.libro.giro-pop :is(.pop-escena .pop,.vida-pop,.vida-andante,.hito-pop):not([data-giro]){visibility:hidden!important}

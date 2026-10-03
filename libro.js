@@ -247,14 +247,15 @@
         // fuera del tramo: en un pliego ancho lo muestra la otra copia; en una página suelta (recorte que invade la vecina) se aplasta antes de que pase la hoja
         let rapido = false;
         // fondo que cruza el centro de un pliego ancho: lo mueve la página fija como bisagra (en la hoja no se muestra)
-        const ancho = x0 < .5 - .005 && x1 > .5 + .005;   // todo recorte que cruza el centro se dobla en V (no solo los fondos)
-        if (ancho && (b - a < 1)) {
+        const pl = b - a < 1 ? .5 : lomo;   // dónde está el pliegue del libro, en fracción de esta página
+        const ancho = x0 < pl - .005 && x1 > pl + .005;   // todo recorte que cruza el pliegue se dobla en V (fondos y personajes)
+        if (ancho) {
           if (cara) { el.style.visibility = 'hidden'; return; }
-          const cr = ((.5 - x0) / (x1 - x0)) * 100, gemelo = el.cloneNode(true);
+          const cr = ((pl - x0) / (x1 - x0)) * 100, gemelo = el.cloneNode(true);
           gemelo.classList.add('giro-gemelo'); el.after(gemelo);
           [[el, 'L', 'inset(0 ' + (100 - cr).toFixed(2) + '% 0 0)'], [gemelo, 'R', 'inset(0 0 0 ' + cr.toFixed(2) + '%)']].forEach(([n, lado, clip]) => {
             n.style.clipPath = clip; n.style.transformOrigin = cr.toFixed(2) + '% 100%'; n.style.transition = 'none'; n.style.opacity = '1'; n.style.visibility = 'visible';
-            piezas.push({ el: n, grupo, bisagra: lado });
+            n.dataset.giro = '1'; piezas.push({ el: n, grupo, bisagra: lado });
           });
           return;
         }
@@ -266,6 +267,7 @@
         if (cruza) el.style.transformOrigin = (((.5 - x0) / (x1 - x0)) * 100).toFixed(2) + '% 100%';
         // distancia al lomo / alto: hasta dónde puede estar de pie sin que la hoja lo atraviese
         const dist = Math.max(.012, esIzq ? lomo - x1 : x0 - lomo) * W, ratio = dist / Math.max(1, el.offsetHeight);
+        el.dataset.giro = '1';
         piezas.push({ el, grupo, cara, rapido, cruza, ratio });
       });
     });
@@ -309,7 +311,7 @@
       });
       if (t < 1) { requestAnimationFrame(paso); return; }
       // al aterrizar: las páginas reales toman el lugar de las copias con sus recortes ya parados
-      piezas.forEach(({ el }) => { el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = el.style.transformOrigin = ''; });
+      piezas.forEach(({ el }) => { delete el.dataset.giro; el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = el.style.transformOrigin = ''; });
       document.querySelectorAll('.giro-fondo, .giro-gemelo').forEach(e => e.remove());
       document.querySelectorAll('[data-piso-giro]').forEach(c => { c.style.removeProperty('background-image'); c.style.removeProperty('background-size'); c.style.removeProperty('background-position'); delete c.dataset.pisoGiro; });
       libro.classList.add('recien-girado');
