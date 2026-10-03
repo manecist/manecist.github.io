@@ -330,6 +330,76 @@
     rango.oninput = () => { pausa = true; detener(el); play.textContent = '▶'; el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita'); mostrar(Number(rango.value), false); };
   });
 
+  // III · las huellas se actúan: cada hito es una escena pop-up donde Ari hace lo que cuenta el cartel.
+  // Los actores son hojas de cuadros (de videos con fondo verde); cada paso reproduce un tramo entre dos marcas.
+  const C3 = n => 'assets/cuento/cap3/' + n;
+  const HITOS = [
+    { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
+      { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
+      { actor: 'muro', x: 76, ancho: 21, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
+      { actor: 'muro', de: 1, a: 2, ms: 3500 }                                      // llega una paciente y saca uno
+    ] }
+  ];
+  const hojas = {};
+  const hojaDe = n => hojas[n] || (hojas[n] = fetch(C3(n + '.json')).then(r => r.json()).then(m => ({ ...m, marcas: m.marcas || [...Array(m.n).keys()] })));
+  HITOS.forEach(h => { new Image().src = C3(h.fondo); h.pasos.forEach(p => { hojaDe(p.actor); new Image().src = C3(p.actor + '.webp'); }); });
+  escena('[data-hitos]', el => {
+    const zona = el.querySelector('.hitos-escena'), lis = [...el.closest('.pagina').querySelectorAll('.huellas > li')];
+    const titulo = el.querySelector('.hito-titulo'), texto = el.querySelector('.hito-texto'), num = el.querySelector('.hito-num'), play = el.querySelector('.hito-play');
+    let h = -1, pausa = false, vuelta = 0, fondoActual = '';
+    const actores = {};
+    const levantar = (im, d) => { im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); zona.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
+    const plegar = n => { const a = n.nodeType ? n : actores[n]; if (!a) return; a.classList.add('pliega'); setTimeout(() => a.remove(), 900); if (!n.nodeType) delete actores[n]; };
+    // un cuadro de la hoja; entre dos cuadros se funde (suaviza los saltos)
+    const cuadro = (a, f) => {
+      const m = a._m, k = Math.max(0, Math.min(m.n - 1, Math.floor(f))), fr = f - k, filas = Math.ceil(m.n / m.cols);
+      const pos = j => ((j % m.cols) / Math.max(1, m.cols - 1) * 100) + '% ' + (Math.floor(j / m.cols) / Math.max(1, filas - 1) * 100) + '%';
+      a.children[0].style.backgroundPosition = pos(k); a.children[1].style.backgroundPosition = pos(Math.min(m.n - 1, k + 1)); a.children[1].style.opacity = fr.toFixed(3);
+    };
+    const actor = async (p, d) => {
+      if (actores[p.actor]) return actores[p.actor];
+      const m = await hojaDe(p.actor), a = document.createElement('div'); a._m = m;
+      a.className = 'hito-pop hito-actor'; a.style.left = (p.x - p.ancho / 2) + '%'; a.style.width = p.ancho + '%'; a.style.aspectRatio = m.w + ' / ' + m.h;
+      a.innerHTML = '<i></i><i></i>';
+      [...a.children].forEach(c => { c.style.backgroundImage = 'url(' + C3(p.actor + '.webp') + ')'; c.style.backgroundSize = (m.cols * 100) + '% ' + (Math.ceil(m.n / m.cols) * 100) + '%'; });
+      cuadro(a, m.marcas[p.de]); actores[p.actor] = a; levantar(a, d); return a;
+    };
+    const tramo = (a, de, al, ms, mia) => new Promise(fin => {
+      const t0 = performance.now();
+      const paso = t => { if (mia !== vuelta || !a.isConnected) { fin(false); return; } const u = Math.min(1, (t - t0) / ms); cuadro(a, de + (al - de) * u); if (u < 1) requestAnimationFrame(paso); else fin(true); };
+      if (quieto) { cuadro(a, al); fin(true); } else requestAnimationFrame(paso);
+    });
+    const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms));
+    const suelo = src => { const capas = zona.querySelectorAll('.hitos-suelo i'), nueva = [...capas].find(c => !c.classList.contains('ver')) || capas[0]; nueva.style.backgroundImage = 'url("' + C3(src) + '")'; capas.forEach(c => c.classList.toggle('ver', c === nueva)); };
+    const mostrar = async n => {
+      h = n; const mia = ++vuelta, H = HITOS[Math.min(n, HITOS.length - 1)], li = lis[n];
+      el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita');
+      titulo.textContent = li ? li.querySelector('b').textContent : ''; texto.textContent = li ? li.querySelector('span').textContent : '';
+      num.textContent = (n + 1) + ' / ' + lis.length;
+      Object.keys(actores).forEach(plegar);
+      if (H.fondo !== fondoActual) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = H.fondo; const f = document.createElement('img'); f.src = C3(H.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .05); suelo(H.suelo); }
+      if (!(await espera(900, mia))) return;
+      for (const p of H.pasos) {
+        if (p.quita) { plegar(p.quita); if (!(await espera(500, mia))) return; }
+        const a = await actor(p, .1);
+        if (!(await espera(actores[p.actor] === a && a.dataset.listo ? 300 : 1100, mia))) return;
+        a.dataset.listo = '1';
+        if (!(await tramo(a, a._m.marcas[p.de], a._m.marcas[p.a], p.ms, mia))) return;
+        if (!(await espera(1300, mia))) return;
+      }
+      if (!(await espera(1800, mia))) return;
+      if (pausa) return;
+      if (h + 1 < Math.min(lis.length, HITOS.length)) mostrar(h + 1);
+      else { el.classList.add('llego'); document.getElementById('libro')?.classList.add('invita'); }
+    };
+    el.querySelector('.hito-ant').onclick = () => { if (h > 0) mostrar(h - 1); };
+    el.querySelector('.hito-sig').onclick = () => { if (h + 1 < Math.min(lis.length, HITOS.length)) mostrar(h + 1); };
+    play.onclick = () => { pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir' : 'Pausar'); if (!pausa && el.classList.contains('llego')) mostrar(0); };
+    // al abrir: el pliego se despliega cuando el libro ya se acostó
+    zona.querySelectorAll('.hito-pop').forEach(p => p.remove()); Object.keys(actores).forEach(k => delete actores[k]);
+    el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : 1250);
+  });
+
   // IV · noches de código: escenas que se suceden
   escena('[data-escenas]', el => {
     const cs = [...el.querySelectorAll('.escena-cuadro')], ps = [...el.querySelectorAll('.escenas-puntos i')]; let i = 0;

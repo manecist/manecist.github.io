@@ -1550,3 +1550,27 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* transformación del dragón en el emblema: video con bordes difuminados sobre la tapa */
 .tapa-morfosis{position:absolute;pointer-events:none;object-fit:cover;opacity:0;-webkit-mask:radial-gradient(closest-side,#000 86%,transparent 100%);mask:radial-gradient(closest-side,#000 86%,transparent 100%)}
 .tapa-morfosis.ve{opacity:1}
+
+/* ✦ capítulo III: pliego pop-up donde cada huella se actúa (fondo, piso y actores que se despliegan) */
+.libro.acostado .pag:has(.pagina-hitos){background:url("assets/cuento/cap3/suelo-cesfam.webp") 0 0/100% 100% no-repeat!important}
+.libro.acostado .hoja-cara:has(.pagina-hitos){background:url("assets/cuento/cap3/suelo-cesfam.webp") 0 0/200% 100% no-repeat!important}
+.libro.acostado .hoja-cara:has(.clon-mitad-der.pagina-hitos){background-position:100% 0!important}
+.libro.acostado .pag:has(> .clon-bajo.clon-mitad-der.pagina-hitos){background-size:200% 100%!important;background-position:100% 0!important}
+.libro.acostado .pag:has(> .clon-bajo.pagina-hitos:not(.clon-mitad-der)){background-size:200% 100%!important;background-position:0 0!important}
+.libro.acostado .pagina-hitos{display:block;padding:0;overflow:visible;transform-style:preserve-3d}
+.libro.acostado .pagina-hitos .hitos{position:absolute;inset:0;transform-style:preserve-3d}
+.hitos-escena{display:none}
+.libro.acostado .hitos-escena{display:block;position:absolute;inset:0;transform-style:preserve-3d}
+.libro.acostado .pagina-hitos .huellas{display:none}
+.hitos-suelo{position:absolute;inset:0}
+.hitos-suelo i{position:absolute;inset:0;background:0 0/100% 100% no-repeat;opacity:0;transition:opacity 1s ease}
+.hitos-suelo i.ver{opacity:1}
+.hito-pop{position:absolute;transform-origin:50% 100%;transform:rotateX(0deg);opacity:0;transition:transform .9s cubic-bezier(.3,1.45,.55,1) var(--d,0s),opacity .2s linear var(--d,0s)}
+.hitos.abierta .hito-pop{transform:rotateX(-90deg);opacity:1}
+.hitos.abierta .hito-pop.pliega{transform:rotateX(0deg);opacity:0;transition:transform .6s cubic-bezier(.5,0,.8,.4),opacity .25s linear .4s}
+.hito-fondo{left:1%;width:98%;bottom:80%;height:auto}
+.hito-actor{bottom:30%;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff)}
+.hito-actor i{position:absolute;inset:0;background-repeat:no-repeat}
+.hito-actor i+i{opacity:0}
+.hitos-controles .hito-num{font:600 .85rem/1 var(--sans);color:#6a2c55;min-width:3.2em;text-align:center}
+.libro.una.acostado .hito-actor{bottom:38%}
