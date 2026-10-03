@@ -244,6 +244,18 @@
         const x0 = x / W, x1 = (x + el.offsetWidth) / W;
         // fuera del tramo: en un pliego ancho lo muestra la otra copia; en una página suelta (recorte que invade la vecina) se aplasta antes de que pase la hoja
         let rapido = false;
+        // fondo que cruza el centro de un pliego ancho: lo mueve la página fija como bisagra (en la hoja no se muestra)
+        const ancho = x0 < .5 - .05 && x1 > .5 + .05 && (x1 - x0) > .5;
+        if (ancho && (b - a < 1)) {
+          if (cara) { el.style.visibility = 'hidden'; return; }
+          const cr = ((.5 - x0) / (x1 - x0)) * 100, gemelo = el.cloneNode(true);
+          gemelo.classList.add('giro-gemelo'); el.after(gemelo);
+          [[el, 'L', 'inset(0 ' + (100 - cr).toFixed(2) + '% 0 0)'], [gemelo, 'R', 'inset(0 0 0 ' + cr.toFixed(2) + '%)']].forEach(([n, lado, clip]) => {
+            n.style.clipPath = clip; n.style.transformOrigin = cr.toFixed(2) + '% 100%'; n.style.transition = 'none'; n.style.opacity = '1'; n.style.visibility = 'visible';
+            piezas.push({ el: n, grupo, bisagra: lado });
+          });
+          return;
+        }
         if (x1 <= a + .002 || x0 >= b - .002) { if (b - a < 1) { el.style.visibility = 'hidden'; return; } rapido = true; }
         if (x0 < a || x1 > b) { const L = Math.max(0, (a - x0) / (x1 - x0)) * 100, Rr = Math.max(0, (x1 - b) / (x1 - x0)) * 100; el.style.clipPath = 'inset(0 ' + Rr.toFixed(2) + '% 0 ' + L.toFixed(2) + '%)'; }
         el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
@@ -258,7 +270,16 @@
     const paso = ahora => {
       const t = Math.min(1, (ahora - t0) / DUR_GIRO), th = 180 * suave(t), f = th / 180;
       hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
-      piezas.forEach(({ el, grupo, cara, rapido }) => {
+      piezas.forEach(({ el, grupo, cara, rapido, bisagra }) => {
+        if (bisagra) {
+          // A: las mitades se cierran sobre el pliegue mientras sube la hoja y el par se acuesta antes de que aterrice.
+          // B: el par se para cerrado y se abre mientras la hoja baja.
+          const c = v => Math.max(0, Math.min(1, v));
+          const de = grupo === 'A' ? 1 - c((th - 100) / 60) : c((th - 55) / 45);
+          const al = 88 * (grupo === 'A' ? c(th / 100) : 1 - c((th - 100) / 75));
+          el.style.transform = 'rotateX(' + (-90 * de).toFixed(2) + 'deg) rotateY(' + ((bisagra === 'L' ? 1 : -1) * 1 * al).toFixed(2) + 'deg)';
+          return;
+        }
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
         // B: espera plano bajo la hoja y se para cuando la hoja ya se alejó (o, en el dorso, mientras la hoja baja).
         const sube = c => Math.max(0, Math.min(1, c));
@@ -269,7 +290,7 @@
       if (t < 1) { requestAnimationFrame(paso); return; }
       // al aterrizar: las páginas reales toman el lugar de las copias con sus recortes ya parados
       piezas.forEach(({ el }) => { el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = el.style.transformOrigin = ''; });
-      document.querySelectorAll('.giro-fondo').forEach(e => e.remove());
+      document.querySelectorAll('.giro-fondo, .giro-gemelo').forEach(e => e.remove());
       document.querySelectorAll('[data-piso-giro]').forEach(c => { c.style.removeProperty('background-image'); c.style.removeProperty('background-size'); c.style.removeProperty('background-position'); delete c.dataset.pisoGiro; });
       libro.classList.add('recien-girado');
       hoja.remove(); colocar(nuevo); animando = false;
