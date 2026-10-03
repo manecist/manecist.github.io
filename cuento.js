@@ -443,7 +443,7 @@
         li.classList.remove('por-colgar');
         letras(li); li.classList.add('escribe', 'estrella');
         // cada característica llega como una esfera volando desde el lado contrario; después se escriben sus letras
-        let kl = 0; li.style.setProperty('--base', (1.9 + nl * .45).toFixed(2) + 's');
+        let kl = 0; li.style.setProperty('--base', (2.6 + nl * .45).toFixed(2) + 's');
         li.querySelectorAll('.ch').forEach(s => s.style.setProperty('--kl', kl++));
         lados[nl++ % 2].append(li);
       });

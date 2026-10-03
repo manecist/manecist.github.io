@@ -1436,3 +1436,20 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 @keyframes esfera-llega{0%{transform:translate(var(--desde),-22vh) scale(.35);opacity:0;filter:blur(2px) brightness(2)}12%{opacity:1}70%{transform:translate(calc(var(--desde) * -.04),2vh) scale(1.15);filter:brightness(1.6)}100%{transform:none;opacity:1;filter:none}}
 .cielo-lado li.escribe .ch{animation-delay:calc(var(--base) + var(--kl) * 24ms)}
 @media (prefers-reduced-motion:reduce){.cielo-lado li.escribe > span:not(.ch){animation:none}}
+/* ✦ el hada vuela de verdad: aletea y su pelo flota (ciclo de video, ida y vuelta para que no salte) */
+.hada-escena.vuela .hada-marco,.hada-escena.vuela .hada-brillo{opacity:0}
+.hada-escena.vuela::after{content:"";position:absolute;inset:0;pointer-events:none;background:url("assets/hada-vuelo.webp") 0 50%/1600% auto no-repeat;animation:hada-aletea 1s steps(15) infinite alternate}
+@keyframes hada-aletea{to{background-position:100% 50%}}
+@media (prefers-reduced-motion:reduce){.hada-escena.vuela::after{animation:none}}
+/* esferas: nacen abajo en el lado contrario y suben ondulando hasta su lugar */
+@keyframes esfera-llega{
+  0%{transform:translate(var(--desde),70vh) scale(.3);opacity:0;filter:blur(3px) brightness(2.2)}
+  10%{opacity:1}
+  25%{transform:translate(calc(var(--desde) * .75),48vh) scale(.5)}
+  40%{transform:translate(calc(var(--desde) * .5),30vh) scale(.65)}
+  55%{transform:translate(calc(var(--desde) * .3),20vh) scale(.8);filter:blur(1px) brightness(1.8)}
+  70%{transform:translate(calc(var(--desde) * .12),6vh) scale(.95)}
+  85%{transform:translate(calc(var(--desde) * -.03),-2vh) scale(1.12);filter:brightness(1.5)}
+  100%{transform:none;opacity:1;filter:none}}
+.cielo-lado li.escribe > span:not(.ch){animation:esfera-llega 2.2s cubic-bezier(.3,.6,.4,1) calc(var(--base) - 2.2s) both,esfera-onda 2.2s ease-in-out calc(var(--base) - 2.2s) 1,titila 3s ease-in-out var(--base) infinite}
+@keyframes esfera-onda{0%,100%{margin-left:0}20%{margin-left:-38px}40%{margin-left:34px}60%{margin-left:-26px}80%{margin-left:14px}}
