@@ -603,6 +603,8 @@
     };
     const escribir = paginas => {
       let k = 0; cielo.innerHTML = ''; enCielo = [];
+      // en el capítulo de las huellas el texto es largo: el cielo se ensancha para que no baje hasta el pop-up
+      cielo.classList.toggle('ancho', paginas.some(p => p.classList.contains('pagina-hitos')));
       const angosto = matchMedia('(max-width: 860px)').matches;
       const lados = angosto ? [] : ['izq', 'der'].map(n => { const d = document.createElement('div'); d.className = 'cielo-lado cielo-' + n; cielo.append(d); return d; });
       let nl = 0;
