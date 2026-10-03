@@ -776,7 +776,7 @@ html[data-cielo="dia"] .cielo-btn{background:linear-gradient(135deg,#ffe7a6,#f5a
   animation:poder-entra .6s cubic-bezier(.3,1.4,.5,1) both}
 .poderes li:nth-child(2){animation-delay:.12s}.poderes li:nth-child(3){animation-delay:.24s}.poderes li:nth-child(4){animation-delay:.36s}.poderes li:nth-child(5){animation-delay:.48s}
 @keyframes poder-entra{from{opacity:0;transform:translateX(30px)}}
-.poderes span{grid-row:span 2;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#ffe3f0,#e7d6ff);font-size:1.3rem}
+.poderes > li > span:not(.ch){grid-row:span 2;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#ffe3f0,#e7d6ff);font-size:1.3rem}
 .poderes b{font-family:var(--titulo);font-size:.98rem}.poderes small{font-size:.92rem;color:var(--tinta2);line-height:1.35}
 
 /* III · Ari y Coen se dibujan y se pintan */
@@ -1325,7 +1325,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante .poderes li{grid-template-columns:52px 1fr;padding:10px 14px}
 .colgante .poderes li small{display:none}
 .colgante .poderes li::after{content:attr(data-corto);grid-column:2;font:600 .9rem/1.3 var(--sans);color:#5b3a63}
-.colgante .poderes span{width:52px;height:52px;font-size:1.7rem;box-shadow:0 0 0 3px #fff,0 4px 10px rgba(120,60,140,.3)}
+.colgante .poderes > li > span:not(.ch){width:52px;height:52px;font-size:1.7rem;box-shadow:0 0 0 3px #fff,0 4px 10px rgba(120,60,140,.3)}
 .colgante .poderes b{font-size:1.12rem;letter-spacing:.02em}
 .colgante:has([data-color="rosa"]){background:linear-gradient(160deg,#ffe7f2,#ffc6df)}
 .colgante:has([data-color="lila"]){background:linear-gradient(160deg,#f1e6ff,#d8c2ff)}
@@ -1353,3 +1353,51 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.acostado:not(.una) .probador-s3{left:8%;width:10%}.libro.acostado:not(.una) .probador-s4{right:8%;width:10%}
 .libro.acostado .pag::after{background-size:62px 44px,62px 44px,auto!important;background-position:0 0,31px 22px,0 0!important}
 .libro.una.acostado .pag-der::after{left:40%!important;right:auto!important;width:20%}
+
+/* ✦ firmamento: las características de Ari se escriben como constelaciones a ambos lados */
+.poderes .corto{display:none}
+.cielo-lado{position:absolute;top:1vh;width:min(20vw,290px);display:flex;flex-direction:column;gap:2.6vh}
+.cielo-izq{left:-25vw;text-align:right}.cielo-der{right:-25vw}
+.cielo-lado li{list-style:none;display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;color:#f7ecff;text-shadow:0 0 12px rgba(200,160,255,.6)}
+.cielo-izq li{grid-template-columns:1fr auto}
+.cielo-izq li > span:not(.ch){grid-column:2;grid-row:1 / span 2}
+.cielo-lado li > span:not(.ch){width:46px;height:46px;display:grid;place-items:center;border-radius:50%;font-size:1.5rem;background:radial-gradient(circle,rgba(255,255,255,.35),rgba(200,160,255,.12) 60%,transparent 70%);box-shadow:0 0 18px rgba(255,200,240,.55);animation:titila 3s ease-in-out infinite}
+.cielo-lado li b{font:700 1.08rem/1.15 var(--titulo);letter-spacing:.06em;text-transform:uppercase;color:#ffe3f2}
+.cielo-lado li .corto{display:block;font:500 .98rem/1.3 var(--serif);font-style:normal;color:#f1e3ff}
+.cielo-lado li small{display:none}
+@keyframes titila{50%{box-shadow:0 0 28px rgba(255,200,240,.85)}}
+/* Ari se puede tocar para cambiar de outfit */
+.probador-pop{cursor:pointer}
+.probador-pop:focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:12px}
+
+/* ✦ piso del jardín pintado (prado con sendero de piedras) en lugar de la textura anterior */
+.libro.acostado .pag{background:url("assets/cuento/popup/suelo-jardin.webp") no-repeat!important;background-size:calc(var(--pw) * 2) 100%!important}
+.libro.acostado .pag-izq{background-position:0 0!important}
+.libro.acostado .pag-der{background-position:calc(var(--pw) * -1) 0!important}
+.libro.una.acostado .pag-der{background-size:cover!important;background-position:center!important}
+.libro.acostado .pag::after{display:none!important}
+/* recortes ilustrados */
+.pasto{background:none!important;height:auto!important}
+.libro.acostado:not(.una) .pasto-frente{left:2%;right:auto;width:96%;bottom:-100%}
+.libro.acostado:not(.una) .pasto-medio{left:14%;width:72%;bottom:24%}
+.libro.una .pasto-frente{left:-2%;width:104%;right:auto}
+.libro.una .pasto-medio{left:6%;width:88%;right:auto}
+.libro.acostado:not(.una) .probador-s1{left:20%;width:14%;bottom:18%}.libro.acostado:not(.una) .probador-s2{right:20%;width:14%;bottom:18%;transform-origin:50% 100%}
+.libro.acostado:not(.una) .probador-s3{left:7%;width:8.5%;bottom:38%}.libro.acostado:not(.una) .probador-s4{right:7%;width:8.5%;bottom:38%}
+.probador-s2,.probador-s4{scale:-1 1}
+
+/* pasto: varias tiras bajas (no tapan a Ari ni a los árboles) */
+.libro.acostado:not(.una) .pasto-frente{width:24%;bottom:-100%}
+.libro.acostado:not(.una) .pf1{left:4%}.libro.acostado:not(.una) .pf2{left:38%}.libro.acostado:not(.una) .pf3{left:72%}
+.libro.acostado:not(.una) .pasto-medio{width:20%;bottom:30%}
+.libro.acostado:not(.una) .pm1{left:13%}.libro.acostado:not(.una) .pm2{left:67%}
+.libro.una .pasto-frente{width:50%}.libro.una .pf1{left:-2%}.libro.una .pf2{left:50%}.libro.una .pf3{display:none}
+.libro.una .pasto-medio{width:46%}.libro.una .pm1{left:2%}.libro.una .pm2{left:52%}
+/* firmamento: ícono a un lado, título y frase al otro */
+.cielo-lado li > span:not(.ch){grid-column:1;grid-row:1 / span 2}
+.cielo-lado li > b,.cielo-lado li > .corto{grid-column:2}
+.cielo-izq li > span:not(.ch){grid-column:2}
+.cielo-izq li > b,.cielo-izq li > .corto{grid-column:1}
+/* el botón de CV cuelga a la derecha, más abajo que las características */
+.teatro-der{top:40vh}.teatro-izq{display:none}
+.colgante::before,.colgante::after{height:24vh;background:linear-gradient(rgba(255,240,250,0),rgba(255,236,248,.85))}
