@@ -934,7 +934,7 @@
           const tab = document.createElement('button'); tab.type = 'button'; tab.className = 'app-pestana';
           const nom = el.dataset.app || 'la aplicación', verbo = el.dataset.verbo || 'Usar';
           const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ ' + verbo + ' ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
-          tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); });
+          tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.add('mueve'); clearTimeout(o._mv); o._mv = setTimeout(() => o.classList.remove('mueve'), 1000); o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); });
           c._rotular = rotular; rotular(); c.append(tab);
           const ajustarApp = () => {
             el.style.zoom = ''; const disp = Math.min(innerHeight * .74, 760) - 20, alto = el.scrollHeight;
@@ -962,7 +962,7 @@
     };
     window.addEventListener('cuento-levanta', () => { descolgar(); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('resize', () => teatro.querySelectorAll('.colgante-app').forEach(c => c._ajustar && c._ajustar()));
-    window.addEventListener('cuento-app', e => { const id = e.detail.abrir; teatro.querySelectorAll('.colgante-app').forEach(c => { const mia = id === true || (typeof id === 'string' && c.dataset.app === id); c.classList.toggle('arriba', !(id && mia)); c._rotular && c._rotular(); }); });
+    window.addEventListener('cuento-app', e => { const id = e.detail.abrir; teatro.querySelectorAll('.colgante-app').forEach(c => { c.classList.add('mueve'); clearTimeout(c._mv); c._mv = setTimeout(() => c.classList.remove('mueve'), 1000); const mia = id === true || (typeof id === 'string' && c.dataset.app === id); c.classList.toggle('arriba', !(id && mia)); c._rotular && c._rotular(); }); });
     window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
       const ps = e.detail.paginas, pop = ps.some(p => p.classList.contains('pagina-pop'));
