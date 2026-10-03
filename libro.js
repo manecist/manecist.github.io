@@ -241,7 +241,8 @@
     // siempre dentro de la pantalla (con el libro acostado su borde inferior puede quedar más abajo)
     const y = Math.min(innerHeight - h - 4, una ? innerHeight - h - 4 : (r.left > w * .9 ? r.bottom - h : innerHeight - h - 2));
     const m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, x, y]).slice(1).map(Number);
-    volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200);
+    el.classList.add('vuela');
+    volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200).then(() => el.classList.remove('vuela'));
   }
 
   // el hada vuela hasta quedar sobre un personaje, le lanza su hechizo desde arriba y vuelve a su lugar
@@ -255,7 +256,7 @@
     hadaEnVuelo = true;
     let m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, NaN, NaN]).slice(1).map(Number);
     if (isNaN(m[0]) || m[0] > innerWidth || m[0] < -innerWidth) m = [-el.offsetWidth - 40, innerHeight * .45];
-    el.classList.remove('posada'); el.classList.add('vuela');
+    el.classList.add('posada', 'vuela');   // vuela con el mismo tamaño pequeño que tiene en reposo
     const r = objetivo.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
     // la punta de la varita (abajo a la izquierda del cuadro al lanzar) queda justo sobre la cabeza
     const x = r.left + r.width * .5 - w * .1, y = r.top - h * .7;
