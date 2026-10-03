@@ -258,20 +258,58 @@
   // cuántos cuadros trae cada tira (celdas de proporción 0,8): se lee del tamaño de la imagen
   const cuadrosDe = {};
   VIDA.forEach(([s]) => { const i = new Image(); i.onload = () => { cuadrosDe[s] = Math.max(1, Math.round(i.naturalWidth / (i.naturalHeight * .8))); }; i.src = tiraDe(s); });
+  const AMB = n => 'assets/cuento/cap2/' + n + '.webp';
+  const AMBIENTES = [
+    [['a-escuela-1', -1, 'atras', 15], ['a-escuela-2', 1, 'frente', 7]],
+    [['a-escuela-4', -1, 'atras', 12], ['a-escuela-3', 1, 'atras', 11]],
+    [['b-juegos-1', -1, 'atras', 11], ['b-juegos-2', 1, 'frente', 8]],
+    [['b-juegos-3', 1, 'atras', 8], ['b-juegos-4', -1, 'frente', 9]],
+    [['c-matrona-1', -1, 'atras', 13], ['c-matrona-2', 1, 'frente', 8]],
+    [['c-matrona-3', 1, 'atras', 11], ['c-matrona-1', -1, 'atras', 13]],
+    [['c-matrona-3', 1, 'atras', 11], ['c-matrona-2', -1, 'frente', 8]],
+    [['c-matrona-4', -1, 'atras', 10], ['d-codigo-1', 1, 'frente', 10]],
+    [['d-codigo-1', -1, 'atras', 12], ['d-codigo-2', 1, 'atras', 9], ['d-codigo-3', 1, 'frente', 8]],
+    [['e-stream-1', -1, 'atras', 7], ['e-stream-3', 1, 'atras', 13], ['e-stream-2', 1, 'frente', 7]],
+    [['f-creadora-1', 1, 'atras', 12], ['d-codigo-4', -1, 'frente', 6]],
+    [['f-creadora-2', -1, 'atras', 12], ['f-creadora-3', 1, 'frente', 8]],
+    [['f-creadora-3', -1, 'atras', 10], ['d-codigo-4', 1, 'frente', 6]],
+    [['f-creadora-4', 1, 'atras', 13], ['f-creadora-3', -1, 'frente', 8]],
+    [['castillo', 1, 'atras', 14, 'assets/cuento/popup/castillo.webp'], ['f-creadora-5', -1, 'atras', 9]]
+  ];
+  AMBIENTES.flat().forEach(([n, , , , src]) => { const i = new Image(); i.src = src || AMB(n); });
   escena('[data-vida]', el => {
     const a = el.querySelector('.vida-img'), b = el.querySelector('.vida-img-b'), rango = el.querySelector('.vida-rango');
     const edad = el.querySelector('.vida-edad'), txt = el.querySelector('.vida-texto'), play = el.querySelector('.vida-play'), andante = el.querySelector('.vida-andante');
     const pagina = el.closest('.pagina'); pagina.setAttribute('data-narracion-propia', '');
     let k = -1, pausa = false, frente = a;
     detener(el);
-    // al abrir la página, los recortes del pop-up se despliegan uno tras otro
-    abrirPop(el);
+    const ambiente = el.querySelector('.vida-ambiente'); let ambActual = -1;
+    // al cambiar de etapa: los recortes del ambiente anterior se pliegan y los nuevos se levantan cerca de Ari
+    const ponerAmbiente = n => {
+      if (!ambiente || n === ambActual) return; ambActual = n;
+      [...ambiente.children].forEach(p => { p.classList.add('pliega'); setTimeout(() => p.remove(), 900); });
+      const x = 4 + n / (VIDA.length - 1) * 70 + 5;   // centro de Ari (en % del ancho)
+      AMBIENTES[n].forEach(([nombre, lado, fila, ancho, src], j) => {
+        const im = document.createElement('img'); im.src = src || AMB(nombre); im.alt = '';
+        im.className = 'vida-pop amb amb-' + fila + ' pliega';
+        const dist = fila === 'atras' ? 14 + j * 3 : 12;
+        let centro = x + 3 + lado * dist;
+        if (centro - ancho / 2 < 0 || centro + ancho / 2 > 100) centro = x + 3 - lado * dist;   // si no cabe a ese lado, va al otro
+        im.style.left = Math.max(0, Math.min(100 - ancho, centro - ancho / 2)).toFixed(1) + '%';
+        im.style.width = ancho + '%'; im.style.setProperty('--d', (.15 + j * .18).toFixed(2) + 's');
+        ambiente.append(im);
+        requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega')));
+      });
+    };
+    // al abrir la página, los recortes del pop-up se despliegan uno tras otro (cuando el libro ya se acostó)
+    abrirPop(el, quieto ? 0 : 1250);
     const mostrar = async (n, hablar) => {
       if (n === k) return; k = n; rango.value = n;
       const otra = frente === a ? b : a; otra.dataset.etapa = VIDA[n][0]; otra.style.setProperty('--tira', 'url(' + tiraDe(VIDA[n][0]) + ')'); if (!el._raf) ponerCuadro(otra, 0); otra.setAttribute('aria-label', 'Ari, ' + VIDA[n][1] + ': ' + VIDA[n][2]);
       otra.classList.add('visible'); frente.classList.remove('visible'); frente = otra;
       el.style.setProperty('--x', (4 + n / (VIDA.length - 1) * 70).toFixed(1) + '%');   // la monita y su sombra avanzan juntas
       el.style.setProperty('--hora', n / (VIDA.length - 1));
+      ponerAmbiente(n);
       edad.textContent = VIDA[n][1]; txt.textContent = VIDA[n][2];
       el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
       if (window.Magia) { const r = andante.getBoundingClientRect(); if (r.width) Magia.chispas(r.left + r.width / 2, r.top + r.height * .45, { n: 22, vel: 3, colores: ['#ff8fc0', '#ffd9ea', '#c9a6ff', '#f3d48a', '#fff'] }); }
@@ -287,7 +325,7 @@
       luego(avanzar, Math.max(0, TRAMO - (performance.now() - inicio)));
     };
     el.classList.remove('llego'); play.textContent = '❚❚'; k = -1;
-    mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); decir(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 2600); });
+    mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); decir(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 5200); });
     play.onclick = () => {
       if (el.classList.contains('llego')) { el.classList.remove('llego'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); andar(el); luego(avanzar, 1200); return; }
       pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir caminando' : 'Pausar la caminata');
@@ -414,7 +452,7 @@
     const cielo = document.createElement('div'); cielo.className = 'teatro-cielo';
     $('#libro').before(cielo);
     let enCielo = [];
-    const COLGAR = '.botonera';
+    const COLGAR = '.botonera, .vida-cartel, .vida-controles';
     const ESCRIBIR = '.cap-num, .cap-titulo, .cuento';
     let colgados = [], turno = 0;
     // cada letra en su propia cajita (una sola vez por elemento); se respetan negritas y la letra capital

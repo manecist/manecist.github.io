@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261005b">
+  <link rel="stylesheet" href="libro.css?v=20261005f">
   <link rel="stylesheet" href="tema-claro.css?v=20261002a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
@@ -31,8 +31,8 @@
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261002a" defer></script>
   <script src="secciones.js?v=20261002a" defer></script>
-  <script src="libro.js?v=20261005b" defer></script>
-  <script src="cuento.js?v=20261005b" defer></script>
+  <script src="libro.js?v=20261005f" defer></script>
+  <script src="cuento.js?v=20261005f" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -586,7 +586,7 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </article>
 
   <!-- 4 · pliego ancho: la transformación caminando -->
-  <article class="pagina pagina-ancha pagina-camino-vida" data-cap="II · La niña que se fue transformando">
+  <article class="pagina pagina-ancha pagina-camino-vida pagina-pop" data-cap="II · La niña que se fue transformando">
     <div class="vida" data-vida>
       <div class="vida-cielo" aria-hidden="true"></div>
       <!-- libro pop-up abierto, visto en ángulo: las hojas son el suelo y los recortes se paran sobre ellas -->
@@ -596,9 +596,10 @@ VALUES (?, ?, ?, ?);</code></pre></details>
         <div class="vida-canto" aria-hidden="true"></div>
         <div class="vida-sombra" aria-hidden="true"></div>
         <img class="vida-pop pop-montes" src="assets/cuento/popup/andes.webp" alt="" style="--d:.05s">
-        <img class="vida-pop pop-arbol pop-a1" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.25s">
-        <img class="vida-pop pop-castillo" src="assets/cuento/popup/castillo.webp" alt="" style="--d:.4s">
-        <img class="vida-pop pop-arbol pop-a2" src="assets/cuento/popup/arbol.webp" alt="" style="--d:.55s">
+        <div class="vida-ambiente" aria-hidden="true"></div>
+        <img class="vida-pop pasto pasto-frente pf1" src="assets/cuento/popup/pasto.webp" alt="" style="--d:.12s">
+        <img class="vida-pop pasto pasto-frente pf2" src="assets/cuento/popup/pasto.webp" alt="" style="--d:.18s">
+        <img class="vida-pop pasto pasto-frente pf3" src="assets/cuento/popup/pasto.webp" alt="" style="--d:.24s">
         <div class="vida-andante" style="--d:.7s"><div class="vida-img" role="img"><i></i><i></i></div><div class="vida-img vida-img-b" role="img"><i></i><i></i></div></div>
       </div>
       <div class="vida-cartel" aria-live="polite"><b class="vida-edad"></b><span class="vida-texto"></span></div>

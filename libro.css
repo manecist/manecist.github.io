@@ -1463,3 +1463,38 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* las esferas vuelan por JS (órbita alrededor del libro); aquí solo titilan al llegar */
 .cielo-lado li.escribe > span:not(.ch){animation:titila 3s ease-in-out var(--base) infinite!important;margin:0!important;will-change:transform}
 .cielo-lado li > span.esfera-vuela{background:radial-gradient(circle,#fff 0 18%,rgba(255,220,245,.95) 30%,rgba(201,166,255,.6) 55%,transparent 72%)!important;box-shadow:0 0 26px 10px rgba(255,190,240,.75),0 0 60px 20px rgba(160,140,255,.35)!important}
+
+/* ✦ capítulo II en el libro grande acostado: la escena ocupa el pliego y Ari cruza el prado de izquierda a derecha */
+.libro.acostado .pag:has(.pagina-camino-vida){background:url("assets/cuento/cap2/suelo-h.webp") 0 0/100% 100% no-repeat!important}
+.libro.acostado .hoja-cara:has(.pagina-camino-vida){background:url("assets/cuento/cap2/suelo-h.webp") 0 0/200% 100% no-repeat!important}
+.libro.acostado .pagina-camino-vida{display:block;padding:0;overflow:visible;transform-style:preserve-3d}
+.libro.acostado .pagina-camino-vida .vida{position:absolute;inset:0;min-height:0;perspective:none;overflow:visible;border-radius:0;background:none;isolation:auto;transform-style:preserve-3d}
+.libro.acostado .vida-cielo,.libro.acostado .vida-tapa,.libro.acostado .vida-hoja,.libro.acostado .vida-canto{display:none}
+.libro.acostado .vida-libro3d{position:absolute;inset:0;left:0;right:0;bottom:0;height:100%;transform:none;transform-style:preserve-3d}
+.libro.acostado .vida-ambiente{position:absolute;inset:0;transform-style:preserve-3d}
+.libro.acostado .pop-montes{left:14%;width:72%;bottom:88%}
+.libro.acostado .vida-andante{bottom:40%;width:9%;height:auto}
+.libro.acostado .vida-sombra{bottom:39%;width:7%;height:5%}
+.vida-pop.amb{height:auto}
+.vida-pop.amb-atras{bottom:58%}
+.vida-pop.amb-frente{bottom:16%}
+.vida.abierta .vida-pop.amb.pliega{transform:rotateX(0deg);opacity:0;transition:transform .6s cubic-bezier(.5,0,.8,.4),opacity .25s linear .4s}
+.libro.acostado .vida .pasto-frente{bottom:-100%;width:24%}
+.libro.acostado .vida .pf1{left:4%}.libro.acostado .vida .pf2{left:38%}.libro.acostado .vida .pf3{left:72%}
+.libro.una.acostado .vida-andante{width:22%}
+.libro.una.acostado .vida-pop.amb{width:22%!important}
+/* el cartel de la edad y los controles cuelgan del techo */
+.colgante .vida-cartel{position:static;max-width:none;box-shadow:none;background:transparent;padding:10px 14px}
+.colgante .vida-controles{position:static;background:transparent;justify-content:center;padding:8px}
+.libro.acostado .vida-andante{width:13%;bottom:44%}
+.libro.acostado .vida-sombra{bottom:43%;width:9%}
+.libro.acostado .vida .pasto-frente{bottom:1%;width:26%}
+.vida-pop.amb-atras{bottom:62%}
+.vida-pop.amb-frente{bottom:22%}
+.libro.acostado .vida-libro3d{--x:inherit}
+@media (max-width:860px){
+  .teatro-der{top:31vh}
+  .teatro .colgante{margin-top:2px!important}
+  .colgante .vida-cartel{padding:6px 10px}.colgante .vida-cartel .vida-texto{font-size:.85rem;line-height:1.3}
+  .colgante .vida-controles{padding:4px 8px}
+}
