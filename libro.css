@@ -1578,3 +1578,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* mientras no haya video de caminata, un balanceo suave de paso */
 .hito-actor.camina-fija > i{animation:hito-paso .5s ease-in-out infinite alternate}
 @keyframes hito-paso{from{transform:translateY(0)}to{transform:translateY(-2.5%)}}
+.teatro-cielo.ancho{width:min(82vw,1180px)}
+.teatro-cielo.ancho .cap-titulo{white-space:nowrap}
+.teatro-cielo.ancho .cielo-bloque .cuento{max-width:none;margin-left:auto;margin-right:auto;font-size:clamp(.9rem,1.05vw,1.08rem);line-height:1.5;margin-bottom:.35em}
+@media (max-width:860px){.teatro-cielo.ancho{width:auto}.teatro-cielo.ancho .cap-titulo{white-space:normal}}
