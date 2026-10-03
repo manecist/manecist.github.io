@@ -1459,3 +1459,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.una.acostado .pag.pag-der:has(.pagina-pop){background-size:cover!important;background-position:center!important}
 .libro.acostado .hoja-der .hoja-cara.hoja-dorso:has(.pagina-pop),.libro.acostado .hoja-izq .hoja-cara.hoja-frente:has(.pagina-pop){background-position:0 0!important}
 .libro.acostado .hoja-izq .hoja-cara.hoja-dorso:has(.pagina-pop),.libro.acostado .hoja-der .hoja-cara.hoja-frente:has(.pagina-pop){background-position:calc(var(--pw) * -1) 0!important}
+
+/* las esferas vuelan por JS (órbita alrededor del libro); aquí solo titilan al llegar */
+.cielo-lado li.escribe > span:not(.ch){animation:titila 3s ease-in-out var(--base) infinite!important;margin:0!important;will-change:transform}
+.cielo-lado li > span.esfera-vuela{background:radial-gradient(circle,#fff 0 18%,rgba(255,220,245,.95) 30%,rgba(201,166,255,.6) 55%,transparent 72%)!important;box-shadow:0 0 26px 10px rgba(255,190,240,.75),0 0 60px 20px rgba(160,140,255,.35)!important}
