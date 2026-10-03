@@ -275,11 +275,11 @@
     posarHada();
   }
 
-  // seis dibujos: el dragón aislado, cuatro etapas y el emblema rosado de la portada
-  const FOTOGRAMAS = [0, 1, 2, 3, 4, 5].map(i => `assets/portada/dragon-logo-${i}.webp`), PAUSAS = [420, 300, 300, 300, 300];
+  // el emblema final; la transformación lo va descubriendo por partes (cabeza → anillo → mundo que crece del libro)
+  const EMBLEMA = 'assets/portada/dragon-logo-5.webp';
   // el dragón rosa vuela desde la izquierda, se posa sobre la portada y se convierte en el emblema
   async function dragonPortada() {
-    FOTOGRAMAS.forEach(src => { new Image().src = src; });   // precarga para que la transformación no parpadee
+    new Image().src = EMBLEMA;   // precarga para que la transformación no parpadee
     const emblema = libro.querySelector('.tapa-emblema');
     if (quieto || !emblema) { libro.classList.remove('espera-emblema'); return; }
     const d = document.createElement('div'); d.className = 'dragon-portada'; d.setAttribute('aria-hidden', 'true');
@@ -306,25 +306,48 @@
     d.classList.add('posado');
     await espera(650);
     if (abierto) { d.remove(); return; }
-    // brilla y se funde con el primer dibujo; luego se transforma, etapa por etapa, en el emblema
+    // brilla, vuela a su lugar y se encoge hasta ser la cabeza del emblema
     d.classList.add('brilla');
-    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    if (window.Magia) Magia.chispas(cx, cy, { n: 50, vel: 4 });
+    const cx = r.left + r.width * .484, cy = r.top + r.height * .514, R = r.width * .36;
+    if (window.Magia) Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 30, vel: 3 });
     await espera(380);
     if (abierto) { d.remove(); return; }
     const caja = document.createElement('span'); caja.className = 'tapa-transforma'; caja.setAttribute('aria-hidden', 'true');
     Object.assign(caja.style, { left: emblema.offsetLeft + 'px', top: emblema.offsetTop + 'px', width: emblema.offsetWidth + 'px', height: emblema.offsetHeight + 'px' });
-    const fotos = FOTOGRAMAS.map(src => { const im = new Image(); im.src = src; im.alt = ''; caja.append(im); return im; });
+    const capa = clase => { const im = new Image(); im.src = EMBLEMA; im.alt = ''; im.className = clase; caja.append(im); return im; };
+    const cabeza = capa('tf-cabeza'), mundo = capa('tf-mundo');
+    const aro = document.createElement('span'); aro.className = 'tf-aro'; caja.append(aro);   // el aro (fuera del círculo interior) y dentro el barrido del cuerpo
+    const anillo = capa('tf-anillo'); aro.append(anillo);
     emblema.parentElement.append(caja);
-    fotos[0].classList.add('ve'); d.classList.add('se-va');
-    for (let i = 1; i < fotos.length; i++) {
-      await espera(PAUSAS[i - 1]);
-      if (abierto) { caja.remove(); d.remove(); return; }
-      fotos[i].classList.add('ve'); fotos[i - 1].classList.add('sale');
-      if (window.Magia) Magia.chispas(cx, cy, { n: i === fotos.length - 1 ? 60 : 16, vel: i === fotos.length - 1 ? 5 : 2.6 });
-    }
-    await espera(700);
+    const hx = r.left + r.width * .695, hy = r.top + r.height * .258;
+    d.style.transition = 'transform .75s cubic-bezier(.5,0,.3,1), opacity .45s ease .4s, filter .5s';
+    d.style.transform = `translate(${hx - 127}px,${hy - 120}px) scale(${-esc * .3},${esc * .3})`;
+    await espera(520);
+    if (abierto) { caja.remove(); d.remove(); return; }
+    cabeza.classList.add('ve'); d.classList.add('se-va');
+    if (window.Magia) Magia.chispas(hx, hy, { n: 26, vel: 3 });
+    await espera(380);
+    // desde la cabeza, el cuerpo del dragón se va dibujando y cierra el anillo (con el nombre del estudio)
+    const animar = (dur, cada) => new Promise(fin => { const t0 = performance.now(); (function paso(ahora) { if (abierto) { fin(); return; } const t = Math.min(1, (ahora - t0) / dur); cada(t); if (t < 1) requestAnimationFrame(paso); else fin(); })(t0); });
+    const POLVO = ['#ff8fc0', '#ffd9ea', '#f3d48a', '#fff'];
+    await animar(1700, t => {
+      const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2, giro = e * 254;
+      anillo.style.setProperty('--giro', giro.toFixed(1) + 'deg');
+      const a = (25 - giro) * Math.PI / 180;
+      if (window.Magia && Math.random() < .8) Magia.estela(cx + R * Math.sin(a), cy - R * Math.cos(a), { n: 2, colores: POLVO });
+    });
+    if (abierto) { caja.remove(); d.remove(); return; }
+    // del libro abierto crece el mundo: el árbol, el castillo, la cordillera, el sol y la luna
+    if (window.Magia) Magia.chispas(cx, r.top + r.height * .87, { n: 24, vel: 3, colores: POLVO });
+    await animar(1500, t => {
+      const e = 1 - Math.pow(1 - t, 2);
+      mundo.style.setProperty('--crece', (e * 88).toFixed(1) + '%');
+      if (window.Magia && Math.random() < .5) { const ang = Math.random() * Math.PI, rr = e * r.width * .7; Magia.estela(r.left + r.width * .5 + Math.cos(ang) * rr * .5, r.top + r.height * .87 - Math.sin(ang) * rr * .5, { n: 1, colores: POLVO }); }
+    });
+    if (abierto) { caja.remove(); d.remove(); return; }
+    if (window.Magia) Magia.chispas(cx, cy, { n: 60, vel: 5 });
     libro.classList.remove('espera-emblema');   // el emblema de la tapa ya es el logo rosado
+    await espera(400);
     caja.remove(); d.remove();
   }
 
