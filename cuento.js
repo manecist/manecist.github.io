@@ -220,13 +220,10 @@
     ['etapa-05', '20–22 años', 'Matrona: balayage y uniforme rojo de puntitos.'],
     ['etapa-06', '23–25 años', 'Platinada, enseñando clínica a sus alumnas.'],
     ['etapa-07', '26–28 años', 'Puntas fucsia y uniforme de estrellas.'],
-    ['etapa-08', '28 años', 'Vuelve el café… y empieza otro sueño.'],
     ['etapa-09', '29 años', 'Programadora de noches largas en Java.'],
     ['etapa-10', '30 años', 'Streamer en ArianesDCoen junto a Coen.'],
     ['etapa-11', '31 años', 'Creadora de mundos: vuelven sus ondas naturales.'],
     ['etapa-12', 'Hoy', 'Ilustradora con su tableta rosada.'],
-    ['etapa-13', 'Hoy', 'Feliz, con su estilo de siempre.'],
-    ['etapa-14', 'Hoy', 'Lila por sobre todo.'],
     ['etapa-15', 'Hoy · 32 años', 'Ari: fundadora de Studios Conari. ¡Y la historia sigue!']
   ];
   // cada etapa camina de verdad: una tira con un ciclo completo de caminata (sacado de video)
@@ -260,9 +257,9 @@
   VIDA.forEach(([s]) => { const i = new Image(); i.onload = () => { cuadrosDe[s] = Math.max(1, Math.round(i.naturalWidth / (i.naturalHeight * .8))); }; i.src = tiraDe(s); });
   const AMB = n => 'assets/cuento/cap2/' + n + '.webp';
   // ambiente de cada etapa: g01..g11 (fondo = gNN-fondo, objetos = gNN-1..3)
-  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05e', 'g05f', 'g06b', 'g07b', 'g08', 'g09', 'g10', 'g12', 'g13', 'g11'];
+  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05e', 'g05f', 'g07b', 'g08', 'g09', 'g10', 'g11'];
   // ambientes al aire libre: ahí sí va el pasto delante
-  const AFUERA = ['g05f', 'g09', 'g11', 'g12', 'g13'];
+  const AFUERA = ['g05f', 'g09', 'g11'];
   // al salir del capítulo II el piso vuelve al de la primera etapa (para la próxima vez que se gire hacia él)
   window.addEventListener('cuento-paginas', e => { if (!e.detail.paginas.some(p => p.classList.contains('pagina-camino-vida'))) { document.getElementById('libro')?.style.removeProperty('--suelo-vida'); document.querySelectorAll('.vida-suelo i').forEach((c, i) => { c.classList.toggle('ver', !i); if (!i) c.style.backgroundImage = 'url("' + AMB('g01-suelo') + '")'; }); } });
   [...new Set(GRUPO)].forEach(g => ['fondo', 'suelo', 1, 2, 3].forEach(k => { const i = new Image(); i.src = AMB(g + '-' + k); }));
