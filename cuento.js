@@ -122,6 +122,7 @@
   window.MCENarrador = { decir, callar, get activo() { return narrando && !!voz; } };
 
   /* ------------------------------------------------------------ escenas */
+  document.querySelectorAll('.pagina-pop[data-suelo]').forEach(p => p.style.setProperty('--suelo', 'url("' + p.dataset.suelo + '")'));
   const ESCENAS = [];
   const escena = (sel, fn) => ESCENAS.push([sel, fn]);
   // pop-up: los recortes se acuestan de golpe sobre la hoja y, ya con la página quieta, se levantan uno tras otro
@@ -330,62 +331,84 @@
     rango.oninput = () => { pausa = true; detener(el); play.textContent = '▶'; el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita'); mostrar(Number(rango.value), false); };
   });
 
-  // III · las huellas se actúan: cada hito es una escena pop-up donde Ari hace lo que cuenta el cartel.
-  // Los actores son hojas de cuadros (de videos con fondo verde); cada paso reproduce un tramo entre dos marcas.
-  const C3 = n => n.startsWith('assets/') ? n : 'assets/cuento/cap3/' + n;
-  // alto: altura del actor en % del ancho del pliego (así todos quedan a la misma escala); x: centro en %
-  const HITOS = [
-    { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
-      { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
-      { actor: 'muro', x: 76, ancho: 21, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
-      { actor: 'pac', camina: [0, 1], desde: 93, x: 80, ancho: 14.5, ms: 3400, delante: true },   // una paciente llega caminando desde la derecha…
-      { actor: 'pac', de: 2, a: 3, ms: 3000 }                                       // …saca uno del dispensador y sonríe
+  // ✦ Escenarios pop-up: cada pliego acostado tiene una o varias escenas (fondo + piso + actores que se levantan).
+  // Los actores son hojas de cuadros (videos Wan con fondo verde, recortados) o imágenes fijas; cada paso los hace actuar.
+  // alto: altura del actor en % del ancho del pliego (todos a la misma escala); x: centro en %; desde: entra caminando desde ahí.
+  const ESCENARIOS = {
+    iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
+      { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
+        { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
+        { actor: 'muro', x: 76, ancho: 21, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
+        { actor: 'pac', camina: [0, 1], desde: 93, x: 80, ancho: 14.5, ms: 3400, delante: true },   // una paciente llega caminando desde la derecha…
+        { actor: 'pac', de: 2, a: 3, ms: 3000 }                                       // …saca uno del dispensador y sonríe
+      ] },
+      { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
+        { actor: 'edu', x: 28, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
+      ] },
+      { fondo: 'fondo-plaza.webp', suelo: 'suelo-plaza.webp', pasos: [
+        { actor: 'abr', x: 56, alto: 19, de: 0, a: 1, ms: 4500 }                      // al centro: un transeúnte llega y la abraza
+      ] },
+      { fondo: 'fondo-biblioteca.webp', suelo: 'suelo-biblioteca.webp', pasos: [
+        { actor: 'tes', x: 27, alto: 17, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
+        { actor: 'par', x: 72, alto: 15, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
+      ] },
+      { fondo: 'fondo-box.webp', suelo: 'suelo-box.webp', pasos: [
+        { actor: 'pla', x: 44, alto: 18, de: 0, a: 1, ms: 4500 }                      // los papeles se vuelven planilla
+      ] },
+      { fondo: 'fondo-familia.webp', suelo: 'suelo-familia.webp', pasos: [
+        { actor: 'ccc', x: 64, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
+      ] },
+      { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
+        { actor: 'ssm', x: 36, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la izquierda: guía a las mujeres hacia el camión
+      ] }
     ] },
-    { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
-      { actor: 'edu', x: 28, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
-    ] },
-    { fondo: 'fondo-plaza.webp', suelo: 'suelo-plaza.webp', pasos: [
-      { actor: 'abr', x: 56, alto: 19, de: 0, a: 1, ms: 4500 }                      // al centro: un transeúnte llega y la abraza
-    ] },
-    { fondo: 'fondo-biblioteca.webp', suelo: 'suelo-biblioteca.webp', pasos: [
-      { actor: 'tes', x: 27, alto: 17, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
-      { actor: 'par', x: 72, alto: 15, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
-    ] },
-    { fondo: 'fondo-box.webp', suelo: 'suelo-box.webp', pasos: [
-      { actor: 'pla', x: 44, alto: 18, de: 0, a: 1, ms: 4500 }                      // los papeles se vuelven planilla
-    ] },
-    { fondo: 'fondo-familia.webp', suelo: 'suelo-familia.webp', pasos: [
-      { actor: 'ccc', x: 64, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
-    ] },
-    { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
-      { actor: 'ssm', x: 36, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la izquierda: guía a las mujeres hacia el camión
-    ] }
-  ];
+  };
+  const ruta = (esc, n) => n.startsWith('assets/') ? n : 'assets/cuento/' + esc.carpeta + n;
   const hojas = {};
-  const hojaDe = n => hojas[n] || (hojas[n] = fetch(C3(n + '.json')).then(r => r.json()).then(m => ({ ...m, marcas: m.marcas || [...Array(m.n).keys()] })));
-  // las hojas pesan: se cargan recién al llegar al capítulo, la primera huella antes que las demás
-  const precargar = () => HITOS.forEach((h, i) => setTimeout(() => { new Image().src = C3(h.fondo); new Image().src = C3(h.suelo); h.pasos.forEach(p => { hojaDe(p.actor); new Image().src = C3(p.actor + '.webp'); }); }, i * 700));
+  const hojaDe = src => hojas[src] || (hojas[src] = fetch(src.replace(/\.webp$/, '.json')).then(r => r.json()).then(m => ({ ...m, marcas: m.marcas || [...Array(m.n).keys()] })));
+  // las hojas pesan: se cargan recién al llegar al pliego, la primera escena antes que las demás
+  const precargar = esc => esc.hitos.forEach((h, i) => setTimeout(() => {
+    new Image().src = ruta(esc, h.fondo); new Image().src = ruta(esc, h.suelo);
+    h.pasos.forEach(p => { if (p.actor) { hojaDe(ruta(esc, p.actor + '.webp')); new Image().src = ruta(esc, p.actor + '.webp'); } else if (p.img) new Image().src = ruta(esc, p.img); });
+  }, i * 700));
   escena('[data-hitos]', el => {
-    precargar();
-    const zona = el.querySelector('.hitos-escena'), lis = [...el.closest('.pagina').querySelectorAll('.huellas > li')];
+    const esc = ESCENARIOS[el.dataset.hitos || 'iii']; if (!esc) return;
+    precargar(esc);
+    const pagina = el.closest('.pagina'), zona = el.querySelector('.hitos-escena'), lis = esc.textos === 'huellas' ? [...pagina.querySelectorAll('.huellas > li')] : [];
     const titulo = el.querySelector('.hito-titulo'), texto = el.querySelector('.hito-texto'), num = el.querySelector('.hito-num'), play = el.querySelector('.hito-play');
+    const total = esc.hitos.length;
     let h = -1, pausa = false, vuelta = 0, fondoActual = '';
     const actores = {};
+    const nombre = p => p.nombre || p.actor || p.img;
     const levantar = (im, d) => { im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); zona.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
     const plegar = n => { const a = n.nodeType ? n : actores[n]; if (!a) return; a.classList.add('pliega'); setTimeout(() => a.remove(), 900); if (!n.nodeType) delete actores[n]; };
+    const sacar = n => { const a = actores[n]; if (a) { a.remove(); delete actores[n]; } };   // sin plegarse: otro actor toma su lugar
     // un cuadro de la hoja; entre dos cuadros se funde (suaviza los saltos)
     const cuadro = (a, f) => {
-      const m = a._m, k = Math.max(0, Math.min(m.n - 1, Math.floor(f))), fr = f - k, filas = Math.ceil(m.n / m.cols);
+      const m = a._m; if (!m) return;
+      const k = Math.max(0, Math.min(m.n - 1, Math.floor(f))), fr = f - k, filas = Math.ceil(m.n / m.cols);
       const pos = j => ((j % m.cols) / Math.max(1, m.cols - 1) * 100) + '% ' + (Math.floor(j / m.cols) / Math.max(1, filas - 1) * 100) + '%';
       a.children[0].style.backgroundPosition = pos(k); a.children[1].style.backgroundPosition = pos(Math.min(m.n - 1, k + 1)); a.children[1].style.opacity = fr.toFixed(3);
     };
-    const actor = async (p, d) => {
-      if (actores[p.actor]) return actores[p.actor];
-      const m = await hojaDe(p.actor), a = document.createElement('div'); a._m = m; a._ancho = p.ancho ?? p.alto * m.w / m.h;
-      a.className = 'hito-pop hito-actor' + (p.delante ? ' delante' : ''); a.style.left = ((p.desde ?? p.x) - a._ancho / 2) + '%'; a.style.width = a._ancho + '%'; a.style.aspectRatio = m.w + ' / ' + m.h;
-      a.innerHTML = '<i></i><i></i>';
-      [...a.children].forEach(c => { c.style.backgroundImage = 'url(' + C3(p.actor + '.webp') + ')'; c.style.backgroundSize = (m.cols * 100) + '% ' + (Math.ceil(m.n / m.cols) * 100) + '%'; });
-      cuadro(a, m.marcas[p.camina ? p.camina[0] : p.de]); actores[p.actor] = a; levantar(a, d); return a;
+    const tam = src => new Promise(ok => { const i = new Image(); i.onload = () => ok({ w: i.naturalWidth, h: i.naturalHeight }); i.onerror = () => ok({ w: 1, h: 1 }); i.src = src; });
+    const actor = async (p, d, sinPliegue) => {
+      const n = nombre(p); if (actores[n]) return actores[n];
+      const a = document.createElement('div');
+      let w, hh;
+      if (p.actor) {
+        const m = await hojaDe(ruta(esc, p.actor + '.webp')); a._m = m; w = m.w; hh = m.h; a.innerHTML = '<i></i><i></i>';
+        [...a.children].forEach(c => { c.style.backgroundImage = 'url(' + ruta(esc, p.actor + '.webp') + ')'; c.style.backgroundSize = (m.cols * 100) + '% ' + (Math.ceil(m.n / m.cols) * 100) + '%'; });
+      } else {
+        const t = await tam(ruta(esc, p.img)); w = t.w; hh = t.h; a.classList.add('hito-fija');
+        a.innerHTML = '<img alt="" src="' + ruta(esc, p.img) + '">' + (p.linea ? '<img class="hito-linea" alt="" src="' + ruta(esc, p.linea) + '">' : '');
+      }
+      a._ancho = p.ancho ?? p.alto * w / hh;
+      a.classList.add('hito-pop', 'hito-actor'); if (p.delante) a.classList.add('delante'); if (p.fila) a.classList.add('fila-' + p.fila); if (p.clase) a.classList.add(...p.clase.split(' '));
+      a.style.left = ((p.desde ?? p.x) - a._ancho / 2) + '%'; a.style.width = a._ancho + '%'; a.style.aspectRatio = w + ' / ' + hh;
+      if (a._m) cuadro(a, a._m.marcas[p.camina ? p.camina[0] : (p.de ?? 0)]);
+      actores[n] = a;
+      if (sinPliegue) { a.classList.add('ya'); zona.append(a); } else levantar(a, d);
+      return a;
     };
     const tramo = (a, de, al, ms, mia) => new Promise(fin => {
       const t0 = performance.now();
@@ -393,7 +416,7 @@
       if (quieto) { cuadro(a, al); fin(true); } else requestAnimationFrame(paso);
     });
     const caminar = (a, p, mia) => new Promise(fin => {
-      const m = a._m, c0 = m.marcas[p.camina[0]], c1 = m.marcas[p.camina[1]], t0 = performance.now(), CICLO = 1000;
+      const m = a._m, c0 = m ? m.marcas[p.camina[0]] : 0, c1 = m ? m.marcas[p.camina[1]] : 0, t0 = performance.now(), CICLO = 1000;
       a.classList.add('camina'); a.classList.toggle('camina-fija', c1 <= c0);
       const paso = t => {
         if (mia !== vuelta || !a.isConnected) { fin(false); return; }
@@ -404,32 +427,55 @@
       };
       if (quieto) { a.style.left = (p.x - a._ancho / 2) + '%'; fin(true); } else requestAnimationFrame(paso);
     });
+    // imagen que se dibuja sola: primero la línea (de arriba hacia abajo) y luego el color
+    const dibujar = (a, ms, mia) => new Promise(fin => {
+      a.style.setProperty('--dur', ms + 'ms'); a.classList.add('dibuja');
+      luego(() => { a.classList.add('colorea'); luego(() => fin(mia === vuelta), ms * .5); }, ms * .65);
+    });
     const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms));
-    const suelo = src => { const capas = zona.querySelectorAll('.hitos-suelo i'), nueva = [...capas].find(c => !c.classList.contains('ver')) || capas[0]; nueva.style.backgroundImage = 'url("' + C3(src) + '")'; capas.forEach(c => c.classList.toggle('ver', c === nueva)); };
+    const suelo = src => { const capas = zona.querySelectorAll('.hitos-suelo i'), nueva = [...capas].find(c => !c.classList.contains('ver')) || capas[0]; nueva.style.backgroundImage = 'url("' + ruta(esc, src) + '")'; capas.forEach(c => c.classList.toggle('ver', c === nueva)); };
+    const cartel = (n, H) => {
+      const li = lis[n], t = H.titulo ?? (li ? li.querySelector('b').textContent : ''), x = H.texto ?? (li ? li.querySelector('span').textContent : '');
+      if (titulo) titulo.textContent = t; if (texto) texto.textContent = x;
+      if (num) num.textContent = (n + 1) + ' / ' + total;
+    };
     const mostrar = async n => {
-      h = n; const mia = ++vuelta, H = HITOS[Math.min(n, HITOS.length - 1)], li = lis[n];
+      h = n; const mia = ++vuelta, H = esc.hitos[Math.min(n, total - 1)];
       el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita');
-      titulo.textContent = li ? li.querySelector('b').textContent : ''; texto.textContent = li ? li.querySelector('span').textContent : '';
-      num.textContent = (n + 1) + ' / ' + lis.length;
+      cartel(n, H);
       Object.keys(actores).forEach(plegar);
-      if (H.fondo !== fondoActual) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = H.fondo; const f = document.createElement('img'); f.src = C3(H.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .05); suelo(H.suelo); }
+      if (H.fondo !== fondoActual) {
+        zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = H.fondo;
+        const f = document.createElement('img'); f.src = ruta(esc, H.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .05); suelo(H.suelo);
+      }
       if (!(await espera(900, mia))) return;
       for (const p of H.pasos) {
-        if (p.quita) { plegar(p.quita); if (!(await espera(500, mia))) return; }
-        const a = await actor(p, .1);
-        if (!(await espera(actores[p.actor] === a && a.dataset.listo ? 300 : 1100, mia))) return;
-        a.dataset.listo = '1';
-        if (!(await (p.camina ? caminar(a, p, mia) : tramo(a, a._m.marcas[p.de], a._m.marcas[p.a], p.ms, mia)))) return;
-        if (!(await espera(1300, mia))) return;
+        if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
+        if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; }
+        if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
+        if (!nombre(p)) { if (!(await espera(p.ms || 600, mia))) return; continue; }
+        const nuevo = !actores[nombre(p)];
+        const a = await actor(p, p.d ?? .1, !!p.reemplaza);
+        if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
+        if (!(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;
+        if (p.efecto) a.classList.add(p.efecto);
+        let ok;
+        if (p.camina) ok = await caminar(a, p, mia);
+        else if (p.linea) ok = await dibujar(a, p.ms || 3000, mia);
+        else if (a._m && p.a != null) ok = await tramo(a, a._m.marcas[p.de ?? 0], a._m.marcas[p.a], p.ms, mia);
+        else ok = await espera(p.ms || 600, mia);
+        if (!ok) return;
+        if (!(await espera(p.pausa ?? 1300, mia))) return;
       }
       if (!(await espera(1800, mia))) return;
       if (pausa) return;
-      if (h + 1 < Math.min(lis.length, HITOS.length)) mostrar(h + 1);
+      if (h + 1 < total) mostrar(h + 1);
       else { el.classList.add('llego'); document.getElementById('libro')?.classList.add('invita'); }
     };
-    el.querySelector('.hito-ant').onclick = () => { if (h > 0) mostrar(h - 1); };
-    el.querySelector('.hito-sig').onclick = () => { if (h + 1 < Math.min(lis.length, HITOS.length)) mostrar(h + 1); };
-    play.onclick = () => { pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir' : 'Pausar'); if (!pausa && el.classList.contains('llego')) mostrar(0); };
+    const ant = el.querySelector('.hito-ant'), sig = el.querySelector('.hito-sig');
+    if (ant) ant.onclick = () => { if (h > 0) mostrar(h - 1); };
+    if (sig) sig.onclick = () => { if (h + 1 < total) mostrar(h + 1); };
+    if (play) play.onclick = () => { pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir' : 'Pausar'); if (!pausa && el.classList.contains('llego')) mostrar(0); };
     // al abrir: el pliego se despliega cuando el libro ya se acostó
     zona.querySelectorAll('.hito-pop').forEach(p => p.remove()); Object.keys(actores).forEach(k => delete actores[k]);
     el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : 1250);
@@ -552,7 +598,7 @@
     const cielo = document.createElement('div'); cielo.className = 'teatro-cielo';
     $('#libro').before(cielo);
     let enCielo = [];
-    const COLGAR = '.botonera, .vida-cartel, .vida-controles';
+    const COLGAR = '.botonera, .vida-cartel, .vida-controles, .colgar, .colgar-app';
     const ESCRIBIR = '.cap-num, .cap-titulo, .cuento';
     let colgados = [], turno = 0;
     // cada letra en su propia cajita (una sola vez por elemento); se respetan negritas y la letra capital
@@ -652,7 +698,18 @@
         c.style.setProperty('--i', i); c.style.setProperty('--hilo', (6 + ((i * 29) % 34)) + 'px'); i++;
         const padre = marca.parentElement;
         if (/^(UL|OL)$/.test(padre.tagName)) { const w = document.createElement(padre.tagName); w.className = padre.className; w.append(el); c.append(w); } else c.append(el);
-        zonas[zonas.length - 1].append(c); colgados.push({ el, marca });
+        if (el.classList.contains('colgar-app')) {
+          c.classList.add('colgante-app', 'arriba');
+          const tab = document.createElement('button'); tab.type = 'button'; tab.className = 'app-pestana';
+          const nom = el.dataset.app || 'la aplicación';
+          const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ Usar ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
+          tab.addEventListener('click', () => { c.classList.toggle('arriba'); rotular(); });
+          c._rotular = rotular; rotular(); c.append(tab);
+          let centro = teatro.querySelector('.teatro-app');
+          if (!centro) { centro = document.createElement('div'); centro.className = 'teatro-app'; teatro.append(centro); }
+          centro.append(c);
+        } else zonas[zonas.length - 1].append(c);
+        colgados.push({ el, marca });
       }));
       requestAnimationFrame(() => requestAnimationFrame(() => teatro.classList.add('baja')));
     };
@@ -663,6 +720,7 @@
       if (inmediato || quieto) devolver(); else setTimeout(devolver, 650);
     };
     window.addEventListener('cuento-levanta', () => { descolgar(); bajarDelCielo(); borrarEscritura(); });
+    window.addEventListener('cuento-app', e => { teatro.querySelectorAll('.colgante-app').forEach(c => { c.classList.toggle('arriba', !e.detail.abrir); c._rotular && c._rotular(); }); });
     window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
       const ps = e.detail.paginas, pop = ps.some(p => p.classList.contains('pagina-pop'));
