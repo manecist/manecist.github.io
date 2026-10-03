@@ -247,7 +247,7 @@
         // fuera del tramo: en un pliego ancho lo muestra la otra copia; en una página suelta (recorte que invade la vecina) se aplasta antes de que pase la hoja
         let rapido = false;
         // fondo que cruza el centro de un pliego ancho: lo mueve la página fija como bisagra (en la hoja no se muestra)
-        const ancho = x0 < .5 - .05 && x1 > .5 + .05 && (x1 - x0) > .5;
+        const ancho = x0 < .5 - .005 && x1 > .5 + .005;   // todo recorte que cruza el centro se dobla en V (no solo los fondos)
         if (ancho && (b - a < 1)) {
           if (cara) { el.style.visibility = 'hidden'; return; }
           const cr = ((.5 - x0) / (x1 - x0)) * 100, gemelo = el.cloneNode(true);
