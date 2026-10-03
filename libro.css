@@ -1409,3 +1409,10 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.acostado:not(.una) .probador-s1{left:15%;width:20%;bottom:14%}.libro.acostado:not(.una) .probador-s2{right:15%;width:20%;bottom:14%}
 .libro.acostado:not(.una) .probador-s3{left:1%;width:14%;bottom:32%}.libro.acostado:not(.una) .probador-s4{right:1%;width:14%;bottom:32%}
 .libro.una .probador-s1{left:-4%;width:34%}.libro.una .probador-s2{right:-4%;width:34%}
+/* solo dos sakuras, grandes, junto a Ari; su pasto queda delante y tapa las raíces */
+.libro.acostado:not(.una) .probador-s1{left:13%;width:27%;bottom:16%}
+.libro.acostado:not(.una) .probador-s2{right:13%;width:27%;bottom:16%}
+.libro.acostado:not(.una) .pasto-medio{width:30%;bottom:12%}
+.libro.acostado:not(.una) .pm1{left:11%}.libro.acostado:not(.una) .pm2{left:59%}
+.libro.una .probador-s1{left:-6%;width:40%;bottom:16%}.libro.una .probador-s2{right:-6%;width:40%;bottom:16%}
+.libro.una .pasto-medio{width:44%;bottom:12%}.libro.una .pm1{left:-4%}.libro.una .pm2{left:60%}
