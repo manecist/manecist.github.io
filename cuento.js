@@ -340,10 +340,13 @@
       { fondo: 'fondo-noche.webp', suelo: 'suelo-noche.webp', titulo: 'Las 2 de la mañana', texto: '…y un error más.', pasos: [
         { actor: 'cama', x: 34, alto: 15, de: 0, a: 1, ms: 4500 },                                         // a la izquierda: programa en la cama… y se duerme
         { texto: { titulo: 'z z z…', texto: 'Se quedó dormida estudiando.' }, ms: 900 },
-        { actor: 'coen', camina: [0, 1], desde: 92, x: 51, alto: 16, ms: 3800, delante: true,
+        { actor: 'coen', camina: [0, 1], desde: 92, x: 47, alto: 16, ms: 3800, delante: true, pausa: 0,
           texto: { titulo: 'Y cada mañana…', texto: 'Coen llegaba con un café.' } },                        // Coen llega caminando con el café
-        { actor: 'coen', de: 2, a: 3, ms: 2600, pausa: 200 },                                               // se lo ofrece…
-        { actor: 'cama', de: 1, a: 2, ms: 3500, texto: { titulo: '«Despierta, que vas a lograrlo» ☕', texto: '' } },   // …y ella despierta con el café en la mano
+        { actor: 'coen', de: 1, a: 2, ms: 450, pausa: 0, sigue: true },                                      // sin detenerse, le extiende la taza
+        { actor: 'cama', de: 1, a: 2, ms: 3500, junto: true, sigue: true, texto: { titulo: '«Despierta, que vas a lograrlo» ☕', texto: '' } },   // ella despierta y se estira mientras él sostiene el café…
+        { actor: 'coen', de: 2, a: 3, ms: 2700, pausa: 0, sigue: true },
+        { actor: 'coen', de: 3, a: 4, ms: 450, pausa: 0, sigue: true },                                      // …y justo cuando ella tiene el café en la mano, él ya no lo tiene
+        { actor: 'coen', de: 4, a: 5, ms: 1800 },                                                            // y se rasca la cabeza, tímido
         { app: true, ms: 400 }                                                                              // baja la calculadora
       ] }
     ] },
@@ -491,8 +494,8 @@
         { actor: 'disp', x: 50, alto: 16, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
         { actor: 'muro', x: 74, alto: 17, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
         { actor: 'pac', camina: [0, 1], desde: 92, x: 82, alto: 16.5, ms: 3400, delante: true, pausa: 0 },   // una paciente llega caminando desde la derecha…
-        { actor: 'pac', de: 1, a: 2, ms: 450, pausa: 0 },                             // …y sin detenerse pasa de la caminata a estirar la mano (fundido)
-        { actor: 'pac', de: 2, a: 3, ms: 3000 }                                       // …saca uno del dispensador y sonríe
+        { actor: 'pac', de: 1, a: 2, ms: 450, pausa: 0, sigue: true },                             // …y sin detenerse pasa de la caminata a estirar la mano (fundido)
+        { actor: 'pac', de: 2, a: 3, ms: 3000, sigue: true }                                       // …saca uno del dispensador y sonríe
       ] },
       { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
         { actor: 'edu', x: 28, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
@@ -619,12 +622,12 @@
         const nuevo = !actores[nombre(p)];
         const a = await actor(p, p.d ?? .1, !!p.reemplaza);
         if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
-        if (!(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;
+        if (!(nuevo ? false : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;   // sigue: encadenado al paso anterior, sin respiro
         if (p.efecto) a.classList.add(p.efecto);
         if (p.abre && !a.dataset.abre) { a.dataset.abre = p.abre; a.classList.add('clicable'); a.addEventListener('click', () => window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.abre } }))); }
         if (p.rotulo && !a.querySelector('.hito-rotulo')) { const r = document.createElement('span'); r.className = 'hito-rotulo'; r.textContent = p.rotulo; a.append(r); }
         let ok;
-        if (p.junto) { if (p.camina) caminar(a, p, mia); await espera(120, mia); continue; }
+        if (p.junto) { if (p.camina) caminar(a, p, mia); else if (a._m && p.a != null) tramo(a, a._m.marcas[p.de ?? 0], a._m.marcas[p.a], p.ms, mia); if (!p.sigue) await espera(120, mia); continue; }   // junto: corre a la par del paso siguiente
         if (p.mueve != null) ok = await new Promise(fin => { a.style.transition = 'left ' + (p.ms || 1200) + 'ms cubic-bezier(.45,0,.3,1)'; a.style.left = (p.mueve - a._ancho / 2) + '%'; luego(() => { a.style.transition = ''; fin(mia === vuelta); }, p.ms || 1200); });
         else if (p.camina) ok = await caminar(a, p, mia);
         else if (p.linea) ok = await dibujar(a, p.ms || 3000, mia);
