@@ -230,10 +230,16 @@
       if (!pag || !pag.classList.contains('pagina-pop')) return;
       // el piso de las páginas con escenario viaja con la cara de la hoja
       if (cara) { const suelo = pag.style.getPropertyValue('--suelo'), f = cara === 'frente' ? frente : dorso; if (suelo) { f.style.setProperty('background-image', suelo, 'important'); f.style.setProperty('background-size', (b - a < 1 ? '200%' : '100%') + ' 100%', 'important'); f.style.setProperty('background-position', (a >= .5 ? '100%' : '0') + ' 0', 'important'); } }
+      // la copia bajo la hoja no se recorta (eso aplanaría sus recortes): el piso de su mitad lo pinta la página que la contiene
+      if (pag.classList.contains('clon-bajo')) { const caja = pag.parentElement, suelo = pag.style.getPropertyValue('--suelo') || getComputedStyle(pag).backgroundImage; if (caja && suelo && suelo !== 'none') { caja.style.setProperty('background-image', suelo, 'important'); caja.style.setProperty('background-size', '200% 100%', 'important'); caja.style.setProperty('background-position', (a >= .5 ? '100%' : '0') + ' 0', 'important'); caja.dataset.pisoGiro = '1'; } }
       const W = pag.offsetWidth || 1;
+      if (grupo === 'B' && window.MCEFondoInicial) {
+        const info = window.MCEFondoInicial(pag);   // { src, clase, contenedor }
+        if (info) { const caja = pag.querySelector(info.contenedor); if (caja && !caja.querySelector('.giro-fondo')) { const im = document.createElement('img'); im.src = info.src; im.alt = ''; im.className = info.clase + ' giro-fondo'; caja.append(im); } }
+      }
       pag.querySelectorAll(PIEZAS).forEach(el => {
         // los recortes que se crean al llegar (escenarios y ambientes) se levantan solos después: aquí no se muestran
-        if (grupo === 'B' && (el.classList.contains('hito-pop') || el.classList.contains('amb'))) { el.style.visibility = 'hidden'; return; }
+        if (grupo === 'B' && (el.classList.contains('hito-pop') || el.classList.contains('amb')) && !el.classList.contains('giro-fondo')) { el.style.visibility = 'hidden'; return; }
         let x = 0, e = el; while (e && e !== pag) { x += e.offsetLeft; e = e.offsetParent; }
         const x0 = x / W, x1 = (x + el.offsetWidth) / W;
         // fuera del tramo: en un pliego ancho lo muestra la otra copia; en una página suelta (recorte que invade la vecina) se aplasta antes de que pase la hoja
@@ -241,7 +247,10 @@
         if (x1 <= a + .002 || x0 >= b - .002) { if (b - a < 1) { el.style.visibility = 'hidden'; return; } rapido = true; }
         if (x0 < a || x1 > b) { const L = Math.max(0, (a - x0) / (x1 - x0)) * 100, Rr = Math.max(0, (x1 - b) / (x1 - x0)) * 100; el.style.clipPath = 'inset(0 ' + Rr.toFixed(2) + '% 0 ' + L.toFixed(2) + '%)'; }
         el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
-        piezas.push({ el, grupo, cara, rapido });
+        // si cruza el centro, su doblez queda justo en el pliegue del libro (las dos mitades giran unidas por ahí)
+        const cruza = x0 < .5 && x1 > .5 && (b - a < 1);
+        if (cruza) el.style.transformOrigin = (((.5 - x0) / (x1 - x0)) * 100).toFixed(2) + '% 100%';
+        piezas.push({ el, grupo, cara, rapido, cruza });
       });
     });
     const suave = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -250,13 +259,18 @@
       const t = Math.min(1, (ahora - t0) / DUR_GIRO), th = 180 * suave(t), f = th / 180;
       hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
       piezas.forEach(({ el, grupo, cara, rapido }) => {
-        const g = rapido ? (grupo === 'A' ? Math.min(1, f / .35) : Math.max(0, (f - .65) / .35)) : f;
+        // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
+        // B: espera plano bajo la hoja y se para cuando la hoja ya se alejó (o, en el dorso, mientras la hoja baja).
+        const sube = c => Math.max(0, Math.min(1, c));
+        const g = rapido ? (grupo === 'A' ? sube(f / .35) : sube((f - .65) / .35)) : grupo === 'A' ? sube((th - 105) / 65) : sube(cara ? (th - 95) / 70 : (th - 60) / 75);
         el.style.transform = 'rotateX(' + (-90 * (grupo === 'A' ? 1 - g : g)).toFixed(2) + 'deg)';
         if (cara) el.style.visibility = (cara === 'frente') === (th < 90) ? 'visible' : 'hidden';   // la cara de abajo de la hoja no se ve
       });
       if (t < 1) { requestAnimationFrame(paso); return; }
       // al aterrizar: las páginas reales toman el lugar de las copias con sus recortes ya parados
-      piezas.forEach(({ el }) => { el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = ''; });
+      piezas.forEach(({ el }) => { el.style.transform = el.style.opacity = el.style.visibility = el.style.clipPath = el.style.transition = el.style.transformOrigin = ''; });
+      document.querySelectorAll('.giro-fondo').forEach(e => e.remove());
+      document.querySelectorAll('[data-piso-giro]').forEach(c => { c.style.removeProperty('background-image'); c.style.removeProperty('background-size'); c.style.removeProperty('background-position'); delete c.dataset.pisoGiro; });
       libro.classList.add('recien-girado');
       hoja.remove(); colocar(nuevo); animando = false;
       libro.classList.remove('giro-pop');

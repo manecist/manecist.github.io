@@ -272,7 +272,7 @@
     let k = -1, pausa = false, frente = a;
     detener(el);
     const ambiente = el.querySelector('.vida-ambiente'); let ambActual = -1, grupoActual = '';
-    const levantar = (im, d) => { im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); ambiente.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
+    const levantar = (im, d) => { if (document.getElementById('libro')?.classList.contains('recien-girado') && /fondo/.test(im.className)) { im.classList.add('ya'); (im.classList.contains('amb') ? el.querySelector('.vida-ambiente') : zona).append(im); return; } im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); ambiente.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
     const plegar = sel => [...ambiente.querySelectorAll(sel)].forEach(p => { p.classList.add('pliega'); setTimeout(() => p.remove(), 900); });
     // al cambiar de etapa: los objetos se pliegan y se levantan otros junto a Ari; el panorama de fondo cambia con el ambiente
     const ponerAmbiente = n => {
@@ -522,6 +522,12 @@
     if (h.fondo) new Image().src = ruta(esc, h.fondo); new Image().src = ruta(esc, h.suelo);
     h.pasos.forEach(p => { if (p.actor) { hojaDe(ruta(esc, p.actor + '.webp')); new Image().src = ruta(esc, p.actor + '.webp'); } else if (p.img) new Image().src = ruta(esc, p.img); });
   }, i * 700));
+  window.MCEFondoInicial = pag => {
+    const h = pag.querySelector('[data-hitos]');
+    if (h) { const esc = ESCENARIOS[h.dataset.hitos || 'iii']; const H = esc && esc.hitos[0]; return H && H.fondo ? { src: ruta(esc, H.fondo), clase: 'hito-pop hito-fondo', contenedor: '.hitos-escena' } : null; }
+    if (pag.querySelector('[data-vida]')) return { src: AMB(GRUPO[0] + '-fondo'), clase: 'vida-pop amb amb-fondo', contenedor: '.vida-ambiente' };
+    return null;
+  };
   escena('[data-hitos]', el => {
     const esc = ESCENARIOS[el.dataset.hitos || 'iii']; if (!esc) return;
     precargar(esc);
@@ -531,7 +537,7 @@
     let h = -1, pausa = false, vuelta = 0, fondoActual = '';
     const actores = {};
     const nombre = p => p.nombre || p.actor || p.img;
-    const levantar = (im, d) => { im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); zona.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
+    const levantar = (im, d) => { if (document.getElementById('libro')?.classList.contains('recien-girado') && /fondo/.test(im.className)) { im.classList.add('ya'); (im.classList.contains('amb') ? el.querySelector('.vida-ambiente') : zona).append(im); return; } im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); zona.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
     const plegar = n => { const a = n.nodeType ? n : actores[n]; if (!a) return; a.classList.add('pliega'); setTimeout(() => a.remove(), 900); if (!n.nodeType) delete actores[n]; };
     const sacar = n => { const a = actores[n]; if (a) { a.remove(); delete actores[n]; } };   // sin plegarse: otro actor toma su lugar
     // un cuadro de la hoja; entre dos cuadros se funde (suaviza los saltos)
@@ -637,7 +643,7 @@
     // al abrir: el pliego se despliega cuando el libro ya se acostó
     zona.querySelectorAll('.hito-pop').forEach(p => p.remove()); Object.keys(actores).forEach(k => delete actores[k]);
     const girado = document.getElementById('libro')?.classList.contains('recien-girado');
-    el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : girado ? 150 : 1250);
+    el.classList.remove('abierta'); if (girado) { el.classList.add('abierta'); mostrar(0); } else luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : 1250);
   });
 
   // IX · el análisis del oráculo: cruza edad, color y música, los dibuja a mano y saca una conclusión
@@ -992,7 +998,7 @@
           c._rotular = rotular; rotular(); c.append(tab);
           const ajustarApp = () => {
             el.style.zoom = ''; const disp = Math.min(innerHeight * .68, 720) - 20, alto = el.scrollHeight;
-            el.style.zoom = alto > disp ? Math.max(.55, disp / alto).toFixed(3) : '';
+            el.style.zoom = alto > disp ? Math.max(.4, disp / alto).toFixed(3) : '';
           };
           c._ajustar = ajustarApp; new ResizeObserver(() => requestAnimationFrame(ajustarApp)).observe(el);
           let centro = teatro.querySelector('.teatro-app');
