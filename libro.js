@@ -286,7 +286,7 @@
           const a = bisagra === 'L' ? d.map(v => -v) : d;                    // eje horizontal del dibujo
           // el pliegue queda siempre dentro del ángulo entre las dos páginas (en su bisectriz) y se inclina hacia la cámara al cerrarse
           const angHoja = dir > 0 ? th : 180 - th, angFija = (grupo === 'A') === (dir > 0) ? 180 : 0;   // la página fija: izquierda (180°) o derecha (0°)
-          const beta = (angHoja + angFija) / 2 * rad, tau = (grupo === 'A' ? th / 180 : 1 - th / 180) * 55 * rad;
+          const beta = (angHoja + angFija) / 2 * rad, tau = Math.pow(Math.min(1, (grupo === 'A' ? th : 180 - th) / 150), .8) * 90 * rad   /* se recuesta sobre su página: queda pegado a la hoja */;
           const c = [Math.cos(beta) * Math.cos(tau), Math.sin(tau), Math.sin(beta) * Math.cos(tau)], b = c.map(v => -v);
           let n = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
           const ln = Math.hypot(...n) || 1; n = n.map(v => v / ln);
