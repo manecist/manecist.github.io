@@ -461,10 +461,14 @@
     ] },
     logros: { carpeta: 'logros/', hitos: [
       { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', titulo: 'Logro desbloqueado', texto: 'Junio de 2026: Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/medalla.webp', x: 42, alto: 16, efecto: 'brilla', ms: 2600 },                      // Ari levanta su medalla en el podio
-        { nombre: 'stream', img: 'assets/cuento/escenas/stream.webp', x: 76, alto: 13, fila: 'medio', clase: 'cuadro', rotulo: 'ArianesDCoen · en pausa', ms: 2600,
-          texto: { titulo: 'ArianesDCoen', texto: 'Nuestro canal de streaming. Lo pausamos por los proyectos… ¡pero volveremos!' } },
-        { nombre: 'ari', efecto: 'salta', ms: 2400, texto: { titulo: 'Y sigo aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
+        { nombre: 'ari', img: 'assets/cuento/medalla.webp', x: 50, alto: 16, efecto: 'brilla', ms: 2800 },                       // Ari levanta su medalla en el podio
+        { nombre: 'ari', efecto: 'salta', ms: 2600, texto: { titulo: 'Y sigo aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
+      ] },
+      { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', titulo: 'ArianesDCoen', texto: 'Nuestro canal de streaming: videojuegos, risas y una comunidad que nos acompañaba.', pasos: [
+        { nombre: 'streamers', img: 'streamers.webp', x: 50, alto: 15, fila: 'medio', ms: 2400 },                                                  // Ari y Coen juegan en vivo
+        { nombre: 'publico', img: 'publico.webp', x: 50, alto: 7, clase: 'primer', efecto: 'salta', ms: 2600,
+          texto: { titulo: '¡En vivo!', texto: 'El público animaba con corazones y barras de luz.' } },                     // el público los anima
+        { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausamos por los proyectos… ¡pero volveremos!' }, ms: 2400 }
       ] }
     ] },
     cv: { carpeta: 'logros/', hitos: [

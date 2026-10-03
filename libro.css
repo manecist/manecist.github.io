@@ -1831,3 +1831,4 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* bajo la hoja que gira, el pliego que llega muestra solo su mitad: no se desborda sobre la página que se va */
 .clon-bajo.clon-mitad-der{clip-path:inset(0 0 0 50%)}
 .clon-bajo:not(.clon-mitad-der){clip-path:inset(0 50% 0 0)}
+.hito-actor.primer{bottom:6%}
