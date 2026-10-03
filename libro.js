@@ -260,7 +260,7 @@
     const r = objetivo.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
     // la punta de la varita (abajo a la izquierda del cuadro al lanzar) queda justo sobre la cabeza
     const x = r.left + r.width * .5 - w * .1, y = r.top - h * .7;
-    await volar(el, [m, [m[0] + 160, m[1] - 260], [x + 220, y - 140], [x, y]], quieto ? 0 : 1500);
+    await volar(el, [m, [m[0] + 160, m[1] - 260], [x + 220, y - 140], [x, y]], quieto ? 0 : 3200);
     el.classList.remove('vuela');
     await hada.hechizo(p => alTocar && alTocar(p));
     hadaEnVuelo = false;
