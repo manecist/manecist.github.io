@@ -233,7 +233,9 @@
     const w = el.offsetWidth, h = el.offsetHeight;
     const r = libro.getBoundingClientRect();
     const nav = $('#libro-nav').getBoundingClientRect();
-    const x = una ? 2 : (r.left > w * .9 ? r.left - w * .9 : 6), y = una ? innerHeight - h - 4 : (r.left > w * .9 ? r.bottom - h : innerHeight - h - 2);
+    const x = una ? 2 : (r.left > w * .9 ? r.left - w * .9 : 6);
+    // siempre dentro de la pantalla (con el libro acostado su borde inferior puede quedar más abajo)
+    const y = Math.min(innerHeight - h - 4, una ? innerHeight - h - 4 : (r.left > w * .9 ? r.bottom - h : innerHeight - h - 2));
     const m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, x, y]).slice(1).map(Number);
     volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200);
   }
@@ -242,9 +244,13 @@
   let hadaEnVuelo = false;
   async function hadaMagia(objetivo, alTocar) {
     const el = $('#hada-escena');
-    if (!el || !hada || hadaEnVuelo || hada.ocupada) { alTocar && alTocar(null); return; }
+    if (!el || hadaEnVuelo) { alTocar && alTocar(null); return; }
+    // si el libro se abrió sin pasar por la portada, el hada aún no existe: se crea y entra volando desde el costado
+    if (!hada) crearHada();
+    if (!hada || hada.ocupada) { alTocar && alTocar(null); return; }
     hadaEnVuelo = true;
-    const m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, 0, innerHeight]).slice(1).map(Number);
+    let m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, NaN, NaN]).slice(1).map(Number);
+    if (isNaN(m[0]) || m[0] > innerWidth || m[0] < -innerWidth) m = [-el.offsetWidth - 40, innerHeight * .45];
     el.classList.remove('posada'); el.classList.add('vuela');
     const r = objetivo.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
     // la punta de la varita (abajo a la izquierda del cuadro al lanzar) queda justo sobre la cabeza
