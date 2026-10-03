@@ -280,8 +280,10 @@
           const fija = bisagra === 'L' ? [-1, 0, 0] : [1, 0, 0];
           const d = mueve ? hoja : fija;
           const a = bisagra === 'L' ? d.map(v => -v) : d;                    // eje horizontal del dibujo
-          const tau = (grupo === 'A' ? th / 180 : 1 - th / 180) * 90 * rad;  // inclinación del pliegue hacia la cámara
-          const c = [0, Math.sin(tau), Math.cos(tau)], b = c.map(v => -v);    // eje vertical del dibujo (hacia arriba = c)
+          // el pliegue queda siempre dentro del ángulo entre las dos páginas (en su bisectriz) y se inclina hacia la cámara al cerrarse
+          const angHoja = dir > 0 ? th : 180 - th, angFija = (grupo === 'A') === (dir > 0) ? (dir > 0 ? 180 : 0) : (dir > 0 ? 0 : 180);
+          const beta = (angHoja + angFija) / 2 * rad, tau = (grupo === 'A' ? th / 180 : 1 - th / 180) * 55 * rad;
+          const c = [Math.cos(beta) * Math.cos(tau), Math.sin(tau), Math.sin(beta) * Math.cos(tau)], b = c.map(v => -v);
           let n = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
           const ln = Math.hypot(...n) || 1; n = n.map(v => v / ln);
           el.style.transform = 'matrix3d(' + [...a, 0, ...b, 0, ...n, 0, 0, 0, 0, 1].map(v => v.toFixed(4)).join(',') + ')';
