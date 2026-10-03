@@ -290,7 +290,8 @@
       }
       plegar('.amb-obj');
       // los 3 objetos se reparten parejo a lo ancho del libro, detrás de Ari y delante del panorama
-      [18, 50, 82].forEach((centro, j) => {
+      // en la última etapa Ari se queda a la derecha apuntando a la esquina: los objetos le dejan espacio
+      (n === VIDA.length - 1 ? [12, 36, 60] : [18, 50, 82]).forEach((centro, j) => {
         const im = document.createElement('img'); im.src = AMB(g + '-' + (j + 1)); im.alt = '';
         im.className = 'vida-pop amb amb-obj amb-atras';
         im.style.left = (centro - 8).toFixed(1) + '%';
@@ -315,7 +316,7 @@
     const avanzar = async () => {
       if (pausa || !document.body.contains(el)) return;
       const n = k + 1;
-      if (n >= VIDA.length) { detener(el); el.classList.add('llego'); play.textContent = '↻'; play.setAttribute('aria-label', 'Volver a caminar'); pausa = true; return; }
+      if (n >= VIDA.length) { detener(el); el.classList.add('llego'); document.getElementById('libro')?.classList.add('invita'); play.textContent = '↻'; play.setAttribute('aria-label', 'Volver a caminar'); pausa = true; return; }
       andar(el); const inicio = performance.now();
       await mostrar(n, true);
       // la próxima etapa llega justo cuando termina el tramo (si el narrador habló más, sigue de inmediato)
@@ -324,12 +325,12 @@
     el.classList.remove('llego'); play.textContent = '❚❚'; k = -1;
     mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); decir(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 5200); });
     play.onclick = () => {
-      if (el.classList.contains('llego')) { el.classList.remove('llego'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); andar(el); luego(avanzar, 1200); return; }
+      if (el.classList.contains('llego')) { el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); andar(el); luego(avanzar, 1200); return; }
       pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir caminando' : 'Pausar la caminata');
       if (pausa) detener(el);
       if (!pausa) luego(avanzar, 300);
     };
-    rango.oninput = () => { pausa = true; detener(el); play.textContent = '▶'; el.classList.remove('llego'); mostrar(Number(rango.value), false); };
+    rango.oninput = () => { pausa = true; detener(el); play.textContent = '▶'; el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita'); mostrar(Number(rango.value), false); };
   });
 
   // IV · noches de código: escenas que se suceden
