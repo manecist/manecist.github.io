@@ -996,11 +996,15 @@
           const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ ' + verbo + ' ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
           tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.add('mueve'); clearTimeout(o._mv); o._mv = setTimeout(() => o.classList.remove('mueve'), 1000); o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); });
           c._rotular = rotular; rotular(); c.append(tab);
+          // el cuadro entero (con su marco) se achica lo justo para caber entre el borde de arriba y la barra del libro
           const ajustarApp = () => {
-            el.style.zoom = ''; const disp = Math.min(innerHeight * .68, 720) - 20, alto = el.scrollHeight;
-            el.style.zoom = alto > disp ? Math.max(.4, disp / alto).toFixed(3) : '';
+            el.style.zoom = ''; c.style.scale = '';
+            const nav = document.getElementById('libro-nav'), techo = (c.parentElement ? c.parentElement.getBoundingClientRect().top : 0) + (parseFloat(getComputedStyle(c).marginTop) || 0);
+            const piso = nav && nav.offsetParent ? nav.getBoundingClientRect().top - 10 : innerHeight - 10;
+            const f = Math.min(1, (piso - techo) / Math.max(1, c.offsetHeight), (innerWidth - 24) / Math.max(1, c.offsetWidth));
+            if (f < .995) c.style.scale = Math.max(.42, f).toFixed(3);
           };
-          c._ajustar = ajustarApp; new ResizeObserver(() => requestAnimationFrame(ajustarApp)).observe(el);
+          c._ajustar = ajustarApp; new ResizeObserver(() => requestAnimationFrame(ajustarApp)).observe(el); addEventListener('resize', () => requestAnimationFrame(ajustarApp));
           let centro = teatro.querySelector('.teatro-app');
           if (!centro) { centro = document.createElement('div'); centro.className = 'teatro-app'; teatro.append(centro); }
           centro.append(c);
