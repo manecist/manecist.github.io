@@ -1453,3 +1453,9 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
   100%{transform:none;opacity:1;filter:none}}
 .cielo-lado li.escribe > span:not(.ch){animation:esfera-llega 2.2s cubic-bezier(.3,.6,.4,1) calc(var(--base) - 2.2s) both,esfera-onda 2.2s ease-in-out calc(var(--base) - 2.2s) 1,titila 3s ease-in-out var(--base) infinite}
 @keyframes esfera-onda{0%,100%{margin-left:0}20%{margin-left:-38px}40%{margin-left:34px}60%{margin-left:-26px}80%{margin-left:14px}}
+/* cada página muestra su mitad del prado: el camino queda al centro, junto al lomo */
+.libro.acostado .pag.pag-izq:has(.pagina-pop){background-position:0 0!important}
+.libro.acostado .pag.pag-der:has(.pagina-pop){background-position:calc(var(--pw) * -1) 0!important}
+.libro.una.acostado .pag.pag-der:has(.pagina-pop){background-size:cover!important;background-position:center!important}
+.libro.acostado .hoja-der .hoja-cara.hoja-dorso:has(.pagina-pop),.libro.acostado .hoja-izq .hoja-cara.hoja-frente:has(.pagina-pop){background-position:0 0!important}
+.libro.acostado .hoja-izq .hoja-cara.hoja-dorso:has(.pagina-pop),.libro.acostado .hoja-der .hoja-cara.hoja-frente:has(.pagina-pop){background-position:calc(var(--pw) * -1) 0!important}
