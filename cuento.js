@@ -287,13 +287,13 @@
         const f = document.createElement('img'); f.src = AMB(g + '-fondo'); f.alt = ''; f.className = 'vida-pop amb amb-fondo'; levantar(f, .05);
       }
       plegar('.amb-obj');
-      // los 3 objetos se reparten parejo a lo ancho del libro, detrás de Ari y delante del panorama
+      // los 3 objetos se reparten parejo a lo ancho, en el primer plano del libro y pequeños: no tapan la caminata ni el fondo
       // en la última etapa Ari se queda a la derecha apuntando a la esquina: los objetos le dejan espacio
       (n === VIDA.length - 1 ? [12, 36, 60] : [18, 50, 82]).forEach((centro, j) => {
         const im = document.createElement('img'); im.src = AMB(g + '-' + (j + 1)); im.alt = '';
-        im.className = 'vida-pop amb amb-obj amb-atras';
-        im.style.left = (centro - 8).toFixed(1) + '%';
-        im.style.width = '16%';
+        im.className = 'vida-pop amb amb-obj amb-primer';
+        im.style.left = (centro - 4.5).toFixed(1) + '%';
+        im.style.width = '9%';
         levantar(im, .25 + j * .2);
       });
     };
@@ -337,9 +337,9 @@
   const ESCENARIOS = {
     iv: { carpeta: 'cap4/', hitos: [
       { fondo: 'fondo-noche.webp', suelo: 'suelo-noche.webp', titulo: 'Las 2 de la mañana', texto: '…y un error más.', pasos: [
-        { actor: 'cama', x: 34, alto: 17, de: 0, a: 1, ms: 4500 },                                         // a la izquierda: programa en la cama… y se duerme
+        { actor: 'cama', x: 34, alto: 15, de: 0, a: 1, ms: 4500 },                                         // a la izquierda: programa en la cama… y se duerme
         { texto: { titulo: 'z z z…', texto: 'Se quedó dormida estudiando.' }, ms: 900 },
-        { actor: 'coen', camina: [0, 1], desde: 92, x: 51, alto: 19, ms: 3800, delante: true,
+        { actor: 'coen', camina: [0, 1], desde: 92, x: 51, alto: 16, ms: 3800, delante: true,
           texto: { titulo: 'Y cada mañana…', texto: 'Coen llegaba con un café.' } },                        // Coen llega caminando con el café
         { actor: 'coen', de: 2, a: 3, ms: 2600, pausa: 200 },                                               // se lo ofrece…
         { actor: 'cama', de: 1, a: 2, ms: 3500, texto: { titulo: '«Despierta, que vas a lograrlo» ☕', texto: '' } },   // …y ella despierta con el café en la mano
@@ -348,53 +348,53 @@
     ] },
     v: { carpeta: 'cap5/', hitos: [
       { fondo: 'fondo-estudio.webp', suelo: 'suelo-estudio.webp', titulo: 'Un trazo de lápiz…', texto: 'dio vida a Ari, la asesina ágil de cintas rosadas.', pasos: [
-        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', linea: 'assets/personajes/ari-frente-lineart.webp', x: 40, alto: 24, ms: 4200, pausa: 400 },
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', linea: 'assets/personajes/coen-frente-lineart.webp', x: 60, alto: 25, ms: 4200,
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', linea: 'assets/personajes/ari-frente-lineart.webp', x: 40, alto: 16, ms: 4200, pausa: 400 },
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', linea: 'assets/personajes/coen-frente-lineart.webp', x: 60, alto: 17, ms: 4200,
           texto: { titulo: '…y a Coen,', texto: 'el caballero de capa carmesí.' } },
-        { nombre: 'pareja', img: 'assets/cuento/pareja-heroes.webp', x: 50, alto: 25, reemplaza: ['ari', 'coen'], efecto: 'brilla', ms: 1800,
+        { nombre: 'pareja', img: 'assets/cuento/pareja-heroes.webp', x: 50, alto: 17, reemplaza: ['ari', 'coen'], efecto: 'brilla', ms: 1800,
           texto: { titulo: 'Línea a línea, color a color…', texto: 'se encontraron y se tomaron de la mano.' } },
         { nombre: 'pareja', mueve: 27, ms: 1400, pausa: 100 },                                         // la pareja le hace espacio al logo
-        { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', x: 50, alto: 20, efecto: 'brilla', ms: 2600,
+        { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', x: 50, alto: 14, efecto: 'brilla', ms: 2600,
           texto: { titulo: 'Y juntos fundamos Studios Conari', texto: 'Un estudio creativo chileno: narrativa, diseño, programación, datos y arte 3D.' } },
         { nombre: 'pareja', img: 'assets/cuento/pareja-heroes.webp', ms: 300, rotulo: 'María Inés · Kevin' },
-        { nombre: 'rancek', img: 'assets/personajes/rancek-frente.webp', x: 73, alto: 25, ms: 2400,
+        { nombre: 'rancek', img: 'assets/personajes/rancek-frente.webp', x: 73, alto: 17, ms: 2400,
           rotulo: 'Elías · animación y arte 3D',
           texto: { titulo: '…y se unió al equipo un tercero', texto: 'María Inés (dirección creativa · Full Stack Java), Kevin (dirección técnica · videojuegos y datos) y Elías (animación y arte 3D).' } }
       ] }
     ] },
     reino: { carpeta: 'reino/', hitos: [
       { fondo: null, suelo: 'suelo-reino.webp', titulo: 'Entonces…', texto: 'el libro se abrió de par en par y de sus páginas brotó un humo mágico.', pasos: [
-        { nombre: 'humo', img: 'humo.webp', x: 50, alto: 22, efecto: 'flota', ms: 2600 },
+        { nombre: 'humo', img: 'humo.webp', x: 50, alto: 18, efecto: 'flota', ms: 2600 },
         { quita: 'humo', texto: { titulo: 'Del humo nacieron…', texto: 'la cordillera de los Andes, el gran árbol de sakura, el sol, la luna y un castillo en lo alto. Y el dragón rosado despertó.' }, ms: 300 },
         { nombre: 'andes', img: 'assets/cuento/popup/andes.webp', x: 50, ancho: 94, fila: 'atras', ms: 200, pausa: 300 },
         { nombre: 'sol', img: 'sol.webp', x: 12, alto: 8, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
         { nombre: 'luna', img: 'luna.webp', x: 89, alto: 7, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
-        { nombre: 'arbol', img: 'assets/cuento/popup/arbol.webp', x: 21, alto: 24, fila: 'medio', ms: 300, pausa: 200 },
-        { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 76, alto: 22, fila: 'medio', ms: 300, pausa: 300 },
-        { actor: 'dragon', camina: [0, 1], desde: 50, x: 50, alto: 11, clase: 'vuela', ms: 2600 },          // el dragón despierta y aletea
+        { nombre: 'arbol', img: 'assets/cuento/popup/arbol.webp', x: 21, alto: 22, fila: 'medio', ms: 300, pausa: 200 },
+        { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 76, alto: 19, fila: 'medio', ms: 300, pausa: 300 },
+        { actor: 'dragon', camina: [0, 1], desde: 50, x: 50, alto: 10, clase: 'vuela', ms: 2600 },          // el dragón despierta y aletea
         { texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos. Ari saltó con su daga, ágil como el viento, y Coen alzó su espada para protegerla.' }, ms: 300 },
-        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 62, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 72, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 82, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 91, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
-        { nombre: 'ari', img: 'assets/cuento/popup/ari-salta.webp', x: 38, alto: 21, delante: true, clase: 'salto', ms: 900, pausa: 200 },
-        { nombre: 'coen', img: 'assets/cuento/popup/coen-ataca.webp', x: 50, alto: 22, delante: true, ms: 1600 },
+        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 62, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 72, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 82, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 91, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
+        { nombre: 'ari', img: 'assets/cuento/popup/ari-salta.webp', x: 38, alto: 16, delante: true, clase: 'salto', ms: 900, pausa: 200 },
+        { nombre: 'coen', img: 'assets/cuento/popup/coen-ataca.webp', x: 50, alto: 16, delante: true, ms: 1600 },
         { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo, y el dragón lanzó su fuego rosado. ¡Los monstruitos huyeron!' }, ms: 200 },
-        { nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: 26, alto: 15, clase: 'vuela', efecto: 'flota', ms: 900 },
-        { nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: 60, alto: 16, clase: 'vuela', reemplaza: 'dragon', ms: 1400 },
+        { nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: 26, alto: 13, clase: 'vuela', efecto: 'flota', ms: 900 },
+        { nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: 60, alto: 14, clase: 'vuela', reemplaza: 'dragon', ms: 1400 },
         { quita: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 900 },
         { quita: ['ari', 'coen', 'rancek', 'fuego'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 400 },
         { actor: 'dragon', camina: [0, 1], desde: 34, x: 70, alto: 10, clase: 'vuela', ms: 4400, junto: true },   // y vuela hacia el castillo
-        { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', camina: [0, 0], desde: 16, x: 50, alto: 21, ms: 4200, delante: true, junto: true },
-        { nombre: 'pcoen', img: 'assets/personajes/coen-lado.webp', camina: [0, 0], desde: 8, x: 42, alto: 23, ms: 4200, delante: true, junto: true },
-        { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', camina: [0, 0], desde: 2, x: 34, alto: 23, ms: 4200, delante: true }
+        { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', camina: [0, 0], desde: 16, x: 50, alto: 16, ms: 4200, delante: true, junto: true },
+        { nombre: 'pcoen', img: 'assets/personajes/coen-lado.webp', camina: [0, 0], desde: 8, x: 42, alto: 17, ms: 4200, delante: true, junto: true },
+        { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', camina: [0, 0], desde: 2, x: 34, alto: 17, ms: 4200, delante: true }
       ] }
     ] },
     vi: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
-        { nombre: 'mago', img: 'assets/personajes/rancek-frente.webp', x: 40, alto: 23, fila: 'medio', ms: 900 },                    // Rancek atiende detrás del mostrador
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', camina: [0, 0], desde: 96, x: 74, alto: 24, ms: 3200, delante: true, junto: true },
-        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', camina: [0, 0], desde: 90, x: 62, alto: 22, ms: 3000, delante: true },   // Ari y Coen entran
+        { nombre: 'mago', img: 'assets/personajes/rancek-frente.webp', x: 40, alto: 16, fila: 'medio', ms: 900 },                    // Rancek atiende detrás del mostrador
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', camina: [0, 0], desde: 96, x: 74, alto: 17, ms: 3200, delante: true, junto: true },
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', camina: [0, 0], desde: 90, x: 62, alto: 16, ms: 3000, delante: true },   // Ari y Coen entran
         { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', efecto: 'salta', ms: 2200 },
         { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari', efecto: 'salta', ms: 2200 },
         { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: true, ms: 600 }
@@ -402,16 +402,16 @@
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-paseo.webp', suelo: 'suelo-paseo.webp', titulo: 'Con sus compras puestas…', texto: 'Ari con su vestido de chica mágica y sus botas de plataforma; Coen con su jogger blanco y su polera burdeo.', pasos: [
-        { nombre: 'pareja', img: 'assets/cuento/paseo.webp', camina: [0, 0], desde: 12, x: 58, alto: 23, ms: 5200, delante: true },   // salen a pasear por el reino
+        { nombre: 'pareja', img: 'assets/cuento/paseo.webp', camina: [0, 0], desde: 12, x: 58, alto: 17, ms: 5200, delante: true },   // salen a pasear por el reino
         { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', img: 'assets/cuento/rancek-corre.webp', camina: [0, 0], desde: 4, x: 34, alto: 22, ms: 2600, delante: true }   // y Rancek corre detrás
       ] }
     ] },
     vii: { carpeta: 'cap7/', hitos: [
       { fondo: 'fondo-mercado.webp', suelo: 'suelo-mercado.webp', titulo: 'La tiendita creció…', texto: '…hasta convertirse en un mercado entero.', pasos: [
-        { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 22, fila: 'medio', efecto: 'brilla', ms: 1800,
+        { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 19, fila: 'medio', efecto: 'brilla', ms: 1800,
           texto: { titulo: 'Magical Alliance', texto: 'Mi proyecto final Full Stack Java: roles, catálogo, carrito, cupones, pedidos, stock y panel de administración.' } },
-        { nombre: 'ari', img: 'assets/cuento/ari-casual.webp', x: 28, alto: 20, delante: true, ms: 1200 },                       // Ari llega como clienta…
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 76, alto: 23, delante: true, ms: 1200,
+        { nombre: 'ari', img: 'assets/cuento/ari-casual.webp', x: 28, alto: 16, delante: true, ms: 1200 },                       // Ari llega como clienta…
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 76, alto: 17, delante: true, ms: 1200,
           texto: { titulo: 'Clienta o administradora', texto: 'Llena el carrito y mira cómo cambia el stock.' } },                     // …y Coen la acompaña
         { nombre: 'ari', efecto: 'salta', ms: 1400 },
         { app: true, ms: 400 }
@@ -421,8 +421,8 @@
       { fondo: 'fondo-taller.webp', suelo: 'suelo-taller.webp', titulo: 'Aprendí sola', texto: 'Primero con papel, lápices y pintura…', pasos: [
         { nombre: 'papel1', img: 'assets/galeria/papel-luna-sakura.webp', x: 16, alto: 9, fila: 'atras', clase: 'cuadro', ms: 300, pausa: 200 },
         { nombre: 'papel2', img: 'assets/galeria/papel-amerikano.webp', x: 84, alto: 10, fila: 'atras', clase: 'cuadro', ms: 900 },
-        { actor: 'atril', x: 32, alto: 20, de: 0, a: 1, ms: 4000, texto: { titulo: 'Después con tableta…', texto: '…redibujando hasta encontrar mi propio trazo.' } },
-        { nombre: 'lienzo', img: 'assets/galeria/regalo-1.webp', linea: 'assets/galeria/regalo-1-lineart.webp', x: 66, alto: 21, clase: 'cuadro', ms: 4600,
+        { actor: 'atril', x: 32, alto: 16, de: 0, a: 1, ms: 4000, texto: { titulo: 'Después con tableta…', texto: '…redibujando hasta encontrar mi propio trazo.' } },
+        { nombre: 'lienzo', img: 'assets/galeria/regalo-1.webp', linea: 'assets/galeria/regalo-1-lineart.webp', x: 66, alto: 17, clase: 'cuadro', ms: 4600,
           texto: { titulo: 'Así nace cada ilustración', texto: 'Primero la línea… y después el color.' } }
       ] }
     ] },
@@ -441,27 +441,27 @@
     ] },
     ix: { carpeta: 'cap9/', hitos: [
       { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'En lo alto de la torre…', texto: 'vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan.', pasos: [
-        { nombre: 'oraculo', img: 'oraculo.webp', x: 22, alto: 20, efecto: 'flota', clase: 'brilla', ms: 2200 },
+        { nombre: 'oraculo', img: 'oraculo.webp', x: 22, alto: 16, efecto: 'flota', clase: 'brilla', ms: 2200 },
         { texto: { titulo: 'Cuéntale los tuyos', texto: 'Cada color que le cuentas se levanta aquí como una barra de papel: así ordeno los datos.' }, app: true, ms: 400 }
       ] }
     ] },
     x: { carpeta: 'cap10/', hitos: [
       { fondo: 'fondo-juegos.webp', suelo: 'suelo-juegos.webp', titulo: 'El salón de los juegos', texto: 'Toca una máquina para jugar.', pasos: [
-        { nombre: 'a1', img: 'arcade1.webp', x: 25, alto: 20, fila: 'medio', abre: 'bloques', rotulo: 'Bloques encantados', ms: 300, pausa: 200 },
-        { nombre: 'a2', img: 'arcade2.webp', x: 50, alto: 20, fila: 'medio', abre: 'gemas', rotulo: 'Jardín de gemas lunares', ms: 300, pausa: 200 },
-        { nombre: 'a3', img: 'arcade3.webp', x: 75, alto: 20, fila: 'medio', abre: 'estrellas', rotulo: 'Cielo de constelaciones', ms: 300 }
+        { nombre: 'a1', img: 'arcade1.webp', x: 25, alto: 17, fila: 'medio', abre: 'bloques', rotulo: 'Bloques encantados', ms: 300, pausa: 200 },
+        { nombre: 'a2', img: 'arcade2.webp', x: 50, alto: 17, fila: 'medio', abre: 'gemas', rotulo: 'Jardín de gemas lunares', ms: 300, pausa: 200 },
+        { nombre: 'a3', img: 'arcade3.webp', x: 75, alto: 17, fila: 'medio', abre: 'estrellas', rotulo: 'Cielo de constelaciones', ms: 300 }
       ] }
     ] },
     final: { carpeta: 'final/', hitos: [
       { fondo: 'fondo-cima.webp', suelo: 'suelo-cima.webp', titulo: 'No es el fin…', texto: '…es solo el inicio.', pasos: [
-        { nombre: 'ari', img: 'baculo.webp', x: 50, alto: 23, efecto: 'brilla', ms: 2600,
+        { nombre: 'ari', img: 'baculo.webp', x: 50, alto: 17, efecto: 'brilla', ms: 2600,
           texto: { titulo: 'A pesar de los obstáculos…', texto: 'siempre debes alcanzar tu sueño.' } },
         { evento: 'cuento-dibuja-mundo', ms: 6500 }                                           // un rato para leer, y Ari dibuja su mundo
       ] }
     ] },
     logros: { carpeta: 'logros/', hitos: [
       { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', titulo: 'Logro desbloqueado', texto: 'Junio de 2026: Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/medalla.webp', x: 42, alto: 22, efecto: 'brilla', ms: 2600 },                      // Ari levanta su medalla en el podio
+        { nombre: 'ari', img: 'assets/cuento/medalla.webp', x: 42, alto: 16, efecto: 'brilla', ms: 2600 },                      // Ari levanta su medalla en el podio
         { nombre: 'stream', img: 'assets/cuento/escenas/stream.webp', x: 76, alto: 13, fila: 'medio', clase: 'cuadro', rotulo: 'ArianesDCoen · en pausa', ms: 2600,
           texto: { titulo: 'ArianesDCoen', texto: 'Nuestro canal de streaming. Lo pausamos por los proyectos… ¡pero volveremos!' } },
         { nombre: 'ari', efecto: 'salta', ms: 2400, texto: { titulo: 'Y sigo aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
@@ -482,29 +482,29 @@
     ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
-        { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
-        { actor: 'muro', x: 76, ancho: 21, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
-        { actor: 'pac', camina: [0, 1], desde: 93, x: 80, ancho: 14.5, ms: 3400, delante: true },   // una paciente llega caminando desde la derecha…
+        { actor: 'disp', x: 50, alto: 16, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
+        { actor: 'muro', x: 74, alto: 17, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
+        { actor: 'pac', camina: [0, 1], desde: 92, x: 82, alto: 16.5, ms: 3400, delante: true },   // una paciente llega caminando desde la derecha…
         { actor: 'pac', de: 2, a: 3, ms: 3000 }                                       // …saca uno del dispensador y sonríe
       ] },
       { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
-        { actor: 'edu', x: 28, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
+        { actor: 'edu', x: 28, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
       ] },
       { fondo: 'fondo-plaza.webp', suelo: 'suelo-plaza.webp', pasos: [
-        { actor: 'abr', x: 56, alto: 19, de: 0, a: 1, ms: 4500 }                      // al centro: un transeúnte llega y la abraza
+        { actor: 'abr', x: 56, alto: 16, de: 0, a: 1, ms: 4500 }                      // al centro: un transeúnte llega y la abraza
       ] },
       { fondo: 'fondo-biblioteca.webp', suelo: 'suelo-biblioteca.webp', pasos: [
-        { actor: 'tes', x: 27, alto: 17, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
-        { actor: 'par', x: 72, alto: 15, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
+        { actor: 'tes', x: 27, alto: 15, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
+        { actor: 'par', x: 72, alto: 13, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
       ] },
       { fondo: 'fondo-box.webp', suelo: 'suelo-box.webp', pasos: [
-        { actor: 'pla', x: 44, alto: 18, de: 0, a: 1, ms: 4500 }                      // los papeles se vuelven planilla
+        { actor: 'pla', x: 44, alto: 15, de: 0, a: 1, ms: 4500 }                      // los papeles se vuelven planilla
       ] },
       { fondo: 'fondo-familia.webp', suelo: 'suelo-familia.webp', pasos: [
-        { actor: 'ccc', x: 64, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
+        { actor: 'ccc', x: 64, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
       ] },
       { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
-        { actor: 'ssm', x: 36, alto: 19, de: 0, a: 1, ms: 4500 }                      // a la izquierda: guía a las mujeres hacia el camión
+        { actor: 'ssm', x: 36, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: guía a las mujeres hacia el camión
       ] }
     ] },
   };
