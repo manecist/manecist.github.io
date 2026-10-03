@@ -698,6 +698,14 @@
     const n = document.getElementById('lab-nombre'); if (n && !n.value.trim()) n.value = 'Visitante ' + (1 + Math.floor(Math.random() * 99));
   }, true);
 
+  // ✦ juegos colgantes: "Jugar" muestra el tablero en grande (el tetris además arranca); "Ver instrucciones" vuelve a la explicación
+  document.addEventListener('click', e => {
+    const empezar = e.target.closest('.juego-empezar'), volver = e.target.closest('.juego-volver'), cielo = e.target.closest('.app-estrellas #atlas-gallery button, .app-estrellas #atlas-gallery [role="button"]');
+    const app = (empezar || volver || cielo)?.closest('.colgar-app'); if (!app) return;
+    app.classList.toggle('jugando', !volver);
+    if (empezar && app.classList.contains('app-bloques')) { document.getElementById('play-start')?.click(); setTimeout(() => document.getElementById('play-tetris')?.focus(), 60); }
+  });
+
   // IV · noches de código: escenas que se suceden
   escena('[data-escenas]', el => {
     const cs = [...el.querySelectorAll('.escena-cuadro')], ps = [...el.querySelectorAll('.escenas-puntos i')]; let i = 0;
