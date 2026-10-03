@@ -259,6 +259,11 @@
           });
           return;
         }
+        if (b - a >= 1 && !cara && ((esIzq && x0 >= pl - .005) || (!esIzq && x1 <= pl + .005))) {
+          el.style.transformOrigin = (((pl - x0) / (x1 - x0)) * 100).toFixed(2) + '% 100%'; el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
+          const ratioV = Math.max(.012, esIzq ? x0 - pl : pl - x1) * W / Math.max(1, el.offsetHeight);
+          el.dataset.giro = '1'; piezas.push({ el, grupo, bisagra: esIzq ? 'R' : 'L', viajero: true, ratio: ratioV }); return;
+        }
         if (x1 <= a + .002 || x0 >= b - .002) { if (b - a < 1) { el.style.visibility = 'hidden'; return; } rapido = true; }
         if (x0 < a || x1 > b) { const L = Math.max(0, (a - x0) / (x1 - x0)) * 100, Rr = Math.max(0, (x1 - b) / (x1 - x0)) * 100; el.style.clipPath = 'inset(0 ' + Rr.toFixed(2) + '% 0 ' + L.toFixed(2) + '%)'; }
         el.style.transition = 'none'; el.style.opacity = '1'; el.style.visibility = 'visible';
@@ -276,7 +281,7 @@
     const paso = ahora => {
       const t = Math.min(1, (ahora - t0) / DUR_GIRO), th = 180 * suave(t), f = th / 180;
       hoja.style.transform = 'rotateY(' + (dir > 0 ? -th : th) + 'deg)';
-      piezas.forEach(({ el, grupo, cara, rapido, bisagra, ratio }) => {
+      piezas.forEach(({ el, grupo, cara, rapido, bisagra, ratio, viajero }) => {
         if (bisagra) {
           // Doblez real: cada mitad queda pegada a su página (la de la hoja gira con ella) y el pliegue del centro se
           // inclina hacia la cámara; al cerrarse el pliego, el fondo termina aplastado entre las dos páginas.
@@ -289,12 +294,23 @@
           // el pliegue queda siempre dentro del ángulo entre las dos páginas (en su bisectriz) y se inclina hacia la cámara al cerrarse
           const angHoja = dir > 0 ? th : 180 - th, angFija = (grupo === 'A') === (dir > 0) ? 180 : 0;   // la página fija: izquierda (180°) o derecha (0°)
           const beta = (angHoja + angFija) / 2 * rad, tau = Math.pow(Math.min(1, (grupo === 'A' ? th : 180 - th) / 110), .6) * 90 * rad   /* se recuesta sobre su página: queda pegado a la hoja */;
-          const c = [Math.cos(beta) * Math.cos(tau), Math.sin(tau), Math.sin(beta) * Math.cos(tau)], b = c.map(v => -v);
+          let c = [Math.cos(beta) * Math.cos(tau), Math.sin(tau), Math.sin(beta) * Math.cos(tau)];
+          if (viajero) {
+            const phiV = (grupo === 'A' ? 180 - th : th) * rad;
+            const psiV = phiV < Math.PI / 2 ? Math.asin(Math.min(1, ratio * Math.tan(Math.max(0, phiV)) * .92)) : Math.PI / 2;
+            const fi = Math.atan2(d[2], d[0]), frenteN = dir > 0 ? [-Math.sin(fi), 0, Math.cos(fi)] : [Math.sin(fi), 0, -Math.cos(fi)];
+            const nf = mueve ? (grupo === 'A' ? frenteN : frenteN.map(v => -v)) : [0, 0, 1];
+            c = [nf[0] * Math.sin(psiV), Math.cos(psiV), nf[2] * Math.sin(psiV)];
+          }
+          const b = c.map(v => -v);
           let n = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
           const ln = Math.hypot(...n) || 1; n = n.map(v => v / ln);
           el.style.transform = 'matrix3d(' + [...a, 0, ...b, 0, ...n, 0, 0, 0, 0, 1].map(v => v.toFixed(4)).join(',') + ')';
           // aplastado entre las dos páginas queda tapado por la hoja: se desvanece justo antes (sin asomarse por encima)
-          el.style.opacity = (grupo === 'A' ? Math.max(0, Math.min(1, (165 - th) / 20)) : Math.max(0, Math.min(1, (th - 15) / 20))).toFixed(3);
+          const cl = v => Math.max(0, Math.min(1, v));
+          const enCara = mueve ? (grupo === 'A' ? cl((95 - th) / 15) : cl((th - 85) / 15)) : 1;
+          const libre = grupo === 'A' ? cl((165 - th) / 20) : cl((th - (mueve ? 15 : 55)) / 25);
+          el.style.opacity = (enCara * libre).toFixed(3);
           return;
         }
         // A: se mantiene de pie mientras la hoja sube y se aplasta antes de que la hoja aterrice sobre su página.
