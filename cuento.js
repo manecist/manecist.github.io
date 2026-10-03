@@ -379,7 +379,7 @@
         { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 82, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
         { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 91, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
         { nombre: 'ari', actor: 'ari-salta', x: 38, alto: 18, delante: true, de: 0, a: 1, ms: 2600, pausa: 200 },
-        { nombre: 'coen', img: 'assets/cuento/popup/coen-ataca.webp', x: 50, alto: 16, delante: true, ms: 1600 },
+        { nombre: 'coen', actor: 'coen-ataca', x: 50, alto: 16, delante: true, de: 0, a: 1, ms: 2400 },
         { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo, y el dragón lanzó su fuego rosado. ¡Los monstruitos huyeron!' }, ms: 200 },
         { nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: 26, alto: 13, clase: 'vuela', efecto: 'flota', ms: 900 },
         { nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: 60, alto: 14, clase: 'vuela', reemplaza: 'dragon', ms: 1400 },
@@ -456,18 +456,18 @@
     ] },
     final: { carpeta: 'final/', hitos: [
       { fondo: 'fondo-cima.webp', suelo: 'suelo-cima.webp', titulo: 'No es el fin…', texto: '…es solo el inicio.', pasos: [
-        { nombre: 'ari', img: 'baculo.webp', x: 50, alto: 17, efecto: 'brilla', ms: 2600,
+        { nombre: 'ari', actor: 'baculo-anim', x: 50, alto: 17, efecto: 'brilla', ms: 2600, bucle: [0, 1], cicloMs: 3000,
           texto: { titulo: 'A pesar de los obstáculos…', texto: 'siempre debes alcanzar tu sueño.' } },
         { evento: 'cuento-dibuja-mundo', ms: 6500 }                                           // un rato para leer, y Ari dibuja su mundo
       ] }
     ] },
     logros: { carpeta: 'logros/', hitos: [
       { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', titulo: 'Logro desbloqueado', texto: 'Junio de 2026: Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/medalla.webp', x: 50, alto: 16, efecto: 'brilla', ms: 2800 },                       // Ari levanta su medalla en el podio
+        { nombre: 'ari', actor: 'medalla', x: 50, alto: 16, efecto: 'brilla', ms: 2800, bucle: [0, 1], cicloMs: 3000 },                       // Ari levanta su medalla en el podio
         { nombre: 'ari', efecto: 'salta', ms: 2600, texto: { titulo: 'Y sigo aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
       ] },
       { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', titulo: 'ArianesDCoen', texto: 'Nuestro canal de streaming: videojuegos, risas y una comunidad que nos acompañaba.', pasos: [
-        { nombre: 'streamers', img: 'streamers.webp', x: 50, alto: 15, fila: 'medio', ms: 2400 },                                                  // Ari y Coen juegan en vivo
+        { nombre: 'streamers', actor: 'streamers-anim', x: 50, alto: 15.7, fila: 'medio', ms: 2400, bucle: [0, 1], cicloMs: 3000 },                                                  // Ari y Coen juegan en vivo
         { nombre: 'publico', img: 'publico.webp', x: 50, alto: 7, clase: 'primer', efecto: 'salta', ms: 2600,
           texto: { titulo: '¡En vivo!', texto: 'El público animaba con corazones y barras de luz.' } },                     // el público los anima
         { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausamos por los proyectos… ¡pero volveremos!' }, ms: 2400 }
