@@ -1659,3 +1659,55 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.acostado .vida-andante{width:12.5%}
 .vida-pop.amb-obj.amb-primer{bottom:6%}
 .libro.una.acostado .vida-pop.amb-obj.amb-primer{width:16%!important;margin-left:-3.5%}
+
+/* ✦ aplicaciones colgantes en el estilo del cuento: papel, marco ilustrado y letra manuscrita; sin scroll */
+.teatro-app{width:min(1180px,88vw)}
+.teatro-app .colgante-app{max-height:none;padding:14px 18px 18px;background:#fff8ef url("assets/cuento/marco-app.webp") center/100% 100% no-repeat;border:0;box-shadow:0 18px 34px rgba(10,6,30,.45)}
+.teatro-app .colgante-app > :not(.app-pestana){overflow:visible;max-height:none}
+.colgante-app{font-family:'Mali',var(--sans);color:#4a3a5e;
+  --bg:#fbf5ec;--bg2:#f6ecf3;--panel:#fff7ef;--panel2:#f8ecf4;--white:#4a3359;--text:#4a3a5e;--muted:#7d6c90;
+  --pink:#c2457f;--pink2:#8c2f62;--lilac:#7a4fc0;--sky:#2f7ea3;--gold:#9c7015;--line:rgba(110,70,130,.2);--shadow:0 8px 18px rgba(90,60,110,.15)}
+.colgante-app :is(h2,h3,h4,b,strong,button,input,select,label,p,span,li,td,th,small){font-family:inherit}
+.colgante-app :is(.game-panel,.oraculo-viz,.oraculo-form,.m7-gallery,.data-form,.calc-java,.java-codigo,pre,code){background:#fff4f8!important;color:#4a3359!important;border-color:rgba(194,69,127,.25)!important}
+.colgante-app :is(pre,code){font-family:'Mali',monospace}
+.app-cv .cv-lista:not(.cv-hab){columns:2;column-gap:28px}
+.app-cv .cv-lista li{break-inside:avoid}
+@media (max-width:860px){.colgante-app .app-tres{grid-template-columns:1fr}.app-cv .cv-lista:not(.cv-hab){columns:1}}
+
+/* ✦ la caja del cuento: compacta, en tres columnas y con la registradora dibujada (pantalla, teclado y ranura reales encima) */
+.app-caja .app-doble{grid-template-columns:1.05fr 1fr 1fr;gap:16px;align-items:start}
+.app-caja .caja-paso{margin:0 0 6px}
+.app-caja .product-picker{gap:6px}
+.app-caja .product-picker label{font-size:.74rem;color:#5b3a63}
+.app-caja .product-picker select,.app-caja .product-picker input{min-height:34px;padding:6px 8px;font:600 .82rem 'Mali',sans-serif;border:2px solid #e8cfe6;border-radius:12px;box-shadow:0 2px 0 #dcbad8}
+.app-caja .discount-presets{margin:0 0 4px}
+.app-caja #discount-error{margin-bottom:4px;font-size:.66rem}
+.app-caja .register-button{font:700 .8rem 'Mali',sans-serif;border-radius:14px;padding:9px;background:#c98bb8;box-shadow:0 4px 0 #a26a94}
+.app-caja .receipt{font:500 .74rem/1.35 'Mali',sans-serif;padding:10px;background:#fffdf4 repeating-linear-gradient(#fffdf4 0 22px,#f3e6ef 22px 23px);border-top:6px solid #d9a6c8}
+.app-caja .receipt-items{min-height:60px;max-height:120px;overflow:hidden}
+.app-caja .receipt-total{font-size:.78rem}.app-caja .receipt-total.total{font-size:.95rem}
+.app-caja .pay-row input{min-height:30px;padding:4px 8px;font:600 .8rem 'Mali',sans-serif}
+.app-caja .cash-register{position:relative;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:url("assets/cuento/cap6/registradora.webp") center/100% 100% no-repeat;aspect-ratio:695/700;width:100%;overflow:visible}
+.app-caja .register-marquee{position:absolute;left:18.5%;top:20.5%;width:63%;height:16%;transform:none;border:0;border-radius:6px;background:transparent;box-shadow:none;padding:2px 10px;display:grid;align-content:center;text-align:right}
+.app-caja .register-marquee:after{display:none}
+.app-caja .register-marquee span{font:600 .55rem 'Mali',sans-serif;color:#a07fae;letter-spacing:.06em}
+.app-caja .register-marquee output{font:700 clamp(.95rem,1.7vw,1.5rem) 'Mali',sans-serif;color:#7a2f5f;text-shadow:none}
+.app-caja .register-sign,.app-caja .cash-drawer{display:none}
+.app-caja .register-keypad{position:absolute;left:23%;top:43.5%;width:54%;margin:0;gap:3px 6px;grid-template-columns:repeat(3,1fr)}
+.app-caja .register-keypad button{min-height:0;height:clamp(16px,1.7vw,24px);padding:0;border-radius:10px;border:2px solid #fff;background:#fff8fc;color:#7a4f84;box-shadow:0 2px 0 #c79fc4;font:700 clamp(.6rem,.8vw,.8rem) 'Mali',sans-serif}
+.app-caja .receipt-printer{position:absolute;left:21%;width:58%;top:82.5%;margin:0;z-index:4}
+.app-caja .printer-slot{background:transparent;border:0;box-shadow:none;height:clamp(8px,1vw,14px)}
+.app-caja .printer-slot span{display:none}
+.app-caja .printer-output{position:absolute;left:0;right:0;top:100%;z-index:6}
+.app-caja .printed-receipt{font:500 .7rem/1.4 'Mali',sans-serif;padding:12px 10px}
+.app-caja .register-confirm{position:absolute;left:12%;width:76%;top:101.5%;margin:0;font:700 .78rem 'Mali',sans-serif;border-radius:14px;padding:8px;background:#b07ab0;box-shadow:0 4px 0 #8a5a8d}
+.app-caja .register-message{position:absolute;left:0;right:0;top:113%;margin:0;font:500 .68rem/1.3 'Mali',sans-serif;text-align:center}
+.app-caja > .app-doble > div:last-child{padding-bottom:64px}
+
+/* ✦ paneles de juegos, oráculo y vitrina en papel (los tableros de juego siguen siendo de noche) */
+.colgante-app :is(.game-side,.gem-lessons,.star-lesson,.m7-gallery figure,.m7-controls){background:#fff6fb!important;color:#4a3359!important;border:2px solid #f0d6e8!important;box-shadow:0 3px 0 #ead0e2!important}
+.colgante-app :is(input,select,textarea){background:#fffdf8!important;color:#4a3359!important;border:2px solid #e8cfe6!important;border-radius:12px!important}
+.colgante-app :is(.game-side,.gem-lessons,.star-lesson) :is(h2,h3,h4,p,span,small,b,strong,li,label){color:#4a3359!important}
+.colgante-app .m7-controls button,.colgante-app .gem-lessons button,.colgante-app .game-side button{background:#f6dcea!important;color:#6a2c55!important;border:2px solid #fff!important;box-shadow:0 3px 0 #d8b0c8!important}
+.app-caja .register-clear{position:absolute;right:4%;top:2%;font:700 .7rem 'Mali',sans-serif;border-radius:12px;padding:4px 10px;background:#fff6fb;color:#7a4f84;border:2px solid #f0d6e8}
+.app-caja .printed-receipt{max-height:52vh;overflow:hidden}

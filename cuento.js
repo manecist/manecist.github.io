@@ -917,6 +917,11 @@
           const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ ' + verbo + ' ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
           tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); });
           c._rotular = rotular; rotular(); c.append(tab);
+          const ajustarApp = () => {
+            el.style.zoom = ''; const disp = Math.min(innerHeight * .74, 760) - 20, alto = el.scrollHeight;
+            el.style.zoom = alto > disp ? Math.max(.55, disp / alto).toFixed(3) : '';
+          };
+          c._ajustar = ajustarApp; new ResizeObserver(() => requestAnimationFrame(ajustarApp)).observe(el);
           let centro = teatro.querySelector('.teatro-app');
           if (!centro) { centro = document.createElement('div'); centro.className = 'teatro-app'; teatro.append(centro); }
           centro.append(c);
@@ -934,6 +939,7 @@
       if (inmediato || quieto) devolver(); else setTimeout(devolver, 650);
     };
     window.addEventListener('cuento-levanta', () => { descolgar(); bajarDelCielo(); borrarEscritura(); });
+    window.addEventListener('resize', () => teatro.querySelectorAll('.colgante-app').forEach(c => c._ajustar && c._ajustar()));
     window.addEventListener('cuento-app', e => { const id = e.detail.abrir; teatro.querySelectorAll('.colgante-app').forEach(c => { const mia = id === true || (typeof id === 'string' && c.dataset.app === id); c.classList.toggle('arriba', !(id && mia)); c._rotular && c._rotular(); }); });
     window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
