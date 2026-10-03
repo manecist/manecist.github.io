@@ -431,34 +431,34 @@
       caminar(el);
     };
     // la esfera nace abajo en el lado contrario, da una vuelta grande alrededor del libro dejando estela y llega a su lugar
+    // doble hélice: las esferas suben girando alrededor de un eje vertical al centro, como las dos hebras del ADN
+    // (las de la izquierda y las de la derecha van en hebras opuestas); arriba se separan hacia su lugar
     const volarEsfera = (el, retraso, dur, haciaDerecha) => {
-      if (!el) return;
-      if (quieto) return;
+      if (!el || quieto) return;
       el.style.opacity = 0;
       const mio = turno;
       setTimeout(() => {
         if (mio !== turno || !el.isConnected) { el.style.opacity = ''; return; }
         const b = el.getBoundingClientRect(), fx = b.left + b.width / 2, fy = b.top + b.height / 2;
-        const W = innerWidth, H = innerHeight, cx = W / 2, cy = H * .56, rx = W * .34, ry = H * .3;
-        const sx = haciaDerecha ? W * .2 : W * .8, sy = H + 30;
-        const ang = (x, y) => Math.atan2((y - cy) / ry, (x - cx) / rx);
-        const sentido = haciaDerecha ? 1 : -1;
-        const a0 = ang(sx, H * .95);
-        let a1 = ang(fx, fy); while (sentido * (a1 - a0) < Math.PI * 1.7) a1 += sentido * Math.PI * 2;
+        const W = innerWidth, H = innerHeight, cx = W / 2, A = Math.min(W * .26, 420), VUELTAS = 1.5, SUBE = .82;
+        const fEnd = haciaDerecha ? Math.PI / 2 : -Math.PI / 2, yTop = Math.max(fy, H * .12);
         const POLVO = ['#ffd9ea', '#c9a6ff', '#fff', '#ffe9a8', '#9fe3ff'];
         const t0 = performance.now(); el.style.opacity = 1; el.classList.add('esfera-vuela');
         const paso = ahora => {
           if (!el.isConnected) return;
-          const t = Math.min(1, (ahora - t0) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-          const a = a0 + (a1 - a0) * e;
-          let x = cx + rx * Math.cos(a), y = cy + ry * Math.sin(a);
-          const ini = Math.max(0, 1 - e / .14), fin = Math.max(0, (e - .78) / .22) ** 1.4;
-          x = x * (1 - ini) + sx * ini; y = y * (1 - ini) + sy * ini;
-          x = x * (1 - fin) + fx * fin; y = y * (1 - fin) + fy * fin;
-          el.style.transform = `translate(${(x - fx).toFixed(1)}px,${(y - fy).toFixed(1)}px) scale(${(.55 + .45 * e).toFixed(3)})`;
-          if (window.Magia) Magia.estela(x, y, { n: 3, tam: 4.6, vel: 1.2, colores: POLVO });
+          const t = Math.min(1, (ahora - t0) / dur);
+          const s1 = Math.min(t, SUBE) / SUBE, fi = Math.max(0, (t - SUBE) / (1 - SUBE));
+          const ease = fi < .5 ? 2 * fi * fi : 1 - Math.pow(-2 * fi + 2, 2) / 2;
+          const fase = fEnd - 2 * Math.PI * VUELTAS * (1 - s1);
+          const hx = cx + A * Math.sin(fase), hy = H + 40 - (H + 40 - yTop) * s1;
+          const prof = (Math.cos(fase) + 1) / 2;   // 1 = adelante, 0 = atrás
+          const x = hx + (fx - hx) * ease, y = hy + (fy - hy) * ease;
+          const esc = (.45 + .5 * prof) * (1 - ease) + ease;
+          el.style.transform = 'translate(' + (x - fx).toFixed(1) + 'px,' + (y - fy).toFixed(1) + 'px) scale(' + esc.toFixed(3) + ')';
+          el.style.opacity = ((.45 + .55 * prof) * (1 - ease) + ease).toFixed(3);
+          if (window.Magia && Math.random() < .55) Magia.estela(x, y, { n: 2, tam: 3.4 + prof * 1.6, vel: .7, colores: POLVO });
           if (t < 1) requestAnimationFrame(paso);
-          else { el.style.transform = ''; el.classList.remove('esfera-vuela'); if (window.Magia) Magia.chispas(fx, fy, { n: 18, vel: 3, colores: POLVO }); }
+          else { el.style.transform = ''; el.style.opacity = ''; el.classList.remove('esfera-vuela'); if (window.Magia) Magia.chispas(fx, fy, { n: 18, vel: 3, colores: POLVO }); }
         };
         requestAnimationFrame(paso);
       }, retraso);
@@ -476,7 +476,7 @@
         li.classList.remove('por-colgar');
         letras(li); li.classList.add('escribe', 'estrella');
         // cada característica llega como una esfera volando desde el lado contrario; después se escriben sus letras
-        const RETRASO = 1500 + nl * 260, VUELO = 2300;
+        const RETRASO = 1400 + nl * 420, VUELO = 4600;
         let kl = 0; li.style.setProperty('--base', ((RETRASO + VUELO) / 1000).toFixed(2) + 's');
         li.querySelectorAll('.ch').forEach(s => s.style.setProperty('--kl', kl++));
         const lado = nl++ % 2; lados[lado].append(li);
