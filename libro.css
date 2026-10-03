@@ -1438,7 +1438,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 @media (prefers-reduced-motion:reduce){.cielo-lado li.escribe > span:not(.ch){animation:none}}
 /* ✦ el hada vuela de verdad: aletea y su pelo flota (ciclo de video, ida y vuelta para que no salte) */
 .hada-escena.vuela .hada-marco,.hada-escena.vuela .hada-brillo{opacity:0}
-.hada-escena.vuela::after{content:"";position:absolute;inset:0;pointer-events:none;background:url("assets/hada-vuelo.webp") 0 50%/1600% auto no-repeat;animation:hada-aletea 1s steps(15) infinite alternate}
+.hada-escena.vuela::after{content:"";position:absolute;inset:0;pointer-events:none;background:url("assets/hada-vuelo.webp") 0 50%/1600% auto no-repeat;animation:hada-aletea 1.2s steps(15) infinite alternate}
 @keyframes hada-aletea{to{background-position:100% 50%}}
 @media (prefers-reduced-motion:reduce){.hada-escena.vuela::after{animation:none}}
 /* esferas: nacen abajo en el lado contrario y suben ondulando hasta su lugar */
