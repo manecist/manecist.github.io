@@ -1841,3 +1841,6 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* capítulo I: con las características en el cielo, el cartel cuelga más abajo (bajo las esferas, junto al libro) y sus hilos se desvanecen antes de llegar a ellas */
 .escena:has(.cielo-lado li) .teatro-der{top:56vh}
 .escena:has(.cielo-lado li) .teatro-der .colgante::before,.escena:has(.cielo-lado li) .teatro-der .colgante::after{height:16vh}
+/* al subir la caja, la boleta que salía por la ranura sube con ella (no queda colgando abajo) */
+.colgante-app.arriba .printer-output{visibility:hidden;opacity:0;transition:opacity .2s,visibility 0s .2s}
+.colgante-app .printer-output{transition:height 1.1s ease,opacity .3s}
