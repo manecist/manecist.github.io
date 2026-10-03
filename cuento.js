@@ -362,6 +362,34 @@
           texto: { titulo: '…y se unió al equipo un tercero', texto: 'María Inés (dirección creativa · Full Stack Java), Kevin (dirección técnica · videojuegos y datos) y Elías (animación y arte 3D).' } }
       ] }
     ] },
+    reino: { carpeta: 'reino/', hitos: [
+      { fondo: null, suelo: 'suelo-reino.webp', titulo: 'Entonces…', texto: 'el libro se abrió de par en par y de sus páginas brotó un humo mágico.', pasos: [
+        { nombre: 'humo', img: 'humo.webp', x: 50, alto: 22, efecto: 'flota', ms: 2600 },
+        { quita: 'humo', texto: { titulo: 'Del humo nacieron…', texto: 'la cordillera de los Andes, el gran árbol de sakura, el sol, la luna y un castillo en lo alto. Y el dragón rosado despertó.' }, ms: 300 },
+        { nombre: 'andes', img: 'assets/cuento/popup/andes.webp', x: 50, ancho: 94, fila: 'atras', ms: 200, pausa: 300 },
+        { nombre: 'sol', img: 'sol.webp', x: 12, alto: 8, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
+        { nombre: 'luna', img: 'luna.webp', x: 89, alto: 7, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
+        { nombre: 'arbol', img: 'assets/cuento/popup/arbol.webp', x: 21, alto: 24, fila: 'medio', ms: 300, pausa: 200 },
+        { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 76, alto: 22, fila: 'medio', ms: 300, pausa: 300 },
+        { actor: 'dragon', camina: [0, 1], desde: 50, x: 50, alto: 11, clase: 'vuela', ms: 2600 },          // el dragón despierta y aletea
+        { texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos. Ari saltó con su daga, ágil como el viento, y Coen alzó su espada para protegerla.' }, ms: 300 },
+        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 62, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 72, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 82, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 91, alto: 8, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
+        { nombre: 'ari', img: 'assets/cuento/popup/ari-salta.webp', x: 38, alto: 21, delante: true, clase: 'salto', ms: 900, pausa: 200 },
+        { nombre: 'coen', img: 'assets/cuento/popup/coen-ataca.webp', x: 50, alto: 22, delante: true, ms: 1600 },
+        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo, y el dragón lanzó su fuego rosado. ¡Los monstruitos huyeron!' }, ms: 200 },
+        { nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: 26, alto: 15, clase: 'vuela', efecto: 'flota', ms: 900 },
+        { nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: 60, alto: 16, clase: 'vuela', reemplaza: 'dragon', ms: 1400 },
+        { quita: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 900 },
+        { quita: ['ari', 'coen', 'rancek', 'fuego'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 400 },
+        { actor: 'dragon', camina: [0, 1], desde: 34, x: 70, alto: 10, clase: 'vuela', ms: 4400, junto: true },   // y vuela hacia el castillo
+        { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', camina: [0, 0], desde: 16, x: 50, alto: 21, ms: 4200, delante: true, junto: true },
+        { nombre: 'pcoen', img: 'assets/personajes/coen-lado.webp', camina: [0, 0], desde: 8, x: 42, alto: 23, ms: 4200, delante: true, junto: true },
+        { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', camina: [0, 0], desde: 2, x: 34, alto: 23, ms: 4200, delante: true }
+      ] }
+    ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
@@ -395,7 +423,7 @@
   const hojaDe = src => hojas[src] || (hojas[src] = fetch(src.replace(/\.webp$/, '.json')).then(r => r.json()).then(m => ({ ...m, marcas: m.marcas || [...Array(m.n).keys()] })));
   // las hojas pesan: se cargan recién al llegar al pliego, la primera escena antes que las demás
   const precargar = esc => esc.hitos.forEach((h, i) => setTimeout(() => {
-    new Image().src = ruta(esc, h.fondo); new Image().src = ruta(esc, h.suelo);
+    if (h.fondo) new Image().src = ruta(esc, h.fondo); new Image().src = ruta(esc, h.suelo);
     h.pasos.forEach(p => { if (p.actor) { hojaDe(ruta(esc, p.actor + '.webp')); new Image().src = ruta(esc, p.actor + '.webp'); } else if (p.img) new Image().src = ruta(esc, p.img); });
   }, i * 700));
   escena('[data-hitos]', el => {
@@ -471,10 +499,11 @@
       el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita');
       cartel(n, H);
       Object.keys(actores).forEach(plegar);
-      if (H.fondo !== fondoActual) {
+      if (H.fondo && H.fondo !== fondoActual) {
         zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = H.fondo;
-        const f = document.createElement('img'); f.src = ruta(esc, H.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .05); suelo(H.suelo);
+        const f = document.createElement('img'); f.src = ruta(esc, H.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .05);
       }
+      if (H.suelo) suelo(H.suelo);
       if (!(await espera(900, mia))) return;
       for (const p of H.pasos) {
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
@@ -488,6 +517,7 @@
         if (p.efecto) a.classList.add(p.efecto);
         if (p.rotulo && !a.querySelector('.hito-rotulo')) { const r = document.createElement('span'); r.className = 'hito-rotulo'; r.textContent = p.rotulo; a.append(r); }
         let ok;
+        if (p.junto) { if (p.camina) caminar(a, p, mia); await espera(120, mia); continue; }
         if (p.mueve != null) ok = await new Promise(fin => { a.style.transition = 'left ' + (p.ms || 1200) + 'ms cubic-bezier(.45,0,.3,1)'; a.style.left = (p.mueve - a._ancho / 2) + '%'; luego(() => { a.style.transition = ''; fin(mia === vuelta); }, p.ms || 1200); });
         else if (p.camina) ok = await caminar(a, p, mia);
         else if (p.linea) ok = await dibujar(a, p.ms || 3000, mia);
@@ -504,7 +534,8 @@
     const ant = el.querySelector('.hito-ant'), sig = el.querySelector('.hito-sig');
     if (ant) ant.onclick = () => { if (h > 0) mostrar(h - 1); };
     if (sig) sig.onclick = () => { if (h + 1 < total) mostrar(h + 1); };
-    if (play) play.onclick = () => { pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir' : 'Pausar'); if (!pausa && el.classList.contains('llego')) mostrar(0); };
+    if (play && esc.repetible !== false && !el.querySelector('.hito-ant')) play.onclick = () => { zona.querySelectorAll('.hito-pop').forEach(p => p.remove()); Object.keys(actores).forEach(k => delete actores[k]); fondoActual = ''; mostrar(0); };
+    else if (play) play.onclick = () => { pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir' : 'Pausar'); if (!pausa && el.classList.contains('llego')) mostrar(0); };
     // al abrir: el pliego se despliega cuando el libro ya se acostó
     zona.querySelectorAll('.hito-pop').forEach(p => p.remove()); Object.keys(actores).forEach(k => delete actores[k]);
     el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : 1250);
