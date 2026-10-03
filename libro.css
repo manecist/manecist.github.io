@@ -1961,3 +1961,9 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .vida-pop.amb-fondo[src*="/g07-fondo"]{left:8.0%;width:84.0%}
 .vida-pop.amb-fondo[src*="/g07b-fondo"]{left:1.9%;width:96.1%}
 .vida-pop.amb-fondo[src*="/g10-fondo"]{left:1.4%;width:97.1%}
+
+/* copia invisible de la página que llega: solo muestra sus recortes que se asoman al otro lado del lomo */
+.giro-virtual,.giro-virtual > .pagina{background:none!important;box-shadow:none!important;pointer-events:none}
+.giro-virtual::before,.giro-virtual::after,.giro-virtual > .pagina::before,.giro-virtual > .pagina::after{display:none!important}
+.giro-virtual > .pagina > :not(.pop-escena),.giro-virtual .pop-escena > :not([data-giro]){visibility:hidden!important}
+.libro.acostado .pag.giro-virtual.giro-virtual{background:none!important}
