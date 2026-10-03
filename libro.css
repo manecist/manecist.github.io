@@ -1653,3 +1653,4 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .teatro-app.varias .colgante-app.arriba .app-pestana{display:none}
 .app-cv{padding:4px 14px 14px}
 .app-cv .cv-titulo{text-align:center;margin:8px 0}
+.colgante .stack-cloud span{background:#f3e3ff;color:#5b3a63;border:1px solid rgba(106,77,120,.25);padding:4px 10px;border-radius:999px;font:700 .8rem/1.2 var(--sans)}
