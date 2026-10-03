@@ -1420,4 +1420,6 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro:not(.una)[data-estado="abriendo"] .pag-izq,.libro:not(.una)[data-estado="abriendo"] .libro-lomo{animation:izq-tras-tapa 1.65s linear both}
 @keyframes izq-tras-tapa{0%,62%{opacity:0}85%,100%{opacity:1}}
 /* las páginas pop-up nunca se muestran planas: mientras la hoja gira o el libro no está acostado, se ven vacías */
-.libro:not(.acostado) .pagina-pop > *,.hoja .pagina-pop > *{visibility:hidden!important}
+.libro:not(.pop-listo) .pagina-pop > *,.hoja .pagina-pop > *{visibility:hidden!important}
+.libro:not(.una)[data-estado="abriendo"] .libro-cuerpo::before{animation:izq-tras-tapa 1.65s linear both}
+.libro:not(.una)[data-estado="cerrado"] .libro-cuerpo::before{opacity:0}

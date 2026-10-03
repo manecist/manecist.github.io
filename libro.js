@@ -100,7 +100,7 @@
     guardar('mce-pagina', ref.dataset.n);
     // pliegos pop-up: el libro entero se acuesta (cámara baja) y los recortes se paran sobre la hoja
     const esPop = vis.some(p => p && p.classList.contains('pagina-pop'));
-    if (esPop) requestAnimationFrame(() => libro.classList.add('acostado')); else libro.classList.remove('acostado');
+    if (esPop) { libro.classList.add('acostado'); requestAnimationFrame(() => libro.classList.add('pop-listo')); } else libro.classList.remove('acostado', 'pop-listo');
     window.dispatchEvent(new CustomEvent('cuento-paginas', { detail: { paginas: vis.filter(Boolean) } }));
   }
 
@@ -142,16 +142,20 @@
     nuevo = Math.max(0, Math.min(orden.length - 1, nuevo));
     dir = dir || Math.sign(nuevo - actual);
     if (!dir || nuevo === actual) return;
-    // si el libro está acostado, primero se pliegan los recortes y el libro se levanta; después gira la hoja
+    // si el libro está acostado, los recortes se pliegan y el libro se levanta MIENTRAS gira la hoja
     if (libro.classList.contains('acostado') && !quieto) {
       if (levantando) return;
       levantando = true;
       document.querySelectorAll('.pop-escena.abierta').forEach(e => e.classList.remove('abierta'));
       window.dispatchEvent(new Event('cuento-levanta'));
-      setTimeout(() => libro.classList.remove('acostado'), 350);
-      setTimeout(() => { levantando = false; ir(nuevo, dir); }, 1300);
+      setTimeout(() => { levantando = false; libro.classList.remove('acostado', 'pop-listo'); ir(nuevo, dir); }, 280);
       return;
     }
+    // el pliego de destino es pop-up: el libro se acuesta mientras gira la hoja (no antes ni después)
+    const destino = una ? [orden[nuevo]] : [orden[nuevo], orden[nuevo + 1]];
+    const vaPop = destino.some(p => p && p.classList.contains('pagina-pop'));
+    libro.classList.remove('pop-listo');
+    if (!quieto) libro.classList.toggle('acostado', vaPop);
     window.dispatchEvent(new Event('cuento-pasa'));
     if (quieto) { colocar(nuevo); return; }
     animando = true;
