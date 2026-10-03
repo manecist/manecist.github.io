@@ -340,8 +340,12 @@
         const phi = (grupo === 'A' ? 180 - th : th) * Math.PI / 180;
         let psi = 90;
         if (phi < Math.PI / 2) psi = Math.asin(Math.min(1, ratio * Math.tan(Math.max(0, phi)) * .92)) * 180 / Math.PI;
+        // nunca más de pie que el fondo: todos los recortes se recuestan juntos, al mismo ritmo que el doblez en V
+        const lev = grupo === 'A' ? th : 180 - th;
+        psi = Math.max(2, Math.min(psi, 90 - Math.pow(Math.min(1, lev / 110), .6) * 90));
         el.style.transform = 'rotateX(' + (-psi).toFixed(2) + 'deg)' + suf;
-        el.style.opacity = (phi < .2 ? 0 : Math.max(0, Math.min(1, (psi - 8) / 16))).toFixed(3);   // ya aplastado queda bajo la hoja: no se asoma por encima
+        const clp = v => Math.max(0, Math.min(1, v));
+        el.style.opacity = (cara ? clp((psi - 8) / 16) : grupo === 'A' ? clp((165 - th) / 20) : clp((th - 55) / 25)).toFixed(3);   // como el fondo: se va recién bajo la hoja
         if (cara) el.style.visibility = (cara === 'frente') === (th < 90) ? 'visible' : 'hidden';   // la cara de abajo de la hoja no se ve
       });
       if (t < 1) { requestAnimationFrame(paso); return; }
