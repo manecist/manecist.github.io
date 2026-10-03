@@ -1726,3 +1726,48 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .app-oraculo label{font:700 .88rem 'Mali',sans-serif;color:#5b3a63;display:grid;gap:4px}
 .app-oraculo button[type="submit"]{justify-self:center;font:700 .95rem 'Mali',sans-serif;border-radius:18px;padding:10px 22px;background:#c98bb8!important;color:#fff!important;border:3px solid #fff!important;box-shadow:0 4px 0 #a26a94!important}
 .app-oraculo .lab-msg{text-align:center;font:600 .82rem 'Mali',sans-serif;color:#7a2f5f;min-height:1.2em;margin:0}
+
+/* ✦ calculadora dibujada: la pantalla y las teclas reales encima del dibujo; el código Java escrito en un cuaderno */
+.app-calc .app-doble{grid-template-columns:minmax(220px,300px) 1fr;align-items:center;gap:22px}
+.app-calc .calc-magica{position:relative;aspect-ratio:609/900;width:100%;padding:0;border:0;border-radius:0;box-shadow:none;background:url("assets/cuento/cap4/calc-dibujo.webp") center/100% 100% no-repeat}
+.app-calc .calc-cabeza{display:none}
+.app-calc .calc-pantalla{position:absolute;left:12%;top:20.5%;width:76%;height:15%;margin:0;padding:4px 10px;border:0;border-radius:8px;background:transparent;box-shadow:none;display:grid;align-content:center;justify-items:end;color:#6a2c55}
+.app-calc .calc-pantalla span{font:500 .7rem 'Mali',sans-serif;color:#9b7aa8}
+.app-calc .calc-pantalla strong{font:700 clamp(1.2rem,2vw,1.8rem) 'Mali',sans-serif;color:#7a2f5f}
+.app-calc .calc-teclas{position:absolute;left:10%;top:46.5%;width:80%;height:46%;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;align-content:stretch}
+.app-calc .calc-teclas button{min-height:0;padding:0;border-radius:12px;border:2px solid #fff;background:#fff6fb;color:#7a4f84;box-shadow:0 2px 0 #d3a9cb;font:700 clamp(.7rem,1vw,.95rem) 'Mali',sans-serif}
+.app-calc .calc-teclas .t-op{background:#f3dcf4}.app-calc .calc-teclas .t-fn{background:#fde6ef}.app-calc .calc-teclas [data-k="="]{background:#ffe7a8}
+.app-calc .calc-magica > :not(.calc-pantalla):not(.calc-teclas){display:none}
+.app-calc .calc-java{aspect-ratio:1257/873;width:100%;padding:5% 7% 6% 56%;border:0;border-radius:0;box-shadow:none;background:url("assets/cuento/cap4/cuaderno.webp") center/100% 100% no-repeat!important;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
+.app-calc .calc-java .chip{font:700 .62rem 'Mali',sans-serif;color:#c2457f;background:none;border:0;padding:0}
+.app-calc .calc-java h3{margin:0;font:700 1.1rem 'Mali',sans-serif;color:#6a2c55}
+.app-calc .calc-java pre{background:transparent!important;border:0!important;padding:0;margin:0;font:600 clamp(.66rem,.9vw,.85rem)/1.75 'Mali',monospace;color:#5b3a63!important;white-space:pre-wrap}
+.app-calc .calc-java .botonera{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px}
+.app-calc .calc-java .botonera .btn{font:700 .7rem 'Mali',sans-serif;padding:5px 10px}
+
+/* ✦ juegos dentro de su máquina arcade dibujada; instrucciones y controles en una tarjeta de papel */
+.app-juego .juego-papel{display:grid;gap:8px;align-content:start;font-size:.8rem}
+.app-juego .juego-papel :is(h3){font:700 1.05rem 'Mali',sans-serif;color:#6a2c55;margin:0}
+.app-juego .juego-papel p{font-size:.76rem;line-height:1.4;margin:0}
+.app-juego .arcade-dibujo{position:relative;width:100%}
+.app-juego .arcade-dibujo > .ranura{position:absolute;inset:0}
+.app-gemas .app-doble,.app-estrellas .app-doble{grid-template-columns:minmax(260px,330px) 1fr;align-items:start;gap:20px}
+.app-gemas .arcade-dibujo{aspect-ratio:546/900;background:url("assets/cuento/cap10/arcade-gemas.webp") center/100% 100% no-repeat}
+.app-gemas .match-grid{position:absolute;top:21.5%;left:50%;translate:-50% 0;height:29%;width:auto;aspect-ratio:1;margin:0;padding:3px;gap:2px;background:transparent!important;border:0!important;box-shadow:none!important}
+.app-estrellas .arcade-dibujo{aspect-ratio:635/900;background:url("assets/cuento/cap10/arcade-estrellas.webp") center/100% 100% no-repeat}
+.app-estrellas .constellation-board{position:absolute!important;top:16.5%;left:17.5%;width:66%;height:26%;min-height:0;margin:0;border-radius:6px;border:0!important}
+.app-estrellas .atlas-gallery{grid-template-columns:repeat(5,1fr);gap:4px}
+.app-estrellas .atlas-gallery > *{padding:4px;min-height:0}
+.app-bloques .tetris-layout{display:grid;grid-template-columns:minmax(200px,250px) 1fr;gap:20px;align-items:start}
+.app-bloques .tetris-frame{position:relative;aspect-ratio:400/900;width:100%;padding:0;border:0!important;border-radius:0;box-shadow:none!important;background:url("assets/cuento/cap10/arcade-bloques.webp") center/100% 100% no-repeat!important}
+.app-bloques #play-tetris{position:absolute;top:14%;left:50%;translate:-50% 0;height:36%;width:auto;aspect-ratio:1/2;border-radius:4px}
+.app-bloques .tetris-crown{display:none}
+.teatro-app .colgante-app{padding:30px 40px 34px}
+.app-calc .calc-teclas{grid-template-rows:repeat(6,1fr);grid-auto-rows:0;height:47%;top:46%;gap:4px}
+.app-calc .calc-teclas button{height:auto;min-width:0}
+.app-calc .calc-java pre,.app-calc .calc-java code{max-height:none!important;overflow:visible!important;display:block}
+.app-calc .calc-java{padding:6% 7% 7% 57%}
+.app-calc #calc-result{color:#7a2f5f!important;text-shadow:none!important}
+.app-calc .calc-java{position:relative}
+.app-calc .calc-java .botonera{position:absolute;left:8%;top:40%;width:36%;flex-direction:column;align-items:stretch;gap:10px;margin:0}
+.app-calc .calc-java .botonera .btn{text-align:center;background:#fff6fb;color:#6a2c55;border:2px solid #f0d6e8;box-shadow:0 3px 0 #ead0e2}
