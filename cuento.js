@@ -441,8 +441,9 @@
     ] },
     ix: { carpeta: 'cap9/', hitos: [
       { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'En lo alto de la torre…', texto: 'vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan.', pasos: [
-        { nombre: 'oraculo', img: 'oraculo.webp', x: 22, alto: 16, efecto: 'flota', clase: 'brilla', ms: 2200 },
-        { texto: { titulo: 'Cuéntale los tuyos', texto: 'Cada color que le cuentas se levanta aquí como una barra de papel: así ordeno los datos.' }, app: true, ms: 400 }
+        { nombre: 'oraculo', img: 'oraculo.webp', x: 24, alto: 16, efecto: 'flota', clase: 'brilla', ms: 2200 },
+        { nombre: 'pergamino', img: 'pergamino.webp', x: 62, alto: 30, clase: 'pergamino-datos', ms: 1600 },
+        { texto: { titulo: 'Lo que aprendió', texto: '' }, ms: 400, evento: 'oraculo-cartel' }
       ] }
     ] },
     x: { carpeta: 'cap10/', hitos: [
@@ -555,7 +556,7 @@
       a.classList.add('hito-pop', 'hito-actor'); if (p.delante) a.classList.add('delante'); if (p.fila) a.classList.add('fila-' + p.fila); if (p.clase) a.classList.add(...p.clase.split(' '));
       a.style.left = ((p.desde ?? p.x) - a._ancho / 2) + '%'; a.style.width = a._ancho + '%'; a.style.aspectRatio = w + ' / ' + hh;
       if (a._m) cuadro(a, a._m.marcas[p.camina ? p.camina[0] : (p.de ?? 0)]);
-      actores[n] = a;
+      actores[n] = a; window.dispatchEvent(new CustomEvent('cuento-actor', { detail: a }));
       if (sinPliegue) { a.classList.add('ya'); zona.append(a); } else levantar(a, d);
       return a;
     };
@@ -637,24 +638,72 @@
     el.classList.remove('abierta'); luego(() => { el.classList.add('abierta'); mostrar(0); }, quieto ? 0 : 1250);
   });
 
-  // IX · los datos del oráculo se levantan como barras de papel (los 8 colores más elegidos)
-  escena('[data-barras]', el => {
-    const pintar = datos => {
-      const top = (datos || []).slice(0, 8), max = Math.max(1, ...top.map(d => d.n));
-      el.replaceChildren(...top.map((d, i) => {
-        const b = document.createElement('div'); b.className = 'barra-papel';
-        b.style.left = (40 + i * (54 / Math.max(top.length, 4))).toFixed(1) + '%';
-        b.style.setProperty('--h', (d.n / max).toFixed(3)); b.style.setProperty('--c', d.hex); b.style.setProperty('--d', (.3 + i * .12) + 's');
-        b.innerHTML = '<span>' + d.n + '</span><b>' + d.c + '</b>';
-        return b;
-      }));
-    };
-    pintar(window.MCEOraculo && window.MCEOraculo.datos);
-    if (el._oir) window.removeEventListener('oraculo-datos', el._oir);
-    const cartel = el.closest('.hitos')?.querySelector('.hito-texto'), tit = el.closest('.hitos')?.querySelector('.hito-titulo');
-    const contar = datos => { if (!cartel || !datos || !datos.length) return; const total = datos.reduce((s, d) => s + d.n, 0); tit.textContent = 'El oráculo aprendió'; cartel.textContent = 'De ' + total + (total === 1 ? ' persona' : ' personas') + ', el color favorito es ' + datos[0].c + ' (' + datos[0].n + ').'; };
-    el._oir = e => { pintar(e.detail); contar(e.detail); }; window.addEventListener('oraculo-datos', el._oir);
-  });
+  // IX · el análisis del oráculo: cruza edad, color y música, los dibuja a mano y saca una conclusión
+  const ETAPAS = [[1, 12, 'Niñez', '1–12'], [13, 17, 'Adolescencia', '13–17'], [18, 29, 'Juventud', '18–29'], [30, 44, 'Adultez', '30–44'], [45, 120, 'Madurez', '45+']];
+  const contar = (lista, k) => { const m = new Map(); lista.forEach(r => m.set(r[k], (m.get(r[k]) || 0) + 1)); return [...m].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0]), 'es')); };
+  const pc = (n, d) => Math.round(n / Math.max(1, d) * 100);
+  const analizar = () => {
+    const O = window.MCEOraculo; if (!O || !O.filas || !O.filas.length) return null;
+    const filas = O.filas, total = filas.length, colores = contar(filas, 'color');
+    const etapas = ETAPAS.map(([a, b, nom, rango]) => {
+      const g = filas.filter(r => r.edad >= a && r.edad <= b); if (!g.length) return null;
+      const [c, nc] = contar(g, 'color')[0], [m, nm] = contar(g, 'musica')[0];
+      return { nom, rango, n: g.length, color: c, pcColor: pc(nc, g.length), musica: m, pcMusica: pc(nm, g.length) };
+    }).filter(Boolean);
+    // color ↔ música: qué escuchan quienes eligen cada color
+    const pares = colores.slice(0, 3).map(([c, n]) => { const g = filas.filter(r => r.color === c), [m, nm] = contar(g, 'musica')[0]; return { color: c, musica: m, pc: pc(nm, g.length) }; });
+    const joven = etapas[0], mayor = etapas[etapas.length - 1];
+    const cambia = etapas.length > 1 && (joven.color !== mayor.color || joven.musica !== mayor.musica);
+    const conclusion = `<b>Conclusión:</b> ${cambia
+      ? `el color y la música cambian juntos con la edad. En la ${joven.nom.toLowerCase()} (${joven.rango}) domina el <b>${joven.color}</b> con <b>${joven.musica}</b>; en la ${mayor.nom.toLowerCase()} (${mayor.rango}), el <b>${mayor.color}</b> con <b>${mayor.musica}</b>.`
+      : `todas las edades coinciden en el <b>${joven.color}</b> y la música <b>${joven.musica}</b>.`}
+      El color más elegido es el <b>${colores[0][0]}</b> (${pc(colores[0][1], total)}%), y quienes lo eligen escuchan sobre todo <b>${pares[0].musica}</b> (${pares[0].pc}%).${total < 12 ? ' Son pocas personas: es una tendencia, no una regla.' : ''}`;
+    return { total, colores, etapas, pares, conclusion, hex: O.hex || {} };
+  };
+  // trazo de lápiz: un filtro de temblor hace que las líneas se vean dibujadas a mano
+  const LAPIZ = '<defs><filter id="lapiz" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter></defs>';
+  const torta = (A, r = 70, cx = 100, cy = 100, conEtiquetas = true) => {
+    let ang = -Math.PI / 2, svg = '';
+    const top = A.colores.slice(0, 6), resto = A.total - top.reduce((s, [, n]) => s + n, 0), partes = resto > 0 ? [...top, ['Otros', resto]] : top;
+    partes.forEach(([c, n]) => {
+      const fr = n / A.total, a2 = ang + fr * Math.PI * 2, gran = fr > .5 ? 1 : 0, ri = r * .48;
+      const p = (rr, a) => (cx + rr * Math.cos(a)).toFixed(1) + ' ' + (cy + rr * Math.sin(a)).toFixed(1);
+      const d = fr >= .999 ? `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0M${cx - ri} ${cy}a${ri} ${ri} 0 1 1 ${2 * ri} 0a${ri} ${ri} 0 1 1 ${-2 * ri} 0`
+        : `M${p(r, ang)}A${r} ${r} 0 ${gran} 1 ${p(r, a2)}L${p(ri, a2)}A${ri} ${ri} 0 ${gran} 0 ${p(ri, ang)}Z`;
+      svg += `<path d="${d}" fill="${A.hex[c] || '#e3d6ee'}" stroke="#6b3a5e" stroke-width="2.4" stroke-linejoin="round" fill-rule="evenodd"/>`;
+      const med = (ang + a2) / 2;
+      if (conEtiquetas && fr >= .08) svg += `<text x="${(cx + r * 1.2 * Math.cos(med)).toFixed(1)}" y="${(cy + r * 1.2 * Math.sin(med) + 4).toFixed(1)}" text-anchor="middle" font-family="Mali" font-weight="700" font-size="13" fill="#5e2f52">${pc(n, A.total)}%</text>`;
+      ang = a2;
+    });
+    return `<g filter="url(#lapiz)">${svg}</g><text x="${cx}" y="${cy - 2}" text-anchor="middle" font-family="Mali" font-weight="700" font-size="20" fill="#6a2c55">${A.total}</text><text x="${cx}" y="${cy + 14}" text-anchor="middle" font-family="Mali" font-size="10" fill="#8c5a80">personas</text>`;
+  };
+  const pintarAnalisis = () => {
+    const A = analizar();
+    document.querySelectorAll('[data-analisis]').forEach(el => {
+      if (!A) { el.innerHTML = '<p>El oráculo aún no conoce a nadie.</p>'; return; }
+      el.innerHTML = `<h4>Lo que aprendió el oráculo</h4>
+        <div class="oa-fila"><div class="oa-torta"><svg viewBox="0 0 200 200">${LAPIZ}${torta(A)}</svg></div>
+          <div class="oa-leyenda">${A.colores.slice(0, 6).map(([c, n]) => `<span><i style="background:${A.hex[c] || '#e3d6ee'}"></i>${c} · ${pc(n, A.total)}%</span>`).join('')}</div></div>
+        <table class="oa-tabla"><thead><tr><th>Edad</th><th>Color favorito</th><th>Música favorita</th></tr></thead><tbody>
+          ${A.etapas.map(e => `<tr><td>${e.nom} <small>(${e.rango} · ${e.n})</small></td><td><span class="chip-color" style="background:${A.hex[e.color] || '#e3d6ee'}"></span>${e.color} ${e.pcColor}%</td><td>${e.musica} ${e.pcMusica}%<span class="oa-barra" style="width:${Math.round(e.pcMusica * .5)}px"></span></td></tr>`).join('')}
+        </tbody></table>
+        <p class="oa-conclusion">${A.conclusion}</p>`;
+    });
+    // el pergamino del libro: la torta y los tres colores principales
+    document.querySelectorAll('.pergamino-datos').forEach(p => {
+      let caja = p.querySelector('.perg-svg'); if (!caja) { caja = document.createElement('div'); caja.className = 'perg-svg'; p.append(caja); }
+      if (!A) { caja.innerHTML = ''; return; }
+      const ley = A.colores.slice(0, 3).map(([c, n], k) => `<g transform="translate(205 ${52 + k * 34})"><circle r="9" cx="0" cy="-5" fill="${A.hex[c] || '#e3d6ee'}" stroke="#6b3a5e" stroke-width="2.4"/><text x="16" y="0" font-family="Mali" font-weight="700" font-size="17" fill="#5e2f52">${c} ${pc(n, A.total)}%</text></g>`).join('');
+      caja.innerHTML = `<svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">${LAPIZ}<text x="200" y="26" text-anchor="middle" font-family="Mali" font-weight="700" font-size="20" fill="#6a2c55">Colores favoritos</text><g transform="translate(5 22) scale(.85)">${torta(A, 70, 100, 100, false)}</g><g filter="url(#lapiz)">${ley}</g></svg>`;
+    });
+    // el cartel cuenta la conclusión en corto
+    const A2 = A && A.etapas.length ? A : null;
+    document.querySelectorAll('[data-hitos="ix"] .hito-texto').forEach(t => { if (A2 && t.closest('.hitos').dataset.cartel === '1') t.textContent = `${A2.etapas[0].nom}: ${A2.etapas[0].color} y ${A2.etapas[0].musica}. ${A2.etapas[A2.etapas.length - 1].nom}: ${A2.etapas[A2.etapas.length - 1].color} y ${A2.etapas[A2.etapas.length - 1].musica}. Mira el análisis completo ↑`; });
+  };
+  window.addEventListener('oraculo-datos', pintarAnalisis);
+  window.addEventListener('cuento-actor', e => { if (e.detail.classList.contains('pergamino-datos')) requestAnimationFrame(pintarAnalisis); });
+  window.addEventListener('oraculo-cartel', e => { const H = e.detail?.zona?.closest('.hitos'); if (H) H.dataset.cartel = '1'; pintarAnalisis(); });
+  setTimeout(pintarAnalisis, 0);
 
   // ✦ Final: el báculo dibuja trazos de luz por toda la pantalla, la cámara entra al dibujo con un brillo
   // y aparece la versión clásica, donde el hada dibuja el lineart desde la hoja en blanco y luego lo pinta
@@ -686,7 +735,10 @@
     // zoom hacia dentro del dibujo con la pantalla brillando; en el blanco cambia a la versión clásica
     const entrar = () => {
       capa.classList.add('entra');
+      const escL = document.getElementById('escena'); if (escL) { escL.style.transition = 'opacity 1.2s ease'; escL.style.opacity = '0'; setTimeout(() => { escL.style.opacity = ''; escL.style.transition = ''; }, 2600); }
       setTimeout(() => {
+        // el libro desaparece de inmediato bajo el brillo (no se ve cómo se levanta ni sus hojas en blanco)
+        const esc = document.getElementById('escena'); if (esc) { esc.style.visibility = 'hidden'; setTimeout(() => { esc.style.visibility = ''; }, 2500); }
         window.MCELibro?.aClasico(null, { pintar: true });
         capa.classList.add('sale');
         setTimeout(() => { capa.remove(); dibujando = false; }, 1100);
@@ -937,7 +989,7 @@
           tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.add('mueve'); clearTimeout(o._mv); o._mv = setTimeout(() => o.classList.remove('mueve'), 1000); o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); });
           c._rotular = rotular; rotular(); c.append(tab);
           const ajustarApp = () => {
-            el.style.zoom = ''; const disp = Math.min(innerHeight * .74, 760) - 20, alto = el.scrollHeight;
+            el.style.zoom = ''; const disp = Math.min(innerHeight * .68, 720) - 20, alto = el.scrollHeight;
             el.style.zoom = alto > disp ? Math.max(.55, disp / alto).toFixed(3) : '';
           };
           c._ajustar = ajustarApp; new ResizeObserver(() => requestAnimationFrame(ajustarApp)).observe(el);

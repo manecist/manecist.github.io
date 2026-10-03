@@ -1713,7 +1713,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .app-caja .printed-receipt{max-height:52vh;overflow:hidden}
 
 /* ✦ el oráculo del libro, minimalista: color, música y edad; lo demás vive en la versión clásica */
-.teatro-app .colgante-app:has(.app-oraculo){width:min(560px,90vw);left:50%;right:auto;translate:-50% 0}
+
 .app-oraculo .oraculo-form{display:grid;gap:10px;padding:10px 16px 6px;background:transparent!important;border:0!important;box-shadow:none!important}
 .app-oraculo .oraculo-form .chip,.app-oraculo .lab-privado,.app-oraculo .oraculo-acciones,.app-oraculo #lab-nombre,.app-oraculo .fila2 label:first-child{display:none}
 .app-oraculo .oraculo-form h3{margin:0;text-align:center;font:700 1.3rem 'Mali',sans-serif;color:#6a2c55}
@@ -1858,3 +1858,30 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante-app .leyendas-aviso{font-size:.62rem;margin:6px 0 0}
 .colgante-app .leyendas-filtros button{font-family:'Mali',sans-serif;color:#6a2c55!important}
 .colgante-app .leyendas-grid{grid-template-columns:repeat(7,1fr)}
+/* con la aplicación abierta, "Subir" va dentro de la tarjeta, arriba a la derecha (nunca queda tapado por la barra) */
+.teatro-app .colgante-app:not(.arriba) .app-pestana{top:10px;left:auto;right:46px;translate:none;border:3px solid #fff;border-radius:14px;z-index:5;padding:6px 14px;font-size:.82rem}
+.teatro-app.varias .colgante-app:not(.arriba) .app-pestana{display:block}
+
+/* ✦ el análisis del oráculo, dibujado a mano (trazo con temblor, tinta ciruela, colores pastel) */
+.barras-oraculo{display:none}
+.app-oraculo .app-doble{grid-template-columns:minmax(260px,320px) 1fr;gap:22px;align-items:start}
+.app-oraculo .oraculo-form{padding:4px 6px}
+.oraculo-analisis{font-family:'Mali',sans-serif;color:#4a3359}
+.oraculo-analisis h4{margin:0 0 6px;font:700 1.15rem 'Mali',sans-serif;color:#6a2c55}
+.oa-fila{display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:center}
+.oa-torta svg{width:100%;height:auto;overflow:visible}
+.oa-leyenda{display:grid;gap:3px;font-size:.78rem}
+.oa-leyenda span{display:flex;align-items:center;gap:6px}
+.oa-leyenda i{width:13px;height:13px;border-radius:50%;border:2px solid #6b3a5e;flex:none}
+.oa-tabla{width:100%;border-collapse:separate;border-spacing:0 4px;font-size:.78rem;margin-top:8px}
+.oa-tabla th{font:700 .72rem 'Mali',sans-serif;color:#8c5a80;text-align:left;padding:0 6px}
+.oa-tabla td{background:#fff6fb;padding:5px 8px;border-top:2px solid #f0d6e8;border-bottom:2px solid #f0d6e8}
+.oa-tabla td:first-child{border-left:2px solid #f0d6e8;border-radius:12px 0 0 12px;font-weight:700}
+.oa-tabla td:last-child{border-right:2px solid #f0d6e8;border-radius:0 12px 12px 0}
+.oa-tabla .chip-color{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid #6b3a5e;margin-right:5px;vertical-align:-1px}
+.oa-barra{display:inline-block;height:8px;border-radius:6px;background:#e8b7d6;border:1.5px solid #6b3a5e;vertical-align:middle;margin-left:6px}
+.oa-conclusion{margin:10px 0 0;padding:10px 12px;border-radius:16px;background:#fff1d6;border:2px dashed #d7a84a;font-size:.84rem;line-height:1.45}
+.oa-conclusion b{color:#8c2f62}
+/* el pergamino del libro: la torta y los tres colores principales */
+.pergamino-datos .perg-svg{position:absolute;left:10.5%;top:21.5%;width:79%;height:38%;pointer-events:none}
+.pergamino-datos .perg-svg svg{width:100%;height:100%}
