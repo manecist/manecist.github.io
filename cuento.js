@@ -355,6 +355,8 @@
         { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', linea: 'assets/personajes/ari-frente-lineart.webp', x: 40, alto: 16, ms: 4200, pausa: 400 },
         { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', linea: 'assets/personajes/coen-frente-lineart.webp', x: 60, alto: 17, ms: 4200,
           texto: { titulo: '…y a Coen,', texto: 'el caballero de capa carmesí.' } },
+        { nombre: 'ari', mueve: 47, ms: 1500, junto: true, sigue: true },                              // se acercan el uno al otro…
+        { nombre: 'coen', mueve: 53, ms: 1500, pausa: 100 },
         { nombre: 'pareja', actor: 'pareja', x: 50, alto: 17, reemplaza: ['ari', 'coen'], efecto: 'brilla', ms: 1800, bucle: [0, 1], cicloMs: 3000,
           texto: { titulo: 'Línea a línea, color a color…', texto: 'se encontraron y se tomaron de la mano.' } },
         { nombre: 'pareja', mueve: 27, ms: 1400, pausa: 100 },                                         // la pareja le hace espacio al logo
@@ -376,17 +378,32 @@
         { nombre: 'arbol', img: 'assets/cuento/popup/arbol.webp', x: 21, alto: 22, fila: 'medio', ms: 300, pausa: 200 },
         { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 76, alto: 19, fila: 'medio', ms: 300, pausa: 300 },
         { actor: 'dragon', camina: [0, 1], desde: 50, x: 50, alto: 10, clase: 'vuela', ms: 2600 },          // el dragón despierta y aletea
-        { texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos. Ari saltó con su daga, ágil como el viento, y Coen alzó su espada para protegerla.' }, ms: 300 },
-        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 62, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 72, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 82, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 91, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
-        { nombre: 'ari', actor: 'ari-salta', x: 38, alto: 18, delante: true, de: 0, a: 1, ms: 2600, pausa: 200 },
-        { nombre: 'coen', actor: 'coen-ataca', x: 50, alto: 16, delante: true, de: 0, a: 1, ms: 2400 },
-        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo, y el dragón lanzó su fuego rosado. ¡Los monstruitos huyeron!' }, ms: 200 },
-        { nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: 26, alto: 13, clase: 'vuela', efecto: 'flota', ms: 900 },
-        { nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: 60, alto: 14, clase: 'vuela', reemplaza: 'dragon', ms: 1400 },
-        { quita: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 900 },
+        { texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos.' }, ms: 300 },
+        { actor: 'dragon', ruta: [[0, 50, 0], [1, -16, 8]], ms: 1300, suave: 'ease-in', pausa: 0 },          // el dragón se asusta y se va volando
+        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 63, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 71, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 79, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 87, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
+        // Ari llega corriendo, ataca a los cuatro con su daga y vuelve de un salto hacia atrás
+        { texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', img: 'assets/personajes/ari-lado.webp', x: -6, alto: 16, delante: true, clase: 'corre', entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
+        { nombre: 'ari', actor: 'ari-salta', x: 54, alto: 18, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
+          ruta: [[0, 54, 0], [.1, 57, 9], [.2, 60, 1], [.32, 65, 9], [.44, 68, 1], [.56, 73, 9], [.68, 76, 1], [.8, 81, 9], [.92, 84, 1], [1, 84, 1]],
+          fx: [{ tipo: 'tajo', x: 63, ancho: 8, y: 4, tras: 480, golpe: 'mo1' }, { tipo: 'tajo', x: 71, ancho: 8, y: 4, tras: 1100, golpe: 'mo2' }, { tipo: 'tajo', x: 79, ancho: 8, y: 4, tras: 1720, golpe: 'mo3' }, { tipo: 'tajo', x: 87, ancho: 8, y: 4, tras: 2340, golpe: 'mo4' }] },
+        { nombre: 'ari', ruta: [[0, 84, 1, 0], [.5, 62, 26, -200], [1, 38, 0, -360]], ms: 1100, suave: 'ease-out', pausa: 200 },
+        // Coen llega, salta al centro de los monstruos, los golpea con una onda de choque y vuelve a cubrir a Ari
+        { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', img: 'assets/personajes/coen-lado.webp', x: -6, alto: 17, delante: true, clase: 'corre', entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
+        { nombre: 'coen', actor: 'coen-ataca', x: 24, alto: 16, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 1400, suave: 'cubic-bezier(.3,0,.7,1)', pausa: 0,
+          ruta: [[0, 24, 0], [.55, 58, 30], [1, 75, 0]], fx: { tipo: 'onda', x: 75, ancho: 40, ms: 1000, tras: 1400, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
+        { nombre: 'coen', ruta: [[0, 75, 0], [.5, 60, 20], [1, 45, 0]], ms: 1000, suave: 'ease-out', pausa: 300 },
+        // Rancek llega volando sobre su báculo: círculo mágico bajo los monstruos y picos de hielo
+        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: -12, alto: 15, entra: true, ruta: [[0, -12, 30], [1, 24, 15]], ms: 1600, suave: 'ease-out', pausa: 0 },
+        { fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
+        { nombre: 'rancek', ruta: [[0, 24, 15], [1, 41, 20]], ms: 1100, suave: 'ease-in-out', pausa: 200 },
+        // el dragón vuelve y les lanza su fuego
+        { texto: { titulo: 'Y el dragón rosado…', texto: 'volvió volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, actor: 'dragon', ruta: [[0, -16, 8], [1, 40, 4]], ms: 1500, suave: 'ease-out', pausa: 0 },
+        { nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: 44, alto: 14, clase: 'vuela espejo', reemplaza: 'dragon', sigue: true, ms: 200, pausa: 0,
+          fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 150, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
+        { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
         { quita: ['ari', 'coen', 'rancek', 'fuego'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 400 },
         { actor: 'dragon', camina: [0, 1], desde: 34, x: 70, alto: 10, clase: 'vuela', ms: 4400, junto: true },   // y vuela hacia el castillo
         { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', camina: [0, 0], desde: 16, x: 50, alto: 16, ms: 4200, delante: true, junto: true },
@@ -407,7 +424,7 @@
     paseo: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-paseo.webp', suelo: 'suelo-paseo.webp', titulo: 'Con sus compras puestas…', texto: 'Ari con su vestido de chica mágica y sus botas de plataforma; Coen con su jogger blanco y su polera burdeo.', pasos: [
         { nombre: 'pareja', actor: 'paseo', camina: [0, 1], cicloMs: 1500, desde: 12, x: 58, alto: 17, ms: 5200, delante: true },   // salen a pasear por el reino
-        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', actor: 'rancek-corre', camina: [0, 1], cicloMs: 900, desde: 4, x: 32, alto: 13, ms: 2600, delante: true }   // y Rancek corre detrás
+        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', actor: 'rancek-corre', camina: [0, 1], cicloMs: 900, desde: 4, x: 32, alto: 16, ms: 2600, delante: true }   // y Rancek corre detrás
       ] }
     ] },
     vii: { carpeta: 'cap7/', hitos: [
@@ -562,6 +579,7 @@
       } else {
         const t = await tam(ruta(esc, p.img)); w = t.w; hh = t.h; a.classList.add('hito-fija');
         a.innerHTML = '<img alt="" src="' + ruta(esc, p.img) + '">' + (p.linea ? '<img class="hito-linea" alt="" src="' + ruta(esc, p.linea) + '">' : '');
+        if (p.linea) a.classList.add('por-dibujar');
       }
       a._ancho = p.ancho ?? p.alto * w / hh;
       a.classList.add('hito-pop', 'hito-actor'); if (p.delante) a.classList.add('delante'); if (p.fila) a.classList.add('fila-' + p.fila); if (p.clase) a.classList.add(...p.clase.split(' '));
@@ -578,6 +596,25 @@
     });
     // animación que sigue viva en bucle (ida y vuelta, sin salto) mientras la escena esté a la vista
     const vivir = (a, c0, c1, ms, mia) => { if (quieto || c1 <= c0) return; const t0 = performance.now(); a._vive = t0; const paso = t => { if (mia !== vuelta || !a.isConnected || a._vive !== t0) return; const u = ((t - t0) % (2 * ms)) / ms; cuadro(a, c0 + (c1 - c0) * (u < 1 ? u : 2 - u)); requestAnimationFrame(paso); }; requestAnimationFrame(paso); };
+    // recorrido con saltos: puntos [t 0–1, x %, alto sobre el piso (% de la escena), giro°, espejo ±1]
+    const recorrer = (a, p, mia) => new Promise(fin => {
+      a._vive = null; const H = zona.offsetHeight || 1, pts = p.ruta, ms = p.ms || 1200;
+      const kf = pts.map(([t, x, y = 0, g = 0, e = 1]) => ({ offset: t, left: (x - a._ancho / 2) + '%', translate: '0 0 ' + ((y / 100) * H).toFixed(1) + 'px', rotate: 'y ' + g + 'deg', scale: e + ' 1' }));   // el piso está acostado: subir es el eje Z y el giro de un salto, alrededor de la profundidad
+      const fin0 = pts[pts.length - 1];
+      const cerrar = () => { a.style.left = (fin0[1] - a._ancho / 2) + '%'; a.style.translate = '0 0 ' + (((fin0[2] || 0) / 100) * H).toFixed(1) + 'px'; a.style.rotate = 'y ' + (fin0[3] || 0) + 'deg'; a.style.scale = (fin0[4] ?? 1) + ' 1'; };
+      if (quieto) { cerrar(); fin(true); return; }
+      const an = a.animate(kf, { duration: ms, easing: p.suave || 'linear', fill: 'forwards' });
+      const t0 = performance.now(), m = a._m, c0 = m && p.de != null ? m.marcas[p.de] : null, c1 = m && p.a != null ? m.marcas[p.a] : null;
+      if (c0 != null) { const paso = t => { if (mia !== vuelta || !a.isConnected) return; const u = Math.min(1, (t - t0) / ms); cuadro(a, c0 + (c1 - c0) * u); if (u < 1) requestAnimationFrame(paso); }; requestAnimationFrame(paso); }
+      an.onfinish = () => { cerrar(); an.cancel(); fin(mia === vuelta); };
+    });
+    // efectos dibujados sobre el piso: tajo, onda, círculo mágico, picos de hielo, llamas, humo
+    const efecto = (tipo, x, ancho = 10, y = 0, ms = 900) => {
+      const e = document.createElement('div'); e.className = 'hito-fx fx-' + tipo; e.style.left = (x - ancho / 2) + '%'; e.style.width = ancho + '%'; e.style.setProperty('--z', ((y / 100) * (zona.offsetHeight || 1)).toFixed(1) + 'px'); e.style.setProperty('--ms', ms + 'ms');
+      if (tipo === 'picos') e.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i><i></i>';
+      if (tipo === 'llamas' || tipo === 'humo') e.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
+      zona.append(e); setTimeout(() => e.remove(), ms + 200);
+    };
     const caminar = (a, p, mia) => new Promise(fin => {
       const m = a._m, c0 = m ? m.marcas[p.camina[0]] : 0, c1 = m ? m.marcas[p.camina[1]] : 0, t0 = performance.now(), CICLO = p.cicloMs || 1000; a._vive = null;
       a.classList.add('camina'); a.classList.toggle('camina-fija', c1 <= c0);
@@ -592,7 +629,7 @@
     });
     // imagen que se dibuja sola: primero la línea (de arriba hacia abajo) y luego el color
     const dibujar = (a, ms, mia) => new Promise(fin => {
-      a.style.setProperty('--dur', ms + 'ms'); a.classList.add('dibuja');
+      a.style.setProperty('--dur', ms + 'ms'); a.classList.add('dibuja'); a.classList.remove('por-dibujar');
       luego(() => { a.classList.add('colorea'); luego(() => fin(mia === vuelta), ms * .5); }, ms * .65);
     });
     const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms));
@@ -617,18 +654,22 @@
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
         if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
+        if (p.fx) [].concat(p.fx).forEach(f => luego(() => { if (mia !== vuelta) return; efecto(f.tipo, f.x, f.ancho, f.y, f.ms); [].concat(f.golpe || []).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } }); }, f.tras || 0));
+        if (p.golpe) [].concat(p.golpe).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } });
+        if (p.muere) [].concat(p.muere).forEach((n, i) => { const g = actores[n]; if (!g) return; delete actores[n]; luego(() => { const x = parseFloat(g.style.left) + g._ancho / 2; g.classList.add('muere'); efecto('humo', x, g._ancho * 1.4, 0, 1000); setTimeout(() => g.remove(), 700); }, i * 120); });
         if (p.evento) { const ev = p.evento; luego(() => { if (mia === vuelta) window.dispatchEvent(new CustomEvent(ev, { detail: { zona } })); }, p.ms || 400); }
         if (!nombre(p)) { if (!(await espera(p.ms || 600, mia))) return; continue; }
         const nuevo = !actores[nombre(p)];
-        const a = await actor(p, p.d ?? .1, !!p.reemplaza);
+        const a = await actor(p, p.d ?? .1, !!p.reemplaza || !!p.entra);   // entra: llega corriendo o volando desde fuera, sin levantarse del papel
         if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
-        if (!(nuevo ? false : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;   // sigue: encadenado al paso anterior, sin respiro
+        if (!(nuevo ? p.entra || (p.reemplaza && p.sigue) : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;   // sigue: encadenado al paso anterior, sin respiro
         if (p.efecto) a.classList.add(p.efecto);
         if (p.abre && !a.dataset.abre) { a.dataset.abre = p.abre; a.classList.add('clicable'); a.addEventListener('click', () => window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.abre } }))); }
         if (p.rotulo && !a.querySelector('.hito-rotulo')) { const r = document.createElement('span'); r.className = 'hito-rotulo'; r.textContent = p.rotulo; a.append(r); }
         let ok;
-        if (p.junto) { if (p.camina) caminar(a, p, mia); else if (a._m && p.a != null) tramo(a, a._m.marcas[p.de ?? 0], a._m.marcas[p.a], p.ms, mia); if (!p.sigue) await espera(120, mia); continue; }   // junto: corre a la par del paso siguiente
+        if (p.junto) { if (p.ruta) recorrer(a, p, mia); else if (p.mueve != null) { a.style.transition = 'left ' + (p.ms || 1200) + 'ms cubic-bezier(.45,0,.3,1)'; a.style.left = (p.mueve - a._ancho / 2) + '%'; } else if (p.camina) caminar(a, p, mia); else if (a._m && p.a != null) tramo(a, a._m.marcas[p.de ?? 0], a._m.marcas[p.a], p.ms, mia); if (!p.sigue) await espera(120, mia); continue; }   // junto: corre a la par del paso siguiente
         if (p.mueve != null) ok = await new Promise(fin => { a.style.transition = 'left ' + (p.ms || 1200) + 'ms cubic-bezier(.45,0,.3,1)'; a.style.left = (p.mueve - a._ancho / 2) + '%'; luego(() => { a.style.transition = ''; fin(mia === vuelta); }, p.ms || 1200); });
+        else if (p.ruta) ok = await recorrer(a, p, mia);
         else if (p.camina) ok = await caminar(a, p, mia);
         else if (p.linea) ok = await dibujar(a, p.ms || 3000, mia);
         else if (a._m && p.a != null) ok = await tramo(a, a._m.marcas[p.de ?? 0], a._m.marcas[p.a], p.ms, mia);
