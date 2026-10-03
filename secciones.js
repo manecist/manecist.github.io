@@ -414,6 +414,7 @@
   (function tienda() {
     const items = $('#m4-items'), boleta = $('#printed-receipt'); if (!items) return;
     const decir = (quien, txt) => {
+      window.dispatchEvent(new CustomEvent('tienda-dice', { detail: { quien, txt } }));   // el cuento también lo cuenta
       const g = document.querySelector(`[data-tienda] [data-globo="${quien}"]`); if (!g) return;
       g.textContent = txt; g.classList.remove('habla'); void g.offsetWidth; g.classList.add('habla');
     };
@@ -434,6 +435,7 @@
       if (!boleta.childElementCount) return;
       const vuelto = $('#drawer-change')?.textContent || '';
       decir('mago', '¡Aquí tienen su boleta! ' + vuelto + '. Vuelvan pronto ✦');
+      setTimeout(() => window.dispatchEvent(new Event('tienda-boleta')), 1800);
       setTimeout(() => decir('ari', '¡Gracias, Rancek! Coen, lleva las bolsas 💕'), 900);
       const m = document.querySelector('[data-tienda] .t-mago');
       if (m && window.Magia) { const r = m.getBoundingClientRect(); if (r.width) Magia.chispas(r.left + r.width / 2, r.top + r.height * .3, { n: 30 }); }

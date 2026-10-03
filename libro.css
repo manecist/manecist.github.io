@@ -2008,3 +2008,13 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .fx-humo i{width:42%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0,#f2e6ff 55%,rgba(230,215,255,0) 72%);margin:-8%;animation:fx-humo var(--ms) ease-out forwards}
 .fx-humo i:nth-child(2n){animation-delay:.08s}.fx-humo i:nth-child(3n){animation-delay:.16s}
 @keyframes fx-humo{0%{transform:scale(.2);opacity:0}30%{opacity:1}100%{transform:scale(1.4) translateY(-30%);opacity:0}}
+/* ✦ la tienda: caminar, saludar y el destello de la transformación */
+.hito-actor.anda > *{animation:hito-anda .42s ease-in-out infinite alternate}
+@keyframes hito-anda{from{transform:translateY(0) rotate(1.5deg)}to{transform:translateY(-3.5%) rotate(-1.5deg)}}
+.hito-actor.saluda > :not(.hito-rotulo){animation:hito-saluda .9s ease-in-out}
+@keyframes hito-saluda{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-7%) rotate(-3deg)}40%{transform:translateY(0) rotate(2deg)}60%{transform:translateY(-4%) rotate(-2deg)}80%{transform:translateY(0)}}
+.fx-destello{aspect-ratio:1;background:radial-gradient(circle,#fff 0,#fff6fb 18%,rgba(255,190,230,.85) 32%,rgba(255,170,220,0) 62%),conic-gradient(from 0deg,transparent 0 10deg,rgba(255,255,255,.95) 12deg 16deg,transparent 18deg 55deg,rgba(255,220,240,.9) 57deg 61deg,transparent 63deg 100deg,rgba(255,255,255,.95) 102deg 106deg,transparent 108deg 145deg,rgba(255,220,240,.9) 147deg 151deg,transparent 153deg 190deg,rgba(255,255,255,.95) 192deg 196deg,transparent 198deg 235deg,rgba(255,220,240,.9) 237deg 241deg,transparent 243deg 280deg,rgba(255,255,255,.95) 282deg 286deg,transparent 288deg 325deg,rgba(255,220,240,.9) 327deg 331deg,transparent 333deg);border-radius:50%;filter:drop-shadow(0 0 10px #ffc2e6);animation:fx-destello var(--ms) ease-out forwards}
+@keyframes fx-destello{0%{scale:.1;opacity:0}25%{scale:1;opacity:1}100%{scale:1.45;opacity:0}}
+/* entrar por la puerta del castillo: se achica hacia adentro y desaparece */
+.hito-actor.adentro{transition:opacity .9s ease-in,filter .9s;opacity:0!important;filter:brightness(1.6) drop-shadow(0 0 14px #ffe7a8)}
+.hito-actor.adentro > *{animation:none!important;transition:transform .9s ease-in;transform:scale(.82) translateY(-4%)}
