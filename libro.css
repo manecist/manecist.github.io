@@ -1574,3 +1574,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .hito-actor i+i{opacity:0}
 .hitos-controles .hito-num{font:600 .85rem/1 var(--sans);color:#6a2c55;min-width:3.2em;text-align:center}
 .libro.una.acostado .hito-actor{bottom:38%}
+.hito-actor.delante{bottom:24%}
+/* mientras no haya video de caminata, un balanceo suave de paso */
+.hito-actor.camina-fija > i{animation:hito-paso .5s ease-in-out infinite alternate}
+@keyframes hito-paso{from{transform:translateY(0)}to{transform:translateY(-2.5%)}}
