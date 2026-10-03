@@ -1814,3 +1814,17 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .app-estrellas.jugando .juego-papel{gap:6px}
 .app-estrellas.jugando #lesson-description{font-size:.74rem;line-height:1.35}
 .app-calc .calc-java{padding:11% 56% 7% 8%}
+
+/* ✦ tableros con el estilo del cuento: gemas como fichas de papel dibujadas; el cielo de constelaciones pintado en acuarela */
+.app-gemas.jugando .match-grid{background:#fff4f8!important;border:5px solid #fff!important;box-shadow:0 0 0 3px #e9b8d6,0 10px 22px rgba(90,40,90,.25)!important;gap:5px}
+.colgante-app .gem{background:radial-gradient(circle at 32% 26%,#fff 0,#fff6fa 35%,#f6e2ef 100%)!important;border:2px solid #8a5a7a!important;border-radius:12px;box-shadow:0 2px 0 #d9b4cd!important;text-shadow:none;-webkit-text-stroke:1.2px #5e2f52;paint-order:stroke fill}
+.colgante-app .gem.special{background:radial-gradient(circle at 32% 26%,#fffbe8,#ffe7a8 100%)!important;border-color:#b0832c!important}
+.colgante-app .gem.selected{outline:3px solid #c2457f;outline-offset:1px}
+.colgante-app .gem.lesson-gem{outline:3px dashed #c2457f;box-shadow:0 0 0 3px #fff,0 0 14px #f5a8cf!important}
+.colgante-app .constellation-board{background:#1d1840 url("assets/cuento/cap10/cielo-acuarela.webp") center/cover no-repeat!important;border:5px solid #fff!important;box-shadow:0 0 0 3px #d9c2f0,0 10px 22px rgba(60,30,90,.3)!important}
+.colgante-app .constellation-veil{opacity:.35!important}
+.colgante-app .const-watermark{display:none}
+.colgante-app .atlas-gallery button{background:#1d1840 url("assets/cuento/cap10/cielo-acuarela.webp") center/220% no-repeat!important;border:3px solid #fff!important;border-radius:14px!important;box-shadow:0 3px 0 #d9c2f0!important}
+.colgante-app .atlas-gallery button :is(strong,b,span,small){font-family:'Mali',sans-serif}
+.colgante-app #gem-inventory > *,.colgante-app #gem-inventory button,.colgante-app #gem-inventory span{background:#fff6fb!important;color:#6a2c55!important;border:2px solid #f0d6e8!important;box-shadow:0 2px 0 #e2c4dc!important;font-family:'Mali',sans-serif!important}
+.colgante-app .gem-power-message,.colgante-app .gem-lesson-hint{color:#8c2f62!important;background:transparent!important;border-color:#f0d6e8!important;font-family:'Mali',sans-serif}
