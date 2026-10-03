@@ -84,7 +84,7 @@
     i = Math.max(0, Math.min(orden.length - 1, i));
     if (!una) i -= i % 2;
     actual = i;
-    [...izq.children, ...der.children].forEach(p => almacen.append(p));
+    [...izq.children, ...der.children].forEach(p => p.classList.contains('clon-bajo') ? p.remove() : almacen.append(p));
     const ancha = !una && esAncha(orden[i]);
     libro.classList.toggle('pliego-ancho', ancha);
     const vis = una || ancha ? [orden[i]] : [orden[i], orden[i + 1]];
@@ -175,6 +175,8 @@
       hoja.append(frente, dorso);
       [...der.children].forEach(p => almacen.append(p));
       if (actAncha) { libro.classList.remove('pliego-ancho'); }
+      // pliego ancho de destino: bajo la hoja que gira se ve su mitad derecha (no papel en blanco)
+      if (nuevaAncha) { const c = clon(orden[nuevo], true); c.classList.add('clon-bajo'); der.append(c); }
       if (!nuevaAncha && orden[nuevo + 1]) { der.append(orden[nuevo + 1]); prestar(orden[nuevo + 1]); despertarHadas(orden[nuevo + 1]); ajustar(orden[nuevo + 1]); orden[nuevo + 1].scrollTop = 0; }
     } else {
       hoja.className = 'hoja hoja-izq';
@@ -183,6 +185,7 @@
       hoja.append(frente, dorso);
       [...izq.children, ...(actAncha ? [] : [])].forEach(p => almacen.append(p));
       if (actAncha) libro.classList.remove('pliego-ancho');
+      if (nuevaAncha) { const c = clon(orden[nuevo]); c.classList.add('clon-bajo'); izq.append(c); }
       if (!nuevaAncha) { izq.append(orden[nuevo]); prestar(orden[nuevo]); despertarHadas(orden[nuevo]); ajustar(orden[nuevo]); orden[nuevo].scrollTop = 0; }
     }
     cuerpo.append(hoja);
