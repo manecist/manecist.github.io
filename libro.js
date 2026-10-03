@@ -275,11 +275,13 @@
     posarHada();
   }
 
-  // el emblema final; la transformación lo va descubriendo por partes (cabeza → anillo → mundo que crece del libro)
-  const EMBLEMA = 'assets/portada/dragon-logo-5.webp';
+  // la transformación es un video (Wan 2.2, primer y último cuadro): empieza en el dragón posado y termina en el emblema exacto
+  const MORFOSIS = ['assets/portada/dragon-logo.webm', 'assets/portada/dragon-logo.mp4'];
   // el dragón rosa vuela desde la izquierda, se posa sobre la portada y se convierte en el emblema
   async function dragonPortada() {
-    new Image().src = EMBLEMA;   // precarga para que la transformación no parpadee
+    // el video se prepara mientras el dragón vuela, para que la transformación no parpadee
+    const video = document.createElement('video'); video.className = 'tapa-morfosis'; video.muted = true; video.playsInline = true; video.preload = 'auto'; video.setAttribute('aria-hidden', 'true');
+    MORFOSIS.forEach(src => { const f = document.createElement('source'); f.src = src; f.type = src.endsWith('webm') ? 'video/webm' : 'video/mp4'; video.append(f); });
     const emblema = libro.querySelector('.tapa-emblema');
     if (quieto || !emblema) { libro.classList.remove('espera-emblema'); return; }
     const d = document.createElement('div'); d.className = 'dragon-portada'; d.setAttribute('aria-hidden', 'true');
@@ -306,49 +308,22 @@
     d.classList.add('posado');
     await espera(650);
     if (abierto) { d.remove(); return; }
-    // brilla, vuela a su lugar y se encoge hasta ser la cabeza del emblema
-    d.classList.add('brilla');
-    const cx = r.left + r.width * .484, cy = r.top + r.height * .514, R = r.width * .36;
-    if (window.Magia) Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 30, vel: 3 });
-    await espera(380);
-    if (abierto) { d.remove(); return; }
-    const caja = document.createElement('span'); caja.className = 'tapa-transforma'; caja.setAttribute('aria-hidden', 'true');
-    Object.assign(caja.style, { left: emblema.offsetLeft + 'px', top: emblema.offsetTop + 'px', width: emblema.offsetWidth + 'px', height: emblema.offsetHeight + 'px' });
-    const capa = clase => { const im = new Image(); im.src = EMBLEMA; im.alt = ''; im.className = clase; caja.append(im); return im; };
-    const cabeza = capa('tf-cabeza'), mundo = capa('tf-mundo');
-    const aro = document.createElement('span'); aro.className = 'tf-aro'; caja.append(aro);   // el aro (fuera del círculo interior) y dentro el barrido del cuerpo
-    const anillo = capa('tf-anillo'); aro.append(anillo);
-    emblema.parentElement.append(caja);
-    const hx = r.left + r.width * .695, hy = r.top + r.height * .258;
-    d.style.transition = 'transform .75s cubic-bezier(.5,0,.3,1), opacity .45s ease .4s, filter .5s';
-    d.style.transform = `translate(${hx - 127}px,${hy - 120}px) scale(${-esc * .3},${esc * .3})`;
-    await espera(520);
-    if (abierto) { caja.remove(); d.remove(); return; }
-    cabeza.classList.add('ve'); d.classList.add('se-va');
-    if (window.Magia) Magia.chispas(hx, hy, { n: 26, vel: 3 });
-    await espera(380);
-    // desde la cabeza, el cuerpo del dragón se va dibujando y cierra el anillo (con el nombre del estudio)
-    const animar = (dur, cada) => new Promise(fin => { const t0 = performance.now(); (function paso(ahora) { if (abierto) { fin(); return; } const t = Math.min(1, (ahora - t0) / dur); cada(t); if (t < 1) requestAnimationFrame(paso); else fin(); })(t0); });
-    const POLVO = ['#ff8fc0', '#ffd9ea', '#f3d48a', '#fff'];
-    await animar(1700, t => {
-      const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2, giro = e * 254;
-      anillo.style.setProperty('--giro', giro.toFixed(1) + 'deg');
-      const a = (25 - giro) * Math.PI / 180;
-      if (window.Magia && Math.random() < .8) Magia.estela(cx + R * Math.sin(a), cy - R * Math.cos(a), { n: 2, colores: POLVO });
-    });
-    if (abierto) { caja.remove(); d.remove(); return; }
-    // del libro abierto crece el mundo: el árbol, el castillo, la cordillera, el sol y la luna
-    if (window.Magia) Magia.chispas(cx, r.top + r.height * .87, { n: 24, vel: 3, colores: POLVO });
-    await animar(1500, t => {
-      const e = 1 - Math.pow(1 - t, 2);
-      mundo.style.setProperty('--crece', (e * 88).toFixed(1) + '%');
-      if (window.Magia && Math.random() < .5) { const ang = Math.random() * Math.PI, rr = e * r.width * .7; Magia.estela(r.left + r.width * .5 + Math.cos(ang) * rr * .5, r.top + r.height * .87 - Math.sin(ang) * rr * .5, { n: 1, colores: POLVO }); }
-    });
-    if (abierto) { caja.remove(); d.remove(); return; }
+    // el dragón mismo se transforma: su cuerpo se enrolla en el anillo y del libro crece el mundo (video sobre la tapa)
+    Object.assign(video.style, { left: (emblema.offsetLeft - emblema.offsetWidth * .05) + 'px', top: (emblema.offsetTop - emblema.offsetWidth * .05) + 'px', width: emblema.offsetWidth * 1.1 + 'px', height: emblema.offsetWidth * 1.1 + 'px' });
+    emblema.parentElement.append(video);
+    const listo = await Promise.race([new Promise(ok => { if (video.readyState >= 3) ok(true); else video.addEventListener('canplaythrough', () => ok(true), { once: true }); video.addEventListener('error', () => ok(false), { once: true }); }), espera(4000).then(() => video.readyState >= 2)]);
+    if (abierto) { video.remove(); d.remove(); return; }
+    if (!listo || !(await video.play().then(() => true, () => false))) { video.remove(); d.classList.add('se-va'); libro.classList.remove('espera-emblema'); await espera(700); d.remove(); return; }
+    video.classList.add('ve'); d.remove();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2, POLVO = ['#ff8fc0', '#ffd9ea', '#f3d48a', '#fff'];
+    const chispea = setInterval(() => { if (window.Magia) Magia.estela(cx + (Math.random() - .5) * r.width * .8, cy + (Math.random() - .5) * r.height * .8, { n: 2, colores: POLVO }); }, 90);
+    await new Promise(fin => { video.addEventListener('ended', fin, { once: true }); setTimeout(fin, 6000); });
+    clearInterval(chispea);
+    if (abierto) { video.remove(); return; }
     if (window.Magia) Magia.chispas(cx, cy, { n: 60, vel: 5 });
-    libro.classList.remove('espera-emblema');   // el emblema de la tapa ya es el logo rosado
-    await espera(400);
-    caja.remove(); d.remove();
+    libro.classList.remove('espera-emblema');   // el emblema de la tapa ya es el logo rosado (el último cuadro del video es igual)
+    await espera(350);
+    video.remove();
   }
 
   async function escenaInicial() {
