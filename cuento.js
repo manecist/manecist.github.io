@@ -622,7 +622,7 @@
         if (mia !== vuelta || !a.isConnected) { fin(false); return; }
         const u = Math.min(1, (t - t0) / p.ms);
         a.style.left = (p.desde + (p.x - p.desde) * u - a._ancho / 2).toFixed(2) + '%';
-        if (c1 > c0) cuadro(a, c0 + (((t - t0) % CICLO) / CICLO) * (c1 - c0));
+        if (c1 > c0) cuadro(a, Math.floor(c0 + (((t - t0) % CICLO) / CICLO) * (c1 - c0 + 1)) % (c1 + 1));   // caminata: cuadro entero, sin fundido (si no, se ven dos pies)
         if (u < 1) requestAnimationFrame(paso); else { a.classList.remove('camina', 'camina-fija'); fin(true); }
       };
       if (quieto) { a.style.left = (p.x - a._ancho / 2) + '%'; fin(true); } else requestAnimationFrame(paso);
