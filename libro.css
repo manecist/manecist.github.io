@@ -1885,3 +1885,15 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* el pergamino del libro: la torta y los tres colores principales */
 .pergamino-datos .perg-svg{position:absolute;left:10.5%;top:21.5%;width:79%;height:38%;pointer-events:none}
 .pergamino-datos .perg-svg svg{width:100%;height:100%}
+
+/* ✦ giro pop-up: la hoja lleva sus recortes en 3D (sin recortar ni aplanar) mientras gira */
+.libro.giro-pop .hoja,.libro.giro-pop .hoja-cara,.libro.giro-pop .hoja-cara > .pagina{transform-style:preserve-3d;overflow:visible}
+.libro.giro-pop .hoja .pagina-pop > *{visibility:visible!important}
+.libro.giro-pop .hoja .pagina-pop{background:none!important}
+.libro.giro-pop .hoja-cara::after{display:none}
+/* el borde blanco de los recortes aplana el 3D: durante el giro se quita */
+.libro.giro-pop :is(.pop-escena .pop,.vida-pop,.vida-andante,.hito-pop){filter:none!important}
+/* durante el giro solo se ven los recortes de la escena: textos, carteles y aplicaciones que vuelven a la página quedan ocultos */
+.libro.giro-pop .pagina-pop > :not(.pop-escena):not(.vida):not(.hitos),
+.libro.giro-pop .hitos > :not(.hitos-escena),
+.libro.giro-pop .vida > :not(.vida-libro3d){visibility:hidden!important}
