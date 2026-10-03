@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261007m">
+  <link rel="stylesheet" href="libro.css?v=20261007n">
   <link rel="stylesheet" href="tema-claro.css?v=20261002a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="icon" href="assets/emblema-estrella.png">
@@ -31,8 +31,8 @@
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261007a" defer></script>
   <script src="secciones.js?v=20261007b" defer></script>
-  <script src="libro.js?v=20261007m" defer></script>
-  <script src="cuento.js?v=20261007m" defer></script>
+  <script src="libro.js?v=20261007n" defer></script>
+  <script src="cuento.js?v=20261007n" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
@@ -657,27 +657,33 @@ VALUES (?, ?, ?, ?);</code></pre></details>
   </article>
   <article class="pagina pagina-hueco" data-cap="IV · Noches de código"></article>
 
-  <!-- 10 · logros + currículum -->
-  <article class="pagina pagina-logros" data-cap="✦ Medallas, streams y mi currículum">
-    <div class="logro-medalla">
-      <img class="medalla-img" src="assets/cuento/medalla.webp" alt="Ari celebra con su medalla dorada de Java y sus gráficos de datos">
-      <div class="medalla-texto">
-        <p class="cap-num">✦ Logro desbloqueado</p>
-        <h2 class="cap-titulo">Mi medalla de Java</h2>
-        <p class="cuento">En <b>junio de 2026</b> terminé el curso <b>Desarrollo de Aplicaciones Full Stack Java</b>: 480 horas de SENCE y Talento Digital. Mi medalla es digital y se puede verificar.</p>
-        <p class="botonera"><a class="btn gold-btn" href="https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1" target="_blank" rel="noopener">🏅 Ver mi medalla digital ↗</a></p>
-        <p class="cuento">Y sigo aprendiendo: estoy estudiando el <b>Certificado de Análisis de Datos de Google</b> en Coursera, con cinco cursos aprobados.</p>
-      </div>
+  <!-- 10 · logros: el podio (medalla y stream) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/logros/suelo-podio.webp" data-cap="✦ Medallas, streams y mi currículum">
+    <p class="cap-num">✦ Logro desbloqueado</p>
+    <h2 class="cap-titulo">Mi medalla de Java</h2>
+    <p class="cuento">En <b>junio de 2026</b> terminé el curso <b>Desarrollo de Aplicaciones Full Stack Java</b>: 480 horas de SENCE y Talento Digital. Mi medalla es digital y se puede verificar.</p>
+    <p class="cuento">Y sigo aprendiendo: estoy estudiando el <b>Certificado de Análisis de Datos de Google</b> en Coursera, con cinco cursos aprobados.</p>
+    <div class="hitos" data-hitos="logros">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
     </div>
-    <figure class="logro-stream">
-      <img src="assets/cuento/escenas/stream.webp" alt="Ari y Coen haciendo stream juntos en su canal ArianesDCoen">
-      <figcaption><b>ArianesDCoen</b> · nuestro canal de streaming. Lo pausamos por los proyectos… ¡pero volveremos!</figcaption>
-    </figure>
+    <p class="botonera"><a class="btn gold-btn" href="https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1" target="_blank" rel="noopener">🏅 Ver mi medalla digital ↗</a></p>
   </article>
-  <article class="pagina pagina-cv" data-cap="✦ Medallas, streams y mi currículum">
-    <h2 class="cap-titulo cv-titulo">Mi currículum</h2>
-    <p class="cv-sub">Matrona titulada · Desarrolladora Full Stack Java · Diseño y producción editorial · Análisis de datos</p>
-    <div class="cv-tabs" role="tablist">
+  <article class="pagina pagina-hueco" data-cap="✦ Medallas, streams y mi currículum"></article>
+
+  <!-- 11 · el mapa de mi camino: los lugares de mi historia se levantan sobre el mapa, año por año -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/logros/suelo-mapa.webp" data-cap="✦ Medallas, streams y mi currículum">
+    <p class="cap-num">✦</p>
+    <h2 class="cap-titulo">El mapa de mi camino</h2>
+    <p class="cuento">Matrona titulada · Desarrolladora Full Stack Java · Diseño y producción editorial · Análisis de datos</p>
+    <div class="hitos" data-hitos="cv">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+    </div>
+    <p class="botonera"><a class="btn primary" href="assets/cv.pdf" target="_blank" rel="noopener">Descargar currículum (PDF) ↗</a><a class="btn ghost" href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+    <div class="colgar-app app-cv" data-app="mi currículum" data-verbo="Ver">
+      <h3 class="cap-titulo cv-titulo">Mi currículum</h3>
+      <div class="cv-tabs" role="tablist">
       <button type="button" role="tab" aria-selected="true" data-cv="exp">Experiencia</button>
       <button type="button" role="tab" aria-selected="false" data-cv="form">Formación</button>
       <button type="button" role="tab" aria-selected="false" data-cv="hab">Habilidades</button>
@@ -704,8 +710,9 @@ VALUES (?, ?, ?, ?);</code></pre></details>
     <div class="cv-lista cv-hab" data-cv-panel="hab" hidden>
       <span>Java</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>JavaScript</span><span>HTML5 · CSS</span><span>Git y GitHub</span><span>Excel avanzado</span><span>Análisis de datos</span><span>Clip Studio Paint</span><span>Photoshop</span><span>Blender</span><span>Godot</span><span>Diseño editorial</span><span>Ilustración</span><span>Salud sexual y reproductiva</span><span>Gestión de calidad</span>
     </div>
-    <p class="botonera"><a class="btn primary" href="assets/cv.pdf" target="_blank" rel="noopener">Descargar currículum (PDF) ↗</a><a class="btn ghost" href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a></p>
+    </div>
   </article>
+  <article class="pagina pagina-hueco" data-cap="✦ Medallas, streams y mi currículum"></article>
 
   <!-- 12 · capítulo V: Ari y Coen (pliego pop-up: se dibujan, nace Conari y se une un tercero) -->
   <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap5/suelo-estudio.webp" data-cap="V · Ari, Coen y el nacimiento de Conari">

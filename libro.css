@@ -1651,3 +1651,5 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .fin-contacto .fin-links{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0}
 .fin-contacto .fin-links a{font:600 .82rem/1.2 var(--sans);color:#6a2c55;padding:4px 8px;border-radius:10px;background:rgba(255,255,255,.6)}
 .teatro-app.varias .colgante-app.arriba .app-pestana{display:none}
+.app-cv{padding:4px 14px 14px}
+.app-cv .cv-titulo{text-align:center;margin:8px 0}

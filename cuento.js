@@ -459,6 +459,27 @@
         { evento: 'cuento-dibuja-mundo', ms: 6500 }                                           // un rato para leer, y Ari dibuja su mundo
       ] }
     ] },
+    logros: { carpeta: 'logros/', hitos: [
+      { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', titulo: 'Logro desbloqueado', texto: 'Junio de 2026: Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital.', pasos: [
+        { nombre: 'ari', img: 'assets/cuento/medalla.webp', x: 42, alto: 22, efecto: 'brilla', ms: 2600 },                      // Ari levanta su medalla en el podio
+        { nombre: 'stream', img: 'assets/cuento/escenas/stream.webp', x: 76, alto: 13, fila: 'medio', clase: 'cuadro', rotulo: 'ArianesDCoen · en pausa', ms: 2600,
+          texto: { titulo: 'ArianesDCoen', texto: 'Nuestro canal de streaming. Lo pausamos por los proyectos… ¡pero volveremos!' } },
+        { nombre: 'ari', efecto: 'salta', ms: 2400, texto: { titulo: 'Y sigo aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
+      ] }
+    ] },
+    cv: { carpeta: 'logros/', hitos: [
+      { fondo: 'fondo-mapa.webp', suelo: 'suelo-mapa.webp', titulo: 'El mapa de mi camino', texto: 'Cada lugar de mi historia se levanta en el año en que llegué.', pasos: [
+        { nombre: 'lugarb1', img: 'assets/cuento/logros/lugarb1.webp', x: 8, alto: 10, rotulo: '2018', ms: 2300, texto: { titulo: '2018 · Matrona · titulación con distinción', texto: 'Universidad San Sebastián, Concepción.' } },
+        { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp', x: 20, alto: 9, fila: 'medio', rotulo: '2019', ms: 2300, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
+        { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', x: 32, alto: 10, rotulo: '2019 – 2021', ms: 2300, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
+        { nombre: 'lugar3', img: 'assets/cuento/logros/lugar3.webp', x: 44, alto: 9, fila: 'medio', rotulo: '2021', ms: 2300, texto: { titulo: '2021 · Matrona · CESFAM O\'Higgins', texto: 'Atención integral, planillas de PAP y mamografía, campañas educativas.' } },
+        { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', x: 56, alto: 10, rotulo: '2022 – 2023', ms: 2300, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
+        { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', x: 68, alto: 9, fila: 'medio', rotulo: '2024', ms: 2300, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
+        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', x: 80, alto: 10, rotulo: '2025 – 2026', ms: 2300, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
+        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', x: 92, alto: 9, fila: 'medio', rotulo: '2026 – hoy', ms: 2300, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
+        { texto: { titulo: 'Mi currículum completo', texto: 'Experiencia, formación y habilidades.' }, app: true, ms: 400 }
+      ] }
+    ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, ancho: 25, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
