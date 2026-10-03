@@ -1547,9 +1547,6 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro:not(.acostado) .esq-bajo{background-image:linear-gradient(315deg,rgba(0,0,0,0) 25%,rgba(60,30,40,.45) 50%),var(--suelo-sig)}
 @keyframes esquina-oreja{0%,100%{--alza:150deg}50%{--alza:128deg}}
 
-/* transformación del dragón en el emblema: la imagen final se descubre por partes con máscaras */
-.tapa-transforma img.tf-cabeza{-webkit-mask:radial-gradient(ellipse 14% 17% at 69.5% 25.8%,#000 70%,transparent 100%);mask:radial-gradient(ellipse 14% 17% at 69.5% 25.8%,#000 70%,transparent 100%);transition:opacity .4s ease}
-.tapa-transforma img.tf-anillo,.tapa-transforma img.tf-mundo{opacity:1;transition:none}
-.tapa-transforma .tf-aro{position:absolute;inset:0;-webkit-mask:radial-gradient(circle at 48.4% 51.4%,transparent 30.2%,#000 30.8%);mask:radial-gradient(circle at 48.4% 51.4%,transparent 30.2%,#000 30.8%)}
-.tapa-transforma img.tf-anillo{--giro:0deg;-webkit-mask:conic-gradient(from calc(25deg - var(--giro)) at 48.4% 51.4%,#000 0 var(--giro),transparent var(--giro));mask:conic-gradient(from calc(25deg - var(--giro)) at 48.4% 51.4%,#000 0 var(--giro),transparent var(--giro))}
-.tapa-transforma img.tf-mundo{--crece:0%;-webkit-mask:radial-gradient(circle at 50% 87%,#000 calc(var(--crece) - 7%),transparent var(--crece));mask:radial-gradient(circle at 50% 87%,#000 calc(var(--crece) - 7%),transparent var(--crece))}
+/* transformación del dragón en el emblema: video con bordes difuminados sobre la tapa */
+.tapa-morfosis{position:absolute;pointer-events:none;object-fit:cover;opacity:0;-webkit-mask:radial-gradient(closest-side,#000 86%,transparent 100%);mask:radial-gradient(closest-side,#000 86%,transparent 100%)}
+.tapa-morfosis.ve{opacity:1}
