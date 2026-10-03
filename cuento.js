@@ -260,7 +260,7 @@
   VIDA.forEach(([s]) => { const i = new Image(); i.onload = () => { cuadrosDe[s] = Math.max(1, Math.round(i.naturalWidth / (i.naturalHeight * .8))); }; i.src = tiraDe(s); });
   const AMB = n => 'assets/cuento/cap2/' + n + '.webp';
   // ambiente de cada etapa: g01..g11 (fondo = gNN-fondo, objetos = gNN-1..3)
-  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05', 'g05', 'g06', 'g07', 'g08', 'g09', 'g10', 'g10', 'g11', 'g11'];
+  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05e', 'g05f', 'g06', 'g07b', 'g08', 'g09', 'g10', 'g12', 'g13', 'g11'];
   [...new Set(GRUPO)].forEach(g => ['fondo', 1, 2, 3].forEach(k => { const i = new Image(); i.src = AMB(g + '-' + k); }));
   escena('[data-vida]', el => {
     const a = el.querySelector('.vida-img'), b = el.querySelector('.vida-img-b'), rango = el.querySelector('.vida-rango');
