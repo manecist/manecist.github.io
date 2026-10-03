@@ -1401,3 +1401,11 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 /* el botón de CV cuelga a la derecha, más abajo que las características */
 .teatro-der{top:40vh}.teatro-izq{display:none}
 .colgante::before,.colgante::after{height:24vh;background:linear-gradient(rgba(255,240,250,0),rgba(255,236,248,.85))}
+
+/* ✦ el cambio mágico de outfit: Ari se ilumina, cambia y vuelve a su color */
+.probador-img{transition:filter .5s ease}
+.probador-pop.magia .probador-img{filter:brightness(2.4) saturate(.2) drop-shadow(0 0 22px #fff) drop-shadow(0 0 40px #ffb3e0)}
+/* árboles más grandes */
+.libro.acostado:not(.una) .probador-s1{left:15%;width:20%;bottom:14%}.libro.acostado:not(.una) .probador-s2{right:15%;width:20%;bottom:14%}
+.libro.acostado:not(.una) .probador-s3{left:1%;width:14%;bottom:32%}.libro.acostado:not(.una) .probador-s4{right:1%;width:14%;bottom:32%}
+.libro.una .probador-s1{left:-4%;width:34%}.libro.una .probador-s2{right:-4%;width:34%}
