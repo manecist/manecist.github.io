@@ -935,7 +935,7 @@
       let k = 0; cielo.innerHTML = ''; enCielo = [];
       // en el capítulo de las huellas el texto es largo: el cielo se ensancha para que no baje hasta el pop-up
       cielo.classList.toggle('ancho', paginas.some(p => p.classList.contains('pagina-hitos')));
-      const angosto = matchMedia('(max-width: 860px)').matches;
+      const angosto = matchMedia('(max-width: 860px) and (orientation: portrait), (max-width: 560px)').matches;
       const lados = angosto ? [] : ['izq', 'der'].map(n => { const d = document.createElement('div'); d.className = 'cielo-lado cielo-' + n; cielo.append(d); return d; });
       let nl = 0;
       const estrellas = [];
@@ -973,7 +973,7 @@
     const borrarEscritura = () => document.querySelectorAll('.escribe, .por-escribir, .por-colgar, .estrella').forEach(e => e.classList.remove('escribe', 'por-escribir', 'por-colgar', 'estrella'));
     const colgar = paginas => {
       teatro.innerHTML = ''; colgados = [];
-      const angosto = matchMedia('(max-width: 860px)').matches;
+      const angosto = matchMedia('(max-width: 860px) and (orientation: portrait), (max-width: 560px)').matches;
       const zonas = (angosto ? ['der'] : ['izq', 'der']).map(n => { const z = document.createElement('div'); z.className = 'teatro-lado teatro-' + n; teatro.append(z); return z; });
       let i = 0;
       paginas.forEach((p, j) => p.querySelectorAll(COLGAR).forEach(el => {

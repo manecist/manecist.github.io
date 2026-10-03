@@ -143,7 +143,7 @@
 .hada-escena{position:absolute;left:0;top:0;width:clamp(120px,13vw,190px);z-index:9;transform:translate(110vw,-40vh);cursor:pointer;filter:drop-shadow(0 0 18px rgba(186,147,240,.5))}
 .hada-escena.posada{width:100px}
 .hada-escena.vuela .hada-marco{animation:hada-flota .5s ease-in-out infinite}
-@media (max-width:860px){.hada-escena.posada{width:62px}}
+@media (max-width:860px) and (orientation:portrait){.hada-escena.posada{width:62px}}
 
 /* ---------------------------------------------------------------- páginas */
 .paginas[hidden]{display:none!important}
@@ -298,7 +298,7 @@
 @keyframes escribe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
 .jk{color:#ff8fc0}.jt{color:#91dcff}.jn{color:#f3d48a}.js{color:#a8e6b8}.jc{color:#8f88b8;font-style:italic}
 #dev-calc.dev-panel.active{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:28px;align-items:center}
-@media (max-width:860px){#dev-calc.dev-panel.active{grid-template-columns:1fr}}
+@media (max-width:860px) and (orientation:portrait){#dev-calc.dev-panel.active{grid-template-columns:1fr}}
 
 /* ---------------------------------------------------------------- oráculo de los colores */
 .oraculo{display:grid;grid-template-columns:minmax(280px,360px) 1fr;gap:22px;align-items:start}
@@ -412,7 +412,7 @@ body{background:#081127}
 .site .section,.site .contact-section{position:relative}
 .site main>.section:not(.hero){background:linear-gradient(180deg,rgba(8,17,39,.0),rgba(8,17,39,.55) 12%,rgba(8,17,39,.55) 88%,rgba(8,17,39,0))}
 .hero .fairy.hada-viva{width:min(100%,430px);margin:auto;cursor:pointer}
-@media (max-width:860px){.reino-velo{background:linear-gradient(180deg,rgba(8,17,39,.72),rgba(8,17,39,.6) 60%,rgba(8,17,39,.9))}}
+@media (max-width:860px) and (orientation:portrait){.reino-velo{background:linear-gradient(180deg,rgba(8,17,39,.72),rgba(8,17,39,.6) 60%,rgba(8,17,39,.9))}}
 
 /* ---------------------------------------------------------------- volver arriba: la asesina */
 .volver-arriba{position:fixed;right:18px;bottom:16px;z-index:150;width:70px;height:150px;padding:0;border:0;background:none;opacity:0;transform:translateY(160px);pointer-events:none;transition:opacity .4s,transform .5s cubic-bezier(.3,1.5,.5,1)}
@@ -689,7 +689,7 @@ footer .derechos a{color:var(--rosa);text-decoration:underline}
   background:linear-gradient(180deg,rgba(8,17,39,0),rgba(8,17,39,.55) 12%,rgba(8,17,39,.55) 88%,rgba(8,17,39,0))}
 .site .topbar{position:sticky;top:0;width:100%;max-width:none;margin:0;border-radius:0;border-width:0 0 1px;
   padding-inline:max(14px,calc((100% - 1560px) / 2))}
-@media (max-width:860px){.site .topbar{width:100%;margin:0}}
+@media (max-width:860px) and (orientation:portrait){.site .topbar{width:100%;margin:0}}
 
 /* ===================================== cuento v2/v3 (rama cuento-v2) ===================================== */
 /* ==========================================================================
@@ -877,7 +877,7 @@ html[data-cielo="dia"] .popup-escenario{background:linear-gradient(180deg,#9fd3f
 /* VI · la tienda en un solo pliego */
 .pagina-tienda{display:grid;gap:14px;align-content:start}
 .tienda-cabeza{display:grid;grid-template-columns:1fr 1.15fr;gap:18px;align-items:center}
-@media (max-width:860px){.tienda-cabeza{grid-template-columns:1fr}}
+@media (max-width:860px) and (orientation:portrait){.tienda-cabeza{grid-template-columns:1fr}}
 .tienda-cabeza .cap-titulo,.tienda-cabeza .cap-num{text-align:left}
 .tienda-cabeza .cap-titulo::after{background-position:left center}
 .tienda-fachada{position:absolute;left:0;right:0;top:0;height:24px;display:grid;place-items:center;background:linear-gradient(90deg,#c74c86,#f08bba,#c74c86);font:700 .62rem/1 var(--titulo);letter-spacing:.18em;color:#fff7e0;z-index:2}
@@ -948,7 +948,7 @@ html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/noche.webp")}
 .pagina-juegos .juegos-cabeza .cap-titulo{margin:0}.pagina-juegos .juegos-cabeza .cap-titulo::after{display:none}
 .libro:not(.una) .pagina-juegos .tetris-layout{grid-template-columns:minmax(260px,330px) 1fr!important;justify-items:stretch}
 .libro:not(.una) .pagina-juegos .match-layout,.libro:not(.una) .pagina-juegos .constellation-layout{grid-template-columns:1fr 260px!important}
-@media (max-width:860px){.pagina-juegos .juegos-cabeza{grid-template-columns:1fr}}
+@media (max-width:860px) and (orientation:portrait){.pagina-juegos .juegos-cabeza{grid-template-columns:1fr}}
 .pagina-perfil{display:grid;align-content:center}
 
 /* ---------------------------------------------------------------- Bloques Encantados: control mágico táctil */
@@ -1013,7 +1013,7 @@ html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/noche.webp")}
 .ari-libro.dash .va-estela{animation:va-estela .6s ease-out}
 .ari-libro.aterriza img{animation:va-aterriza .5s cubic-bezier(.3,1.6,.5,1)}
 .ari-libro:hover img{animation:va-listo .6s ease-in-out infinite}
-@media (max-width:860px){.ari-libro{right:4px;bottom:64px;width:46px;height:100px}.ari-libro img{height:92px}}
+@media (max-width:860px) and (orientation:portrait){.ari-libro{right:4px;bottom:64px;width:46px;height:100px}.ari-libro img{height:92px}}
 
 /* ---------------------------------------------------------------- el dragoncito rosa que mira */
 .dragoncito{--mira:-1;position:fixed;left:0;top:0;z-index:1100;width:110px;height:104px;pointer-events:none;will-change:transform}
@@ -1248,7 +1248,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante .poderes li{background:transparent;border:0;padding:8px 12px}
 .colgante .poderes small{font-size:.82rem}
 .colgante .botonera{margin:0;padding:8px;justify-content:center}
-@media (max-width:860px){.teatro-lado{width:46vw;right:3vw}.teatro-lado .colgante{width:100%!important;margin-left:0!important;margin-right:0!important}}
+@media (max-width:860px) and (orientation:portrait){.teatro-lado{width:46vw;right:3vw}.teatro-lado .colgante{width:100%!important;margin-left:0!important;margin-right:0!important}}
 @media (prefers-reduced-motion:reduce){.colgante{transition:none}.teatro.baja .colgante{animation:none}}
 
 /* el texto suelto se escribe sobre la hoja: letra por letra, con un leve desenfoque de tinta */
@@ -1274,7 +1274,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .cielo-bloque .letra{color:#ff9cc9;text-shadow:0 0 16px rgba(255,140,200,.7)}
 .cielo-bloque .adorno,.cielo-bloque hr{display:none}
 .libro{z-index:1}
-@media (max-width:860px){.teatro-cielo{left:5vw;right:5vw;width:auto;top:11vh;translate:none;text-align:left}.teatro-cielo .cap-num,.teatro-cielo .cap-titulo{text-align:left}.cielo-bloque .cuento{font-size:.98rem}}
+@media (max-width:860px) and (orientation:portrait){.teatro-cielo{left:5vw;right:5vw;width:auto;top:11vh;translate:none;text-align:left}.teatro-cielo .cap-num,.teatro-cielo .cap-titulo{text-align:left}.cielo-bloque .cuento{font-size:.98rem}}
 .cielo-bloque .cap-titulo::before,.cielo-bloque .cap-titulo::after{display:none}
 .colgante .probador-btn{position:static;display:block;margin:6px auto;font-size:.9rem;padding:9px 16px}
 
@@ -1493,7 +1493,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .vida-pop.amb-atras{bottom:62%}
 .vida-pop.amb-frente{bottom:22%}
 .libro.acostado .vida-libro3d{--x:inherit}
-@media (max-width:860px){
+@media (max-width:860px) and (orientation:portrait){
   .teatro-der{top:31vh}
   .teatro .colgante{margin-top:2px!important}
   .colgante .vida-cartel{padding:6px 10px}.colgante .vida-cartel .vida-texto{font-size:.85rem;line-height:1.3}
@@ -1576,7 +1576,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .teatro-cielo.ancho{width:min(82vw,1180px)}
 .teatro-cielo.ancho .cap-titulo{white-space:nowrap}
 .teatro-cielo.ancho .cielo-bloque .cuento{max-width:none;margin-left:auto;margin-right:auto;font-size:clamp(.9rem,1.05vw,1.08rem);line-height:1.5;margin-bottom:.35em}
-@media (max-width:860px){.teatro-cielo.ancho{width:auto}.teatro-cielo.ancho .cap-titulo{white-space:normal}}
+@media (max-width:860px) and (orientation:portrait){.teatro-cielo.ancho{width:auto}.teatro-cielo.ancho .cap-titulo{white-space:normal}}
 
 /* ✦ motor de escenarios: el piso viaja con cada pliego (también en la hoja que gira y bajo la esquina) */
 .libro.acostado .pagina-pop.pagina-hitos{background:var(--suelo) 0 0/100% 100% no-repeat}
@@ -1605,12 +1605,12 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .teatro.baja .teatro-app .colgante-app.arriba{transform:translateY(calc(-100% - var(--hilo) - 2vh - 6px));animation:none}
 .app-pestana{position:absolute;left:93%;top:100%;translate:-50% -2px;padding:8px 18px;border:4px solid #fff;border-top:0;border-radius:0 0 16px 16px;background:linear-gradient(160deg,#ffd9ea,#e7d6ff);color:#5b3a63;font:700 .92rem/1 var(--sans);cursor:pointer;box-shadow:0 8px 16px rgba(10,6,30,.35);white-space:nowrap}
 .app-pestana:hover{filter:brightness(1.05)}
-@media (max-width:860px){.teatro-app{width:94vw}}
+@media (max-width:860px) and (orientation:portrait){.teatro-app{width:94vw}}
 
 /* aplicaciones colgantes de dos paneles (p. ej. calculadora + código Java) */
 .colgante-app .app-nota{margin:10px 14px 6px;font-size:.95rem;color:var(--tinta);text-align:center}
 .colgante-app .app-doble{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:8px 12px 14px;align-items:start}
-@media (max-width:860px){.colgante-app .app-doble{grid-template-columns:1fr}}
+@media (max-width:860px) and (orientation:portrait){.colgante-app .app-doble{grid-template-columns:1fr}}
 .hito-rotulo{position:absolute;left:50%;top:0;translate:-50% calc(-100% - 6px);white-space:nowrap;padding:4px 10px;border:3px solid #fff;border-radius:10px;background:#fff6ea;color:#6a2c55;font:700 clamp(.5rem,.75vw,.8rem)/1.1 var(--sans);box-shadow:0 4px 10px rgba(40,20,40,.3);animation:rotulo-nace .5s cubic-bezier(.3,1.5,.5,1) both}
 @keyframes rotulo-nace{from{opacity:0;transform:scale(.4)}}
 .hito-actor.vuela{bottom:34%}.hito-actor.vuela > :not(.hito-rotulo){translate:0 -75%}
@@ -1672,7 +1672,7 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .colgante-app :is(pre,code){font-family:'Mali',monospace}
 .app-cv .cv-lista:not(.cv-hab){columns:2;column-gap:28px}
 .app-cv .cv-lista li{break-inside:avoid}
-@media (max-width:860px){.colgante-app .app-tres{grid-template-columns:1fr}.app-cv .cv-lista:not(.cv-hab){columns:1}}
+@media (max-width:860px) and (orientation:portrait){.colgante-app .app-tres{grid-template-columns:1fr}.app-cv .cv-lista:not(.cv-hab){columns:1}}
 
 /* ✦ la caja del cuento: compacta, en tres columnas y con la registradora dibujada (pantalla, teclado y ranura reales encima) */
 .app-caja .app-doble{grid-template-columns:1.05fr 1fr 1fr;gap:16px;align-items:start}
@@ -1897,3 +1897,39 @@ html[data-cielo="noche"] .vida-hoja{filter:brightness(.94)}
 .libro.giro-pop .pagina-pop > :not(.pop-escena):not(.vida):not(.hitos),
 .libro.giro-pop .hitos > :not(.hitos-escena),
 .libro.giro-pop .vida > :not(.vida-libro3d){visibility:hidden!important}
+
+/* ✦ celular en vertical con el cuento abierto: aviso dibujado para girarlo */
+.gira-telefono{display:none}
+@media (orientation:portrait) and (pointer:coarse) and (max-width:950px){
+  body.bloqueado .gira-telefono{display:grid;position:fixed;inset:0;z-index:5000;place-content:center;justify-items:center;gap:18px;padding:30px;text-align:center;
+    background:radial-gradient(circle at 50% 35%,#3a2460,#160f2e 70%);color:#ffe9f5;font-family:'Mali',sans-serif}
+  .gira-telefono p{margin:0;font-size:1rem;line-height:1.45;max-width:260px}
+  .gira-telefono p b{display:block;font-family:var(--titulo);font-size:1.5rem;color:#fff;margin-bottom:6px;letter-spacing:.04em}
+  .gira-telefono small{opacity:.75;font-size:.8rem}
+  .gira-dibujo{width:96px;height:156px;border:5px solid #fff;border-radius:22px;background:linear-gradient(160deg,#ffd9ea,#e7d6ff);box-shadow:0 0 0 4px #f5a8cf,0 0 30px rgba(245,168,207,.6);position:relative;animation:gira-telefono 2.6s ease-in-out infinite}
+  .gira-dibujo i{position:absolute;inset:16px 12px;border-radius:8px;background:url("assets/portada/dragon-logo-5.webp") center/70% no-repeat,#fff8ef}
+  @keyframes gira-telefono{0%,25%{transform:rotate(0)}55%,85%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+}
+@media (prefers-reduced-motion:reduce){.gira-dibujo{animation:none!important}}
+
+/* ✦ celular en horizontal (pantalla baja): libro más chico y abajo, textos y carteles compactos */
+html.pantalla-corta .libro-nav{bottom:4px;transform:translate(-50%,0) scale(.72);transform-origin:50% 100%}
+html.pantalla-corta .escena.leyendo .libro-nav{transform:translate(-50%,0) scale(.72)}
+html.pantalla-corta .escena.leyendo .libro.acostado{transform:translateY(17vh) rotateX(var(--inclina)) scale(.62)}
+html.pantalla-corta .teatro-cielo{top:1vh;width:min(70vw,640px)}
+html.pantalla-corta .cielo-bloque .cap-num{font-size:.55rem;margin:0}
+html.pantalla-corta .cielo-bloque .cap-titulo,html.pantalla-corta .teatro-cielo.ancho .cap-titulo{font-size:1.05rem;margin:0 0 .15em}
+html.pantalla-corta .cielo-bloque .cuento,html.pantalla-corta .teatro-cielo.ancho .cielo-bloque .cuento{font-size:.6rem;line-height:1.35;margin-bottom:.15em}
+html.pantalla-corta .cielo-bloque .letra{font-size:1.3em}
+html.pantalla-corta .teatro-lado{width:min(19vw,200px)}
+html.pantalla-corta .teatro-der{top:18vh}
+html.pantalla-corta .colgante{font-size:.7rem;border-width:3px}
+html.pantalla-corta .colgante :is(.vida-cartel,.hitos-cartel) b{font-size:.62rem}
+html.pantalla-corta .colgante :is(.vida-texto,.hito-texto){font-size:.66rem;line-height:1.3}
+html.pantalla-corta .colgante .btn{font-size:.66rem;padding:5px 10px;min-height:0}
+html.pantalla-corta .hada-escena.posada{transform:scale(.55)!important;transform-origin:0 100%}
+html.pantalla-corta .cielo-lado{transform:scale(.6);transform-origin:top center}
+html.pantalla-corta .teatro-app{width:94vw}
+html.pantalla-corta .cielo-lado{top:12vh}html.pantalla-corta .cielo-lado li b{font-size:.62rem}html.pantalla-corta .cielo-lado li .corto{font-size:.56rem}html.pantalla-corta .cielo-lado li > span:not(.ch){width:34px;height:34px}html.pantalla-corta .cielo-lado{transform:none;width:22vw;gap:4px}
+html.pantalla-corta .teatro-cielo:has(.cielo-lado li){width:52vw}html.pantalla-corta .cielo-izq{left:-24vw}html.pantalla-corta .cielo-der{right:-24vw}html.pantalla-corta .cielo-lado{width:22vw;top:13vh}
+html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-22vw}html.pantalla-corta .hada-escena.posada{top:auto!important;bottom:8px!important}
