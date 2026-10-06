@@ -534,9 +534,6 @@
       { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
         { actor: 'edu', x: 28, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
       ] },
-      { fondo: 'fondo-plaza.webp', suelo: 'suelo-plaza.webp', pasos: [
-        { actor: 'abr', x: 56, alto: 16, de: 0, a: 1, ms: 4500 }                      // al centro: un transeúnte llega y la abraza
-      ] },
       { fondo: 'fondo-biblioteca.webp', suelo: 'suelo-biblioteca.webp', pasos: [
         { actor: 'tes', x: 27, alto: 15, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
         { actor: 'par', x: 72, alto: 13, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
