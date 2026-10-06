@@ -419,24 +419,21 @@
     ] },
     vi: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
-        // Rancek atiende de perfil detrás de su mostrador; sobre el mostrador, la registradora que después baja colgando
-        { nombre: 'mago', img: 'assets/personajes/rancek-lado.webp', x: 72, alto: 17, clase: 'espejo tras-mostrador', ms: 500, pausa: 0 },
-        { nombre: 'mostrador', img: 'mostrador.webp', x: 68, alto: 13.5, clase: 'mostrador', ms: 500, pausa: 0 },
-        { nombre: 'caja', img: 'registradora.webp', x: 64, alto: 8, clase: 'sobre-mostrador', ruta: [[0, 64, 10.8], [1, 64, 10.8]], yAncho: true, ms: 300, pausa: 300 },
-        // Ari y Coen entran por la izquierda y llegan hasta el mostrador
-        { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a la tienda mágica de Rancek.' }, nombre: 'ari-c', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: -8, alto: 16, delante: true, entra: true, ruta: [[0, -8], [1, 47]], ms: 3400, junto: true, sigue: true },
-        { nombre: 'coen-c', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: -18, alto: 17, delante: true, entra: true, ruta: [[0, -18], [1, 36]], ms: 3400, pausa: 0 },
-        { nombre: 'ari', img: 'assets/personajes/ari-lado.webp', x: 47, alto: 16, delante: true, clase: 'espejo', reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0 },
-        { nombre: 'coen', img: 'assets/personajes/coen-lado.webp', x: 36, alto: 17, delante: true, clase: 'espejo', reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 200 },
-        { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'espejo tras-mostrador saluda', fx: { tipo: 'destello', x: 72, ancho: 9, y: 16 }, ms: 1800 },
-        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari', clase: 'espejo saluda', ms: 1800 },
-        { texto: { titulo: 'Coen:', texto: '«…yo pago 😅»' }, nombre: 'coen', clase: 'espejo saluda', ms: 1600 },
+        // Rancek atiende de perfil detrás de su mesa; sobre la mesa, la registradora que después baja colgando
+        { nombre: 'mago', img: 'assets/personajes/rancek-lado.webp', x: 76, alto: 17, clase: 'tras-mostrador', ms: 500, pausa: 0 },
+        { nombre: 'mesa', img: 'mesa-perfil.webp', x: 66, alto: 19, clase: 'mostrador espejo', ms: 600, pausa: 300 },
+        // Ari y Coen llegan de la mano, ya con la ropa con que saldrán a pasear
+        { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a la tienda mágica de Rancek.' }, nombre: 'pareja-c', actor: 'pareja-anda', camina: [0, 1], cicloMs: 1100, x: -10, alto: 17, delante: true, entra: true, ruta: [[0, -10], [1, 46]], ms: 3600, pausa: 0 },
+        { nombre: 'pareja', img: 'pareja-perfil.webp', x: 46, alto: 17, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: { tipo: 'destello', x: 76, ancho: 9, y: 16 }, ms: 1800 },
+        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'pareja', clase: 'saluda', ms: 1800 },
+        { texto: { titulo: 'Coen:', texto: '«…yo pago 😅»' }, nombre: 'pareja', clase: 'saluda', ms: 1600 },
         { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: true, ms: 600 },
         { espera: 'tienda-boleta', cierraApp: true, ms: 900 },                                                                  // cuando se entrega la boleta…
-        // …se ponen lo que compraron, y Rancek cierra la tienda para ir con ellos
-        { texto: { titulo: '¡Con sus compras puestas!', texto: 'Ari con su vestido de chica mágica y Coen con su jogger blanco y su polera burdeo.' }, nombre: 'ari2', img: 'ari-paseo.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'ari', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 47, ancho: 16, y: 6, ms: 1100 }, ms: 900, pausa: 0 },
-        { nombre: 'coen2', img: 'coen-paseo.webp', x: 36, alto: 18, delante: true, reemplaza: 'coen', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 36, ancho: 16, y: 6, ms: 1100 }, ms: 1400 },
-        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek2', img: 'rancek-paseo.webp', x: 62, alto: 18, delante: true, reemplaza: 'mago', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 62, ancho: 16, y: 6, ms: 1100 }, ms: 1800 }
+        // …Rancek les entrega las bolsas y cierra la tienda para ir con ellos
+        { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: [{ tipo: 'destello', x: 58, ancho: 10, y: 12, ms: 900 }, { tipo: 'destello', x: 50, ancho: 16, y: 6, ms: 1100, tras: 500 }], ms: 900, pausa: 0 },
+        { nombre: 'pareja-b', actor: 'paseo', camina: [0, 0], x: 46, alto: 17, delante: true, reemplaza: 'pareja', sigue: true, ms: 1600 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek2', img: 'rancek-paseo.webp', x: 84, alto: 17, delante: true, reemplaza: 'mago', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 84, ancho: 16, y: 6, ms: 1100 }, ms: 1800 }
       ] }
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
@@ -604,7 +601,7 @@
         if (p.linea) a.classList.add('por-dibujar');
       }
       // los personajes (animados o recortes de personaje) van más grandes que el escenario, todos en la misma proporción
-      const esPj = p.pj ?? (!!p.actor || /personajes\/|\/(ari-|coen-|rancek|pareja|paseo|medalla|baculo|streamers|publico|dragon-fuego|mo-\d)/.test(p.img || ''));
+      const esPj = p.pj ?? (!!p.actor || /personajes\/|\/(ari-|coen-|rancek|pareja|paseo|medalla|baculo|streamers|publico|dragon-fuego|mo-\d)/.test(p.img ? ruta(esc, p.img) : ''));
       a._ancho = p.ancho ?? p.alto * (esPj ? ESCALA_PJ : 1) * w / hh;
       a.classList.add('hito-pop', 'hito-actor'); if (p.delante) a.classList.add('delante'); if (p.fila) a.classList.add('fila-' + p.fila); if (p.clase) a.classList.add(...p.clase.split(' '));
       a.style.left = ((p.desde ?? p.x) - a._ancho / 2) + '%'; a.style.width = a._ancho + '%'; a.style.aspectRatio = w + ' / ' + hh;
