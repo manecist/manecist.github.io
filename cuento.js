@@ -364,7 +364,7 @@
         { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', x: 50, alto: 14, efecto: 'brilla', ms: 2600,
           texto: { titulo: 'Y juntos fundamos Studios Conari', texto: 'Un estudio creativo chileno: narrativa, diseño, programación, datos y arte 3D.' } },
         { nombre: 'pareja', actor: 'pareja', ms: 300, rotulo: 'María Inés · Kevin' },
-        { nombre: 'rancek', img: 'assets/personajes/rancek-frente.webp', x: 73, alto: 17, ms: 2400,
+        { nombre: 'rancek', actor: 'rancek-saluda', x: 73, alto: 17, de: 0, a: 1, ms: 2400,
           rotulo: 'Elías · animación y arte 3D',
           texto: { titulo: '…y se unió al equipo un tercero', texto: 'María Inés (dirección creativa · Full Stack Java), Kevin (dirección técnica · videojuegos y datos) y Elías (animación y arte 3D).' } }
       ] }
@@ -383,22 +383,22 @@
         { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 79, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
         { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 87, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
         // Ari llega corriendo, ataca a los cuatro con su daga y vuelve de un salto hacia atrás
-        { texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', img: 'assets/personajes/ari-lado.webp', x: -6, alto: 16, delante: true, clase: 'corre', entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
+        { texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', actor: 'ari-corre', camina: [0, 1], cicloMs: 700, x: -6, alto: 16, delante: true, entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
         { nombre: 'ari', actor: 'ari-salta', x: 54, alto: 18, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
           ruta: [[0, 54, 0], [.1, 57, 6], [.2, 60, 1], [.32, 65, 6], [.44, 68, 1], [.56, 73, 6], [.68, 76, 1], [.8, 81, 6], [.92, 84, 1], [1, 84, 1]],
           fx: [{ tipo: 'tajo', x: 63, ancho: 8, y: 4, tras: 480, golpe: 'mo1' }, { tipo: 'tajo', x: 71, ancho: 8, y: 4, tras: 1100, golpe: 'mo2' }, { tipo: 'tajo', x: 79, ancho: 8, y: 4, tras: 1720, golpe: 'mo3' }, { tipo: 'tajo', x: 87, ancho: 8, y: 4, tras: 2340, golpe: 'mo4' }] },
         { nombre: 'ari', ruta: [[0, 84, 1, 0], [.5, 56, 18, -200], [1, 26, 0, -360]], ms: 1300, suave: 'ease-out', pausa: 200 },
         // Coen llega, salta al centro de los monstruos, los golpea con una onda de choque y vuelve a cubrir a Ari
-        { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', img: 'assets/personajes/coen-lado.webp', x: -6, alto: 17, delante: true, clase: 'corre', entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
+        { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: -6, alto: 17, delante: true, entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
         { nombre: 'coen', actor: 'coen-ataca', x: 24, alto: 16, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 1400, suave: 'cubic-bezier(.3,0,.7,1)', pausa: 0,
           ruta: [[0, 24, 0], [.55, 58, 17], [1, 75, 0]], fx: { tipo: 'onda', x: 75, ancho: 40, ms: 1000, tras: 1400, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { nombre: 'coen', ruta: [[0, 75, 0], [.5, 58, 13], [1, 41, 0]], ms: 1100, suave: 'ease-out', pausa: 300 },
         // Rancek llega volando sobre su báculo: círculo mágico bajo los monstruos y picos de hielo
-        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', img: 'assets/cuento/popup/rancek-vuela.webp', x: -12, alto: 15, entra: true, ruta: [[0, -12, 20], [1, 10, 9]], ms: 1600, suave: 'ease-out', pausa: 0 },
+        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', actor: 'rancek-vuela', camina: [0, 1], cicloMs: 3000, bucle: [0, 1], x: -12, alto: 15, entra: true, ruta: [[0, -12, 20], [1, 10, 9]], ms: 1600, suave: 'ease-out', pausa: 0 },
         { fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
         { nombre: 'rancek', ruta: [[0, 10, 9], [1, 10, 7]], ms: 700, suave: 'ease-in-out', pausa: 200 },
         // el dragón vuelve y les lanza su fuego
-        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', img: 'assets/cuento/popup/dragon-fuego.webp', x: -20, alto: 14, clase: 'vuela espejo', entra: true, ruta: [[0, -20, 10], [1, 50, 3]], ms: 1600, suave: 'ease-out', pausa: 0,
+        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', actor: 'dragon-fuego', camina: [0, 1], cicloMs: 3000, bucle: [0, 1], x: -20, alto: 14, clase: 'vuela espejo', entra: true, ruta: [[0, -20, 10], [1, 50, 3]], ms: 1600, suave: 'ease-out', pausa: 0,
           fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 1500, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
         // la niebla se despeja: el castillo se pliega y a la derecha se levanta su entrada, a la escala de los héroes
@@ -406,8 +406,8 @@
         { nombre: 'entrada', img: 'entrada.webp', x: 76, alto: 40, ms: 900, pausa: 0 },
         { nombre: 'rancek', ruta: [[0, 10, 7], [1, 12, 0]], ms: 700, suave: 'ease-in', pausa: 0 },
         // los mismos tres que pelearon caminan hasta la puerta…
-        { nombre: 'pcoen', img: 'assets/personajes/coen-lado.webp', x: 41, alto: 17, delante: true, clase: 'anda', reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 80]], ms: 3600, junto: true },
-        { nombre: 'pari', img: 'assets/personajes/ari-lado.webp', x: 26, alto: 16, delante: true, clase: 'anda', reemplaza: 'ari', sigue: true, ruta: [[0, 26], [1, 75]], ms: 4000, junto: true },
+        { nombre: 'pcoen', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 41, alto: 17, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 80]], ms: 3600, junto: true },
+        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 26, alto: 16, delante: true, reemplaza: 'ari', sigue: true, ruta: [[0, 26], [1, 75]], ms: 4000, junto: true },
         { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', x: 12, alto: 17, delante: true, clase: 'anda', reemplaza: 'rancek', sigue: true, ruta: [[0, 12], [1, 70]], ms: 4400, pausa: 0 },
         // …y entran
         { nombre: 'pcoen', clase: 'adentro', ms: 350, pausa: 0 },
@@ -419,14 +419,14 @@
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
         { nombre: 'mago', img: 'assets/personajes/rancek-frente.webp', x: 50, alto: 16, fila: 'medio', ms: 900 },                    // Rancek atiende detrás del mostrador
         // Ari y Coen entran caminando por la derecha
-        { texto: { titulo: 'Un día…', texto: 'Ari y Coen entraron a la tienda mágica de Rancek.' }, nombre: 'ari-c', img: 'assets/personajes/ari-lado.webp', x: 106, alto: 16, delante: true, clase: 'anda', entra: true, ruta: [[0, 106, 0, 0, -1], [1, 64, 0, 0, -1]], ms: 2600, junto: true, sigue: true },
-        { nombre: 'coen-c', img: 'assets/personajes/coen-lado.webp', x: 116, alto: 17, delante: true, clase: 'anda', entra: true, ruta: [[0, 116, 0, 0, -1], [1, 77, 0, 0, -1]], ms: 2800, pausa: 0 },
+        { texto: { titulo: 'Un día…', texto: 'Ari y Coen entraron a la tienda mágica de Rancek.' }, nombre: 'ari-c', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 106, alto: 16, delante: true, entra: true, ruta: [[0, 106, 0, 0, -1], [1, 64, 0, 0, -1]], ms: 2600, junto: true, sigue: true },
+        { nombre: 'coen-c', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 116, alto: 17, delante: true, entra: true, ruta: [[0, 116, 0, 0, -1], [1, 77, 0, 0, -1]], ms: 2800, pausa: 0 },
         { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', x: 64, alto: 16, delante: true, reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0 },
         { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 77, alto: 17, delante: true, reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 200 },
         { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'saluda', fx: { tipo: 'destello', x: 50, ancho: 10, y: 14 }, ms: 1800 },
         // Ari va a mirar los vestidos y Coen la sigue
-        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari-c', img: 'assets/personajes/ari-lado.webp', x: 64, alto: 16, delante: true, clase: 'anda', reemplaza: 'ari', sigue: true, ruta: [[0, 64, 0, 0, -1], [1, 22, 0, 0, -1]], ms: 2200, junto: true },
-        { nombre: 'coen-c', img: 'assets/personajes/coen-lado.webp', x: 77, alto: 17, delante: true, clase: 'anda', reemplaza: 'coen', sigue: true, ruta: [[0, 77, 0, 0, -1], [1, 36, 0, 0, -1]], ms: 2600, pausa: 0 },
+        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari-c', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 64, alto: 16, delante: true, reemplaza: 'ari', sigue: true, ruta: [[0, 64, 0, 0, -1], [1, 22, 0, 0, -1]], ms: 2200, junto: true },
+        { nombre: 'coen-c', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 77, alto: 17, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 77, 0, 0, -1], [1, 36, 0, 0, -1]], ms: 2600, pausa: 0 },
         { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', x: 22, alto: 16, delante: true, reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0, fx: { tipo: 'destello', x: 12, ancho: 9, y: 12 } },
         { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 36, alto: 17, delante: true, reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 300 },
         { texto: { titulo: 'Coen:', texto: '«…yo pago 😅»' }, nombre: 'coen', clase: 'saluda', ms: 1600 },
@@ -448,7 +448,7 @@
       { fondo: 'fondo-mercado.webp', suelo: 'suelo-mercado.webp', titulo: 'La tiendita creció…', texto: '…hasta convertirse en un mercado entero.', pasos: [
         { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 19, fila: 'medio', efecto: 'brilla', ms: 1800,
           texto: { titulo: 'Magical Alliance', texto: 'Mi proyecto final Full Stack Java: roles, catálogo, carrito, cupones, pedidos, stock y panel de administración.' } },
-        { nombre: 'ari', img: 'assets/cuento/ari-casual.webp', x: 28, alto: 16, delante: true, ms: 1200 },                       // Ari llega como clienta…
+        { nombre: 'ari', actor: 'ari-casual', x: 28, alto: 16, delante: true, de: 0, a: 1, ms: 2600, pausa: 300 },                       // Ari llega como clienta…
         { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 76, alto: 17, delante: true, ms: 1200,
           texto: { titulo: 'Clienta o administradora', texto: 'Llena el carrito y mira cómo cambia el stock.' } },                     // …y Coen la acompaña
         { nombre: 'ari', efecto: 'salta', ms: 1400 },
@@ -505,7 +505,7 @@
       ] },
       { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', titulo: 'ArianesDCoen', texto: 'Nuestro canal de streaming: videojuegos, risas y una comunidad que nos acompañaba.', pasos: [
         { nombre: 'streamers', actor: 'streamers-anim', x: 50, alto: 15.7, fila: 'medio', ms: 2400, bucle: [0, 1], cicloMs: 3000 },                                                  // Ari y Coen juegan en vivo
-        { nombre: 'publico', img: 'publico.webp', x: 50, alto: 7, clase: 'primer', efecto: 'salta', ms: 2600,
+        { nombre: 'publico', actor: 'publico-anim', x: 50, alto: 7, clase: 'primer', ms: 2600, bucle: [0, 1], cicloMs: 2600,
           texto: { titulo: '¡En vivo!', texto: 'El público animaba con corazones y barras de luz.' } },                     // el público los anima
         { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausamos por los proyectos… ¡pero volveremos!' }, ms: 2400 }
       ] }
@@ -632,6 +632,7 @@
       const an = a.animate(kf, { duration: ms, easing: p.suave || 'linear', fill: 'forwards' });
       const t0 = performance.now(), m = a._m, c0 = m && p.de != null ? m.marcas[p.de] : null, c1 = m && p.a != null ? m.marcas[p.a] : null;
       if (c0 != null) { const paso = t => { if (mia !== vuelta || !a.isConnected) return; const u = Math.min(1, (t - t0) / ms); cuadro(a, c0 + (c1 - c0) * u); if (u < 1) requestAnimationFrame(paso); }; requestAnimationFrame(paso); }
+      else if (m && p.camina) { const k0 = m.marcas[p.camina[0]], k1 = m.marcas[p.camina[1]], C = p.cicloMs || 900; const paso = t => { if (mia !== vuelta || !a.isConnected || t - t0 > ms) return; cuadro(a, Math.floor(k0 + (((t - t0) % C) / C) * (k1 - k0 + 1)) % (k1 + 1)); requestAnimationFrame(paso); }; requestAnimationFrame(paso); }   // corre o camina mientras avanza
       an.onfinish = () => { cerrar(); an.cancel(); fin(mia === vuelta); };
     });
     // efectos dibujados sobre el piso: tajo, onda, círculo mágico, picos de hielo, llamas, humo
