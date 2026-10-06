@@ -2021,3 +2021,8 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 
 /* el dragón llega sin fuego (el fuego de su dibujo queda oculto hasta que está frente a los monstruos) */
 .hito-actor.sin-fuego{clip-path:inset(-20% 44% -20% -20%)}
+
+/* la tienda: Rancek detrás del mostrador; mostrador y registradora entre él y los clientes */
+.hito-actor.tras-mostrador{bottom:36.5%}
+.hito-actor.mostrador{bottom:32%}
+.hito-actor.sobre-mostrador{bottom:33%}

@@ -419,23 +419,22 @@
     ] },
     vi: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
-        { nombre: 'mago', img: 'assets/personajes/rancek-frente.webp', x: 50, alto: 16, fila: 'medio', ms: 900 },                    // Rancek atiende detrás del mostrador
-        // Ari y Coen entran caminando por la derecha
-        { texto: { titulo: 'Un día…', texto: 'Ari y Coen entraron a la tienda mágica de Rancek.' }, nombre: 'ari-c', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 106, alto: 16, delante: true, entra: true, ruta: [[0, 106, 0, 0, -1], [1, 64, 0, 0, -1]], ms: 2600, junto: true, sigue: true },
-        { nombre: 'coen-c', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 116, alto: 17, delante: true, entra: true, ruta: [[0, 116, 0, 0, -1], [1, 77, 0, 0, -1]], ms: 2800, pausa: 0 },
-        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', x: 64, alto: 16, delante: true, reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0 },
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 77, alto: 17, delante: true, reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 200 },
-        { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'saluda', fx: { tipo: 'destello', x: 50, ancho: 10, y: 14 }, ms: 1800 },
-        // Ari va a mirar los vestidos y Coen la sigue
-        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari-c', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 64, alto: 16, delante: true, reemplaza: 'ari', sigue: true, ruta: [[0, 64, 0, 0, -1], [1, 22, 0, 0, -1]], ms: 2200, junto: true },
-        { nombre: 'coen-c', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 77, alto: 17, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 77, 0, 0, -1], [1, 36, 0, 0, -1]], ms: 2600, pausa: 0 },
-        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', x: 22, alto: 16, delante: true, reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0, fx: { tipo: 'destello', x: 12, ancho: 9, y: 12 } },
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 36, alto: 17, delante: true, reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 300 },
-        { texto: { titulo: 'Coen:', texto: '«…yo pago 😅»' }, nombre: 'coen', clase: 'saluda', ms: 1600 },
+        // Rancek atiende de perfil detrás de su mostrador; sobre el mostrador, la registradora que después baja colgando
+        { nombre: 'mago', img: 'assets/personajes/rancek-lado.webp', x: 72, alto: 17, clase: 'espejo tras-mostrador', ms: 500, pausa: 0 },
+        { nombre: 'mostrador', img: 'mostrador.webp', x: 68, alto: 13.5, clase: 'mostrador', ms: 500, pausa: 0 },
+        { nombre: 'caja', img: 'registradora.webp', x: 64, alto: 8, clase: 'sobre-mostrador', ruta: [[0, 64, 10.8], [1, 64, 10.8]], yAncho: true, ms: 300, pausa: 300 },
+        // Ari y Coen entran por la izquierda y llegan hasta el mostrador
+        { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a la tienda mágica de Rancek.' }, nombre: 'ari-c', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: -8, alto: 16, delante: true, entra: true, ruta: [[0, -8], [1, 47]], ms: 3400, junto: true, sigue: true },
+        { nombre: 'coen-c', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: -18, alto: 17, delante: true, entra: true, ruta: [[0, -18], [1, 36]], ms: 3400, pausa: 0 },
+        { nombre: 'ari', img: 'assets/personajes/ari-lado.webp', x: 47, alto: 16, delante: true, clase: 'espejo', reemplaza: 'ari-c', sigue: true, ms: 100, pausa: 0 },
+        { nombre: 'coen', img: 'assets/personajes/coen-lado.webp', x: 36, alto: 17, delante: true, clase: 'espejo', reemplaza: 'coen-c', sigue: true, ms: 300, pausa: 200 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'espejo tras-mostrador saluda', fx: { tipo: 'destello', x: 72, ancho: 9, y: 16 }, ms: 1800 },
+        { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'ari', clase: 'espejo saluda', ms: 1800 },
+        { texto: { titulo: 'Coen:', texto: '«…yo pago 😅»' }, nombre: 'coen', clase: 'espejo saluda', ms: 1600 },
         { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: true, ms: 600 },
         { espera: 'tienda-boleta', cierraApp: true, ms: 900 },                                                                  // cuando se entrega la boleta…
         // …se ponen lo que compraron, y Rancek cierra la tienda para ir con ellos
-        { texto: { titulo: '¡Con sus compras puestas!', texto: 'Ari con su vestido de chica mágica y Coen con su jogger blanco y su polera burdeo.' }, nombre: 'ari2', img: 'ari-paseo.webp', x: 22, alto: 17.5, delante: true, reemplaza: 'ari', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 22, ancho: 16, y: 6, ms: 1100 }, ms: 900, pausa: 0 },
+        { texto: { titulo: '¡Con sus compras puestas!', texto: 'Ari con su vestido de chica mágica y Coen con su jogger blanco y su polera burdeo.' }, nombre: 'ari2', img: 'ari-paseo.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'ari', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 47, ancho: 16, y: 6, ms: 1100 }, ms: 900, pausa: 0 },
         { nombre: 'coen2', img: 'coen-paseo.webp', x: 36, alto: 18, delante: true, reemplaza: 'coen', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 36, ancho: 16, y: 6, ms: 1100 }, ms: 1400 },
         { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek2', img: 'rancek-paseo.webp', x: 62, alto: 18, delante: true, reemplaza: 'mago', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 62, ancho: 16, y: 6, ms: 1100 }, ms: 1800 }
       ] }
@@ -623,7 +622,7 @@
     const vivir = (a, c0, c1, ms, mia) => { if (quieto || c1 <= c0) return; const t0 = performance.now(); a._vive = t0; const paso = t => { if (mia !== vuelta || !a.isConnected || a._vive !== t0) return; const u = ((t - t0) % (2 * ms)) / ms; cuadro(a, c0 + (c1 - c0) * (u < 1 ? u : 2 - u)); requestAnimationFrame(paso); }; requestAnimationFrame(paso); };
     // recorrido con saltos: puntos [t 0–1, x %, alto sobre el piso (% de la escena), giro°, espejo ±1]
     const recorrer = (a, p, mia) => new Promise(fin => {
-      a._vive = null; const H = zona.offsetHeight || 1, pts = p.ruta, ms = p.ms || 1200;
+      a._vive = null; const H = (p.yAncho ? zona.offsetWidth : zona.offsetHeight) || 1, pts = p.ruta, ms = p.ms || 1200;   // yAncho: la altura en % del ancho (igual que 'alto')
       const kf = pts.map(([t, x, y = 0, g = 0, e = 1]) => ({ offset: t, left: (x - a._ancho / 2) + '%', translate: '0 0 ' + ((y / 100) * H).toFixed(1) + 'px', rotate: 'y ' + g + 'deg', scale: e + ' 1' }));   // el piso está acostado: subir es el eje Z y el giro de un salto, alrededor de la profundidad
       const fin0 = pts[pts.length - 1];
       const cerrar = () => { a.style.left = (fin0[1] - a._ancho / 2) + '%'; a.style.translate = '0 0 ' + (((fin0[2] || 0) / 100) * H).toFixed(1) + 'px'; a.style.rotate = 'y ' + (fin0[3] || 0) + 'deg'; a.style.scale = (fin0[4] ?? 1) + ' 1'; };
