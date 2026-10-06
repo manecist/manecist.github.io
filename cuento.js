@@ -384,10 +384,12 @@
         { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 87, alto: 7, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
         // Ari llega corriendo, ataca a los cuatro con su daga y vuelve de un salto hacia atrás
         { texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', actor: 'ari-corre', camina: [0, 1], cicloMs: 700, x: -6, alto: 16, delante: true, entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
-        { nombre: 'ari', actor: 'ari-salta', x: 54, alto: 18, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
-          ruta: [[0, 54, 0], [.1, 57, 6], [.2, 60, 1], [.32, 65, 6], [.44, 68, 1], [.56, 73, 6], [.68, 76, 1], [.8, 81, 6], [.92, 84, 1], [1, 84, 1]],
+        { nombre: 'ari', actor: 'ari-ataca', x: 54, alto: 18, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
+          ruta: [[0, 54, 0], [.25, 62, 3], [.5, 70, 0], [.75, 78, 3], [1, 84, 0]],
           fx: [{ tipo: 'tajo', x: 63, ancho: 8, y: 4, tras: 480, golpe: 'mo1' }, { tipo: 'tajo', x: 71, ancho: 8, y: 4, tras: 1100, golpe: 'mo2' }, { tipo: 'tajo', x: 79, ancho: 8, y: 4, tras: 1720, golpe: 'mo3' }, { tipo: 'tajo', x: 87, ancho: 8, y: 4, tras: 2340, golpe: 'mo4' }] },
-        { nombre: 'ari', ruta: [[0, 84, 1, 0], [.5, 56, 18, -200], [1, 26, 0, -360]], ms: 1300, suave: 'ease-out', pausa: 200 },
+        // y vuelve con una voltereta hacia atrás
+        { nombre: 'ari-vuelta', actor: 'ari-atras', x: 84, alto: 18, delante: true, reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 1700, pausa: 200,
+          ruta: [[0, 84, 0], [.25, 81, 0], [.6, 52, 13], [.85, 32, 2], [1, 28, 0]] },
         // Coen llega, salta al centro de los monstruos, los golpea con una onda de choque y vuelve a cubrir a Ari
         { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: -6, alto: 17, delante: true, entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
         { nombre: 'coen', actor: 'coen-ataca', x: 24, alto: 16, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 1400, suave: 'cubic-bezier(.3,0,.7,1)', pausa: 0,
@@ -398,8 +400,8 @@
         { fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
         { nombre: 'rancek', ruta: [[0, 10, 9], [1, 10, 7]], ms: 700, suave: 'ease-in-out', pausa: 200 },
         // el dragón vuelve y les lanza su fuego
-        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', actor: 'dragon-fuego', camina: [0, 1], cicloMs: 3000, bucle: [0, 1], x: -20, alto: 14, clase: 'vuela espejo', entra: true, ruta: [[0, -20, 10], [1, 50, 3]], ms: 1600, suave: 'ease-out', pausa: 0,
-          fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 1500, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
+        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'fuego', actor: 'dragon-fuego', camina: [0, 1], cicloMs: 3000, bucle: [0, 1], x: -20, alto: 14, clase: 'vuela espejo sin-fuego', entra: true, ruta: [[0, -20, 10], [1, 50, 3]], ms: 1600, suave: 'ease-out', pausa: 0 },
+        { nombre: 'fuego', quitaClase: 'sin-fuego', ms: 1900, pausa: 0, fx: { tipo: 'llamas', x: 74, ancho: 40, y: 1, ms: 1700, tras: 250, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
         // la niebla se despeja: el castillo se pliega y a la derecha se levanta su entrada, a la escala de los héroes
         { quita: ['fuego', 'castillo'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 700 },
@@ -407,7 +409,7 @@
         { nombre: 'rancek', ruta: [[0, 10, 7], [1, 12, 0]], ms: 700, suave: 'ease-in', pausa: 0 },
         // los mismos tres que pelearon caminan hasta la puerta…
         { nombre: 'pcoen', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 41, alto: 17, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 80]], ms: 3600, junto: true },
-        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 26, alto: 16, delante: true, reemplaza: 'ari', sigue: true, ruta: [[0, 26], [1, 75]], ms: 4000, junto: true },
+        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 26, alto: 16, delante: true, reemplaza: 'ari-vuelta', sigue: true, ruta: [[0, 28], [1, 75]], ms: 4000, junto: true },
         { nombre: 'prancek', img: 'assets/personajes/rancek-lado.webp', x: 12, alto: 17, delante: true, clase: 'anda', reemplaza: 'rancek', sigue: true, ruta: [[0, 12], [1, 70]], ms: 4400, pausa: 0 },
         // …y entran
         { nombre: 'pcoen', clase: 'adentro', ms: 350, pausa: 0 },
@@ -691,6 +693,7 @@
         if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
         if (!(nuevo ? p.entra || (p.reemplaza && p.sigue) : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;   // sigue: encadenado al paso anterior, sin respiro
         if (p.efecto) a.classList.add(p.efecto);
+        if (p.quitaClase) a.classList.remove(...p.quitaClase.split(' '));
         if (!nuevo && p.clase) { const cs = p.clase.split(' '); a.classList.remove(...cs); void a.offsetWidth; a.classList.add(...cs); }   // vuelve a hacer su gesto
         if (p.abre && !a.dataset.abre) { a.dataset.abre = p.abre; a.classList.add('clicable'); a.addEventListener('click', () => window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.abre } }))); }
         if (p.rotulo && !a.querySelector('.hito-rotulo')) { const r = document.createElement('span'); r.className = 'hito-rotulo'; r.textContent = p.rotulo; a.append(r); }

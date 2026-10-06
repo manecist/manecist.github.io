@@ -2018,3 +2018,6 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 /* entrar por la puerta del castillo: se achica hacia adentro y desaparece */
 .hito-actor.adentro{transition:opacity .9s ease-in,filter .9s;opacity:0!important;filter:brightness(1.6) drop-shadow(0 0 14px #ffe7a8)}
 .hito-actor.adentro > *{animation:none!important;transition:transform .9s ease-in;transform:scale(.82) translateY(-4%)}
+
+/* el dragón llega sin fuego (el fuego de su dibujo queda oculto hasta que está frente a los monstruos) */
+.hito-actor.sin-fuego{clip-path:inset(-20% 44% -20% -20%)}
