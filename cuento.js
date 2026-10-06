@@ -547,7 +547,7 @@
         { actor: 'ccc', x: 64, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
       ] },
       { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
-        { actor: 'ssm', x: 36, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: guía a las mujeres hacia el camión
+        { actor: 'ssm', x: 40, alto: 16, de: 0, a: 1, ms: 4500 }                      // la matrona las atiende y se despide desde su lugar; ellas se van al camión
       ] }
     ] },
   };
