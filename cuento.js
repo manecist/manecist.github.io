@@ -645,7 +645,15 @@
       an.onfinish = () => { cerrar(); an.cancel(); fin(mia === vuelta); };
     });
     // efectos dibujados sobre el piso: tajo, onda, círculo mágico, picos de hielo, llamas, humo
+    // los efectos de la batalla son recortes de papel dibujados: se levantan de la hoja y se vuelven a plegar
+    const FX_PAPEL = { picos: 'hielo', llamas: 'llamas', circulo: 'circulo', onda: 'onda', tajo: 'tajo', humo: 'humo' };
     const efecto = (tipo, x, ancho = 10, y = 0, ms = 900) => {
+      if (FX_PAPEL[tipo]) {
+        const im = document.createElement('img'); im.src = 'assets/cuento/fx/' + FX_PAPEL[tipo] + '.webp'; im.alt = '';
+        im.className = 'hito-pop hito-actor delante fx-papel fx-' + tipo + (tipo === 'circulo' ? ' plano' : ''); im.style.left = (x - ancho / 2) + '%'; im.style.width = ancho + '%';
+        if (y) im.style.setProperty('--alza', y + '%');
+        levantar(im, 0); setTimeout(() => plegar(im), Math.max(500, ms - 400)); return;
+      }
       const e = document.createElement('div'); e.className = 'hito-fx fx-' + tipo; e.style.left = (x - ancho / 2) + '%'; e.style.width = ancho + '%'; e.style.setProperty('--z', ((y / 100) * (zona.offsetHeight || 1)).toFixed(1) + 'px'); e.style.setProperty('--ms', ms + 'ms');
       if (tipo === 'picos') e.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i><i></i>';
       if (tipo === 'llamas' || tipo === 'humo') e.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
