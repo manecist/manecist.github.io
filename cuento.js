@@ -81,7 +81,7 @@
   const limpiarVoz = t => (t || '').replace(/[«»✦✧♪♫♥]/g, '').replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim();
   const claveVoz = t => { let h = 0x811c9dc5; const x = limpiarVoz(t).toLowerCase(); for (let i = 0; i < x.length; i++) { h ^= x.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); };
   let audios = null, sonando = null, terminar = null;
-  const cargarAudios = () => audios || (audios = fetch('assets/voz/indice.json').then(r => r.ok ? r.json() : {}).catch(() => ({})));
+  const cargarAudios = () => audios || (audios = fetch('assets/voz/indice.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).catch(() => ({})));
   cargarAudios();
   function callar() { turno++; if (sonando) { sonando.pause(); sonando = null; } if (terminar) { const f = terminar; terminar = null; f(); } cola = Promise.resolve(); if (voz) voz.cancel(); $$('.voz-activa').forEach(n => n.classList.remove('voz-activa')); }
   function decir(texto, o = {}) {
@@ -91,7 +91,8 @@
         const idx = await cargarAudios(), k = claveVoz(texto);
         if (idx[k]) { const a = new Audio('assets/voz/' + k + '.mp3'); sonando = a; let listo = false; const acaba = () => { if (listo) return; listo = true; if (sonando === a) sonando = null; if (terminar === acaba) terminar = null; fin(); }; terminar = acaba; a.onended = a.onerror = acaba; a.play().catch(acaba); return; }
       }
-      if (!voz) { fin(); return; }
+      if (!o.voz) console.debug('voz-sin-audio:', limpiarVoz(texto));
+      if (!o.voz || !voz) { fin(); return; }   // el narrador solo usa la voz elegida (Alonso): sin audio, no habla con la voz del navegador
       const u = new SpeechSynthesisUtterance(texto.replace(/[«»✦✧♪♫♥]/g, '').replace(/\s+/g, ' ').trim());
       const v = o.voz || vozElegida || elegirVoz();
       if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'es-CL';
