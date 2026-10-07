@@ -109,7 +109,7 @@
   const vozCartel = (t, x) => [t, x].map(v => limpiarVoz(v)).filter(Boolean).reduce((a, b) => a ? a + (/[.…:!?¡¿,]$/.test(a) ? ' ' : '. ') + b : b, '');
   // lo narrable de un pliego: primero lo que se escribe en el cielo (capítulo, título, cuento, características), luego lo que queda en las páginas
   function textosDe(pags) {
-    const nodos = [...document.querySelectorAll('.teatro-cielo.visible .cielo-bloque > *, .teatro-cielo.visible .cielo-lado li')];
+    const nodos = [...document.querySelectorAll('.teatro-cielo.visible .cielo-bloque > *'), ...document.querySelectorAll('.teatro-cielo.visible .cielo-lado li')];
     pags.forEach(p => p.querySelectorAll('.cap-num,.cap-titulo,.capitular,.cuento,.huellas li,.poderes li').forEach(n => {
       if (n.closest('.ranura') || n.closest('[data-narracion-propia]') || n.offsetParent === null || nodos.includes(n)) return;
       nodos.push(n);
@@ -122,9 +122,10 @@
     await new Promise(r => setTimeout(r, 900));
     for (let i = 0; i < 12 && !document.querySelector('.teatro-cielo.visible') && mio === turno; i++) await new Promise(r => setTimeout(r, 150));
     for (const n of textosDe(pags)) {
+      if (n.closest('.cielo-lado')) { const mio2 = turno; cola = cola.then(async () => { const c = n.closest('.teatro-cielo'), llega = (+c.dataset.t0 || 0) + parseFloat(getComputedStyle(n).getPropertyValue('--base') || 0) * 1000 + 700; while (mio2 === turno && narrando && Date.now() < llega) await new Promise(r => setTimeout(r, 120)); }); }
       const partes = partesDe(n);
-      partes.forEach((t, i) => { if (i) pausa(650); encolar(t, i === 0 ? () => n.classList.add('voz-activa') : null, i === partes.length - 1 ? () => n.classList.remove('voz-activa') : null); });
-      if (partes.length > 1) pausa(500);
+      partes.forEach((t, i) => { if (i) pausa(380); encolar(t, i === 0 ? () => n.classList.add('voz-activa') : null, i === partes.length - 1 ? () => n.classList.remove('voz-activa') : null); });
+      if (partes.length > 1) pausa(250);
     }
   }
   function pintarBotonVoz() {
@@ -386,7 +387,7 @@
         { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 80, alto: 17, reemplaza: 'coen-c', sigue: true, rotulo: 'Kevin', ms: 300, pausa: 300 },
         // al medio, el hada dibuja el logo de Studios Conari…
         { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', linea: 'assets/logo-conari-circulo-lineart.webp', x: 50, alto: 14, ms: 3600, pj: false,
-          texto: { titulo: 'Y juntos fundamos Studios Conari', texto: 'Un estudio creativo chileno: narrativa, diseño, programación, datos y arte 3D.' } },
+          texto: { titulo: 'Y juntos fundaron Studios Conari', texto: 'Un estudio creativo chileno: narrativa, diseño, programación, datos y arte 3D.' } },
         // …el logo se va y el estudio entero aparece de fondo
         { quita: 'logo', fondo: 'fondo-conari.webp', ms: 1600 },
         // en el lugar vacío del medio, el hada dibuja y pinta a Rancek
@@ -485,7 +486,7 @@
     vii: { carpeta: 'cap7/', hitos: [
       { fondo: 'fondo-mercado.webp', suelo: 'suelo-mercado.webp', titulo: 'La tiendita creció…', texto: '…hasta convertirse en un mercado entero.', pasos: [
         { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 19, fila: 'medio', efecto: 'brilla', ms: 1800,
-          texto: { titulo: 'Magical Alliance', texto: 'Mi proyecto final Full Stack Java: roles, catálogo, carrito, cupones, pedidos, stock y panel de administración.' } },
+          texto: { titulo: 'Magical Alliance', texto: 'Su proyecto final Full Stack Java: roles, catálogo, carrito, cupones, pedidos, stock y panel de administración.' } },
         { nombre: 'ari', actor: 'ari-casual', x: 28, alto: 16, delante: true, de: 0, a: 1, ms: 2600, pausa: 300 },                       // Ari llega como clienta…
         { nombre: 'coen', actor: 'coen-vii', x: 76, alto: 17, delante: true, de: 0, a: 1, ms: 3000,
           texto: { titulo: 'Clienta o administradora', texto: 'Llena el carrito y mira cómo cambia el stock.' } },                     // …y Coen la acompaña
@@ -494,10 +495,10 @@
       ] }
     ] },
     viii: { carpeta: 'cap8/', hitos: [
-      { fondo: 'fondo-taller.webp', suelo: 'suelo-taller.webp', titulo: 'Aprendí sola', texto: 'Primero con papel, lápices y pintura…', pasos: [
+      { fondo: 'fondo-taller.webp', suelo: 'suelo-taller.webp', titulo: 'Aprendió sola', texto: 'Primero con papel, lápices y pintura…', pasos: [
         { nombre: 'papel1', img: 'assets/galeria/papel-luna-sakura.webp', x: 16, alto: 9, fila: 'atras', clase: 'cuadro', ms: 300, pausa: 200 },
         { nombre: 'papel2', img: 'assets/galeria/papel-amerikano.webp', x: 84, alto: 10, fila: 'atras', clase: 'cuadro', ms: 900 },
-        { actor: 'atril', x: 32, alto: 16, de: 0, a: 1, ms: 4000, texto: { titulo: 'Después con tableta…', texto: '…redibujando hasta encontrar mi propio trazo.' } },
+        { actor: 'atril', x: 32, alto: 16, de: 0, a: 1, ms: 4000, texto: { titulo: 'Después con tableta…', texto: '…redibujando hasta encontrar su propio trazo.' } },
         { nombre: 'lienzo', img: 'assets/galeria/regalo-1.webp', linea: 'assets/galeria/regalo-1-lineart.webp', x: 66, alto: 17, clase: 'cuadro', ms: 4600,
           texto: { titulo: 'Así nace cada ilustración', texto: 'Primero la línea… y después el color.' } }
       ] }
@@ -541,15 +542,15 @@
         { nombre: 'ari', actor: 'medalla', x: 50, alto: 16, efecto: 'brilla', ms: 2800, bucle: [0, 1], cicloMs: 3000 },                       // Ari levanta su medalla en el podio
         { nombre: 'ari', efecto: 'salta', ms: 2600, texto: { titulo: 'Y sigo aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
       ] },
-      { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', titulo: 'ArianesDCoen', texto: 'Nuestro canal de streaming: videojuegos, risas y una comunidad que nos acompañaba.', pasos: [
+      { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', titulo: 'ArianesDCoen', texto: 'Su canal de streaming con Coen: videojuegos, risas y una comunidad que los acompañaba.', pasos: [
         { nombre: 'streamers', actor: 'streamers-anim', x: 50, alto: 15.7, fila: 'medio', ms: 2400, bucle: [0, 1], cicloMs: 3000 },                                                  // Ari y Coen juegan en vivo
         { nombre: 'publico', actor: 'publico-anim', x: 50, alto: 7, clase: 'primer', ms: 2600, bucle: [0, 1], cicloMs: 2600,
           texto: { titulo: '¡En vivo!', texto: 'El público animaba con corazones y barras de luz.' } },                     // el público los anima
-        { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausamos por los proyectos… ¡pero volveremos!' }, ms: 2400 }
+        { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausaron por los proyectos… ¡pero volverán!' }, ms: 2400 }
       ] }
     ] },
     cv: { carpeta: 'logros/', hitos: [
-      { fondo: 'fondo-mapa.webp', suelo: 'suelo-mapa.webp', titulo: 'El mapa de mi camino', texto: 'Cada lugar de mi historia se levanta en el año en que llegué.', pasos: [
+      { fondo: 'fondo-mapa.webp', suelo: 'suelo-mapa.webp', titulo: 'El mapa de su camino', texto: 'Cada lugar de mi historia se levanta en el año en que llegué.', pasos: [
         { nombre: 'lugarb1', img: 'assets/cuento/logros/lugarb1.webp', clase: 'rebote', x: 8, alto: 10, rotulo: '2018', ms: 2300, texto: { titulo: '2018 · Matrona · titulación con distinción', texto: 'Universidad San Sebastián, Concepción.' } },
         { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp', clase: 'rebote', x: 20, alto: 9, fila: 'medio', rotulo: '2019', ms: 2300, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
         { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', clase: 'rebote', x: 32, alto: 10, rotulo: '2019 – 2021', ms: 2300, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
@@ -558,7 +559,7 @@
         { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', clase: 'rebote', x: 67.5, alto: 12, rotulo: '2024', ms: 2300, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
         { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', clase: 'rebote', x: 79.5, alto: 10, rotulo: '2025 – 2026', ms: 2300, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
         { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', clase: 'rebote', x: 91.5, alto: 14, fila: 'medio', rotulo: '2026 – hoy', ms: 2300, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
-        { texto: { titulo: 'Mi currículum completo', texto: 'Experiencia, formación y habilidades.' }, app: true, ms: 400 }
+        { texto: { titulo: 'Su currículum completo', texto: 'Experiencia, formación y habilidades.' }, app: true, ms: 400 }
       ] }
     ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
@@ -1105,6 +1106,7 @@
         });
         if (bloque.children.length) cielo.append(bloque);
       });
+      cielo.dataset.t0 = Date.now();
       escribirEstrellas();
       // en pantallas bajas (celular horizontal) el texto del capítulo se abre con un toque, para no tapar el pop-up
       if (cielo.querySelector('.cielo-bloque .cuento')) { const b = document.createElement('button'); b.type = 'button'; b.className = 'cielo-leer'; b.textContent = '📖 Leer'; b.setAttribute('aria-expanded', 'false'); b.addEventListener('click', () => { let hoja = document.querySelector('.hoja-leer'); if (hoja) { hoja.remove(); b.textContent = '📖 Leer'; b.setAttribute('aria-expanded', 'false'); return; } hoja = document.createElement('div'); hoja.className = 'hoja-leer'; hoja.setAttribute('role', 'dialog'); cielo.querySelectorAll('.cielo-bloque').forEach(bl => { const c = bl.cloneNode(true); c.querySelectorAll('.ch').forEach(ch => ch.replaceWith(ch.textContent)); c.querySelectorAll('.escribe').forEach(e => e.classList.remove('escribe')); hoja.append(c); }); const x = document.createElement('button'); x.type = 'button'; x.className = 'hoja-leer-cerrar'; x.textContent = '✕ Cerrar'; x.onclick = () => b.click(); hoja.append(x); hoja.addEventListener('click', e => { if (e.target === hoja) b.click(); }); document.body.append(hoja); b.textContent = '✕ Cerrar'; b.setAttribute('aria-expanded', 'true'); }); cielo.append(b); }
