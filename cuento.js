@@ -404,18 +404,20 @@
         { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'dragon', actor: 'dragon-vuela', camina: [0, 1], cicloMs: 700, x: -20, alto: 11, clase: 'vuela', entra: true, ruta: [[0, -20, 10], [1, 46, 3]], ms: 1800, suave: 'ease-out', pausa: 0 },
         { nombre: 'fuego', actor: 'dragon-sopla', x: 46, alto: 11, clase: 'vuela', reemplaza: 'dragon', sigue: true, de: 0, a: 1, ms: 3000, pausa: 0, fx: { tipo: 'llamas', x: 76, ancho: 34, y: 1, ms: 1500, tras: 1000, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
-        // la niebla se despeja: el castillo se pliega y a la derecha se levanta su entrada, a la escala de los héroes
-        { quita: ['fuego', 'castillo'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 700 },
-        { nombre: 'entrada', img: 'entrada.webp', x: 76, alto: 40, ms: 900, pausa: 0 },
+        // la niebla se despeja: la montaña y el castillo lejano se pliegan y se levanta la fachada del castillo, a la escala de los héroes
+        { quita: ['fuego', 'castillo', 'andes'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 700 },
+        { nombre: 'fachada', actor: 'fachada', x: 50, ancho: 96, fila: 'atras', pj: false, ms: 900, pausa: 0 },
         { nombre: 'rancek', ruta: [[0, 10, 7], [1, 12, 0]], ms: 700, suave: 'ease-in', pausa: 0 },
         // los mismos tres que pelearon caminan hasta la puerta…
-        { nombre: 'pcoen', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 41, alto: 13.3, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 80]], ms: 3600, junto: true },
-        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 26, alto: 12.5, delante: true, reemplaza: 'ari-vuelta', sigue: true, ruta: [[0, 28], [1, 75]], ms: 4000, junto: true },
-        { nombre: 'prancek', actor: 'rancek-anda', camina: [0, 1], cicloMs: 1000, x: 12, alto: 13.3, delante: true, reemplaza: 'rancek', sigue: true, ruta: [[0, 12], [1, 70]], ms: 4400, pausa: 0 },
+        { nombre: 'pcoen', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 41, alto: 13.3, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 55]], ms: 2600, junto: true },
+        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 28, alto: 12.5, delante: true, reemplaza: 'ari-vuelta', sigue: true, ruta: [[0, 28], [1, 49]], ms: 3000, junto: true },
+        { nombre: 'prancek', actor: 'rancek-anda', camina: [0, 1], cicloMs: 1000, x: 12, alto: 13.3, delante: true, reemplaza: 'rancek', sigue: true, ruta: [[0, 12], [1, 43]], ms: 3400, pausa: 300 },
+        // …las puertas se abren…
+        { nombre: 'fachada', de: 0, a: 1, ms: 1400, fx: { tipo: 'destello', x: 50, ancho: 14, y: 14, tras: 900, ms: 1200 }, pausa: 300 },
         // …y entran
         { nombre: 'pcoen', clase: 'adentro', ms: 350, pausa: 0 },
         { nombre: 'pari', clase: 'adentro', ms: 350, pausa: 0 },
-        { nombre: 'prancek', clase: 'adentro', fx: { tipo: 'destello', x: 76, ancho: 16, y: 10, tras: 500, ms: 1200 }, ms: 1600, pausa: 600 }
+        { nombre: 'prancek', clase: 'adentro', fx: { tipo: 'destello', x: 50, ancho: 16, y: 10, tras: 500, ms: 1200 }, ms: 1600, pausa: 600 }
       ] }
     ] },
     vi: { carpeta: 'cap6/', hitos: [
