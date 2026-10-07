@@ -2047,3 +2047,33 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .hito-actor.rebote > img{transform-origin:50% 100%;animation:rebote-papel .9s cubic-bezier(.3,1.6,.5,1) .75s both,mece-papel 3.4s ease-in-out 1.8s infinite}
 @keyframes rebote-papel{0%{transform:scaleY(.6) scaleX(1.15)}45%{transform:scaleY(1.12) scaleX(.94) translateY(-6%)}75%{transform:scaleY(.96) scaleX(1.03)}100%{transform:none}}
 @keyframes mece-papel{0%,100%{transform:rotate(0)}50%{transform:rotate(-1.2deg) translateY(-1.5%)}}
+
+/* ✦ celular en horizontal (pantalla baja): nada tapa el pop-up */
+.cielo-leer{display:none}
+html.pantalla-corta .teatro-cielo{pointer-events:auto}
+html.pantalla-corta .teatro-cielo .cielo-bloque .cuento{display:none}
+html.pantalla-corta .cielo-bloque .cap-titulo,html.pantalla-corta .teatro-cielo.ancho .cap-titulo{font-size:1.15rem}
+html.pantalla-corta .cielo-leer{display:inline-flex;align-items:center;gap:4px;margin:2px auto 0;padding:3px 12px;border:2px solid #fff;border-radius:999px;background:linear-gradient(160deg,#ffd9ea,#e7d6ff);color:#5b3a63;font:700 .72rem/1.2 var(--sans);box-shadow:0 3px 8px rgba(10,6,30,.35);cursor:pointer;position:relative;z-index:3}
+/* al tocar «Leer», el texto aparece en una hoja de papel sobre la escena, con letra legible */
+.hoja-leer{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;background:rgba(15,8,35,.55);padding:12px}
+.hoja-leer > .cielo-bloque{width:min(88vw,660px);max-height:calc(100vh - 80px);overflow:auto;padding:14px 20px;border:4px solid #fff;border-radius:18px;background:#fff8ef;box-shadow:0 0 0 3px #f0bcd9,0 14px 30px rgba(10,6,30,.5);text-align:left}
+.hoja-leer .cielo-bloque *{opacity:1!important;transform:none!important;animation:none!important}
+.hoja-leer .cuento{display:block!important;font-size:.95rem!important;line-height:1.5;color:#4a3359!important;text-shadow:none!important;margin:.4em 0}
+.hoja-leer :is(.cap-num,.cap-titulo){color:#6a2c55!important;text-shadow:none!important;text-align:center}
+.hoja-leer .cap-titulo{font-size:1.3rem!important}
+.hoja-leer-cerrar{margin-top:8px;padding:5px 16px;border:2px solid #fff;border-radius:999px;background:linear-gradient(160deg,#ffd9ea,#e7d6ff);color:#5b3a63;font:700 .8rem var(--sans);cursor:pointer}
+/* las características del capítulo I quedan a los lados sin tocar el título */
+html.pantalla-corta .teatro-cielo:has(.cielo-lado li){width:40vw}
+html.pantalla-corta .cielo-izq{left:-29vw}html.pantalla-corta .cielo-der{right:-29vw}
+/* las pestañas de los cuadros colgantes se corren a la derecha y el cuadro recogido no asoma sobre el título */
+html.pantalla-corta .teatro-app .colgante-app .app-pestana{left:auto;right:-2%;translate:0 -2px}
+html.pantalla-corta .teatro-app .colgante-app.arriba{transform:translateY(calc(-100% - var(--hilo) - 2vh - 40px))}
+/* la tienda Magical Alliance en vivo usa casi toda la altura */
+html.pantalla-corta .vitrina-viva iframe{height:calc(100vh - 120px)}
+html.pantalla-corta .colgante-app:has(.vitrina-viva) .app-nota{display:none}
+html.pantalla-corta .teatro-app .colgante-app.arriba:not(.mueve){visibility:hidden}
+html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{visibility:visible}
+html.pantalla-corta .teatro-cielo:has(.cielo-lado li){width:36vw}
+html.pantalla-corta .cielo-lado{width:26vw}
+html.pantalla-corta .cielo-izq{left:-27vw}html.pantalla-corta .cielo-der{right:-27vw}
+html.pantalla-corta .cielo-lado li b{font-size:.58rem}html.pantalla-corta .cielo-lado li .corto{font-size:.52rem}

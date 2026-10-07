@@ -103,6 +103,9 @@
   let cola = Promise.resolve();
   const encolar = (t, antes, despues) => { const mio = turno; cola = cola.then(async () => { if (mio !== turno || !narrando) return; antes && antes(); await decir(t); despues && despues(); }); return cola; };
   // lo que dice un cartel de escena al cambiar: el título (si cambió) y su texto
+  const pausa = ms => { const mio = turno; cola = cola.then(() => mio === turno && narrando ? new Promise(r => setTimeout(r, ms)) : null); };
+  // un nodo narrable se dice en partes: en las características, el título, una pausa y la descripción
+  const partesDe = n => n.matches('li') && n.querySelector(':scope > b') ? [n.querySelector(':scope > b').innerText, (n.querySelector('.corto') || n.querySelector('small'))?.innerText].filter(Boolean) : [n.innerText];
   const vozCartel = (t, x) => [t, x].map(v => limpiarVoz(v)).filter(Boolean).reduce((a, b) => a ? a + (/[.…:!?¡¿,]$/.test(a) ? ' ' : '. ') + b : b, '');
   // lo narrable de un pliego: primero lo que se escribe en el cielo (capítulo, título, cuento, características), luego lo que queda en las páginas
   function textosDe(pags) {
@@ -118,7 +121,11 @@
     const mio = ++turno;
     await new Promise(r => setTimeout(r, 900));
     for (let i = 0; i < 12 && !document.querySelector('.teatro-cielo.visible') && mio === turno; i++) await new Promise(r => setTimeout(r, 150));
-    for (const n of textosDe(pags)) encolar(n.innerText, () => n.classList.add('voz-activa'), () => n.classList.remove('voz-activa'));
+    for (const n of textosDe(pags)) {
+      const partes = partesDe(n);
+      partes.forEach((t, i) => { if (i) pausa(650); encolar(t, i === 0 ? () => n.classList.add('voz-activa') : null, i === partes.length - 1 ? () => n.classList.remove('voz-activa') : null); });
+      if (partes.length > 1) pausa(500);
+    }
   }
   function pintarBotonVoz() {
     if (!btnVoz) return;
@@ -132,7 +139,7 @@
     if (narrando) narrar(window.MCELibro?.visibles?.() || []); else callar();
   });
   // todos los textos que puede leer el narrador (para pregenerar la voz)
-  const todosLosTextos = () => { const out = new Set(); textosDe(window.MCELibro?.visibles?.() || []).forEach(n => out.add(limpiarVoz(n.innerText))); (window.MCEVida || []).forEach(t => out.add(limpiarVoz(t))); document.querySelectorAll('.vida-cabeza').forEach(n => out.add(limpiarVoz(n.innerText))); return [...out].filter(Boolean).map(t => ({ k: claveVoz(t), t })); };
+  const todosLosTextos = () => { const out = new Set(); textosDe(window.MCELibro?.visibles?.() || []).forEach(n => partesDe(n).forEach(t => out.add(limpiarVoz(t)))); (window.MCEVida || []).forEach(t => out.add(limpiarVoz(t))); document.querySelectorAll('.vida-cabeza').forEach(n => out.add(limpiarVoz(n.innerText))); return [...out].filter(Boolean).map(t => ({ k: claveVoz(t), t })); };
   window.MCENarrador = { decir, callar, encolar, vozCartel, textos: () => [...todosLosTextos(), ...(window.MCETextosEscenas ? window.MCETextosEscenas() : []).map(t => ({ k: claveVoz(t), t: limpiarVoz(t) }))], get activo() { return narrando; } };
 
   /* ------------------------------------------------------------ escenas */
@@ -1099,6 +1106,9 @@
         if (bloque.children.length) cielo.append(bloque);
       });
       escribirEstrellas();
+      // en pantallas bajas (celular horizontal) el texto del capítulo se abre con un toque, para no tapar el pop-up
+      if (cielo.querySelector('.cielo-bloque .cuento')) { const b = document.createElement('button'); b.type = 'button'; b.className = 'cielo-leer'; b.textContent = '📖 Leer'; b.setAttribute('aria-expanded', 'false'); b.addEventListener('click', () => { let hoja = document.querySelector('.hoja-leer'); if (hoja) { hoja.remove(); b.textContent = '📖 Leer'; b.setAttribute('aria-expanded', 'false'); return; } hoja = document.createElement('div'); hoja.className = 'hoja-leer'; hoja.setAttribute('role', 'dialog'); cielo.querySelectorAll('.cielo-bloque').forEach(bl => { const c = bl.cloneNode(true); c.querySelectorAll('.ch').forEach(ch => ch.replaceWith(ch.textContent)); c.querySelectorAll('.escribe').forEach(e => e.classList.remove('escribe')); hoja.append(c); }); const x = document.createElement('button'); x.type = 'button'; x.className = 'hoja-leer-cerrar'; x.textContent = '✕ Cerrar'; x.onclick = () => b.click(); hoja.append(x); hoja.addEventListener('click', e => { if (e.target === hoja) b.click(); }); document.body.append(hoja); b.textContent = '✕ Cerrar'; b.setAttribute('aria-expanded', 'true'); }); cielo.append(b); }
+      document.querySelector('.hoja-leer')?.remove();
       cielo.classList.add('visible');
     };
     const bajarDelCielo = () => {
