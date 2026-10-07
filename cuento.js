@@ -109,8 +109,8 @@
   const vozCartel = (t, x) => [t, x].map(v => limpiarVoz(v)).filter(Boolean).reduce((a, b) => a ? a + (/[.…:!?¡¿,]$/.test(a) ? ' ' : '. ') + b : b, '');
   // lo narrable de un pliego: primero lo que se escribe en el cielo (capítulo, título, cuento, características), luego lo que queda en las páginas
   function textosDe(pags) {
-    const nodos = [...document.querySelectorAll('.teatro-cielo.visible .cielo-bloque > *'), ...document.querySelectorAll('.teatro-cielo.visible .cielo-lado li')];
-    pags.forEach(p => p.querySelectorAll('.cap-num,.cap-titulo,.capitular,.cuento,.huellas li,.poderes li').forEach(n => {
+    const nodos = [...document.querySelectorAll('.teatro-cielo.visible .cielo-bloque > *')];   // las características no se leen
+    pags.forEach(p => p.querySelectorAll('.cap-num,.cap-titulo,.capitular,.cuento,.huellas li').forEach(n => {
       if (n.closest('.ranura') || n.closest('[data-narracion-propia]') || n.offsetParent === null || nodos.includes(n)) return;
       nodos.push(n);
     }));
