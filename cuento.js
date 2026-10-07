@@ -432,7 +432,7 @@
     vi: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
         // Rancek atiende de perfil detrás de su mesa; sobre la mesa, la registradora que después baja colgando
-        { nombre: 'mago', img: 'rancek-casual.webp', x: 76, alto: 17, clase: 'tras-mostrador', ms: 500, pausa: 0 },
+        { nombre: 'mago', actor: 'rancek-atiende', x: 76, alto: 17, clase: 'tras-mostrador', bucle: [0, 1], cicloMs: 2400, ms: 500, pausa: 0 },   // atiende: respira, sonríe y los mira
         { nombre: 'mesa', img: 'mesa-perfil.webp', x: 66, alto: 19, clase: 'mostrador espejo', ms: 600, pausa: 300 },
         // Ari y Coen llegan de la mano, ya con la ropa con que saldrán a pasear
         { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a la tienda mágica de Rancek.' }, nombre: 'pareja-c', actor: 'pareja-anda', camina: [0, 1], cicloMs: 1100, x: -10, alto: 17, delante: true, entra: true, ruta: [[0, -10], [1, 46]], ms: 3600, pausa: 0 },
@@ -445,9 +445,13 @@
         // …Rancek les entrega las bolsas y cierra la tienda para ir con ellos
         { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: [{ tipo: 'destello', x: 58, ancho: 10, y: 12, ms: 900 }, { tipo: 'destello', x: 50, ancho: 16, y: 6, ms: 1100, tras: 500 }], ms: 900, pausa: 0 },
         { nombre: 'mago-e', actor: 'rancek-entrega', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0 },
-        { nombre: 'mago', img: 'rancek-casual.webp', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, ms: 0, pausa: 0 },   // las bolsas pasan de sus manos…
+        { nombre: 'mago', actor: 'rancek-atiende', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, bucle: [0, 1], cicloMs: 2400, ms: 0, pausa: 0 },   // las bolsas pasan de sus manos…
         { nombre: 'pareja-b', actor: 'paseo', camina: [0, 0], x: 46, alto: 17, delante: true, reemplaza: 'pareja', sigue: true, ms: 1600 },   // …a las de ellos
-        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek2', img: 'rancek-paseo.webp', x: 84, alto: 17, delante: true, reemplaza: 'mago', sigue: true, ms: 1800 }
+        // Rancek sale de detrás del mostrador caminando y se pone delante
+        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek-c', actor: 'rancek-casual-anda', camina: [0, 1], cicloMs: 1000, x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ruta: [[0, 76], [1, 88]], ms: 2000, junto: true },
+        { ms: 700 },
+        { nombre: 'rancek-c', clase: 'tras-mostrador baja-delante', ms: 1300, pausa: 0 },
+        { nombre: 'rancek2', img: 'rancek-paseo.webp', x: 88, alto: 17, delante: true, reemplaza: 'rancek-c', sigue: true, ms: 1800 }
       ] }
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
@@ -491,16 +495,16 @@
     ] },
     ix: { carpeta: 'cap9/', hitos: [
       { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'En lo alto de la torre…', texto: 'vive un oráculo que guarda los colores y las canciones favoritas de quienes lo visitan.', pasos: [
-        { nombre: 'oraculo', img: 'oraculo.webp', x: 24, alto: 16, efecto: 'flota', clase: 'brilla', ms: 2200 },
+        { nombre: 'oraculo', actor: 'oraculo-anim', pj: false, x: 24, alto: 16, clase: 'brilla', bucle: [0, 1], cicloMs: 3000, ms: 2200 },
         { nombre: 'pergamino', img: 'pergamino.webp', x: 62, alto: 30, clase: 'pergamino-datos', ms: 1600 },
         { texto: { titulo: 'Lo que aprendió', texto: '' }, ms: 400, evento: 'oraculo-cartel' }
       ] }
     ] },
     x: { carpeta: 'cap10/', hitos: [
       { fondo: 'fondo-juegos.webp', suelo: 'suelo-juegos.webp', titulo: 'El salón de los juegos', texto: 'Toca una máquina para jugar.', pasos: [
-        { nombre: 'a1', img: 'arcade1.webp', x: 25, alto: 17, fila: 'medio', abre: 'bloques', rotulo: 'Bloques encantados', ms: 300, pausa: 200 },
-        { nombre: 'a2', img: 'arcade2.webp', x: 50, alto: 17, fila: 'medio', abre: 'gemas', rotulo: 'Jardín de gemas lunares', ms: 300, pausa: 200 },
-        { nombre: 'a3', img: 'arcade3.webp', x: 75, alto: 17, fila: 'medio', abre: 'estrellas', rotulo: 'Cielo de constelaciones', ms: 300 }
+        { nombre: 'a1', actor: 'arcade1-anim', pj: false, bucle: [0, 1], cicloMs: 3000, x: 25, alto: 17, fila: 'medio', abre: 'bloques', rotulo: 'Bloques encantados', ms: 300, pausa: 200 },
+        { nombre: 'a2', actor: 'arcade2-anim', pj: false, bucle: [0, 1], cicloMs: 3000, x: 50, alto: 17, fila: 'medio', abre: 'gemas', rotulo: 'Jardín de gemas lunares', ms: 300, pausa: 200 },
+        { nombre: 'a3', actor: 'arcade3-anim', pj: false, bucle: [0, 1], cicloMs: 3000, x: 75, alto: 17, fila: 'medio', abre: 'estrellas', rotulo: 'Cielo de constelaciones', ms: 300 }
       ] }
     ] },
     final: { carpeta: 'final/', hitos: [
