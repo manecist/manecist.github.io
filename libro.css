@@ -2016,8 +2016,8 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .fx-destello{aspect-ratio:1;background:radial-gradient(circle,#fff 0,#fff6fb 18%,rgba(255,190,230,.85) 32%,rgba(255,170,220,0) 62%),conic-gradient(from 0deg,transparent 0 10deg,rgba(255,255,255,.95) 12deg 16deg,transparent 18deg 55deg,rgba(255,220,240,.9) 57deg 61deg,transparent 63deg 100deg,rgba(255,255,255,.95) 102deg 106deg,transparent 108deg 145deg,rgba(255,220,240,.9) 147deg 151deg,transparent 153deg 190deg,rgba(255,255,255,.95) 192deg 196deg,transparent 198deg 235deg,rgba(255,220,240,.9) 237deg 241deg,transparent 243deg 280deg,rgba(255,255,255,.95) 282deg 286deg,transparent 288deg 325deg,rgba(255,220,240,.9) 327deg 331deg,transparent 333deg);border-radius:50%;filter:drop-shadow(0 0 10px #ffc2e6);animation:fx-destello var(--ms) ease-out forwards}
 @keyframes fx-destello{0%{scale:.1;opacity:0}25%{scale:1;opacity:1}100%{scale:1.45;opacity:0}}
 /* entrar por la puerta del castillo: se achica hacia adentro y desaparece */
-.hito-actor.adentro{transition:opacity .9s ease-in,filter .9s;opacity:0!important;filter:brightness(1.6) drop-shadow(0 0 14px #ffe7a8)}
-.hito-actor.adentro > *{animation:none!important;transition:transform .9s ease-in;transform:scale(.82) translateY(-4%)}
+.hito-actor.adentro{transition:opacity 1.2s ease-in .2s,filter 1.2s;opacity:0!important;filter:brightness(1.6) drop-shadow(0 0 14px #ffe7a8)}
+.hito-actor.adentro > *{animation:none!important;transition:transform 1.3s ease-in;transform:scale(.72) translateY(-7%)}
 
 /* el dragón llega sin fuego (el fuego de su dibujo queda oculto hasta que está frente a los monstruos) */
 .hito-actor.sin-fuego{clip-path:inset(-20% 44% -20% -20%)}
@@ -2026,3 +2026,10 @@ html.pantalla-corta .cielo-izq{left:-22vw}html.pantalla-corta .cielo-der{right:-
 .hito-actor.tras-mostrador{bottom:36.5%}
 .hito-actor.mostrador{bottom:32%}
 .hito-actor.sobre-mostrador{bottom:33%}
+
+/* la llamarada del dragón se desvanece en la punta en vez de cortarse en el borde del cuadro */
+.hito-actor.llama-suave > i{-webkit-mask:linear-gradient(to left,transparent 0,#000 24%);mask:linear-gradient(to left,transparent 0,#000 24%)}
+
+/* la vitrina en vivo: el sitio real de Magical Alliance dentro del cuadro colgante */
+.vitrina-viva{padding:0 6px 6px}
+.vitrina-viva iframe{display:block;width:100%;height:min(62vh,640px);border:4px solid #fff;border-radius:16px;background:#fff6fb;box-shadow:0 0 0 3px #f0bcd9}

@@ -353,18 +353,23 @@
     ] },
     v: { carpeta: 'cap5/', hitos: [
       { fondo: 'fondo-estudio.webp', suelo: 'suelo-estudio.webp', titulo: 'Un trazo de lápiz…', texto: 'dio vida a Ari, la asesina ágil de cintas rosadas.', pasos: [
-        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', linea: 'assets/personajes/ari-frente-lineart.webp', x: 40, alto: 16, ms: 4200, pausa: 400 },
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', linea: 'assets/personajes/coen-frente-lineart.webp', x: 60, alto: 17, ms: 4200,
+        // el hada dibuja y pinta a Ari y a Coen…
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', linea: 'assets/personajes/ari-frente-lineart.webp', x: 46, alto: 16, ms: 4200, pausa: 300 },
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', linea: 'assets/personajes/coen-frente-lineart.webp', x: 56, alto: 17, ms: 4200,
           texto: { titulo: '…y a Coen,', texto: 'el caballero de capa carmesí.' } },
-        { nombre: 'ari', mueve: 47, ms: 1500, junto: true, sigue: true },                              // se acercan el uno al otro…
-        { nombre: 'coen', mueve: 53, ms: 1500, pausa: 100 },
-        { nombre: 'pareja', actor: 'pareja', x: 50, alto: 17, reemplaza: ['ari', 'coen'], efecto: 'brilla', ms: 1800, bucle: [0, 1], cicloMs: 3000,
-          texto: { titulo: 'Línea a línea, color a color…', texto: 'se encontraron y se tomaron de la mano.' } },
-        { nombre: 'pareja', mueve: 27, ms: 1400, pausa: 100 },                                         // la pareja le hace espacio al logo
-        { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', x: 50, alto: 14, efecto: 'brilla', ms: 2600,
+        // …y se separan, uno hacia cada lado
+        { texto: { titulo: 'Línea a línea, color a color…', texto: 'se volvieron un equipo.' }, nombre: 'ari-c', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 46, alto: 16, clase: 'espejo', reemplaza: 'ari', sigue: true, ruta: [[0, 46], [1, 20]], ms: 2600, junto: true },
+        { nombre: 'coen-c', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 56, alto: 17, reemplaza: 'coen', sigue: true, ruta: [[0, 56], [1, 80]], ms: 2600, pausa: 0 },
+        { nombre: 'ari', img: 'assets/personajes/ari-frente.webp', x: 20, alto: 16, reemplaza: 'ari-c', sigue: true, rotulo: 'María Inés', ms: 100, pausa: 0 },
+        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 80, alto: 17, reemplaza: 'coen-c', sigue: true, rotulo: 'Kevin', ms: 300, pausa: 300 },
+        // al medio, el hada dibuja el logo de Studios Conari…
+        { nombre: 'logo', img: 'assets/logo-conari-circulo.webp', linea: 'assets/logo-conari-circulo-lineart.webp', x: 50, alto: 14, ms: 3600, pj: false,
           texto: { titulo: 'Y juntos fundamos Studios Conari', texto: 'Un estudio creativo chileno: narrativa, diseño, programación, datos y arte 3D.' } },
-        { nombre: 'pareja', actor: 'pareja', ms: 300, rotulo: 'María Inés · Kevin' },
-        { nombre: 'rancek', actor: 'rancek-saluda', x: 73, alto: 17, de: 0, a: 1, ms: 2400,
+        // …el logo se va y el estudio entero aparece de fondo
+        { quita: 'logo', fondo: 'fondo-conari.webp', ms: 1600 },
+        // en el lugar vacío del medio, el hada dibuja y pinta a Rancek
+        { nombre: 'rancek-d', img: 'assets/personajes/rancek-frente.webp', linea: 'assets/personajes/rancek-frente-lineart.webp', x: 50, alto: 17, ms: 3600, pausa: 0 },
+        { nombre: 'rancek', actor: 'rancek-saluda', x: 53.5, alto: 17, reemplaza: 'rancek-d', sigue: true, de: 0, a: 1, ms: 2400,
           rotulo: 'Elías · animación y arte 3D',
           texto: { titulo: '…y se unió al equipo un tercero', texto: 'María Inés (dirección creativa · Full Stack Java), Kevin (dirección técnica · videojuegos y datos) y Elías (animación y arte 3D).' } }
       ] }
@@ -378,10 +383,10 @@
         { nombre: 'luna', img: 'luna.webp', x: 89, alto: 7, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
         { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 50, alto: 34, fila: 'medio', ms: 300, pausa: 300 },
         { texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos.' }, ms: 300 },
-        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 66, alto: 5.5, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 73, alto: 5.5, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 80, alto: 5.5, delante: true, efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 87, alto: 5.5, delante: true, efecto: 'salta', ms: 150, pausa: 300 },
+        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 66, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 73, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 80, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
+        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 87, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 300 },
         // Ari llega corriendo, ataca a los cuatro con su daga y vuelve de un salto hacia atrás
         { texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', actor: 'ari-corre', camina: [0, 1], cicloMs: 700, x: -6, alto: 12.5, delante: true, entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
         { nombre: 'ari', actor: 'ari-ataca', x: 54, alto: 14, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
@@ -390,40 +395,44 @@
         // y vuelve con una voltereta hacia atrás
         { nombre: 'ari-vuelta', actor: 'ari-atras', x: 84, alto: 14, delante: true, reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 1700, pausa: 200,
           ruta: [[0, 84, 0], [.25, 81, 0], [.6, 52, 13], [.85, 32, 2], [1, 28, 0]] },
+        { nombre: 'ari-h', img: 'ari-heroica.webp', x: 28, alto: 12.5, delante: true, reemplaza: 'ari-vuelta', sigue: true, pj: true, ms: 200, pausa: 200 },   // queda en guardia, lista para más
         // Coen llega, salta al centro de los monstruos, los golpea con una onda de choque y vuelve a cubrir a Ari
-        { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: -6, alto: 13.3, delante: true, entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
-        { nombre: 'coen', actor: 'coen-golpe', x: 24, alto: 12.5, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 2400, suave: 'linear', pausa: 0,
+        { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: -6, alto: 14, delante: true, entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
+        { nombre: 'coen', actor: 'coen-golpe', x: 24, alto: 15.4, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 2400, suave: 'linear', pausa: 0,
           ruta: [[0, 24, 0], [.3, 40, 0], [.5, 56, 12], [.65, 64, 0], [1, 64, 0]], fx: { tipo: 'onda', x: 76, ancho: 38, ms: 1000, tras: 1000, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
-        { nombre: 'coen-v', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: 64, alto: 13.3, delante: true, clase: 'espejo', reemplaza: 'coen', sigue: true, ruta: [[0, 64], [1, 41]], ms: 1100, pausa: 0 },
-        { nombre: 'coen', img: 'assets/personajes/coen-lado.webp', x: 41, alto: 13.3, delante: true, clase: 'espejo', reemplaza: 'coen-v', sigue: true, ms: 200, pausa: 300 },
+        { nombre: 'coen-v', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: 64, alto: 14, delante: true, clase: 'espejo', reemplaza: 'coen', sigue: true, ruta: [[0, 64], [1, 41]], ms: 1100, pausa: 0 },
+        { nombre: 'coen', img: 'coen-heroico.webp', x: 41, alto: 13.3, delante: true, pj: true, reemplaza: 'coen-v', sigue: true, ms: 200, pausa: 300 },
         // Rancek llega volando sobre su báculo: círculo mágico bajo los monstruos y picos de hielo
         { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', actor: 'rancek-vuela', camina: [0, 1], cicloMs: 3000, bucle: [0, 1], x: -12, alto: 11.7, entra: true, ruta: [[0, -12, 20], [1, 10, 9]], ms: 1600, suave: 'ease-out', pausa: 0 },
         { fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
-        { nombre: 'rancek', ruta: [[0, 10, 9], [1, 10, 7]], ms: 700, suave: 'ease-in-out', pausa: 200 },
+        { nombre: 'rancek', ruta: [[0, 10, 9], [1, 12, 0]], ms: 800, suave: 'ease-in', pausa: 0 },
+        { nombre: 'rancek-h', img: 'rancek-heroico.webp', x: 13, alto: 13.6, delante: true, reemplaza: 'rancek', sigue: true, pj: true, ms: 200, pausa: 200 },
         // el dragón vuelve y les lanza su fuego
         { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'dragon', actor: 'dragon-vuela', camina: [0, 1], cicloMs: 700, x: -20, alto: 11, clase: 'vuela', entra: true, ruta: [[0, -20, 10], [1, 46, 3]], ms: 1800, suave: 'ease-out', pausa: 0 },
-        { nombre: 'fuego', actor: 'dragon-sopla', x: 46, alto: 11, clase: 'vuela', reemplaza: 'dragon', sigue: true, de: 0, a: 1, ms: 3000, pausa: 0, fx: { tipo: 'llamas', x: 76, ancho: 34, y: 1, ms: 1500, tras: 1000, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
+        { nombre: 'fuego', actor: 'dragon-sopla', x: 46, alto: 11, clase: 'vuela llama-suave', reemplaza: 'dragon', sigue: true, de: 0, a: 1, ms: 3000, pausa: 0, fx: { tipo: 'llamas', x: 76, ancho: 34, y: 1, ms: 1500, tras: 1000, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
         { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
         // la niebla se despeja: la montaña y el castillo lejano se pliegan y se levanta la fachada del castillo, a la escala de los héroes
         { quita: ['fuego', 'castillo', 'andes'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 700 },
         { nombre: 'fachada', actor: 'fachada', x: 50, ancho: 96, fila: 'atras', pj: false, ms: 900, pausa: 0 },
-        { nombre: 'rancek', ruta: [[0, 10, 7], [1, 12, 0]], ms: 700, suave: 'ease-in', pausa: 0 },
         // las puertas se abren…
         { nombre: 'fachada', de: 0, a: 1, ms: 1400, fx: { tipo: 'destello', x: 50, ancho: 14, y: 14, tras: 900, ms: 1200 }, pausa: 200 },
         // …y los tres caminan en fila hasta la puerta y entran uno tras otro: Coen, Ari y Rancek
         { nombre: 'pcoen', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 41, alto: 13.3, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 50]], ms: 1700, junto: true },
-        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 28, alto: 12.5, delante: true, reemplaza: 'ari-vuelta', sigue: true, ruta: [[0, 28], [1, 50]], ms: 3500, junto: true },
-        { nombre: 'prancek', actor: 'rancek-anda', camina: [0, 1], cicloMs: 1000, x: 12, alto: 13.3, delante: true, reemplaza: 'rancek', sigue: true, ruta: [[0, 12], [1, 50]], ms: 5300, junto: true },
+        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 28, alto: 12.5, delante: true, reemplaza: 'ari-h', sigue: true, ruta: [[0, 28], [1, 50]], ms: 3500, junto: true },
+        { nombre: 'prancek', actor: 'rancek-anda', camina: [0, 1], cicloMs: 1000, x: 12, alto: 13.3, delante: true, reemplaza: 'rancek-h', sigue: true, ruta: [[0, 12], [1, 50]], ms: 5300, junto: true },
         { ms: 1650 },
-        { nombre: 'pcoen', clase: 'adentro', ms: 1750, pausa: 0 },
-        { nombre: 'pari', clase: 'adentro', ms: 1750, pausa: 0 },
-        { nombre: 'prancek', clase: 'adentro', fx: { tipo: 'destello', x: 50, ancho: 16, y: 10, tras: 500, ms: 1200 }, ms: 1600, pausa: 600 }
+        { nombre: 'ecoen', img: 'assets/personajes/coen-espalda.webp', x: 50, alto: 13.3, delante: true, reemplaza: 'pcoen', sigue: true, ms: 350, pausa: 0 },   // de espaldas, mirando la puerta…
+        { nombre: 'ecoen', clase: 'adentro', ms: 1400, pausa: 0 },                                                                                     // …y entra
+        { nombre: 'eari', img: 'assets/personajes/ari-espalda.webp', x: 50, alto: 12.5, delante: true, reemplaza: 'pari', sigue: true, ms: 350, pausa: 0 },
+        { nombre: 'eari', clase: 'adentro', ms: 1400, pausa: 0 },
+        { nombre: 'erancek', img: 'assets/personajes/rancek-espalda.webp', x: 50, alto: 13.3, delante: true, reemplaza: 'prancek', sigue: true, ms: 350, pausa: 0 },
+        { nombre: 'erancek', clase: 'adentro', fx: { tipo: 'destello', x: 50, ancho: 16, y: 10, tras: 500, ms: 1200 }, ms: 1600, pausa: 600 }
       ] }
     ] },
     vi: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'La tienda mágica de Rancek', texto: 'Joyas, vestidos, perfumes y trajes encantados.', pasos: [
         // Rancek atiende de perfil detrás de su mesa; sobre la mesa, la registradora que después baja colgando
-        { nombre: 'mago', img: 'assets/personajes/rancek-lado.webp', x: 76, alto: 17, clase: 'tras-mostrador', ms: 500, pausa: 0 },
+        { nombre: 'mago', img: 'rancek-casual.webp', x: 76, alto: 17, clase: 'tras-mostrador', ms: 500, pausa: 0 },
         { nombre: 'mesa', img: 'mesa-perfil.webp', x: 66, alto: 19, clase: 'mostrador espejo', ms: 600, pausa: 300 },
         // Ari y Coen llegan de la mano, ya con la ropa con que saldrán a pasear
         { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a la tienda mágica de Rancek.' }, nombre: 'pareja-c', actor: 'pareja-anda', camina: [0, 1], cicloMs: 1100, x: -10, alto: 17, delante: true, entra: true, ruta: [[0, -10], [1, 46]], ms: 3600, pausa: 0 },
@@ -435,8 +444,10 @@
         { espera: 'tienda-boleta', cierraApp: true, ms: 900 },                                                                  // cuando se entrega la boleta…
         // …Rancek les entrega las bolsas y cierra la tienda para ir con ellos
         { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: [{ tipo: 'destello', x: 58, ancho: 10, y: 12, ms: 900 }, { tipo: 'destello', x: 50, ancho: 16, y: 6, ms: 1100, tras: 500 }], ms: 900, pausa: 0 },
-        { nombre: 'pareja-b', actor: 'paseo', camina: [0, 0], x: 46, alto: 17, delante: true, reemplaza: 'pareja', sigue: true, ms: 1600 },
-        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek2', img: 'rancek-paseo.webp', x: 84, alto: 17, delante: true, reemplaza: 'mago', sigue: true, efecto: 'brilla', fx: { tipo: 'destello', x: 84, ancho: 16, y: 6, ms: 1100 }, ms: 1800 }
+        { nombre: 'mago-e', actor: 'rancek-entrega', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0 },
+        { nombre: 'mago', img: 'rancek-casual.webp', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, ms: 0, pausa: 0 },   // las bolsas pasan de sus manos…
+        { nombre: 'pareja-b', actor: 'paseo', camina: [0, 0], x: 46, alto: 17, delante: true, reemplaza: 'pareja', sigue: true, ms: 1600 },   // …a las de ellos
+        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek2', img: 'rancek-paseo.webp', x: 84, alto: 17, delante: true, reemplaza: 'mago', sigue: true, ms: 1800 }
       ] }
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
@@ -450,7 +461,7 @@
         { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 19, fila: 'medio', efecto: 'brilla', ms: 1800,
           texto: { titulo: 'Magical Alliance', texto: 'Mi proyecto final Full Stack Java: roles, catálogo, carrito, cupones, pedidos, stock y panel de administración.' } },
         { nombre: 'ari', actor: 'ari-casual', x: 28, alto: 16, delante: true, de: 0, a: 1, ms: 2600, pausa: 300 },                       // Ari llega como clienta…
-        { nombre: 'coen', img: 'assets/personajes/coen-frente.webp', x: 76, alto: 17, delante: true, ms: 1200,
+        { nombre: 'coen', actor: 'coen-vii', x: 76, alto: 17, delante: true, de: 0, a: 1, ms: 3000,
           texto: { titulo: 'Clienta o administradora', texto: 'Llena el carrito y mira cómo cambia el stock.' } },                     // …y Coen la acompaña
         { nombre: 'ari', efecto: 'salta', ms: 1400 },
         { app: true, ms: 400 }
@@ -653,9 +664,11 @@
       if (quieto) { a.style.left = (p.x - a._ancho / 2) + '%'; fin(true); } else requestAnimationFrame(paso);
     });
     // imagen que se dibuja sola: primero la línea (de arriba hacia abajo) y luego el color
+    // el hada llega volando y, con su hechizo, dibuja la línea y después la pinta
     const dibujar = (a, ms, mia) => new Promise(fin => {
-      a.style.setProperty('--dur', ms + 'ms'); a.classList.add('dibuja'); a.classList.remove('por-dibujar');
-      luego(() => { a.classList.add('colorea'); luego(() => fin(mia === vuelta), ms * .5); }, ms * .65);
+      const trazar = () => { a.style.setProperty('--dur', ms + 'ms'); a.classList.add('dibuja'); a.classList.remove('por-dibujar'); luego(() => { a.classList.add('colorea'); luego(() => fin(mia === vuelta), ms * .5); }, ms * .65); };
+      if (!quieto && window.MCELibro?.hadaMagia && document.getElementById('libro')?.classList.contains('acostado')) { let hecho = false; const una = () => { if (!hecho) { hecho = true; trazar(); } }; MCELibro.hadaMagia(a, una); setTimeout(una, 6500); }
+      else trazar();
     });
     const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms));
     const suelo = src => { const capas = zona.querySelectorAll('.hitos-suelo i'), nueva = [...capas].find(c => !c.classList.contains('ver')) || capas[0]; nueva.style.backgroundImage = 'url("' + ruta(esc, src) + '")'; capas.forEach(c => c.classList.toggle('ver', c === nueva)); };
@@ -676,6 +689,8 @@
       if (H.suelo) suelo(H.suelo);
       if (!(await espera(900, mia))) return;
       for (const p of H.pasos) {
+        // cambia el fondo a mitad de la escena: el anterior se pliega y el nuevo se levanta
+        if (p.fondo && p.fondo !== fondoActual) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = p.fondo; const f = document.createElement('img'); f.src = ruta(esc, p.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .3); }
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
         if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
@@ -1072,7 +1087,7 @@
           const tab = document.createElement('button'); tab.type = 'button'; tab.className = 'app-pestana';
           const nom = el.dataset.app || 'la aplicación', verbo = el.dataset.verbo || 'Usar';
           const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ ' + verbo + ' ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
-          tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.add('mueve'); clearTimeout(o._mv); o._mv = setTimeout(() => o.classList.remove('mueve'), 1000); o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); });
+          tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.add('mueve'); clearTimeout(o._mv); o._mv = setTimeout(() => o.classList.remove('mueve'), 1000); o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); if (abrir) c.querySelectorAll('iframe[data-src]').forEach(f => { f.src = f.dataset.src; f.removeAttribute('data-src'); }); });
           c._rotular = rotular; rotular(); c.append(tab);
           // el cuadro entero (con su marco) se achica lo justo para caber entre el borde de arriba y la barra del libro
           const ajustarApp = () => {
@@ -1104,6 +1119,8 @@
     };
     window.addEventListener('cuento-levanta', () => { descolgar(); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('resize', () => teatro.querySelectorAll('.colgante-app').forEach(c => c._ajustar && c._ajustar()));
+    // la tienda en vivo se carga recién cuando su cuadro baja (no pesa mientras tanto)
+    window.addEventListener('cuento-app', () => setTimeout(() => document.querySelectorAll('.teatro-app .colgante-app:not(.arriba) .vitrina-viva iframe[data-src]').forEach(f => { f.src = f.dataset.src; f.removeAttribute('data-src'); }), 50));
     window.addEventListener('cuento-app', e => { const id = e.detail.abrir; teatro.querySelectorAll('.colgante-app').forEach(c => { c.classList.add('mueve'); clearTimeout(c._mv); c._mv = setTimeout(() => c.classList.remove('mueve'), 1000); const mia = id === true || (typeof id === 'string' && c.dataset.app === id); c.classList.toggle('arriba', !(id && mia)); c._rotular && c._rotular(); }); });
     window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
