@@ -539,7 +539,7 @@
     logros: { carpeta: 'logros/', hitos: [
       { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', titulo: 'Logro desbloqueado', texto: 'Junio de 2026: Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital.', pasos: [
         { nombre: 'ari', actor: 'medalla', x: 50, alto: 16, efecto: 'brilla', ms: 2800, bucle: [0, 1], cicloMs: 3000 },                       // Ari levanta su medalla en el podio
-        { nombre: 'ari', efecto: 'salta', ms: 2600, texto: { titulo: 'Y sigo aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
+        { nombre: 'ari', efecto: 'salta', ms: 2600, texto: { titulo: 'Y sigue aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
       ] },
       { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', titulo: 'ArianesDCoen', texto: 'Su canal de streaming con Coen: videojuegos, risas y una comunidad que los acompañaba.', pasos: [
         { nombre: 'streamers', actor: 'streamers-anim', x: 50, alto: 15.7, fila: 'medio', ms: 2400, bucle: [0, 1], cicloMs: 3000 },                                                  // Ari y Coen juegan en vivo
@@ -549,7 +549,7 @@
       ] }
     ] },
     cv: { carpeta: 'logros/', hitos: [
-      { fondo: 'fondo-mapa.webp', suelo: 'suelo-mapa.webp', titulo: 'El mapa de su camino', texto: 'Cada lugar de mi historia se levanta en el año en que llegué.', pasos: [
+      { fondo: 'fondo-mapa.webp', suelo: 'suelo-mapa.webp', titulo: 'El mapa de su camino', texto: 'Cada lugar de su historia se levanta en el año en que llegó.', pasos: [
         { nombre: 'lugarb1', img: 'assets/cuento/logros/lugarb1.webp', clase: 'rebote', x: 8, alto: 10, rotulo: '2018', ms: 2300, texto: { titulo: '2018 · Matrona · titulación con distinción', texto: 'Universidad San Sebastián, Concepción.' } },
         { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp', clase: 'rebote', x: 20, alto: 9, fila: 'medio', rotulo: '2019', ms: 2300, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
         { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', clase: 'rebote', x: 32, alto: 10, rotulo: '2019 – 2021', ms: 2300, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
