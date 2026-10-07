@@ -77,10 +77,21 @@
     return vs.sort((a, b) => puntos(b) - puntos(a))[0];
   }
   if (voz) { vozElegida = elegirVoz(); voz.addEventListener?.('voiceschanged', () => { vozElegida = elegirVoz(); }); }
-  function callar() { turno++; if (voz) voz.cancel(); $$('.voz-activa').forEach(n => n.classList.remove('voz-activa')); }
+  // voz neural chilena (Catalina, edge-tts): cada texto narrado tiene su mp3 pregenerado en assets/voz/<clave>.mp3
+  const limpiarVoz = t => (t || '').replace(/[«»✦✧♪♫♥]/g, '').replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim().replace(/^([A-ZÁÉÍÓÚÑ]) (?=[a-záéíóúñ])/, '$1');   // la letra capital no queda suelta
+  const claveVoz = t => { let h = 0x811c9dc5; const x = limpiarVoz(t).toLowerCase(); for (let i = 0; i < x.length; i++) { h ^= x.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); };
+  let audios = null, sonando = null, terminar = null;
+  const cargarAudios = () => audios || (audios = fetch('assets/voz/indice.json').then(r => r.ok ? r.json() : {}).catch(() => ({})));
+  cargarAudios();
+  function callar() { turno++; if (sonando) { sonando.pause(); sonando = null; } if (terminar) { const f = terminar; terminar = null; f(); } cola = Promise.resolve(); if (voz) voz.cancel(); $$('.voz-activa').forEach(n => n.classList.remove('voz-activa')); }
   function decir(texto, o = {}) {
-    return new Promise(fin => {
-      if (!voz || !texto) { fin(); return; }
+    return new Promise(async fin => {
+      if (!texto) { fin(); return; }
+      if (!o.voz) {
+        const idx = await cargarAudios(), k = claveVoz(texto);
+        if (idx[k]) { const a = new Audio('assets/voz/' + k + '.mp3'); sonando = a; let listo = false; const acaba = () => { if (listo) return; listo = true; if (sonando === a) sonando = null; if (terminar === acaba) terminar = null; fin(); }; terminar = acaba; a.onended = a.onerror = acaba; a.play().catch(acaba); return; }
+      }
+      if (!voz) { fin(); return; }
       const u = new SpeechSynthesisUtterance(texto.replace(/[«»✦✧♪♫♥]/g, '').replace(/\s+/g, ' ').trim());
       const v = o.voz || vozElegida || elegirVoz();
       if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'es-CL';
@@ -89,37 +100,40 @@
       voz.speak(u);
     });
   }
+  let cola = Promise.resolve();
+  const encolar = (t, antes, despues) => { const mio = turno; cola = cola.then(async () => { if (mio !== turno || !narrando) return; antes && antes(); await decir(t); despues && despues(); }); return cola; };
+  // lo que dice un cartel de escena al cambiar: el título (si cambió) y su texto
+  const vozCartel = (t, x) => [t, x].map(v => limpiarVoz(v)).filter(Boolean).reduce((a, b) => a ? a + (/[.…:!?¡¿,]$/.test(a) ? ' ' : '. ') + b : b, '');
+  // lo narrable de un pliego: primero lo que se escribe en el cielo (capítulo, título, cuento, características), luego lo que queda en las páginas
   function textosDe(pags) {
-    const nodos = [];
+    const nodos = [...document.querySelectorAll('.teatro-cielo.visible .cielo-bloque > *, .teatro-cielo.visible .cielo-lado li')];
     pags.forEach(p => p.querySelectorAll('.cap-num,.cap-titulo,.capitular,.cuento,.huellas li,.poderes li').forEach(n => {
-      if (n.closest('.ranura') || n.closest('[data-narracion-propia]') || n.offsetParent === null && !n.closest('.pagina')) return;
+      if (n.closest('.ranura') || n.closest('[data-narracion-propia]') || n.offsetParent === null || nodos.includes(n)) return;
       nodos.push(n);
     }));
     return nodos;
   }
   async function narrar(pags) {
-    callar(); if (!narrando || !voz) return;
+    callar(); if (!narrando) return;
     const mio = ++turno;
-    await new Promise(r => setTimeout(r, 650));
-    for (const n of textosDe(pags)) {
-      if (mio !== turno) return;
-      n.classList.add('voz-activa');
-      await decir(n.innerText);
-      n.classList.remove('voz-activa');
-    }
+    await new Promise(r => setTimeout(r, 900));
+    for (let i = 0; i < 12 && !document.querySelector('.teatro-cielo.visible') && mio === turno; i++) await new Promise(r => setTimeout(r, 150));
+    for (const n of textosDe(pags)) encolar(n.innerText, () => n.classList.add('voz-activa'), () => n.classList.remove('voz-activa'));
   }
   function pintarBotonVoz() {
     if (!btnVoz) return;
     btnVoz.setAttribute('aria-pressed', String(narrando));
     btnVoz.querySelector('b').textContent = narrando ? 'Narrador activo' : 'Narrador';
-    btnVoz.hidden = !voz;
+    btnVoz.hidden = false;
   }
   pintarBotonVoz();
   btnVoz?.addEventListener('click', () => {
     narrando = !narrando; guardar('mce-narrador', narrando ? 'si' : 'no'); pintarBotonVoz();
     if (narrando) narrar(window.MCELibro?.visibles?.() || []); else callar();
   });
-  window.MCENarrador = { decir, callar, get activo() { return narrando && !!voz; } };
+  // todos los textos que puede leer el narrador (para pregenerar la voz)
+  const todosLosTextos = () => { const out = new Set(); textosDe(window.MCELibro?.visibles?.() || []).forEach(n => out.add(limpiarVoz(n.innerText))); (window.MCEVida || []).forEach(t => out.add(limpiarVoz(t))); document.querySelectorAll('.vida-cabeza').forEach(n => out.add(limpiarVoz(n.innerText))); return [...out].filter(Boolean).map(t => ({ k: claveVoz(t), t })); };
+  window.MCENarrador = { decir, callar, encolar, vozCartel, textos: () => [...todosLosTextos(), ...(window.MCETextosEscenas ? window.MCETextosEscenas() : []).map(t => ({ k: claveVoz(t), t: limpiarVoz(t) }))], get activo() { return narrando; } };
 
   /* ------------------------------------------------------------ escenas */
   document.querySelectorAll('.pagina-pop[data-suelo]').forEach(p => p.style.setProperty('--suelo', 'url("' + p.dataset.suelo + '")'));
@@ -164,7 +178,7 @@
         if (i === 0) for (let k = 0; k < 6; k++) setTimeout(() => Magia.chispas(r.left + r.width * (.2 + k * .12), r.bottom - 30, { n: 12, vel: 3, subir: 2 }), k * 120);
         if (i === 3) [...el.querySelectorAll('.pp-monstruos .mo')].forEach((m, k) => setTimeout(() => { const q = m.getBoundingClientRect(); if (q.width) Magia.chispas(q.left + q.width / 2, q.top + q.height / 2, { n: 16, colores: ['#91dcff', '#d9b8ff', '#fff'] }); }, 400 + k * 260));
       }
-      if (window.MCENarrador.activo) { if (i === 0) callar(); await decir(p.innerText); }
+      if (window.MCENarrador.activo) { if (i === 0) callar(); await encolar(p.innerText); }
     }, tiempos[i]));
     luego(() => el.classList.add('fin'), 26500);
   });
@@ -228,6 +242,7 @@
     ['etapa-12', 'Hoy', 'Ilustradora con su tableta rosada.'],
     ['etapa-15', 'Hoy · 32 años', 'Ari: fundadora de Studios Conari. ¡Y la historia sigue!']
   ];
+  window.MCEVida = VIDA.map(v => v[1] + '. ' + v[2]);   // lo que narra cada etapa (para pregenerar la voz)
   // cada etapa camina de verdad: una tira con un ciclo completo de caminata (sacado de video)
   const tiraDe = s => 'assets/cuento/caminata/' + s + '.webp';
   // ciclo de caminata completo en 2 s (paso tranquilo); cada cuadro se funde brevemente con el siguiente.
@@ -310,7 +325,7 @@
       edad.textContent = VIDA[n][1]; txt.textContent = VIDA[n][2];
       el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
       if (window.Magia) { const r = andante.getBoundingClientRect(); if (r.width) Magia.chispas(r.left + r.width / 2, r.top + r.height * .45, { n: 22, vel: 3, colores: ['#ff8fc0', '#ffd9ea', '#c9a6ff', '#f3d48a', '#fff'] }); }
-      if (hablar && window.MCENarrador.activo) await decir(VIDA[n][1] + '. ' + VIDA[n][2]);
+      if (hablar && window.MCENarrador.activo) await encolar(VIDA[n][1] + '. ' + VIDA[n][2]);
     };
     const avanzar = async () => {
       if (pausa || !document.body.contains(el)) return;
@@ -322,7 +337,7 @@
       luego(avanzar, Math.max(0, TRAMO - (performance.now() - inicio)));
     };
     el.classList.remove('llego'); play.textContent = '❚❚'; k = -1;
-    mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); decir(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 5200); });
+    mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); encolar(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 5200); });
     play.onclick = () => {
       if (el.classList.contains('llego')) { el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); andar(el); luego(avanzar, 1200); return; }
       pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir caminando' : 'Pausar la caminata');
@@ -573,6 +588,15 @@
     if (h.fondo) new Image().src = ruta(esc, h.fondo); new Image().src = ruta(esc, h.suelo);
     h.pasos.forEach(p => { if (p.actor) { hojaDe(ruta(esc, p.actor + '.webp')); new Image().src = ruta(esc, p.actor + '.webp'); } else if (p.img) new Image().src = ruta(esc, p.img); });
   }, i * 700));
+  window.MCETextosEscenas = () => {
+    const v = window.MCENarrador.vozCartel, out = [];
+    Object.values(ESCENARIOS).forEach(esc => esc.hitos.forEach((H, n) => {
+      if (esc.textos === 'huellas') document.querySelectorAll('.huellas > li').forEach(li => out.push(v(li.querySelector('b')?.textContent, li.querySelector('span')?.textContent)));
+      if (H.titulo != null || H.texto != null) out.push(v(H.titulo, H.texto));
+      H.pasos.forEach(p => { if (p.texto) out.push(v(p.texto.titulo, p.texto.texto)); });
+    }));
+    return out.filter(Boolean);
+  };
   window.MCEFondoInicial = pag => {
     const h = pag.querySelector('[data-hitos]');
     if (h) { const esc = ESCENARIOS[h.dataset.hitos || 'iii']; const H = esc && esc.hitos[0]; return H && H.fondo ? { src: ruta(esc, H.fondo), clase: 'hito-pop hito-fondo', contenedor: '.hitos-escena' } : null; }
@@ -687,6 +711,7 @@
     const cartel = (n, H) => {
       const li = lis[n], t = H.titulo ?? (li ? li.querySelector('b').textContent : ''), x = H.texto ?? (li ? li.querySelector('span').textContent : '');
       if (titulo) titulo.textContent = t; if (texto) texto.textContent = x;
+      if (window.MCENarrador?.activo) { const dicho = MCENarrador.vozCartel(t, x); setTimeout(() => MCENarrador.encolar(dicho), 1600); }   // después del texto del capítulo
       if (num) num.textContent = (n + 1) + ' / ' + total;
     };
     const mostrar = async n => {
@@ -704,7 +729,7 @@
         // cambia el fondo a mitad de la escena: el anterior se pliega y el nuevo se levanta
         if (p.fondo && p.fondo !== fondoActual) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = p.fondo; const f = document.createElement('img'); f.src = ruta(esc, p.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .3); }
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
-        if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; }
+        if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; if (window.MCENarrador?.activo) MCENarrador.encolar(MCENarrador.vozCartel(p.texto.titulo, p.texto.texto)); }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
         if (p.cierraApp) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: false } }));
         // espera a que pase algo afuera del cuento (por ejemplo, que se entregue la boleta en la caja)
