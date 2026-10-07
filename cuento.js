@@ -78,7 +78,7 @@
   }
   if (voz) { vozElegida = elegirVoz(); voz.addEventListener?.('voiceschanged', () => { vozElegida = elegirVoz(); }); }
   // voz neural chilena (Catalina, edge-tts): cada texto narrado tiene su mp3 pregenerado en assets/voz/<clave>.mp3
-  const limpiarVoz = t => (t || '').replace(/[«»✦✧♪♫♥]/g, '').replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim().replace(/^([A-ZÁÉÍÓÚÑ]) (?=[a-záéíóúñ])/, '$1');   // la letra capital no queda suelta
+  const limpiarVoz = t => (t || '').replace(/[«»✦✧♪♫♥]/g, '').replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim();
   const claveVoz = t => { let h = 0x811c9dc5; const x = limpiarVoz(t).toLowerCase(); for (let i = 0; i < x.length; i++) { h ^= x.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); };
   let audios = null, sonando = null, terminar = null;
   const cargarAudios = () => audios || (audios = fetch('assets/voz/indice.json').then(r => r.ok ? r.json() : {}).catch(() => ({})));
@@ -106,6 +106,9 @@
   const pausa = ms => { const mio = turno; cola = cola.then(() => mio === turno && narrando ? new Promise(r => setTimeout(r, ms)) : null); };
   // un nodo narrable se dice en partes: en las características, el título, una pausa y la descripción
   const partesDe = n => n.matches('li') && n.querySelector(':scope > b') ? [n.querySelector(':scope > b').innerText, (n.querySelector('.corto') || n.querySelector('small'))?.innerText].filter(Boolean) : [n.innerText];
+  // todo el texto de un pliego como un relato: capítulo, título y párrafos unidos con puntuación natural
+  const unir = partes => partes.map(v => limpiarVoz(v)).filter(Boolean).reduce((a, b) => a ? a + (/[.…:!?¡¿,]$/.test(a) ? ' ' : '. ') + b : b, '');
+  const textoPliego = pags => unir(textosDe(pags).map(n => n.textContent));   // el texto original (sin mayúsculas de estilo ni letras separadas)
   const vozCartel = (t, x) => [t, x].map(v => limpiarVoz(v)).filter(Boolean).reduce((a, b) => a ? a + (/[.…:!?¡¿,]$/.test(a) ? ' ' : '. ') + b : b, '');
   // lo narrable de un pliego: primero lo que se escribe en el cielo (capítulo, título, cuento, características), luego lo que queda en las páginas
   function textosDe(pags) {
@@ -121,12 +124,8 @@
     const mio = ++turno;
     await new Promise(r => setTimeout(r, 900));
     for (let i = 0; i < 12 && !document.querySelector('.teatro-cielo.visible') && mio === turno; i++) await new Promise(r => setTimeout(r, 150));
-    for (const n of textosDe(pags)) {
-      if (n.closest('.cielo-lado')) { const mio2 = turno; cola = cola.then(async () => { const c = n.closest('.teatro-cielo'), llega = (+c.dataset.t0 || 0) + parseFloat(getComputedStyle(n).getPropertyValue('--base') || 0) * 1000 + 700; while (mio2 === turno && narrando && Date.now() < llega) await new Promise(r => setTimeout(r, 120)); }); }
-      const partes = partesDe(n);
-      partes.forEach((t, i) => { if (i) pausa(380); encolar(t, i === 0 ? () => n.classList.add('voz-activa') : null, i === partes.length - 1 ? () => n.classList.remove('voz-activa') : null); });
-      if (partes.length > 1) pausa(250);
-    }
+    const nodos = textosDe(pags), relato = textoPliego(pags);
+    if (relato) encolar(relato, () => nodos.forEach(n => n.classList.add('voz-activa')), () => nodos.forEach(n => n.classList.remove('voz-activa')));
   }
   function pintarBotonVoz() {
     if (!btnVoz) return;
@@ -140,7 +139,7 @@
     if (narrando) narrar(window.MCELibro?.visibles?.() || []); else callar();
   });
   // todos los textos que puede leer el narrador (para pregenerar la voz)
-  const todosLosTextos = () => { const out = new Set(); textosDe(window.MCELibro?.visibles?.() || []).forEach(n => partesDe(n).forEach(t => out.add(limpiarVoz(t)))); (window.MCEVida || []).forEach(t => out.add(limpiarVoz(t))); document.querySelectorAll('.vida-cabeza').forEach(n => out.add(limpiarVoz(n.innerText))); return [...out].filter(Boolean).map(t => ({ k: claveVoz(t), t })); };
+  const todosLosTextos = () => { const out = new Set(); { const t = textoPliego(window.MCELibro?.visibles?.() || []); if (t) out.add(t); } (window.MCEVida || []).forEach(t => out.add(limpiarVoz(t))); document.querySelectorAll('.vida-cabeza').forEach(n => out.add(limpiarVoz(n.innerText))); return [...out].filter(Boolean).map(t => ({ k: claveVoz(t), t })); };
   window.MCENarrador = { decir, callar, encolar, vozCartel, textos: () => [...todosLosTextos(), ...(window.MCETextosEscenas ? window.MCETextosEscenas() : []).map(t => ({ k: claveVoz(t), t: limpiarVoz(t) }))], get activo() { return narrando; } };
 
   /* ------------------------------------------------------------ escenas */
