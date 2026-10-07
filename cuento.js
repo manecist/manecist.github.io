@@ -238,17 +238,17 @@
   // II · la vida caminando: la monita avanza por el pliego y se transforma
   const VIDA = [
     ['etapa-01', '4–6 años', 'Una niña princesa de rulos color miel y lentes gigantes de poto de botella.'],
-    ['etapa-02', '8–10 años', 'Dibujaba en cada cuaderno que encontraba.'],
-    ['etapa-03', '12–14 años', 'Descubrió los videojuegos… siempre en el PC.'],
-    ['etapa-04', '15–18 años', 'Gamer de PC, pelo largo y liso, audífonos de gatito.'],
-    ['etapa-05', '20–22 años', 'Matrona: balayage y uniforme rojo de puntitos.'],
-    ['etapa-06', '23–25 años', 'Platinada, enseñando clínica a sus alumnas.'],
-    ['etapa-07', '26–28 años', 'Puntas fucsia y uniforme de estrellas.'],
-    ['etapa-09', '29 años', 'Programadora de noches largas en Java.'],
-    ['etapa-10', '30 años', 'Streamer en ArianesDCoen junto a Coen.'],
-    ['etapa-11', '31 años', 'Creadora de mundos: vuelven sus ondas naturales.'],
-    ['etapa-12', 'Hoy', 'Ilustradora con su tableta rosada.'],
-    ['etapa-15', 'Hoy · 32 años', 'Ari: fundadora de Studios Conari. ¡Y la historia sigue!']
+    ['etapa-02', '8–10 años', 'Dibujaba en cada cuaderno que encontraba, inspirada por el anime.'],
+    ['etapa-03', '12–18 años', 'Descubrió los videojuegos, siempre en el PC.'],
+    ['etapa-08', '19–25 años', 'Estudiando Obstetricia en la USS Concepción.'],
+    ['etapa-06', '25–27 años', 'Enseñando clínica a sus alumnas.'],
+    ['etapa-07', '27–29 años', 'Trabajando en la clínica ginecológica móvil.'],
+    ['etapa-13', '30 años', 'Educando a niños en la Academia Aliwen.'],
+    ['etapa-09', '31–32 años', 'Programadora Full Stack Java.'],
+    ['etapa-10', '31–32 años', 'Streamer en ArianesDCoen junto a Coen.'],
+    ['etapa-11', '32 años', 'Al fin creando sus propios mundos.'],
+    ['etapa-12', '32 años', 'Ilustradora 2D y 3D.'],
+    ['etapa-15', 'Hoy', 'Fundadora de Studios Conari. ¡Y la historia sigue!']
   ];
   window.MCEVida = VIDA.map(v => v[1] + '. ' + v[2]);   // lo que narra cada etapa (para pregenerar la voz)
   // cada etapa camina de verdad: una tira con un ciclo completo de caminata (sacado de video)
@@ -282,7 +282,7 @@
   VIDA.forEach(([s]) => { const i = new Image(); i.onload = () => { cuadrosDe[s] = Math.max(1, Math.round(i.naturalWidth / (i.naturalHeight * .8))); }; i.src = tiraDe(s); });
   const AMB = n => 'assets/cuento/cap2/' + n + '.webp';
   // ambiente de cada etapa: g01..g11 (fondo = gNN-fondo, objetos = gNN-1..3)
-  const GRUPO = ['g01', 'g02', 'g03', 'g04', 'g05', 'g05e', 'g05f', 'g07b', 'g08', 'g09', 'g10', 'g11'];
+  const GRUPO = ['g01', 'g02', 'g03', 'g05', 'g05e', 'g05f', 'g02', 'g07b', 'g08', 'g09', 'g10', 'g11'];   // ambiente de cada etapa (Aliwen en la sala de clases)
   // ambientes al aire libre: ahí sí va el pasto delante
   const AFUERA = ['g05f', 'g09', 'g11'];
   // al salir del capítulo II el piso vuelve al de la primera etapa (para la próxima vez que se gire hacia él)
@@ -365,7 +365,7 @@
         { actor: 'cama', x: 34, alto: 15, de: 0, a: 1, ms: 4500 },                                         // a la izquierda: programa en la cama… y se duerme
         { texto: { titulo: 'z z z…', texto: 'Se quedó dormida estudiando.' }, ms: 900 },
         { actor: 'coen', camina: [0, 1], desde: 92, x: 47, alto: 16, ms: 3800, delante: true, pausa: 0,
-          texto: { titulo: 'Y cada mañana…', texto: 'Coen llegaba con un café.' } },                        // Coen llega caminando con el café
+          texto: { titulo: 'Y cada vez que casi no podía más…', texto: 'Coen llegaba con un café.' } },                        // Coen llega caminando con el café
         { actor: 'coen', de: 1, a: 2, ms: 450, pausa: 0, sigue: true },                                      // sin detenerse, le extiende la taza
         { actor: 'cama', de: 1, a: 2, ms: 3500, junto: true, sigue: true, texto: { titulo: '«Despierta, que vas a lograrlo» ☕', texto: '' } },   // ella despierta y se estira mientras él sostiene el café…
         { actor: 'coen', de: 2, a: 3, ms: 2700, pausa: 0, sigue: true },
@@ -563,6 +563,16 @@
       ] }
     ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
+      { fondo: 'fondo-biblioteca.webp', suelo: 'suelo-biblioteca.webp', pasos: [
+        { actor: 'tes', x: 27, alto: 15, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
+        { actor: 'par', x: 72, alto: 13, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
+      ] },
+      { fondo: 'fondo-familia.webp', suelo: 'suelo-familia.webp', pasos: [
+        { actor: 'ccc', x: 64, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
+      ] },
+      { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
+        { actor: 'ssm', x: 40, alto: 16, de: 0, a: 1, ms: 4500 }                      // la matrona las atiende y se despide desde su lugar; ellas se van al camión
+      ] },
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, alto: 16, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
         { actor: 'muro', x: 74, alto: 17, de: 0, a: 1, ms: 3500, quita: 'disp' },    // a la derecha: lo instala en el muro
@@ -573,18 +583,17 @@
       { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
         { actor: 'edu', x: 28, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
       ] },
-      { fondo: 'fondo-biblioteca.webp', suelo: 'suelo-biblioteca.webp', pasos: [
-        { actor: 'tes', x: 27, alto: 15, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
-        { actor: 'par', x: 72, alto: 13, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
-      ] },
       { fondo: 'fondo-box.webp', suelo: 'suelo-box.webp', pasos: [
         { actor: 'pla', x: 44, alto: 15, de: 0, a: 1, ms: 4500 }                      // los papeles se vuelven planilla
       ] },
-      { fondo: 'fondo-familia.webp', suelo: 'suelo-familia.webp', pasos: [
-        { actor: 'ccc', x: 64, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
+      { fondo: 'fondo-aula.webp', suelo: 'assets/cuento/cap2/g02-suelo.webp', pasos: [
+        { nombre: 'profe', img: 'ari-profe.webp', x: 46, alto: 17, pj: true, efecto: 'brilla', ms: 2600 }      // enseña a los niños de básica
       ] },
-      { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
-        { actor: 'ssm', x: 40, alto: 16, de: 0, a: 1, ms: 4500 }                      // la matrona las atiende y se despide desde su lugar; ellas se van al camión
+      { fondo: 'fondo-taller3d.webp', suelo: 'suelo-box.webp', pasos: [
+        { nombre: 'f1', img: 'foto3d-stitch.webp', x: 20, alto: 12, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
+        { nombre: 'f2', img: 'foto3d-pokemon.webp', x: 34, alto: 12, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
+        { nombre: 'f3', img: 'foto3d-bob.webp', x: 66, alto: 12, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
+        { nombre: 'ari3d', img: 'ari-impresora.webp', x: 50, alto: 16, pj: true, efecto: 'brilla', ms: 2600 }   // muestra su figura impresa y pintada a mano
       ] }
     ] },
   };
@@ -596,6 +605,7 @@
     if (h.fondo) new Image().src = ruta(esc, h.fondo); new Image().src = ruta(esc, h.suelo);
     h.pasos.forEach(p => { if (p.actor) { hojaDe(ruta(esc, p.actor + '.webp')); new Image().src = ruta(esc, p.actor + '.webp'); } else if (p.img) new Image().src = ruta(esc, p.img); });
   }, i * 700));
+  window.MCECarteles = k => { const esc = ESCENARIOS[k]; if (!esc) return []; const out = []; const v = (t, x) => [t, x].filter(Boolean).join(' — '); esc.hitos.forEach(H => { if (H.titulo != null || H.texto != null) out.push(v(H.titulo, H.texto)); H.pasos.forEach(p => { if (p.texto) out.push(v(p.texto.titulo, p.texto.texto)); }); }); return out; };
   window.MCETextosEscenas = () => {
     const v = window.MCENarrador.vozCartel, out = [];
     Object.values(ESCENARIOS).forEach(esc => esc.hitos.forEach((H, n) => {
