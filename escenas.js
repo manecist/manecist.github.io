@@ -37,6 +37,14 @@
   const lado = (tl, x, d, pos, o = {}) => tl.from(x, { opacity: 0, x: d * 60, duration: .6, stagger: .12, ease: 'power2.out', ...o }, pos);
   const crece = (tl, x, pos, o = {}) => tl.from(x, { opacity: 0, scale: .94, duration: .5, stagger: .07, ease: 'power2.out', ...o }, pos);
 
+  // marcos de papel ilustrado, los mismos de las aplicaciones del libro (marco, letra manuscrita y colores del cuento)
+  const div = (clase, ...hijos) => { const d = document.createElement('div'); if (clase) d.className = clase; hijos.flat().filter(Boolean).forEach(h => d.append(h)); return d; };
+  const papel = (clase, ...hijos) => div('colgante-app colgar-app papel-app ' + clase, ...hijos);
+  const nota = html => { const p = document.createElement('p'); p.className = 'cuento nota app-nota'; p.innerHTML = html; return p; };
+  const pasoCaja = (n, t) => { const p = document.createElement('p'); p.className = 'caja-paso'; p.innerHTML = '<span>' + n + '</span>' + t; return p; };
+  const ranura = el => div('ranura', el);
+  const pestanas = nombres => div('papel-pestanas', nombres.map(t => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; return b; }));
+
   const E = [];
   // ---------------------------------------------------------- 1. inicio
   const inicio = $('#inicio');
@@ -68,13 +76,23 @@
     },
   });
 
-  // ---------------------------------------------------------- 5. desarrollo: un proyecto por paso (las mismas pestañas)
-  const dev = '#desarrollo', tabsDev = $$('.dev-tab', $(dev)), panelesDev = $$('.dev-panel', $(dev));
+  // ---------------------------------------------------------- 5. desarrollo: un proyecto por paso, cada uno en su marco de papel
+  const dev = '#desarrollo';
+  const vitrina = document.createElement('iframe'); vitrina.title = 'Magical Alliance, la tienda en vivo'; vitrina.loading = 'lazy'; vitrina.allow = 'clipboard-write';
+  vitrina.dataset.src = 'https://manecist.github.io/Ecommerce-Portafolio-Final-M7/#/inicio';
+  const marcosDev = [
+    papel('app-calc', nota('Mi primer conjuro en Java fue una calculadora. Pulsa las teclas: al lado se escribe el mismo cálculo en Java.'), div('app-doble', $('#calc-zona'), $('#calc-java'))),
+    papel('app-caja app-tres', nota('Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.'),
+      div('app-doble', div('', pasoCaja(1, 'Elige productos y descuento'), $('#m4-picker')), div('', pasoCaja(2, 'Revisa el recibo y paga'), $('#m4-recibo')), div('', pasoCaja(3, 'Cobra en la caja'), $('#caja')))),
+    papel('app-vitrina', nota('<b>Magical Alliance</b>, mi proyecto final Full Stack Java, aquí mismo: recórrela como clienta o como administradora, llena el carrito y mira cómo cambia el stock.'), div('vitrina-viva', vitrina), $('#dev-m7 .botonera')),
+  ];
+  const botonesDev = pestanas(['Calculadora Java', 'Tienda Java · M4', 'Magical Alliance · M7']);
   E.push({
-    id: 'desarrollo', hada: 'Desarrollo', ev: crear('ev-desarrollo', cabeza(dev), de('.dev-tabs', dev), panelesDev),
-    pasos: tabsDev.length, tabs: tabsDev,
-    entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, tabsDev, '-=.2', { duration: .35, stagger: .06 }); this.paso(tl, 0, 1, true); },
-    paso(tl, i, dir, primero) { pasarPestana(tl, this, i, dir, primero, panelesDev); },
+    id: 'desarrollo', hada: 'Desarrollo', ev: crear('ev-desarrollo', cabeza(dev), botonesDev, div('papel-marcos', marcosDev)),
+    pasos: marcosDev.length, marcos: marcosDev, botones: [...botonesDev.children],
+    alMostrar(i) { if (i === 2 && vitrina.dataset.src) { vitrina.src = vitrina.dataset.src; vitrina.removeAttribute('data-src'); } },   // la tienda en vivo carga recién al verla
+    entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, this.botones, '-=.2', { duration: .35, stagger: .06 }); this.paso(tl, 0, 1, true); },
+    paso(tl, i, dir, primero) { cambiarMarco(tl, this, i, dir, primero); },
   });
 
   // ---------------------------------------------------------- 6-8. diseño e ilustración
@@ -137,13 +155,37 @@
     entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, $$('.credential-gallery article', ev), '-=.2', { stagger: .1 }); sube(tl, $('.cv-cta', ev), '-=.1'); },
   });
 
-  // ---------------------------------------------------------- 13. arcade: un juego por paso
-  const arc = '#arcade', tabsJ = $$('.game-tab', $(arc)), panelesJ = $$('.game-panel', $(arc));
+  // ---------------------------------------------------------- 13. arcade: el salón de los juegos con sus máquinas
+  const arc = '#arcade';
+  const acciones = () => div('juego-acciones', ...[['btn juego-salon', '← Volver al salón'], ['btn juego-empezar', '▶ Jugar'], ['btn juego-volver', '← Ver instrucciones']].map(([c, t]) => { const b = document.createElement('button'); b.type = 'button'; b.className = c; b.textContent = t; return b; }));
+  const portada = document.createElement('img'); portada.className = 'arcade-portada'; portada.src = 'assets/cuento/cap10/arcade-bloques.webp'; portada.alt = '';
+  $('#game-tetris')?.classList.add('active');
+  const juegos = {
+    bloques: papel('app-juego app-bloques', acciones(), portada, ranura($('#game-tetris'))),
+    gemas: papel('app-juego app-gemas', acciones(), div('app-doble', div('arcade-dibujo', ranura($('#match-grid'))), div('juego-papel', ranura($('#gema-intro')), ranura($('#gema-guia')), ranura($('#gema-lado'))))),
+    estrellas: papel('app-juego app-estrellas', acciones(), div('app-doble', div('arcade-dibujo', ranura($('#constellation-board'))), div('juego-papel', ranura($('#estrellas-intro')), ranura($('#estrellas-lado')), ranura($('#estrellas-leccion'))))),
+  };
+  const MAQUINAS = [['bloques', 'arcade1-anim', 'Bloques encantados'], ['gemas', 'arcade2-anim', 'Jardín de gemas lunares'], ['estrellas', 'arcade3-anim', 'Cielo de constelaciones']];
+  const salon = div('salon-arcade', MAQUINAS.map(([id, hoja, nombre]) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'maquina'; b.dataset.juego = id; b.setAttribute('aria-label', 'Jugar ' + nombre);
+    b.innerHTML = '<span class="maquina-spr" style="background-image:url(assets/cuento/cap10/' + hoja + '.webp)"></span><span class="maquina-rotulo">' + nombre + '</span>';
+    return b;
+  }));
+  // las máquinas se mueven con su animación (hoja de 37 cuadros en 8 columnas)
+  let cuadroMaq = 0;
+  setInterval(() => { if (E[actual]?.id !== 'arcade' || salon.hidden) return; cuadroMaq = (cuadroMaq + 1) % 37; $$('.maquina-spr', salon).forEach((m, k) => { const c = (cuadroMaq + k * 9) % 37; m.style.backgroundPosition = (c % 8) / 7 * 100 + '% ' + Math.floor(c / 8) / 4 * 100 + '%'; }); }, 85);
+  const sala = div('papel-marcos sala-juegos', Object.values(juegos));
+  const abrirJuego = id => {
+    salon.hidden = !!id; sala.classList.toggle('abierta', !!id);
+    Object.entries(juegos).forEach(([k, j]) => j.classList.toggle('activo', k === id));
+    if (id && window.Magia) { const r = sala.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + 60, { n: 30, vel: 4 }); }
+    requestAnimationFrame(() => ajustar(E[actual]));
+  };
+  salon.addEventListener('click', e => { const m = e.target.closest('.maquina'); if (m) abrirJuego(m.dataset.juego); });
+  sala.addEventListener('click', e => { if (e.target.closest('.juego-salon')) { e.target.closest('.colgar-app').classList.remove('jugando'); abrirJuego(null); } });
   E.push({
-    id: 'arcade', hada: 'Arcade mágico', ev: crear('ev-arcade', cabeza(arc), $('#arcade-zona')),
-    pasos: tabsJ.length, tabs: tabsJ,
-    entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, tabsJ, '-=.2', { duration: .35, stagger: .06 }); this.paso(tl, 0, 1, true); },
-    paso(tl, i, dir, primero) { pasarPestana(tl, this, i, dir, primero, panelesJ); },
+    id: 'arcade', hada: 'Arcade mágico', ev: crear('ev-arcade', cabeza(arc), salon, sala),
+    entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); if (!salon.hidden) sube(tl, $$('.maquina', ev), '-=.2', { stagger: .14, y: 40 }); else sube(tl, sala, '-=.2'); },
   });
 
   // ---------------------------------------------------------- 14. contacto
@@ -157,23 +199,21 @@
     },
   });
 
-  // las pestañas (desarrollo y juegos) se cambian con un fundido y un leve deslizamiento
-  function pasarPestana(tl, e, i, dir, primero, paneles) {
-    const tab = e.tabs[i], nuevo = paneles[i], viejo = paneles.find(p => p.classList.contains('active') && p !== nuevo);
-    const activar = () => { if (!tab.classList.contains('active')) { sincronizando = true; tab.click(); sincronizando = false; } };
-    if (primero || !viejo) { tl.call(activar); sube(tl, nuevo, '-=.1', { duration: .6 }); return; }
+  // los marcos de un paso a otro se cambian con un fundido y un leve deslizamiento
+  function marcar(e, i) {
+    e.marcos.forEach((m, k) => m.classList.toggle('activo', k === i));
+    e.botones?.forEach((b, k) => b.classList.toggle('activo', k === i));
+    e.alMostrar && e.alMostrar(i);
+  }
+  function cambiarMarco(tl, e, i, dir, primero) {
+    const nuevo = e.marcos[i], viejo = e.marcos.find(m => m.classList.contains('activo') && m !== nuevo);
+    if (primero || !viejo) { tl.call(() => { marcar(e, i); ajustar(e); }); sube(tl, nuevo, '-=.1', { duration: .6 }); return; }
     tl.to(viejo, { opacity: 0, x: -dir * 40, duration: .3, ease: 'power2.in' })
       .set(viejo, { clearProps: 'transform,opacity' })
-      .call(activar)
-      .fromTo(nuevo, { opacity: 0, x: dir * 40 }, { opacity: 1, x: 0, duration: .45, ease: 'power2.out' })
-      .call(() => ajustar(e));
+      .call(() => { marcar(e, i); ajustar(e); })
+      .fromTo(nuevo, { opacity: 0, x: dir * 40 }, { opacity: 1, x: 0, duration: .45, ease: 'power2.out' });
   }
-  // si se elige una pestaña con el mouse, la escena sabe en qué paso quedó
-  let sincronizando = false;
-  E.filter(e => e.tabs).forEach(e => e.tabs.forEach((t, k) => t.addEventListener('click', () => {
-    if (sincronizando || E[actual] !== e) return;
-    paso = k; requestAnimationFrame(() => ajustar(e));
-  })));
+  E.filter(e => e.botones).forEach(e => e.botones.forEach((b, k) => b.addEventListener('click', () => { if (E[actual] === e) irPaso(k); })));
 
   // ---------------------------------------------------------- el hada que tapa todo con su estela y pinta la sección siguiente
   // 1. vuela de la esquina superior derecha a la inferior izquierda; de la estrella de su varita nace una estela
@@ -300,7 +340,7 @@
     if (ajustando) return;
     requestAnimationFrame(() => { ajustando = true; ajustar(E[actual]); requestAnimationFrame(() => { ajustando = false; }); });
   });
-  ['#lab-viz', '#leyendas-grid', '.creative-journey', '#arcade-zona', '#m7-galeria', '#printer-output'].forEach(s => { const n = $(s); if (n) ro.observe(n); });
+  ['.papel-marcos', '#lab-viz', '#leyendas-grid', '.creative-journey', '#arcade-zona', '#m7-galeria', '#printer-output'].forEach(s => { const n = $(s); if (n) ro.observe(n); });
   $$('img', capa).forEach(img => {                 // las imágenes diferidas cambian el alto al cargar
     img.loading = 'eager';
     if (!img.complete) img.addEventListener('load', () => { if (img.closest('.ev.activa')) requestAnimationFrame(() => ajustar(E[actual])); }, { once: true });
@@ -315,6 +355,7 @@
   };
   function mostrar(e) {
     E.forEach(x => x.ev.classList.toggle('activa', x === e));
+    if (e.id !== 'contacto') raiz.classList.remove('escena-final');
     $$('button', indice).forEach((b, i) => b.classList.toggle('activo', E[i] === e));
     velo.classList.toggle('visible', e.id !== 'inicio');
     raiz.classList.toggle('escena-contenido', e.id !== 'inicio');   // fuera de la portada, el velo propio de la escena reemplaza al de la portada
@@ -346,7 +387,7 @@
       hechizo(dir > 0 ? a.hada : (seccionDe(i) || NOMBRE[a.id]), () => {
         de.ev.scrollTop = 0; actual = i; mostrar(a);
         paso = pasoInicial ?? (dir < 0 && a.pasos ? a.pasos - 1 : 0);
-        if (a.tabs) { const t = a.tabs[paso]; if (!t.classList.contains('active')) { sincronizando = true; t.click(); sincronizando = false; } }
+        if (a.marcos) marcar(a, paso);
         ajustar(a);
       }, () => { ocupado = false; });
       return;
@@ -358,7 +399,7 @@
         actual = i; mostrar(a);
         tlEntrada = entrar(a, dir, pasoInicial);
         ajustar(a);
-        tlEntrada.eventCallback('onComplete', () => { ocupado = false; a.ev.classList.remove('animando'); });
+        tlEntrada.eventCallback('onComplete', () => { ocupado = false; a.ev.classList.remove('animando'); if (a.id === 'contacto') raiz.classList.add('escena-final'); });
         gsap.delayedCall(Math.min(1, tlEntrada.duration()), () => { ocupado = false; });   // una entrada larga no bloquea seguir
       });
   }
@@ -382,7 +423,8 @@
     if (i < 0 || i >= E.length) return;
     if (tlEntrada) { tlEntrada.progress(1); limpiar(tlEntrada); tlEntrada = null; }
     actual = i; paso = 0; ocupado = false; mostrar(E[i]);
-    if (E[i].tabs && !E[i].tabs[0].classList.contains('active')) { sincronizando = true; E[i].tabs[0].click(); sincronizando = false; }
+    if (E[i].marcos) marcar(E[i], 0);
+    raiz.classList.toggle('escena-final', E[i].id === 'contacto');
   }
   window.MCEEscenas = { irA: n => irA(typeof n === 'string' ? E.findIndex(e => e.id === n) : n), avanzar, saltar: n => saltar(typeof n === 'string' ? E.findIndex(e => e.id === n) : n) };
 

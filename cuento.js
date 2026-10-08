@@ -1216,11 +1216,11 @@
     [sitio, libroEscena].forEach(n => n && obs.observe(n, { attributes: true, attributeFilter: ['class', 'aria-hidden'] }));
     ver();
     const globo = dr.querySelector('.dragoncito-globo');
-    let x = innerWidth - 120, y = 90, tx = x, ty = y, mira = -1, ultimoMov = performance.now(), dormido = false;
+    let x = innerWidth - 150, y = innerHeight * .45, objY = null, mira = -1, ultimoMov = performance.now(), dormido = false, posado = false;
+    const nido = $('.nido-escena'), posada = $('#nido-posada');
     addEventListener('pointermove', e => {
-      // se queda a una distancia prudente, arriba del puntero, sin tapar lo que se toca
-      tx = Math.min(innerWidth - 70, Math.max(10, e.clientX + (e.clientX > innerWidth / 2 ? -150 : 90)));
-      ty = Math.min(innerHeight - 120, Math.max(10, e.clientY - 130));
+      // vuela en el borde derecho, a la altura del puntero, sin tapar lo que se lee
+      objY = e.clientY - 52;
       ultimoMov = performance.now();
       if (dormido) { dormido = false; dr.classList.remove('duerme'); }
     }, { passive: true });
@@ -1240,12 +1240,21 @@
     }, true);
     (function vuelo(ahora) {
       if (!quieto) {
-        x += (tx - x) * .035; y += (ty - y) * .035;
-        const vx = tx - x; if (Math.abs(vx) > 6) mira = vx > 0 ? 1 : -1;
-        const flot = Math.sin(ahora / 420) * 8;
+        // al final de la página (o en la última escena) aterriza en el nido; si no, borde derecho a la altura del mouse
+        const rc = document.documentElement.classList;
+        const final = rc.contains('escenas') ? rc.contains('escena-final') : scrollY + innerHeight >= document.documentElement.scrollHeight - 40;
+        const r = final && posada ? posada.getBoundingClientRect() : null;
+        let tx, ty;
+        if (r && r.width) { tx = r.left + (r.width - 110) / 2; ty = r.bottom - 96; }
+        else { tx = innerWidth - 110 - (innerWidth < 700 ? 10 : 34); ty = Math.min(innerHeight - 112, Math.max(76, objY ?? innerHeight * .45)); }
+        x += (tx - x) * (r ? .06 : .08); y += (ty - y) * (r ? .06 : .08);
+        const vx = tx - x; if (Math.abs(vx) > 6) mira = vx > 0 ? 1 : -1; else if (!r) mira = -1;
+        const llego = !!(r && r.width) && Math.abs(tx - x) < 2 && Math.abs(ty - y) < 2;
+        if (llego !== posado) { posado = llego; dr.classList.toggle('posado', llego); nido && nido.classList.toggle('llego', llego); if (llego) { mira = -1; if (window.Magia) Magia.chispas(x + 55, y + 70, { n: 18, vel: 2.5, colores: ['#ff8fc0', '#ffd9ea', '#fff'] }); } }
+        const flot = posado ? 0 : Math.sin(ahora / 420) * 8;
         dr.style.transform = `translate(${x.toFixed(1)}px,${(y + flot).toFixed(1)}px)`;
         dr.style.setProperty('--mira', mira);
-        if (!dormido && ahora - ultimoMov > 12000) { dormido = true; dr.classList.add('duerme'); globo.textContent = 'z z z'; }
+        if (!dormido && !posado && ahora - ultimoMov > 12000) { dormido = true; dr.classList.add('duerme'); globo.textContent = 'z z z'; }
       } else dr.style.transform = `translate(${innerWidth - 120}px,90px)`;
       requestAnimationFrame(vuelo);
     })(performance.now());

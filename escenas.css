@@ -77,3 +77,62 @@ html.escenas .ev :is(.section-head p, .section-head .eyebrow, .art-context, .art
 html[data-tema="claro"].escenas .ev :is(.section-head p, .section-head .eyebrow, .art-context, .art-credit, .transition-explanation, .leyendas-aviso, .team-outcome, #contacto p) { text-shadow: 0 0 8px rgba(255, 250, 243, 1), 0 0 3px rgba(255, 250, 243, 1); }
 html.escenas .ev :is(.section-head h2) { text-shadow: 0 2px 14px rgba(8, 17, 39, .6); }
 html[data-tema="claro"].escenas .ev :is(.section-head h2) { text-shadow: 0 0 16px rgba(255, 250, 243, .9); }
+
+/* ---------------------------------------------------------------- ancho completo: la escena usa toda la pantalla
+   (a la izquierda las estrellas del índice, a la derecha el carril por donde vuela el dragón) */
+html.escenas .ev { padding: 14px 170px 56px 90px; }
+html.escenas .ev-caja { width: 100%; max-width: none; }
+html.escenas .ev :is(.wrap, .hero) { width: 100%; max-width: none; margin-inline: 0; }
+
+/* ---------------------------------------------------------------- tarjetas coherentes en toda la página: vidrio suave según el tema */
+:root { --vidrio: rgba(14, 22, 50, .72); --vidrio2: rgba(255, 255, 255, .05); --vidrio-borde: rgba(255, 255, 255, .13); }
+html[data-tema="claro"] { --vidrio: rgba(255, 250, 243, .84); --vidrio2: rgba(106, 77, 120, .05); --vidrio-borde: rgba(106, 77, 120, .2); }
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .studio-team, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta) {
+  background: var(--vidrio); border: 1px solid var(--vidrio-borde); border-radius: 22px; backdrop-filter: blur(10px); box-shadow: 0 14px 34px rgba(5, 10, 30, .25); }
+html.escenas .ev :is(.role-node, .journey-step, .transition-path a) { background: var(--vidrio2); border: 1px solid var(--vidrio-borde); }
+html.escenas .ev .studio-brand-card { padding: 28px 32px; }
+
+/* ---------------------------------------------------------------- marcos de papel: las aplicaciones como en el libro */
+html.escenas .papel-app { position: relative; padding: 30px 40px 34px; background: #fff8ef url("assets/cuento/marco-app.webp") center/100% 100% no-repeat; border-radius: 18px; box-shadow: 0 18px 34px rgba(10, 6, 30, .45); }
+html.escenas .papel-marcos > .papel-app:not(.activo) { display: none; }
+html.escenas .papel-app .game-panel { display: block; }
+html.escenas .app-oraculo { padding: 26px 32px 30px; }
+html.escenas .app-vitrina .vitrina-viva iframe { height: min(58vh, 620px); }
+html.escenas .app-vitrina .botonera { display: flex; justify-content: center; gap: 12px; margin: 10px 0 0; }
+.papel-pestanas { display: flex; gap: 10px; margin: 0 0 14px; }
+.papel-pestanas button { font: 700 .9rem 'Mali', sans-serif; padding: 8px 18px; border-radius: 16px; border: 3px solid #fff; background: #fff6fb; color: #6a2c55; box-shadow: 0 3px 0 #e2c4dc; cursor: pointer; transition: transform .15s; }
+.papel-pestanas button:hover { transform: translateY(-2px); }
+.papel-pestanas button.activo { background: #c98bb8; color: #fff; box-shadow: 0 4px 0 #a26a94; }
+
+/* ---------------------------------------------------------------- el salón de los juegos: las máquinas del libro */
+.salon-arcade { display: flex; justify-content: center; align-items: flex-end; gap: clamp(30px, 6vw, 110px); padding: 10px 0 0; }
+.salon-arcade[hidden] { display: none; }
+.maquina { display: grid; justify-items: center; gap: 10px; padding: 0; border: 0; background: none; cursor: pointer; }
+.maquina-spr { display: block; height: min(46vh, 420px); aspect-ratio: 264 / 400; background: 0 0 / 800% 500% no-repeat; filter: drop-shadow(0 14px 18px rgba(5, 10, 30, .4)); transition: transform .25s, filter .25s; }
+.maquina:hover .maquina-spr, .maquina:focus-visible .maquina-spr { transform: translateY(-8px) scale(1.03); filter: drop-shadow(0 0 18px rgba(245, 168, 207, .8)) drop-shadow(0 14px 18px rgba(5, 10, 30, .4)); }
+.maquina-rotulo { font: 700 1rem 'Mali', sans-serif; color: #6a2c55; padding: 6px 16px; border-radius: 14px; background: #fff6fb; border: 3px solid #fff; box-shadow: 0 3px 0 #e2c4dc; }
+.sala-juegos:not(.abierta) { display: none; }
+.app-juego .juego-acciones { gap: 10px; }
+.app-juego .juego-salon { background: #fff6fb !important; color: #6a2c55 !important; box-shadow: 0 3px 0 #e2c4dc !important; }
+
+/* ---------------------------------------------------------------- al final, los dragoncitos esperan al dragón */
+.nido-escena { position: relative; width: max-content; margin: 34px auto 0; pointer-events: none; }
+.nido-crias { display: flex; align-items: flex-end; gap: 14px; }
+.nido-posada { width: 110px; height: 96px; flex: none; }
+.cria { flex: none; width: 96px; height: 91px; background: url("assets/intro/dragon-rosa.webp") 100% 0 / 864px 91px no-repeat; filter: drop-shadow(0 0 6px rgba(245, 168, 207, .6)); }
+.cria.c1, .cria.c2 { scale: -1 1; }                      /* las de la izquierda miran hacia el centro */
+.cria.c2 { filter: hue-rotate(-55deg) drop-shadow(0 0 6px rgba(186, 147, 240, .6)); }
+.cria.c3 { filter: hue-rotate(-135deg) saturate(.85) drop-shadow(0 0 6px rgba(145, 220, 255, .6)); }
+.cria.c4 { filter: hue-rotate(-25deg) drop-shadow(0 0 6px rgba(255, 190, 120, .6)); width: 80px; height: 76px; background-size: 720px 76px; }
+.cria.duerme { animation: cria-respira 2.6s ease-in-out infinite; }
+.nido-escena.llego .salta { animation: cria-salta .45s ease-out infinite alternate; }
+.nido-escena.llego .c3 { animation-delay: .15s; } .nido-escena.llego .c4 { animation-delay: .3s; }
+@keyframes cria-salta { to { translate: 0 -14px; } }
+@keyframes cria-respira { 50% { transform: scaleY(.94); } }
+/* el dragón posado deja de aletear */
+.dragoncito.posado .dragoncito-spr { animation: none; background-position: -440px 0; }
+.dragoncito.posado .dragoncito-globo { opacity: 0; }
+html.escenas .ev-contacto .nido-escena { margin-top: 18px; }
+html.escenas .papel-app.app-calc { max-width: 1060px; margin-inline: auto; }
+html.escenas .papel-app .btn.ghost { color: #6a2c55; background: #fff6fb; border: 2px solid #f0d6e8; }
+html.escenas .papel-app .btn.primary { color: #fff; }
