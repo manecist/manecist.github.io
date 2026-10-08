@@ -83,7 +83,7 @@
   let audios = null, sonando = null, terminar = null;
   const cargarAudios = () => audios || (audios = fetch('assets/voz/indice.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).catch(() => ({})));
   cargarAudios();
-  function callar() { turno++; if (sonando) { sonando.pause(); sonando = null; } if (terminar) { const f = terminar; terminar = null; f(); } cola = Promise.resolve(); if (voz) voz.cancel(); $$('.voz-activa').forEach(n => n.classList.remove('voz-activa')); }
+  function callar() { turno++; dicho = ''; if (sonando) { sonando.pause(); sonando = null; } if (terminar) { const f = terminar; terminar = null; f(); } cola = Promise.resolve(); if (voz) voz.cancel(); $$('.voz-activa').forEach(n => n.classList.remove('voz-activa')); }
   function decir(texto, o = {}) {
     return new Promise(async fin => {
       if (!texto) { fin(); return; }
@@ -101,8 +101,12 @@
       voz.speak(u);
     });
   }
-  let cola = Promise.resolve();
-  const encolar = (t, antes, despues) => { const mio = turno; cola = cola.then(async () => { if (mio !== turno || !narrando) return; antes && antes(); await decir(t); despues && despues(); }); return cola; };
+  let cola = Promise.resolve(), preparando = false;
+  let dicho = '';
+  const norm = t => limpiarVoz(t).toLowerCase().normalize('NFD').replace(/[^a-z0-9ñ]/g, '');
+  // un cartel no repite lo que el narrador ya dijo en este pliego: si su texto ya se leyó, no se lee; si solo el título, se omite el título
+  const sinRepetir = (t, x) => { const d = dicho; if (x && d.includes(norm(x))) return ''; if (t && !/:\s*$/.test(t) && d.includes(norm(t))) return limpiarVoz(x || ''); return vozCartel(t, x); };   // el nombre de quien habla («Rancek:») siempre se dice
+  const encolar = (t, antes, despues) => { const mio = turno; dicho += norm(t); cola = cola.then(async () => { if (mio !== turno || !narrando) return; antes && antes(); await decir(t); despues && despues(); }); return cola; };
   // lo que dice un cartel de escena al cambiar: el título (si cambió) y su texto
   const pausa = ms => { const mio = turno; cola = cola.then(() => mio === turno && narrando ? new Promise(r => setTimeout(r, ms)) : null); };
   // un nodo narrable se dice en partes: en las características, el título, una pausa y la descripción
@@ -122,11 +126,12 @@
   }
   async function narrar(pags) {
     callar(); if (!narrando) return;
-    const mio = ++turno;
+    const mio = ++turno; preparando = true; setTimeout(() => { preparando = false; }, 4500);
     await new Promise(r => setTimeout(r, 900));
     for (let i = 0; i < 12 && !document.querySelector('.teatro-cielo.visible') && mio === turno; i++) await new Promise(r => setTimeout(r, 150));
     const nodos = textosDe(pags), relato = textoPliego(pags);
     if (relato) encolar(relato, () => nodos.forEach(n => n.classList.add('voz-activa')), () => nodos.forEach(n => n.classList.remove('voz-activa')));
+    preparando = false;
   }
   function pintarBotonVoz() {
     if (!btnVoz) return;
@@ -140,8 +145,10 @@
     if (narrando) narrar(window.MCELibro?.visibles?.() || []); else callar();
   });
   // todos los textos que puede leer el narrador (para pregenerar la voz)
-  const todosLosTextos = () => { const out = new Set(); { const t = textoPliego(window.MCELibro?.visibles?.() || []); if (t) out.add(t); } (window.MCEVida || []).forEach(t => out.add(limpiarVoz(t))); document.querySelectorAll('.vida-cabeza').forEach(n => out.add(limpiarVoz(n.innerText))); return [...out].filter(Boolean).map(t => ({ k: claveVoz(t), t })); };
-  window.MCENarrador = { decir, callar, encolar, vozCartel, textos: () => [...todosLosTextos(), ...(window.MCETextosEscenas ? window.MCETextosEscenas() : []).map(t => ({ k: claveVoz(t), t: limpiarVoz(t) }))], get activo() { return narrando; } };
+  const todosLosTextos = () => { const out = new Set(); { const t = textoPliego(window.MCELibro?.visibles?.() || []); if (t) out.add(t); } (window.MCEVida || []).forEach(t => out.add(limpiarVoz(t))); document.querySelectorAll('.vida-cabeza').forEach(n => out.add(unir([...n.children].map(c => c.textContent)))); return [...out].filter(Boolean).map(t => ({ k: claveVoz(t), t })); };
+  // espera a que el narrador termine todo lo que tiene en cola (y lo que está por encolar del pliego)
+  const esperar = async () => { while (preparando && narrando) await new Promise(r => setTimeout(r, 120)); await cola; };
+  window.MCENarrador = { decir, callar, encolar, vozCartel, sinRepetir, esperar, textos: () => [...todosLosTextos(), ...(window.MCETextosEscenas ? window.MCETextosEscenas() : []).map(t => ({ k: claveVoz(t), t: limpiarVoz(t) }))], get activo() { return narrando; } };
 
   /* ------------------------------------------------------------ escenas */
   document.querySelectorAll('.pagina-pop[data-suelo]').forEach(p => p.style.setProperty('--suelo', 'url("' + p.dataset.suelo + '")'));
@@ -333,7 +340,7 @@
       edad.textContent = VIDA[n][1]; txt.textContent = VIDA[n][2];
       el.classList.remove('cambia'); void el.offsetWidth; el.classList.add('cambia');
       if (window.Magia) { const r = andante.getBoundingClientRect(); if (r.width) Magia.chispas(r.left + r.width / 2, r.top + r.height * .45, { n: 22, vel: 3, colores: ['#ff8fc0', '#ffd9ea', '#c9a6ff', '#f3d48a', '#fff'] }); }
-      if (hablar && window.MCENarrador.activo) await encolar(VIDA[n][1] + '. ' + VIDA[n][2]);
+      if (hablar && window.MCENarrador.activo && (window.MCELibro?.visibles?.() || []).some(p => p.contains(el))) await encolar(VIDA[n][1] + '. ' + VIDA[n][2]);
     };
     const avanzar = async () => {
       if (pausa || !document.body.contains(el)) return;
@@ -345,7 +352,7 @@
       luego(avanzar, Math.max(0, TRAMO - (performance.now() - inicio)));
     };
     el.classList.remove('llego'); play.textContent = '❚❚'; k = -1;
-    mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); encolar(el.closest('.pagina').querySelector('.vida-cabeza').innerText).then(() => luego(avanzar, 400)); } else luego(avanzar, 5200); });
+    mostrar(0, false).then(() => { if (window.MCENarrador.activo) { callar(); encolar(unir([...el.closest('.pagina').querySelector('.vida-cabeza').children].map(c => c.textContent))); encolar(VIDA[0][1] + '. ' + VIDA[0][2]).then(() => luego(avanzar, 400)); } else luego(avanzar, 5200); });
     play.onclick = () => {
       if (el.classList.contains('llego')) { el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita'); pausa = false; play.textContent = '❚❚'; k = -1; mostrar(0, false); andar(el); luego(avanzar, 1200); return; }
       pausa = !pausa; play.textContent = pausa ? '▶' : '❚❚'; play.setAttribute('aria-label', pausa ? 'Seguir caminando' : 'Pausar la caminata');
@@ -361,7 +368,7 @@
   const ESCALA_PJ = 1.35;
   const ESCENARIOS = {
     iv: { carpeta: 'cap4/', hitos: [
-      { fondo: 'fondo-noche.webp', suelo: 'suelo-noche.webp', titulo: 'Las 2 de la mañana', texto: '…y un error más.', pasos: [
+      { fondo: 'fondo-noche.webp', suelo: 'suelo-noche.webp', titulo: 'Las 2 de la mañana', texto: '…y aún no termina.', pasos: [
         { actor: 'cama', x: 34, alto: 15, de: 0, a: 1, ms: 4500 },                                         // a la izquierda: programa en la cama… y se duerme
         { texto: { titulo: 'z z z…', texto: 'Se quedó dormida estudiando.' }, ms: 900 },
         { actor: 'coen', camina: [0, 1], desde: 92, x: 47, alto: 16, ms: 3800, delante: true, pausa: 0,
@@ -484,12 +491,10 @@
       ] }
     ] },
     vii: { carpeta: 'cap7/', hitos: [
-      { fondo: 'fondo-mercado.webp', suelo: 'suelo-mercado.webp', titulo: 'La tiendita creció…', texto: '…hasta convertirse en un mercado entero.', pasos: [
-        { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 19, fila: 'medio', efecto: 'brilla', ms: 1800,
-          texto: { titulo: 'Magical Alliance', texto: 'Su proyecto final Full Stack Java: roles, catálogo, carrito, cupones, pedidos, stock y panel de administración.' } },
+      { fondo: 'fondo-mercado.webp', suelo: 'suelo-mercado.webp', titulo: '', texto: '', pasos: [
+        { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 19, fila: 'medio', efecto: 'brilla', ms: 1800 },
         { nombre: 'ari', actor: 'ari-casual', x: 28, alto: 16, delante: true, de: 0, a: 1, ms: 2600, pausa: 300 },                       // Ari llega como clienta…
-        { nombre: 'coen', actor: 'coen-vii', x: 76, alto: 17, delante: true, de: 0, a: 1, ms: 3000,
-          texto: { titulo: 'Clienta o administradora', texto: 'Llena el carrito y mira cómo cambia el stock.' } },                     // …y Coen la acompaña
+        { nombre: 'coen', actor: 'coen-vii', x: 76, alto: 17, delante: true, de: 0, a: 1, ms: 3000 },                     // …y Coen la acompaña
         { nombre: 'ari', efecto: 'salta', ms: 1400 },
         { app: true, ms: 400 }
       ] }
@@ -538,15 +543,14 @@
       ] }
     ] },
     logros: { carpeta: 'logros/', hitos: [
-      { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', titulo: 'Logro desbloqueado', texto: 'Junio de 2026: Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital.', pasos: [
+      { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', central: 'Después de tantas noches de código, llegó su recompensa: en junio de 2026 terminó el curso Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital. Su medalla es digital y cualquiera puede verificarla. Pero Ari nunca deja de aprender: hoy estudia el Certificado de Análisis de Datos de Google, con cinco cursos ya aprobados.', titulo: 'Magical Alliance', texto: 'Aquí nació la tienda mágica.', pasos: [
         { nombre: 'ari', actor: 'medalla', x: 50, alto: 16, efecto: 'brilla', ms: 2800, bucle: [0, 1], cicloMs: 3000 },                       // Ari levanta su medalla en el podio
-        { nombre: 'ari', efecto: 'salta', ms: 2600, texto: { titulo: 'Y sigue aprendiendo', texto: 'Certificado de Análisis de Datos de Google (Coursera): cinco cursos aprobados.' } }
+        { nombre: 'ari', efecto: 'salta', ms: 2600 }
       ] },
-      { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', titulo: 'ArianesDCoen', texto: 'Su canal de streaming con Coen: videojuegos, risas y una comunidad que los acompañaba.', pasos: [
+      { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', central: 'Y cuando caía la noche, encendía la cámara junto a Coen. En ArianesDCoen jugaban, reían y compartían sus aventuras con una pequeña comunidad que los acompañaba en cada partida.', titulo: '¡En vivo!', texto: 'El público animaba con corazones y barras de luz.', pasos: [
         { nombre: 'streamers', actor: 'streamers-anim', x: 50, alto: 15.7, fila: 'medio', ms: 2400, bucle: [0, 1], cicloMs: 3000 },                                                  // Ari y Coen juegan en vivo
-        { nombre: 'publico', actor: 'publico-anim', x: 50, alto: 7, clase: 'primer', ms: 2600, bucle: [0, 1], cicloMs: 2600,
-          texto: { titulo: '¡En vivo!', texto: 'El público animaba con corazones y barras de luz.' } },                     // el público los anima
-        { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausaron por los proyectos… ¡pero volverán!' }, ms: 2400 }
+        { nombre: 'publico', actor: 'publico-anim', x: 50, alto: 7, clase: 'primer', ms: 2600, bucle: [0, 1], cicloMs: 2600 },                     // el público los anima
+        { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausaron por sus proyectos… ¡pero volverán!' }, ms: 2400 }
       ] }
     ] },
     cv: { carpeta: 'logros/', hitos: [
@@ -610,8 +614,10 @@
     const v = window.MCENarrador.vozCartel, out = [];
     Object.values(ESCENARIOS).forEach(esc => esc.hitos.forEach((H, n) => {
       if (esc.textos === 'huellas') document.querySelectorAll('.huellas > li').forEach(li => out.push(v(li.querySelector('b')?.textContent, li.querySelector('span')?.textContent)));
+      if (H.central) out.push(H.central);
       if (H.titulo != null || H.texto != null) out.push(v(H.titulo, H.texto));
-      H.pasos.forEach(p => { if (p.texto) out.push(v(p.texto.titulo, p.texto.texto)); });
+      H.pasos.forEach(p => { if (p.texto) { out.push(v(p.texto.titulo, p.texto.texto)); if (p.texto.texto) out.push(p.texto.texto); } });
+      if (H.texto) out.push(H.texto);
     }));
     return out.filter(Boolean);
   };
@@ -729,13 +735,21 @@
     const cartel = (n, H) => {
       const li = lis[n], t = H.titulo ?? (li ? li.querySelector('b').textContent : ''), x = H.texto ?? (li ? li.querySelector('span').textContent : '');
       if (titulo) titulo.textContent = t; if (texto) texto.textContent = x;
-      if (window.MCENarrador?.activo) { const dicho = MCENarrador.vozCartel(t, x); setTimeout(() => MCENarrador.encolar(dicho), 1600); }   // después del texto del capítulo
+      const caja = el.querySelector('.hitos-cartel'); if (caja) caja.classList.toggle('vacio', !t && !x);
       if (num) num.textContent = (n + 1) + ' / ' + total;
+      return [t, x];
     };
+    // texto central propio de una escena (cambia el que se escribió sobre el libro)
+    const cambiarCentral = txt => { const c = document.querySelector('.teatro-cielo .cielo-bloque .cuento') || el.closest('.pagina')?.querySelector('.cuento'); if (!c) return; c.querySelectorAll('.ch').forEach(x => x.remove()); c.textContent = txt; c.classList.remove('escribe'); void c.offsetWidth; c.classList.add('aparece'); };
     const mostrar = async n => {
       h = n; const mia = ++vuelta, H = esc.hitos[Math.min(n, total - 1)];
       el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita');
-      cartel(n, H);
+      const [ct, cx] = cartel(n, H);
+      const enVista = () => (window.MCELibro?.visibles?.() || []).some(p => p.contains(el));   // solo narra la escena del pliego que se está mirando
+      const conVoz = !!window.MCENarrador?.activo && enVista();
+      const cajaCartel = el.querySelector('.hitos-cartel');
+      if (conVoz && cajaCartel) cajaCartel.classList.add('vacio');   // con narrador, el cartel aparece cuando la voz llega a él
+      if (H.central) cambiarCentral(H.central);
       Object.keys(actores).forEach(plegar);
       if (H.fondo && H.fondo !== fondoActual) {
         zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = H.fondo;
@@ -743,11 +757,21 @@
       }
       if (H.suelo) suelo(H.suelo);
       if (!(await espera(900, mia))) return;
+      // con narrador: primero termina lo que está leyendo (el capítulo o la escena anterior); luego la escena y su cartel
+      let voz = null;
+      if (conVoz) {
+        await MCENarrador.esperar(); if (mia !== vuelta || !enVista()) return;
+        if (H.central && n > 0) MCENarrador.encolar(H.central);   // la primera escena ya se leyó con el capítulo
+        const dichoCartel = MCENarrador.sinRepetir(ct, cx);
+        if (dichoCartel) voz = MCENarrador.encolar(dichoCartel, () => cajaCartel && cajaCartel.classList.remove('vacio'));
+        else if (cajaCartel) cajaCartel.classList.toggle('vacio', !ct && !cx);
+        else if (cajaCartel) cajaCartel.classList.toggle('vacio', true);
+      }
       for (const p of H.pasos) {
         // cambia el fondo a mitad de la escena: el anterior se pliega y el nuevo se levanta
         if (p.fondo && p.fondo !== fondoActual) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = p.fondo; const f = document.createElement('img'); f.src = ruta(esc, p.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .3); }
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
-        if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; if (window.MCENarrador?.activo) MCENarrador.encolar(MCENarrador.vozCartel(p.texto.titulo, p.texto.texto)); }
+        if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; if (conVoz && enVista()) { const d = MCENarrador.sinRepetir(p.texto.titulo, p.texto.texto); voz = d ? MCENarrador.encolar(d) : null; } }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
         if (p.cierraApp) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: false } }));
         // espera a que pase algo afuera del cuento (por ejemplo, que se entregue la boleta en la caja)
@@ -756,7 +780,7 @@
         if (p.golpe) [].concat(p.golpe).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } });
         if (p.muere) [].concat(p.muere).forEach((n, i) => { const g = actores[n]; if (!g) return; delete actores[n]; luego(() => { const x = parseFloat(g.style.left) + g._ancho / 2; g.classList.add('muere'); efecto('humo', x, g._ancho * 1.4, 0, 1000); setTimeout(() => g.remove(), 700); }, i * 120); });
         if (p.evento) { const ev = p.evento; luego(() => { if (mia === vuelta) window.dispatchEvent(new CustomEvent(ev, { detail: { zona } })); }, p.ms || 400); }
-        if (!nombre(p)) { if (!(await espera(p.ms || 600, mia))) return; continue; }
+        if (!nombre(p)) { if (!(await espera(p.ms || 600, mia))) return; if (voz && p.texto) { await voz; if (mia !== vuelta) return; } continue; }
         const nuevo = !actores[nombre(p)];
         const a = await actor(p, p.d ?? .1, !!p.reemplaza || !!p.entra);   // entra: llega corriendo o volando desde fuera, sin levantarse del papel
         if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
@@ -776,9 +800,11 @@
         else ok = await espera(p.ms || 600, mia);
         if (!ok) return;
         if (p.bucle && a._m) vivir(a, a._m.marcas[p.bucle[0]], a._m.marcas[p.bucle[1]], p.cicloMs || 2600, mia);
+        if (voz && p.texto) { await voz; if (mia !== vuelta) return; }   // el siguiente paso espera a que la voz termine este cartel
         if (!(await espera(p.pausa ?? 1300, mia))) return;
       }
-      if (!(await espera(1800, mia))) return;
+      if (voz) { await voz; if (mia !== vuelta) return; }   // la escena no cambia mientras el narrador sigue hablando
+      if (!(await espera(conVoz ? 900 : 1800, mia))) return;
       if (pausa) return;
       if (h + 1 < total) mostrar(h + 1);
       else { el.classList.add('llego'); document.getElementById('libro')?.classList.add('invita'); }

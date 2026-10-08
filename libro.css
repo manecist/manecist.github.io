@@ -751,7 +751,7 @@ html[data-cielo="dia"] .cielo-btn{background:linear-gradient(135deg,#ffe7a6,#f5a
 .pagina-hueco{background:var(--papel)}
 
 /* narrador: resalta lo que se está leyendo */
-.voz-activa{background:linear-gradient(90deg,rgba(245,168,207,.28),rgba(245,168,207,.08));border-radius:8px;box-shadow:0 0 0 4px rgba(245,168,207,.12);transition:background .3s}
+/* mientras el narrador lee, el texto se ve igual (sin resaltado) */
 
 /* I · la monita crece */
 .vineta-crece{position:relative;width:min(300px,80%);aspect-ratio:1;background:radial-gradient(circle at 50% 55%,#ffe7f3,#f3c9e0 60%,#d9a6cf);margin-inline:auto}
@@ -2077,3 +2077,9 @@ html.pantalla-corta .teatro-cielo:has(.cielo-lado li){width:36vw}
 html.pantalla-corta .cielo-lado{width:26vw}
 html.pantalla-corta .cielo-izq{left:-27vw}html.pantalla-corta .cielo-der{right:-27vw}
 html.pantalla-corta .cielo-lado li b{font-size:.58rem}html.pantalla-corta .cielo-lado li .corto{font-size:.52rem}
+
+/* el texto central de una escena aparece suave al cambiar */
+.teatro-cielo .cielo-bloque .cuento.aparece{animation:central-aparece .9s ease both}
+@keyframes central-aparece{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.hitos-cartel.vacio,.teatro .colgante:has(.hitos-cartel.vacio){visibility:hidden}
