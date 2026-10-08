@@ -21,6 +21,8 @@
   raiz.classList.add('escenas');
   // los títulos van en una sola línea centrada: el salto de línea pasa a ser un espacio
   $$('.section-head h2 br').forEach(b => b.replaceWith(' '));
+  // títulos cortos, como en kdelrio
+  const tEst = $('#estudio .section-head h2'); if (tEst) tEst.textContent = 'Studios Conari SpA';
 
   // ---------------------------------------------------------- piezas
   const velo = document.createElement('div'); velo.className = 'escenas-velo'; main.append(velo);   // oscurece el reino detrás del contenido
@@ -57,17 +59,27 @@
 
   // ---------------------------------------------------------- 2-4. Studios Conari
   const est = '#estudio';
+  // la marca (logo, lema, descripción y botones) a la izquierda, sin tarjeta; a la derecha la lista de lo que hace el estudio
+  const card = de('.studio-brand-card', est), cuerpo = card && card.querySelector(':scope > div');
+  const lema = document.createElement('p'); lema.className = 'estudio-lema'; lema.textContent = 'Donde nacen mundos y leyendas eternas';
+  const marca = div('estudio-marca', $('.studio-wordmark', card), lema, cuerpo && cuerpo.querySelector(':scope > p:not(.official-slogan)'), cuerpo && cuerpo.querySelector('.studio-actions'));
+  const ICONOS = { 'Documentación y propuestas': 'assets/icon-document.webp', 'Modelado y animación 3D': 'assets/emblema-conari-magico.webp' };
+  const servicios = div('estudio-servicios', [...$$('.service-gallery article, .service-more article', $(est))].map(a => {
+    const t = a.querySelector('h3')?.textContent || '', ico = a.querySelector('img')?.getAttribute('src') || ICONOS[t] || 'assets/icon-company.webp';
+    const fila = document.createElement('div'); fila.className = 'estudio-servicio';
+    fila.innerHTML = '<img src="' + ico + '" alt=""><div><h3></h3><p></p></div>';
+    fila.querySelector('h3').textContent = t; fila.querySelector('p').textContent = a.querySelector('p')?.textContent || '';
+    return fila;
+  }));
+  const rolTit = document.createElement('p'); rolTit.className = 'estudio-rol'; rolTit.textContent = 'Lo que hacemos';
   E.push({
-    id: 'estudio', ev: crear('ev-estudio', cabeza(est), de('.studio-hero', est)),
+    id: 'estudio', ev: crear('ev-estudio', cabeza(est), div('estudio-dos', marca, div('estudio-lista', rolTit, servicios))),
     entrar(tl, ev) {
-      sube(tl, $$('.section-head > *', ev));
-      lado(tl, $('.studio-brand-card', ev), -1, '-=.2');
-      crece(tl, $('.studio-visual', ev), '<.1', { duration: .7 });
+      sube(tl, $$('.section-head > div > *', ev));
+      sube(tl, $$('.estudio-marca > *', ev), '-=.2', { stagger: .08 });
+      tl.from(rolTit, { opacity: 0, duration: .4 }, '<.2');
+      lado(tl, $$('.estudio-servicio', ev), 1, '<.1', { stagger: .08, duration: .5 });
     },
-  });
-  E.push({
-    id: 'servicios', ev: crear('ev-servicios', de('.service-gallery', est), de('.service-more', est)),
-    entrar(tl, ev) { sube(tl, $$('.service-gallery article', ev)); sube(tl, $$('.service-more article', ev), '-=.2'); },
   });
   E.push({
     id: 'equipo', ev: crear('ev-equipo', de('.studio-team', est)),
@@ -350,7 +362,7 @@
   }, 180);
 
   // ---------------------------------------------------------- índice lateral: una estrella por escena
-  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', servicios: 'Servicios', equipo: 'El equipo', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos', trayectoria: 'Trayectoria', salud: 'Matrona', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
+  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'El equipo', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos', trayectoria: 'Trayectoria', salud: 'Matrona', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
   const SECCION = ['inicio', 'estudio', 'desarrollo', 'diseno', 'datos', 'trayectoria', 'formacion', 'arcade', 'contacto'];
   const indice = document.createElement('nav'); indice.className = 'escenas-indice'; indice.setAttribute('aria-label', 'Escenas');
   E.forEach((e, i) => {
