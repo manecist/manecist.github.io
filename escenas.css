@@ -1,6 +1,6 @@
 /* ==========================================================================
    Versión clásica por escenas (escenas.js): sin scroll, una escena a la vez,
-   telón de teatro entre secciones y estrellas de índice al costado
+   el hada que dibuja la escena siguiente y estrellas de índice al costado
    ========================================================================== */
 html.escenas, html.escenas body { overflow: hidden; height: 100%; }
 html.escenas main > section { display: none; }
@@ -34,30 +34,27 @@ html[data-tema="claro"] .escenas-velo { background: radial-gradient(ellipse 85% 
 html.escenas .topbar nav a.activo { color: var(--white); background: rgba(245, 168, 207, .16); border-radius: 10px; box-shadow: inset 0 -2px 0 var(--rosa, #f5a8cf); }
 html[data-tema="claro"].escenas .topbar nav a.activo { color: var(--tinta, #3b2546); background: rgba(226, 109, 156, .14); }
 
-/* ---------------------------------------------------------------- telón de teatro */
-.telon-escena { position: fixed; inset: 0; z-index: 1150; pointer-events: none; visibility: hidden; overflow: hidden; }
-.telon-hoja { position: absolute; top: 0; bottom: 0; width: 51%;
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, .25), transparent 18%, transparent 80%, rgba(0, 0, 0, .45)),
-    repeating-linear-gradient(90deg, #5a1838 0 18px, #7d2550 30px, #9b3566 42px, #7d2550 54px, #5a1838 72px);
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, .45); }
-.telon-hoja::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 26px;   /* flecos dorados */
-  background: repeating-linear-gradient(90deg, #f3d48a 0 3px, #c99a3a 3px 6px); -webkit-mask: linear-gradient(180deg, #000 30%, transparent); mask: linear-gradient(180deg, #000 30%, transparent); }
-.telon-izq { left: 0; border-radius: 0 0 40% 0 / 0 0 6% 0; }
-.telon-der { right: 0; border-radius: 0 0 0 40% / 0 0 0 6%; }
-.telon-cenefa { position: absolute; left: 0; right: 0; top: 0; height: 64px; z-index: 2;   /* la cenefa de arriba, con su borde en ondas */
-  background: linear-gradient(180deg, #3e0f28, #7d2550 70%, #9b3566);
-  -webkit-mask: radial-gradient(26px at 50% calc(100% - 26px), #000 98%, transparent) 0 0 / 52px 100% repeat-x, linear-gradient(#000, #000) top / 100% calc(100% - 26px) no-repeat;
-  mask: radial-gradient(26px at 50% calc(100% - 26px), #000 98%, transparent) 0 0 / 52px 100% repeat-x, linear-gradient(#000, #000) top / 100% calc(100% - 26px) no-repeat;
-  filter: drop-shadow(0 4px 0 #e2ba53); }
-.telon-cartel { position: absolute; left: 50%; top: 22vh; translate: -50% 0; z-index: 3; padding: 30px 54px 34px; min-width: min(520px, 80vw); text-align: center;
-  background: linear-gradient(180deg, #fbf3e4, #f3e4c9); border-radius: 6px; box-shadow: 0 18px 40px rgba(0, 0, 0, .45), inset 0 0 0 2px rgba(215, 169, 72, .7), inset 0 0 0 8px #fbf3e4, inset 0 0 0 9px rgba(215, 169, 72, .45); }
-.telon-hilo { position: absolute; left: 50%; bottom: 100%; width: 2px; height: 30vh; translate: -50% 0; background: linear-gradient(180deg, transparent, #e2ba53); }
-.telon-cartel p { margin: 0; font: 700 clamp(2rem, 4.6vw, 3.6rem)/1.1 var(--titulo, "Cinzel", serif); color: #6a2a4f; letter-spacing: .02em; }
-.telon-cartel p span { display: inline-block; }
-.telon-cartel p span.esp { width: .3em; }
-.telon-cartel::before, .telon-cartel::after { content: "✦"; position: absolute; top: 50%; translate: 0 -50%; color: #d7a948; font-size: 1.3rem; }
-.telon-cartel::before { left: 20px; } .telon-cartel::after { right: 20px; }
+/* ---------------------------------------------------------------- el hada dibuja la escena siguiente */
+/* la escena nueva aparece detrás de la varita (de la esquina superior derecha a la inferior izquierda) y la anterior se borra */
+html.escenas .ev.revela, html.escenas .ev.queda { display: flex; }
+html.escenas .ev.revela { z-index: 2;
+  -webkit-mask-image: linear-gradient(to bottom left, #000 calc(var(--r) * 1% - 5%), transparent calc(var(--r) * 1% + 3%));
+  mask-image: linear-gradient(to bottom left, #000 calc(var(--r) * 1% - 5%), transparent calc(var(--r) * 1% + 3%)); }
+html.escenas .ev.queda { z-index: 1;
+  -webkit-mask-image: linear-gradient(to bottom left, transparent calc(var(--r) * 1% - 3%), #000 calc(var(--r) * 1% + 5%));
+  mask-image: linear-gradient(to bottom left, transparent calc(var(--r) * 1% - 3%), #000 calc(var(--r) * 1% + 5%)); }
+.hechizo-paso { position: fixed; inset: 0; z-index: 1150; pointer-events: none; visibility: hidden; overflow: hidden; }
+/* la línea de luz donde la varita va dibujando */
+.hechizo-brillo { position: absolute; inset: 0; mix-blend-mode: screen;
+  background: linear-gradient(to bottom left, transparent calc(var(--r, -20) * 1% - 6%), rgba(245, 168, 207, .35) calc(var(--r, -20) * 1% - 2%), rgba(255, 246, 252, .85) calc(var(--r, -20) * 1%), rgba(243, 212, 138, .35) calc(var(--r, -20) * 1% + 2%), transparent calc(var(--r, -20) * 1% + 6%)); }
+.hechizo-hada { position: absolute; left: 0; top: 0; height: 210px; width: auto; will-change: transform; filter: drop-shadow(0 0 14px rgba(255, 231, 244, .9)) drop-shadow(0 0 28px rgba(243, 212, 138, .5)); }
+.hechizo-nombre { position: absolute; left: 0; right: 0; top: 42%; margin: 0; text-align: center; font: 700 clamp(2.2rem, 5vw, 4.2rem)/1.1 var(--titulo, "Cinzel", serif); color: #fff6e0; letter-spacing: .04em;
+  text-shadow: 0 0 10px #f3d48a, 0 0 26px #f5a8cf, 0 0 50px rgba(186, 147, 240, .8); }
+html[data-tema="claro"] .hechizo-nombre { color: #8a4f8a; text-shadow: 0 0 10px #fff, 0 0 22px #f5a8cf, 0 0 40px #f3d48a; }
+html[data-tema="claro"] .hechizo-brillo { mix-blend-mode: normal; }
+.hechizo-estrella { position: absolute; font-style: normal; font-size: var(--t); line-height: 1; color: var(--c); translate: -50% -50%; text-shadow: 0 0 8px var(--c), 0 0 16px rgba(255, 255, 255, .8);
+  animation: hechizo-estrella 1.4s ease-out forwards; }
+@keyframes hechizo-estrella { 0% { opacity: 0; transform: scale(.2) rotate(var(--g)); } 20% { opacity: 1; transform: scale(1.25) rotate(calc(var(--g) + 40deg)); } 100% { opacity: 0; transform: translateY(26px) scale(.5) rotate(calc(var(--g) + 160deg)); } }
 
 /* ---------------------------------------------------------------- índice: una estrella por escena */
 .escenas-indice { position: fixed; left: 22px; top: 50%; translate: 0 -50%; z-index: 95; display: grid; gap: 9px; }

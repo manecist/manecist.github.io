@@ -1,10 +1,11 @@
 /* ==========================================================================
    Versión clásica por escenas: la página deja de desplazarse hacia abajo.
-   Cada giro de la rueda (o flecha abajo / AvPág) pasa a la escena siguiente con
-   una animación de libro pop-up: las piezas se levantan del papel, se despliegan
-   o caen como cartas. Algunas escenas tienen pasos internos (pestañas de
-   desarrollo y juegos) y entre secciones se cierra un telón de teatro con el
-   nombre de la sección. Los nodos de la página se mueven (no se copian), así la
+   Cada giro de la rueda (o flecha abajo / AvPág) pasa a la escena siguiente;
+   las piezas aparecen con suavidad (sin estirarse). Algunas escenas tienen pasos
+   internos (pestañas de desarrollo y juegos). Al entrar a las secciones grandes
+   pasa el hada volando desde la esquina superior derecha a la inferior izquierda
+   y, detrás de su varita, dibuja la escena siguiente sobre la actual con brillos
+   y estrellas. Los nodos de la página se mueven (no se copian), así la
    calculadora, la caja, el oráculo y los juegos siguen funcionando.
    Solo en escritorio con mouse; ?normal vuelve a la página con scroll.
    ========================================================================== */
@@ -27,178 +28,143 @@
     nodos.flat().filter(Boolean).forEach(n => caja.append(n));
     ev.append(caja); capa.append(ev); return ev;
   };
-  const W = () => innerWidth, H = () => innerHeight;
+  const W = () => innerWidth;
   const de = (sel, s) => $(sel, $(s));
   const cabeza = id => de('.section-head', id);
-  // se levanta del papel como una pieza de libro pop-up (se abre desde su base)
-  const popup = { rotateX: -88, transformOrigin: '50% 100%', transformPerspective: 900, opacity: 0 };
+  // apariciones suaves: sube un poco y se aclara, o llega de un costado
+  const sube = (tl, x, pos, o = {}) => tl.from(x, { opacity: 0, y: 26, duration: .55, stagger: .1, ease: 'power2.out', ...o }, pos);
+  const lado = (tl, x, d, pos, o = {}) => tl.from(x, { opacity: 0, x: d * 60, duration: .6, stagger: .12, ease: 'power2.out', ...o }, pos);
+  const crece = (tl, x, pos, o = {}) => tl.from(x, { opacity: 0, scale: .94, duration: .5, stagger: .07, ease: 'power2.out', ...o }, pos);
 
   const E = [];
   // ---------------------------------------------------------- 1. inicio
   const inicio = $('#inicio');
   E.push({
     id: 'inicio', ev: crear('ev-inicio', inicio),
-    entrar(tl, ev, dir) {
-      if (dir < 0) tl.from($('.hero-copy', ev), { x: -W() * .5, opacity: 0, duration: .7, ease: 'power3.out' })
-        .from($('.fairy-stage', ev), { y: 80, opacity: 0, duration: .7, ease: 'power3.out' }, '<.1');
-    },
-    salir(tl, ev) {                                   // el texto sale por la izquierda y Ari sube volando
-      tl.to($('.hero-copy', ev), { x: 30, duration: .25, ease: 'power2.out' })
-        .to($('.hero-copy', ev), { x: -W(), opacity: 0, duration: .55, ease: 'power3.in' })
-        .to($('.fairy-stage', ev), { y: -H() * .8, opacity: 0, duration: .6, ease: 'power3.in' }, '<.05');
-    },
+    entrar(tl, ev, dir) { if (dir < 0) { lado(tl, $('.hero-copy', ev), -1); sube(tl, $('.fairy-stage', ev), '<.1'); } },
   });
 
   // ---------------------------------------------------------- 2-4. Studios Conari
   const est = '#estudio';
   E.push({
-    id: 'estudio', cortina: 'Studios Conari', ev: crear('ev-estudio', cabeza(est), de('.studio-hero', est)),
+    id: 'estudio', ev: crear('ev-estudio', cabeza(est), de('.studio-hero', est)),
     entrar(tl, ev) {
-      tl.from($$('.section-head > *', ev), { opacity: 0, y: 24, duration: .5, stagger: .12 })
-        .from($('.studio-brand-card', ev), { rotateY: -95, transformOrigin: '0% 50%', transformPerspective: 1400, opacity: 0, duration: .9, ease: 'power3.out' }, '-=.2')
-        .from($('.studio-visual', ev), { ...popup, duration: .8, ease: 'back.out(1.4)' }, '-=.5')
-        .from($$('.studio-actions .btn', ev), { y: 16, opacity: 0, duration: .4, stagger: .1, ease: 'back.out(2)' }, '-=.3');
+      sube(tl, $$('.section-head > *', ev));
+      lado(tl, $('.studio-brand-card', ev), -1, '-=.2');
+      crece(tl, $('.studio-visual', ev), '<.1', { duration: .7 });
     },
   });
   E.push({
     id: 'servicios', ev: crear('ev-servicios', de('.service-gallery', est), de('.service-more', est)),
-    entrar(tl, ev) {                                  // los servicios se reparten como cartas sobre la mesa
-      const cartas = $$('.service-gallery article', ev);
-      tl.from(cartas, { y: -H() * .7, rotate: i => (i % 2 ? 14 : -14), opacity: 0, duration: .7, stagger: .14, ease: 'back.out(1.3)' })
-        .from($$('.service-more article', ev), { ...popup, duration: .6, stagger: .15, ease: 'back.out(1.5)' }, '-=.2');
-    },
+    entrar(tl, ev) { sube(tl, $$('.service-gallery article', ev)); sube(tl, $$('.service-more article', ev), '-=.2'); },
   });
   E.push({
     id: 'equipo', ev: crear('ev-equipo', de('.studio-team', est)),
     entrar(tl, ev) {
-      tl.from($$('.studio-team > div:first-child > *', ev), { opacity: 0, x: -40, duration: .45, stagger: .1 })
-        .from($$('.role-node', ev), { ...popup, duration: .75, stagger: .22, ease: 'back.out(1.4)' }, '-=.1')
-        .from($('.team-outcome', ev), { opacity: 0, y: 16, duration: .5 });
+      sube(tl, $$('.studio-team > div:first-child > *', ev));
+      sube(tl, $$('.role-node', ev), '-=.2', { stagger: .15 });
+      tl.from($('.team-outcome', ev), { opacity: 0, duration: .5 });
     },
   });
 
   // ---------------------------------------------------------- 5. desarrollo: un proyecto por paso (las mismas pestañas)
   const dev = '#desarrollo', tabsDev = $$('.dev-tab', $(dev)), panelesDev = $$('.dev-panel', $(dev));
   E.push({
-    id: 'desarrollo', cortina: 'Desarrollo', ev: crear('ev-desarrollo', cabeza(dev), de('.dev-tabs', dev), panelesDev),
+    id: 'desarrollo', hada: 'Desarrollo', ev: crear('ev-desarrollo', cabeza(dev), de('.dev-tabs', dev), panelesDev),
     pasos: tabsDev.length, tabs: tabsDev,
-    entrar(tl, ev) {
-      tl.from($$('.section-head > *', ev), { opacity: 0, y: 24, duration: .45, stagger: .1 })
-        .from(tabsDev, { opacity: 0, y: 14, duration: .3, stagger: .06 }, '-=.2');
-      this.paso(tl, 0, 1, true);
-    },
+    entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, tabsDev, '-=.2', { duration: .35, stagger: .06 }); this.paso(tl, 0, 1, true); },
     paso(tl, i, dir, primero) { pasarPestana(tl, this, i, dir, primero, panelesDev); },
   });
 
   // ---------------------------------------------------------- 6-8. diseño e ilustración
   const dis = '#diseno';
   E.push({
-    id: 'diseno', cortina: 'Diseño e ilustración', ev: crear('ev-diseno', cabeza(dis), de('.art-context', dis), de('.art-controls', dis), de('.art-compare', dis), de('.art-credit', dis)),
+    id: 'diseno', hada: 'Diseño e ilustración', ev: crear('ev-diseno', cabeza(dis), de('.art-context', dis), de('.art-controls', dis), de('.art-compare', dis), de('.art-credit', dis)),
     entrar(tl, ev) {
-      tl.from($$('.section-head > *', ev), { opacity: 0, y: 24, duration: .45, stagger: .1 })
-        .from([$('.art-context', ev), ...$$('.art-controls .btn', ev)], { opacity: 0, y: 14, duration: .35, stagger: .07 }, '-=.2')
-        .from($('.art-card', ev), { x: -W() * .45, rotate: -8, opacity: 0, duration: .75, ease: 'power3.out' })
-        .from($('.art-card.digital', ev), { x: W() * .45, rotate: 8, opacity: 0, duration: .75, ease: 'power3.out' }, '<')
-        .from($('.art-arrow', ev), { scale: 0, opacity: 0, duration: .5, ease: 'back.out(2.5)' }, '-=.2')
-        .from($('.art-credit', ev), { opacity: 0, duration: .4 });
+      sube(tl, $$('.section-head > *', ev));
+      sube(tl, [$('.art-context', ev), ...$$('.art-controls .btn', ev)], '-=.2', { stagger: .06 });
+      lado(tl, $('.art-card', ev), -1, '-=.1'); lado(tl, $('.art-card.digital', ev), 1, '<');
+      crece(tl, $('.art-arrow', ev), '-=.2');
+      tl.from($('.art-credit', ev), { opacity: 0, duration: .4 });
     },
   });
   E.push({
     id: 'leyendas', ev: crear('ev-leyendas', $('#leyendas')),
-    entrar(tl, ev) {
-      tl.from($$('.leyendas-cabeza > *', ev), { opacity: 0, y: 20, duration: .45, stagger: .1 })
-        .from($$('.leyendas-grid > *', ev).slice(0, 16), { ...popup, duration: .55, stagger: .06, ease: 'back.out(1.5)' }, '-=.1')
-        .from($('.leyendas-aviso', ev), { opacity: 0, duration: .4 }, '-=.2');
-    },
+    entrar(tl, ev) { sube(tl, $$('.leyendas-cabeza > *', ev)); crece(tl, $$('.leyendas-grid > *', ev).slice(0, 16), '-=.2', { stagger: .04 }); tl.from($('.leyendas-aviso', ev), { opacity: 0, duration: .4 }, '-=.2'); },
   });
   E.push({
     id: 'historia', ev: crear('ev-historia', de('.design-story', dis)),
     entrar(tl, ev) {
-      tl.from($('.fairy-design', ev), { x: -W() * .3, y: -H() * .3, rotate: -20, opacity: 0, duration: 1, ease: 'power2.out' })
-        .from($$('.design-story > div:last-child > :not(.creative-journey)', ev), { opacity: 0, y: 20, duration: .45, stagger: .1 }, '-=.5')
-        .from($$('.journey-step', ev), { ...popup, duration: .55, stagger: .14, ease: 'back.out(1.6)' }, '-=.2');
+      tl.from($('.fairy-design', ev), { opacity: 0, x: -50, y: -30, duration: .9, ease: 'power2.out' });
+      sube(tl, $$('.design-story > div:last-child > :not(.creative-journey)', ev), '-=.5');
+      sube(tl, $$('.journey-step', ev), '-=.2', { stagger: .1 });
     },
   });
 
   // ---------------------------------------------------------- 9. datos: el oráculo
   const dat = '#datos';
   E.push({
-    id: 'datos', cortina: 'Datos', ev: crear('ev-datos', cabeza(dat), $('#oraculo')),
+    id: 'datos', ev: crear('ev-datos', cabeza(dat), $('#oraculo')),
     entrar(tl, ev) {
-      tl.from($$('.section-head > *', ev), { opacity: 0, y: 24, duration: .45, stagger: .1 })
-        .from($('.oraculo-form', ev), { x: -W() * .4, opacity: 0, duration: .7, ease: 'power3.out' }, '-=.2')
-        .from($('.oraculo-viz', ev), { x: W() * .4, opacity: 0, duration: .7, ease: 'power3.out' }, '<.1')
-        .from($$('.oraculo-kpis > *', ev), { scale: 0, opacity: 0, duration: .35, stagger: .07, ease: 'back.out(2.5)' }, '-=.2');
+      sube(tl, $$('.section-head > *', ev));
+      lado(tl, $('.oraculo-form', ev), -1, '-=.2'); lado(tl, $('.oraculo-viz', ev), 1, '<.1');
+      crece(tl, $$('.oraculo-kpis > *', ev), '-=.2');
     },
   });
 
   // ---------------------------------------------------------- 10-11. trayectoria
   const tra = '#trayectoria', explic = $$('.transition-explanation', $(tra));
   E.push({
-    id: 'trayectoria', cortina: 'Trayectoria', ev: crear('ev-trayectoria', cabeza(tra), de('.vida-tira', tra), explic[0], de('.transition-path', tra), explic[1]),
-    entrar(tl, ev) {                                  // las etapas de Ari se levantan del papel una tras otra
-      tl.from($$('.section-head > *', ev), { opacity: 0, y: 24, duration: .45, stagger: .1 })
-        .from($$('.vida-tira figure', ev), { ...popup, duration: .5, stagger: .09, ease: 'back.out(1.8)' }, '-=.1')
-        .from(explic[0], { opacity: 0, duration: .4 }, '-=.2')
-        .from($$('.transition-path > *', ev), { opacity: 0, x: 40, duration: .35, stagger: .07, ease: 'power2.out' })
-        .from(explic[1], { opacity: 0, duration: .4 });
+    id: 'trayectoria', hada: 'Trayectoria', ev: crear('ev-trayectoria', cabeza(tra), de('.vida-tira', tra), explic[0], de('.transition-path', tra), explic[1]),
+    entrar(tl, ev) {
+      sube(tl, $$('.section-head > *', ev));
+      sube(tl, $$('.vida-tira figure', ev), '-=.2', { stagger: .06, duration: .45 });
+      tl.from(explic[0], { opacity: 0, duration: .4 }, '-=.2');
+      lado(tl, $$('.transition-path > *', ev), 1, undefined, { stagger: .06, duration: .4 });
+      tl.from(explic[1], { opacity: 0, duration: .4 });
     },
   });
   E.push({
     id: 'salud', ev: crear('ev-salud', $('#salud-card')),
-    entrar(tl, ev) {
-      tl.from($('.health-card', ev), { rotateY: 95, transformOrigin: '100% 50%', transformPerspective: 1400, opacity: 0, duration: .9, ease: 'power3.out' })
-        .from($$('.health-card > div > *', ev), { opacity: 0, y: 16, duration: .4, stagger: .1 }, '-=.3');
-    },
+    entrar(tl, ev) { crece(tl, $('.health-card', ev), 0, { duration: .6 }); sube(tl, $$('.health-card > div > *', ev), '-=.3'); },
   });
 
   // ---------------------------------------------------------- 12. formación
   const form = '#formacion';
   E.push({
-    id: 'formacion', cortina: 'Formación', ev: crear('ev-formacion', cabeza(form), de('.credential-gallery', form), de('.cv-cta', form)),
-    entrar(tl, ev) {
-      tl.from($$('.section-head > *', ev), { opacity: 0, y: 24, duration: .45, stagger: .1 })
-        .from($$('.credential-gallery article', ev), { y: H() * .5, rotate: i => (i - 1.5) * 6, opacity: 0, duration: .65, stagger: .12, ease: 'back.out(1.3)' }, '-=.1')
-        .from($('.cv-cta', ev), { ...popup, duration: .6, ease: 'back.out(1.5)' });
-    },
+    id: 'formacion', ev: crear('ev-formacion', cabeza(form), de('.credential-gallery', form), de('.cv-cta', form)),
+    entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, $$('.credential-gallery article', ev), '-=.2', { stagger: .1 }); sube(tl, $('.cv-cta', ev), '-=.1'); },
   });
 
   // ---------------------------------------------------------- 13. arcade: un juego por paso
   const arc = '#arcade', tabsJ = $$('.game-tab', $(arc)), panelesJ = $$('.game-panel', $(arc));
   E.push({
-    id: 'arcade', cortina: 'Arcade mágico', ev: crear('ev-arcade', cabeza(arc), $('#arcade-zona')),
+    id: 'arcade', hada: 'Arcade mágico', ev: crear('ev-arcade', cabeza(arc), $('#arcade-zona')),
     pasos: tabsJ.length, tabs: tabsJ,
-    entrar(tl, ev) {
-      tl.from($$('.section-head > *', ev), { opacity: 0, y: 24, duration: .45, stagger: .1 })
-        .from(tabsJ, { opacity: 0, y: 14, duration: .3, stagger: .06 }, '-=.2');
-      this.paso(tl, 0, 1, true);
-    },
+    entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, tabsJ, '-=.2', { duration: .35, stagger: .06 }); this.paso(tl, 0, 1, true); },
     paso(tl, i, dir, primero) { pasarPestana(tl, this, i, dir, primero, panelesJ); },
   });
 
   // ---------------------------------------------------------- 14. contacto
   const pie = $('#site > footer');
   E.push({
-    id: 'contacto', cortina: '¿Construimos algo?', ev: crear('ev-contacto', $('#contacto'), pie),
-    entrar(tl, ev) {                                  // los enlaces bajan colgando de sus hilos y se balancean
-      tl.from($$('#contacto .wrap > :not(.contact-buttons)', ev), { opacity: 0, y: 24, duration: .45, stagger: .1 })
-        .from($$('.contact-buttons a', ev), { y: -H() * .5, rotate: i => (i % 2 ? 10 : -10), opacity: 0, duration: .9, stagger: .1, ease: 'elastic.out(1, .55)' }, '-=.1')
-        .from(pie, { y: 80, opacity: 0, duration: .6, ease: 'power3.out' }, '-=.4');
+    id: 'contacto', ev: crear('ev-contacto', $('#contacto'), pie),
+    entrar(tl, ev) {
+      sube(tl, $$('#contacto .wrap > :not(.contact-buttons)', ev));
+      sube(tl, $$('.contact-buttons a', ev), '-=.2', { stagger: .08 });
+      tl.from(pie, { opacity: 0, duration: .5 }, '-=.2');
     },
   });
 
-  // las pestañas (desarrollo y juegos) cambian como una hoja que gira
+  // las pestañas (desarrollo y juegos) se cambian con un fundido y un leve deslizamiento
   function pasarPestana(tl, e, i, dir, primero, paneles) {
     const tab = e.tabs[i], nuevo = paneles[i], viejo = paneles.find(p => p.classList.contains('active') && p !== nuevo);
     const activar = () => { if (!tab.classList.contains('active')) { sincronizando = true; tab.click(); sincronizando = false; } };
-    if (primero || !viejo) {
-      tl.call(activar).from(nuevo, { ...popup, duration: .7, ease: 'back.out(1.3)' }, '-=.05');
-      return;
-    }
-    tl.to(viejo, { rotateY: dir > 0 ? -90 : 90, transformOrigin: dir > 0 ? '0% 50%' : '100% 50%', transformPerspective: 1600, opacity: .3, duration: .35, ease: 'power2.in' })
+    if (primero || !viejo) { tl.call(activar); sube(tl, nuevo, '-=.1', { duration: .6 }); return; }
+    tl.to(viejo, { opacity: 0, x: -dir * 40, duration: .3, ease: 'power2.in' })
       .set(viejo, { clearProps: 'transform,opacity' })
       .call(activar)
-      .fromTo(nuevo, { rotateY: dir > 0 ? 90 : -90, transformOrigin: dir > 0 ? '100% 50%' : '0% 50%', transformPerspective: 1600, opacity: .3 }, { rotateY: 0, opacity: 1, duration: .45, ease: 'power2.out' })
+      .fromTo(nuevo, { opacity: 0, x: dir * 40 }, { opacity: 1, x: 0, duration: .45, ease: 'power2.out' })
       .call(() => ajustar(e));
   }
   // si se elige una pestaña con el mouse, la escena sabe en qué paso quedó
@@ -208,19 +174,65 @@
     paso = k; requestAnimationFrame(() => ajustar(e));
   })));
 
-  // ---------------------------------------------------------- telón entre secciones
-  const telon = document.createElement('div'); telon.className = 'telon-escena'; telon.setAttribute('aria-hidden', 'true');
-  telon.innerHTML = '<div class="telon-cenefa"></div><div class="telon-hoja telon-izq"></div><div class="telon-hoja telon-der"></div><div class="telon-cartel"><span class="telon-hilo"></span><p></p></div>';
-  document.body.append(telon);
-  const textoTelon = $('p', telon), cartel = $('.telon-cartel', telon), hojas = $$('.telon-hoja', telon);
-  const letras = t => { textoTelon.innerHTML = ''; [...t].forEach(c => { const s = document.createElement('span'); s.textContent = c; if (c === ' ') s.className = 'esp'; textoTelon.append(s); }); return $$('span', textoTelon); };
+  // ---------------------------------------------------------- el hada que dibuja la escena siguiente
+  const magia = document.createElement('div'); magia.className = 'hechizo-paso'; magia.setAttribute('aria-hidden', 'true');
+  magia.innerHTML = '<div class="hechizo-brillo"></div><p class="hechizo-nombre"></p><img class="hechizo-hada" src="assets/hada-hechizo-3.webp" alt="">';
+  document.body.append(magia);
+  const brillo = $('.hechizo-brillo', magia), nombreHada = $('.hechizo-nombre', magia), hadaImg = $('.hechizo-hada', magia);
+  const HADA_ALTO = 210, PUNTA = [30 / 360, 372 / 480];             // la punta de la varita dentro de la imagen
+  const ESTRELLAS = ['✦', '✧', '⋆', '✶', '★'];
+  function estrella(x, y) {
+    const s = document.createElement('i'); s.className = 'hechizo-estrella'; s.textContent = ESTRELLAS[Math.random() * ESTRELLAS.length | 0];
+    s.style.cssText = `left:${x}px;top:${y}px;--t:${(10 + Math.random() * 18).toFixed(0)}px;--g:${(Math.random() * 360) | 0}deg;--c:${['#fff', '#ffd9ea', '#f5a8cf', '#f3d48a', '#d9c4ff'][Math.random() * 5 | 0]}`;
+    magia.append(s); setTimeout(() => s.remove(), 1500);
+  }
+  // r = avance del dibujo (0: esquina superior derecha, 100: inferior izquierda). La línea que separa
+  // lo dibujado de lo que falta es perpendicular al vuelo; detrás del hada ya está la escena nueva.
+  function hechizo(viejo, nuevo, texto, alFin) {
+    const w = W(), h = innerHeight, larga = Math.hypot(w, h);
+    const ancho = HADA_ALTO * .75;
+    magia.style.visibility = 'visible'; nombreHada.textContent = texto || '';
+    nuevo.classList.add('revela'); viejo.classList.add('queda');
+    nuevo.style.setProperty('--r', -12); viejo.style.setProperty('--r', -12);
+    const obj = { r: -12 }; let ultima = 0;
+    gsap.set(nombreHada, { opacity: 0, scale: .9 });
+    const tl = gsap.timeline({ onComplete: () => {
+      nuevo.classList.remove('revela'); viejo.classList.remove('queda'); nuevo.style.removeProperty('--r'); viejo.style.removeProperty('--r');
+      magia.style.visibility = 'hidden'; alFin && alFin();
+    } });
+    tl.to(obj, { r: 112, duration: 2.1, ease: 'sine.inOut', onUpdate() {
+      const r = obj.r;
+      [nuevo, viejo, brillo].forEach(el => el.style.setProperty('--r', r.toFixed(2)));
+      // la punta de la varita va por la diagonal, con un vaivén suave de vuelo
+      const s = Math.min(1.1, Math.max(-.1, r / 100)), ola = Math.sin(s * Math.PI * 3) * 22;
+      const px = w * (1 - s) + ola * (h / larga), py = h * s + ola * (w / larga);
+      hadaImg.style.transform = `translate(${(px - ancho * PUNTA[0]).toFixed(1)}px, ${(py - HADA_ALTO * PUNTA[1]).toFixed(1)}px) rotate(${(Math.sin(s * 9) * 4).toFixed(1)}deg)`;
+      // destellos en la varita y estrellas que caen a lo largo del borde que se va dibujando
+      if (window.Magia) Magia.estela(px, py, { n: 3, colores: ['#fff', '#ffd9ea', '#f5a8cf', '#f3d48a', '#d9c4ff'] });
+      const ahora = performance.now();
+      if (ahora - ultima > 45 && s > 0 && s < 1) {
+        ultima = ahora;
+        for (let k = 0; k < 2; k++) {
+          const u = (Math.random() - .5) * 1.4;                     // un punto al azar sobre la línea del borde
+          const x = px + u * w * .5, y = py + u * h * .5;
+          if (x > -20 && x < w + 20 && y > -20 && y < h + 20) estrella(x, y);
+        }
+      }
+    } })
+      .to(nombreHada, { opacity: 1, scale: 1, duration: .5, ease: 'power2.out' }, .7)
+      .to(nombreHada, { opacity: 0, duration: .5 }, 1.75)
+      .fromTo(nuevo.firstElementChild, { filter: 'grayscale(.85) brightness(1.35) contrast(.85)' }, { filter: 'grayscale(0) brightness(1) contrast(1)', duration: 1.1, ease: 'power1.inOut', clearProps: 'filter' }, .9);
+    if (window.Magia) tl.call(() => Magia.chispas(30, innerHeight - 40, { n: 40, vel: 5 }), null, 2.05);
+    return tl;
+  }
 
   // ---------------------------------------------------------- índice lateral: una estrella por escena
   const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', servicios: 'Servicios', equipo: 'El equipo', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos', trayectoria: 'Trayectoria', salud: 'Matrona', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
+  const SECCION = ['inicio', 'estudio', 'desarrollo', 'diseno', 'datos', 'trayectoria', 'formacion', 'arcade', 'contacto'];
   const indice = document.createElement('nav'); indice.className = 'escenas-indice'; indice.setAttribute('aria-label', 'Escenas');
   E.forEach((e, i) => {
     const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', NOMBRE[e.id]); b.dataset.nombre = NOMBRE[e.id];
-    if (e.cortina || i === 0) b.classList.add('seccion');
+    if (SECCION.includes(e.id)) b.classList.add('seccion');
     b.addEventListener('click', () => irA(i)); indice.append(b);
   });
   document.body.append(indice);
@@ -279,41 +291,38 @@
     } else { paso = 0; e.entrar.call(e, tl, e.ev, dir); }
     return tl;
   }
-  function limpiar(tl) { gsap.set(objetivos(tl).filter(t => capa.contains(t)), { clearProps: 'transform,opacity,visibility,rotate' }); }
+  function limpiar(tl) { gsap.set(objetivos(tl).filter(t => capa.contains(t)), { clearProps: 'transform,opacity,visibility,filter' }); }
+  // al pasar hacia adelante a una sección grande, o al volver hacia atrás desde una, pasa el hada
+  const conHada = (de, a, dir) => dir > 0 ? !!a.hada : !!de.hada;
   function irA(i, pasoInicial) {
     if (ocupado || i === actual || i < 0 || i >= E.length) return;
     ocupado = true;
     const dir = i > actual ? 1 : -1, de = E[actual], a = E[i];
-    if (tlEntrada) tlEntrada.progress(1);
-    const sal = gsap.timeline();
-    if (de.salir && dir > 0) de.salir(sal, de.ev);
-    else sal.to(de.ev.firstElementChild, { opacity: 0, y: dir > 0 ? -50 : 50, duration: .45, ease: 'power2.in' });
-    const cambio = () => {
-      limpiar(sal); if (tlEntrada) limpiar(tlEntrada);
-      actual = i; mostrar(a);
-      tlEntrada = entrar(a, dir, pasoInicial);
+    if (tlEntrada) { tlEntrada.progress(1); limpiar(tlEntrada); tlEntrada = null; }
+    if (conHada(de, a, dir)) {
+      // la escena nueva queda lista (sin animar sus piezas) y el hada la dibuja encima de la actual
+      actual = i; mostrar(a); de.ev.classList.add('activa');
+      paso = pasoInicial ?? (dir < 0 && a.pasos ? a.pasos - 1 : 0);
+      if (a.tabs) { const t = a.tabs[paso]; if (!t.classList.contains('active')) { sincronizando = true; t.click(); sincronizando = false; } }
       ajustar(a);
-      tlEntrada.eventCallback('onComplete', () => { ocupado = false; a.ev.classList.remove('animando'); });
-      gsap.delayedCall(Math.min(1.2, tlEntrada.duration()), () => { ocupado = false; });   // una entrada larga no bloquea seguir
-    };
-    const conTelon = dir > 0 ? !!a.cortina : !!de.cortina;           // el telón marca el paso a otra sección
-    if (conTelon) {
-      const span = letras(dir > 0 ? a.cortina : (seccionDe(i) || NOMBRE[a.id]));
-      sal.set(telon, { visibility: 'visible' }, '-=.25')
-        .fromTo(hojas[0], { xPercent: -102 }, { xPercent: 0, duration: .6, ease: 'power3.inOut' }, '<')
-        .fromTo(hojas[1], { xPercent: 102 }, { xPercent: 0, duration: .6, ease: 'power3.inOut' }, '<')
-        .fromTo(cartel, { y: -H() * .6, rotate: -6 }, { y: 0, rotate: 0, duration: .7, ease: 'elastic.out(1, .6)' }, '-=.15')
-        .from(span, { opacity: 0, y: 18, duration: .25, stagger: .025, ease: 'back.out(2)' }, '-=.45')
-        .to({}, { duration: .5 })
-        .call(cambio)
-        .to(cartel, { y: -H() * .6, duration: .45, ease: 'power2.in' })
-        .to(hojas[0], { xPercent: -102, duration: .7, ease: 'power3.inOut' }, '-=.25')
-        .to(hojas[1], { xPercent: 102, duration: .7, ease: 'power3.inOut' }, '<')
-        .set(telon, { visibility: 'hidden' });
-    } else sal.call(cambio);
+      hechizo(de.ev, a.ev, dir > 0 ? a.hada : (seccionDe(i) || NOMBRE[a.id]), () => {
+        de.ev.classList.remove('activa'); de.ev.scrollTop = 0; ocupado = false;
+      });
+      return;
+    }
+    const sal = gsap.timeline();
+    sal.to(de.ev.firstElementChild, { opacity: 0, y: dir > 0 ? -30 : 30, duration: .35, ease: 'power2.in' })
+      .call(() => {
+        limpiar(sal);
+        actual = i; mostrar(a);
+        tlEntrada = entrar(a, dir, pasoInicial);
+        ajustar(a);
+        tlEntrada.eventCallback('onComplete', () => { ocupado = false; a.ev.classList.remove('animando'); });
+        gsap.delayedCall(Math.min(1, tlEntrada.duration()), () => { ocupado = false; });   // una entrada larga no bloquea seguir
+      });
   }
-  // al volver hacia arriba, el telón muestra el nombre de la sección a la que se entra
-  function seccionDe(i) { for (let k = i; k >= 0; k--) if (E[k].cortina) return E[k].cortina; return 'Inicio'; }
+  // al volver hacia arriba, el nombre que escribe el hada es el de la sección a la que se entra
+  function seccionDe(i) { for (let k = i; k >= 0; k--) if (E[k].hada) return E[k].hada; return ''; }
   function irPaso(n) {
     const e = E[actual]; if (!e.pasos || ocupado || n === paso || n < 0 || n >= e.pasos) return;
     ocupado = true;
