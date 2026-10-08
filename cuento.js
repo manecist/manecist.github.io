@@ -548,7 +548,7 @@
       ] }
     ] },
     logros: { carpeta: 'logros/', hitos: [
-      { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', central: 'Después de tantas noches de código, llegó su recompensa: en junio de 2026 terminó el curso Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital. Su medalla es digital y cualquiera puede verificarla. Pero Ari nunca deja de aprender: hoy estudia el Certificado de Análisis de Datos de Google, con cinco cursos ya aprobados.', titulo: 'Magical Alliance', texto: 'Aquí nació la tienda mágica.', pasos: [
+      { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', central: 'Después de tantas noches de código, llegó su recompensa: en junio de 2026 terminó el curso Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital. Su medalla es digital y cualquiera puede verificarla. Pero Ari nunca deja de aprender: hoy estudia el Certificado de Análisis de Datos de Google, con cinco cursos ya aprobados.', titulo: 'Logro desbloqueado', texto: 'Un reconocimiento muy importante para su carrera.', pasos: [
         { nombre: 'ari', actor: 'medalla', x: 50, alto: 16, efecto: 'brilla', ms: 2800, bucle: [0, 1], cicloMs: 3000 },                       // Ari levanta su medalla en el podio
         { nombre: 'ari', efecto: 'salta', ms: 2600 }
       ] },
@@ -778,9 +778,9 @@
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
         if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; if (conVoz && enVista()) { const d = MCENarrador.sinRepetir(p.texto.titulo, p.texto.texto); voz = d ? MCENarrador.encolar(d) : null; } }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
+        // espera a que pase algo afuera del cuento (por ejemplo, que se entregue la boleta en la caja); mientras, la caja no se puede subir
+        if (p.espera) { document.body.classList.add('app-obligada'); const ok = await new Promise(fin => { const f = () => { clearInterval(vig); removeEventListener(p.espera, f); fin(mia === vuelta); }; const vig = setInterval(() => { if (mia !== vuelta) { clearInterval(vig); removeEventListener(p.espera, f); fin(false); } }, 500); addEventListener(p.espera, f); }); document.body.classList.remove('app-obligada'); if (!ok) return; }
         if (p.cierraApp) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: false } }));
-        // espera a que pase algo afuera del cuento (por ejemplo, que se entregue la boleta en la caja)
-        if (p.espera) { const ok = await new Promise(fin => { const f = () => { clearInterval(vig); removeEventListener(p.espera, f); fin(mia === vuelta); }; const vig = setInterval(() => { if (mia !== vuelta) { clearInterval(vig); removeEventListener(p.espera, f); fin(false); } }, 500); addEventListener(p.espera, f); }); if (!ok) return; }
         if (p.fx) [].concat(p.fx).forEach(f => luego(() => { if (mia !== vuelta) return; efecto(f.tipo, f.x, f.ancho, f.y, f.ms); [].concat(f.golpe || []).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } }); }, f.tras || 0));
         if (p.golpe) [].concat(p.golpe).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } });
         if (p.muere) [].concat(p.muere).forEach((n, i) => { const g = actores[n]; if (!g) return; delete actores[n]; luego(() => { const x = parseFloat(g.style.left) + g._ancho / 2; g.classList.add('muere'); efecto('humo', x, g._ancho * 1.4, 0, 1000); setTimeout(() => g.remove(), 700); }, i * 120); });
@@ -1190,6 +1190,7 @@
     // la tienda en vivo se carga recién cuando su cuadro baja (no pesa mientras tanto)
     window.addEventListener('cuento-app', () => setTimeout(() => document.querySelectorAll('.teatro-app .colgante-app:not(.arriba) .vitrina-viva iframe[data-src]').forEach(f => { f.src = f.dataset.src; f.removeAttribute('data-src'); }), 50));
     window.addEventListener('cuento-app', e => { const id = e.detail.abrir; teatro.querySelectorAll('.colgante-app').forEach(c => { c.classList.add('mueve'); clearTimeout(c._mv); c._mv = setTimeout(() => c.classList.remove('mueve'), 1000); const mia = id === true || (typeof id === 'string' && c.dataset.app === id); c.classList.toggle('arriba', !(id && mia)); c._rotular && c._rotular(); }); });
+    window.addEventListener('cuento-pasa', () => document.body.classList.remove('app-obligada'));
     window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
       const ps = e.detail.paginas, pop = ps.some(p => p.classList.contains('pagina-pop'));
