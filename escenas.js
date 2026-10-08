@@ -136,13 +136,11 @@
   // ---------------------------------------------------------- 10-11. trayectoria
   const tra = '#trayectoria', explic = $$('.transition-explanation', $(tra));
   E.push({
-    id: 'trayectoria', hada: 'Trayectoria', ev: crear('ev-trayectoria', cabeza(tra), de('.vida-tira', tra), explic[0], de('.transition-path', tra), explic[1]),
+    id: 'trayectoria', hada: 'Trayectoria', ev: crear('ev-trayectoria', cabeza(tra), de('.transition-path', tra), explic[0]),
     entrar(tl, ev) {
       sube(tl, $$('.section-head > *', ev));
-      sube(tl, $$('.vida-tira figure', ev), '-=.2', { stagger: .06, duration: .45 });
-      tl.from(explic[0], { opacity: 0, duration: .4 }, '-=.2');
       lado(tl, $$('.transition-path > *', ev), 1, undefined, { stagger: .06, duration: .4 });
-      tl.from(explic[1], { opacity: 0, duration: .4 });
+      tl.from(explic[0], { opacity: 0, duration: .4 });
     },
   });
   E.push({
@@ -308,6 +306,29 @@
       .to(lienzo, { opacity: 0, duration: .35 }, '-=.35')   // lo que quede de niebla se desvanece
       .call(() => { if (window.Magia) Magia.chispas(40, innerHeight - 40, { n: 40, vel: 5, colores: TONOS }); });
     return tl;
+  }
+
+  // ---------------------------------------------------------- leyendas: carrusel infinito, un dibujo a la vez, que vuelve a empezar sin saltos
+  const rejilla = $('#leyendas-grid');
+  if (rejilla) {
+    const marco = div('carrusel-leyendas'); rejilla.before(marco); marco.append(rejilla);
+    const flecha = (t, lbl) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'carrusel-flecha'; b.textContent = t; b.setAttribute('aria-label', lbl); marco.append(b); return b; };
+    const antF = flecha('‹', 'Dibujo anterior'), sigF = flecha('›', 'Dibujo siguiente');
+    let moviendo = false, encima = false;
+    const paso = () => { const p = rejilla.firstElementChild; return p ? p.getBoundingClientRect().width / (parseFloat(rejilla.closest('.ev-caja')?.style.zoom) || 1) + 16 : 0; };
+    const fijar = (x, anima) => { rejilla.style.transition = anima ? 'transform .8s cubic-bezier(.45,0,.25,1)' : 'none'; rejilla.style.transform = 'translateX(' + x + 'px)'; };
+    // adelante: se desliza un dibujo y el primero pasa al final; atrás: el último pasa al principio y se desliza a su lugar
+    const avanzarCarrusel = dir => {
+      if (moviendo || rejilla.children.length < 2) return; moviendo = true;
+      const d = paso();
+      if (dir > 0) { fijar(-d, true); setTimeout(() => { rejilla.append(rejilla.firstElementChild); fijar(0, false); moviendo = false; }, 820); }
+      else { rejilla.prepend(rejilla.lastElementChild); fijar(-d, false); void rejilla.offsetWidth; fijar(0, true); setTimeout(() => { moviendo = false; }, 820); }
+    };
+    sigF.addEventListener('click', () => avanzarCarrusel(1)); antF.addEventListener('click', () => avanzarCarrusel(-1));
+    marco.addEventListener('pointerenter', () => { encima = true; }); marco.addEventListener('pointerleave', () => { encima = false; });
+    setInterval(() => { if (E[actual]?.id === 'leyendas' && !encima && !document.hidden && !bloqueada()) avanzarCarrusel(1); }, 3200);
+    // al cambiar el filtro, la fila vuelve a empezar desde su lugar
+    new MutationObserver(() => { if (!moviendo) fijar(0, false); }).observe(rejilla, { childList: true });
   }
 
   // ---------------------------------------------------------- destellos en los bordes: aparecen aquí y allá, alternados, sobre los cuadros de la escena
