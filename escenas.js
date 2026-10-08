@@ -310,6 +310,24 @@
     return tl;
   }
 
+  // ---------------------------------------------------------- destellos en los bordes: aparecen aquí y allá, alternados, sobre los cuadros de la escena
+  const CUADROS = '.studio-brand-card, .service-gallery article, .service-more article, .role-node, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .contacto, .papel-app.activo';
+  const capaBrillos = div('brillos-borde'); capaBrillos.setAttribute('aria-hidden', 'true'); document.body.append(capaBrillos);
+  const TONOS_BORDE = ['#fff6d8', '#f3d48a', '#f5a8cf', '#d9c4ff', '#bfe9ff'];
+  setInterval(() => {
+    if (document.hidden || bloqueada() || magia.style.visibility === 'visible') return;
+    const cuadros = $$(CUADROS, E[actual].ev).map(q => q.getBoundingClientRect()).filter(r => r.width > 40 && r.bottom > 0 && r.top < innerHeight);
+    if (!cuadros.length || Math.random() < .25) return;
+    // un punto al azar sobre el contorno de un cuadro al azar
+    const r = cuadros[Math.random() * cuadros.length | 0]; let t = Math.random() * 2 * (r.width + r.height), x, y;
+    if (t < r.width) { x = r.left + t; y = r.top; } else if ((t -= r.width) < r.height) { x = r.right; y = r.top + t; }
+    else if ((t -= r.height) < r.width) { x = r.right - t; y = r.bottom; } else { x = r.left; y = r.bottom - (t - r.width); }
+    const b = document.createElement('i'), d = .9 + Math.random() * .9;
+    b.className = 'brillo-borde';
+    b.style.cssText = 'left:' + x.toFixed(0) + 'px;top:' + y.toFixed(0) + 'px;--t:' + (14 + Math.random() * 16).toFixed(0) + 'px;--c:' + TONOS_BORDE[Math.random() * TONOS_BORDE.length | 0] + ';--d:' + d.toFixed(2) + 's';
+    capaBrillos.append(b); setTimeout(() => b.remove(), d * 1000 + 50);
+  }, 180);
+
   // ---------------------------------------------------------- índice lateral: una estrella por escena
   const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', servicios: 'Servicios', equipo: 'El equipo', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos', trayectoria: 'Trayectoria', salud: 'Matrona', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
   const SECCION = ['inicio', 'estudio', 'desarrollo', 'diseno', 'datos', 'trayectoria', 'formacion', 'arcade', 'contacto'];
