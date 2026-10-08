@@ -26,35 +26,23 @@ html.escenas .ev-leyendas .leyendas-grid { max-height: none; }
 
 /* velo: el reino de acuarela queda detrás, más tenue, cuando hay contenido encima */
 .escenas-velo { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .8s ease;
-  background: radial-gradient(ellipse 85% 80% at 50% 52%, rgba(8, 17, 39, .8), rgba(8, 17, 39, .55)); }
+  background: radial-gradient(ellipse 80% 75% at 50% 52%, rgba(8, 17, 39, .66), rgba(8, 17, 39, .3)); }
 .escenas-velo.visible { opacity: 1; }
-html[data-tema="claro"] .escenas-velo { background: radial-gradient(ellipse 85% 80% at 50% 52%, rgba(255, 250, 243, .88), rgba(255, 250, 243, .6)); }
+html[data-tema="claro"] .escenas-velo { background: radial-gradient(ellipse 80% 75% at 50% 52%, rgba(255, 250, 243, .72), rgba(255, 250, 243, .28)); }
 
 /* menú: la sección que se está mirando */
 html.escenas .topbar nav a.activo { color: var(--white); background: rgba(245, 168, 207, .16); border-radius: 10px; box-shadow: inset 0 -2px 0 var(--rosa, #f5a8cf); }
 html[data-tema="claro"].escenas .topbar nav a.activo { color: var(--tinta, #3b2546); background: rgba(226, 109, 156, .14); }
 
-/* ---------------------------------------------------------------- el hada dibuja la escena siguiente */
-/* la escena nueva aparece detrás de la varita (de la esquina superior derecha a la inferior izquierda) y la anterior se borra */
-html.escenas .ev.revela, html.escenas .ev.queda { display: flex; }
-html.escenas .ev.revela { z-index: 2;
-  -webkit-mask-image: linear-gradient(to bottom left, #000 calc(var(--r) * 1% - 5%), transparent calc(var(--r) * 1% + 3%));
-  mask-image: linear-gradient(to bottom left, #000 calc(var(--r) * 1% - 5%), transparent calc(var(--r) * 1% + 3%)); }
-html.escenas .ev.queda { z-index: 1;
-  -webkit-mask-image: linear-gradient(to bottom left, transparent calc(var(--r) * 1% - 3%), #000 calc(var(--r) * 1% + 5%));
-  mask-image: linear-gradient(to bottom left, transparent calc(var(--r) * 1% - 3%), #000 calc(var(--r) * 1% + 5%)); }
+/* ---------------------------------------------------------------- el hada tapa todo con niebla mágica y pinta la sección siguiente */
 .hechizo-paso { position: fixed; inset: 0; z-index: 1150; pointer-events: none; visibility: hidden; overflow: hidden; }
-/* la línea de luz donde la varita va dibujando */
-.hechizo-brillo { position: absolute; inset: 0; mix-blend-mode: screen;
-  background: linear-gradient(to bottom left, transparent calc(var(--r, -20) * 1% - 6%), rgba(245, 168, 207, .35) calc(var(--r, -20) * 1% - 2%), rgba(255, 246, 252, .85) calc(var(--r, -20) * 1%), rgba(243, 212, 138, .35) calc(var(--r, -20) * 1% + 2%), transparent calc(var(--r, -20) * 1% + 6%)); }
-.hechizo-hada { position: absolute; left: 0; top: 0; height: 210px; width: auto; will-change: transform; filter: drop-shadow(0 0 14px rgba(255, 231, 244, .9)) drop-shadow(0 0 28px rgba(243, 212, 138, .5)); }
-.hechizo-nombre { position: absolute; left: 0; right: 0; top: 42%; margin: 0; text-align: center; font: 700 clamp(2.2rem, 5vw, 4.2rem)/1.1 var(--titulo, "Cinzel", serif); color: #fff6e0; letter-spacing: .04em;
-  text-shadow: 0 0 10px #f3d48a, 0 0 26px #f5a8cf, 0 0 50px rgba(186, 147, 240, .8); }
-html[data-tema="claro"] .hechizo-nombre { color: #8a4f8a; text-shadow: 0 0 10px #fff, 0 0 22px #f5a8cf, 0 0 40px #f3d48a; }
-html[data-tema="claro"] .hechizo-brillo { mix-blend-mode: normal; }
-.hechizo-estrella { position: absolute; font-style: normal; font-size: var(--t); line-height: 1; color: var(--c); translate: -50% -50%; text-shadow: 0 0 8px var(--c), 0 0 16px rgba(255, 255, 255, .8);
+.hechizo-niebla { position: absolute; inset: 0; width: 100%; height: 100%; filter: blur(5px); }
+.hechizo-hada { position: absolute; left: 0; top: 0; height: 230px; width: auto; will-change: transform; filter: drop-shadow(0 0 14px rgba(255, 231, 244, .9)) drop-shadow(0 0 26px rgba(145, 220, 255, .55)); }
+.hechizo-nombre { position: absolute; left: 0; right: 0; top: 50%; translate: 0 -50%; margin: 0; text-align: center; font: 700 clamp(2.4rem, 5.4vw, 4.6rem)/1.1 var(--titulo, "Cinzel", serif); letter-spacing: .04em;
+  color: #8a5aa8; text-shadow: 0 0 2px #fff, 0 0 14px #ffd9ea, 0 0 30px #91dcff, 0 0 46px rgba(245, 168, 207, .8); }
+.hechizo-estrella { position: absolute; font-style: normal; font-size: var(--t); line-height: 1; color: var(--c); translate: -50% -50%; text-shadow: 0 0 6px var(--c), 0 0 14px rgba(145, 220, 255, .9);
   animation: hechizo-estrella 1.4s ease-out forwards; }
-@keyframes hechizo-estrella { 0% { opacity: 0; transform: scale(.2) rotate(var(--g)); } 20% { opacity: 1; transform: scale(1.25) rotate(calc(var(--g) + 40deg)); } 100% { opacity: 0; transform: translateY(26px) scale(.5) rotate(calc(var(--g) + 160deg)); } }
+@keyframes hechizo-estrella { 0% { opacity: 0; transform: scale(.2) rotate(var(--g)); } 20% { opacity: 1; transform: scale(1.25) rotate(calc(var(--g) + 40deg)); } 100% { opacity: 0; transform: translateY(22px) scale(.5) rotate(calc(var(--g) + 160deg)); } }
 
 /* ---------------------------------------------------------------- índice: una estrella por escena */
 .escenas-indice { position: fixed; left: 22px; top: 50%; translate: 0 -50%; z-index: 95; display: grid; gap: 9px; }
@@ -81,3 +69,11 @@ html[data-tema="claro"] .escenas-pista { border-color: rgba(59, 37, 70, .45); }
 .site.pintando ~ .escenas-indice, .site.pintando ~ .escenas-pista,
 html:has(#site[aria-hidden="true"]) .escenas-indice, html:has(#site[aria-hidden="true"]) .escenas-pista,
 html:has(#site.pintando) .escenas-indice, html:has(#site.pintando) .escenas-pista { opacity: 0; visibility: hidden; }
+
+/* fuera de la portada solo queda el velo suave de la escena: el reino de acuarela se sigue viendo detrás */
+html.escena-contenido .reino-velo { opacity: 0 !important; }
+/* los textos sueltos sobre el paisaje llevan un halo suave para leerse bien */
+html.escenas .ev :is(.section-head p, .section-head .eyebrow, .art-context, .art-credit, .transition-explanation, .leyendas-aviso, .team-outcome, #contacto p) { text-shadow: 0 1px 8px rgba(8, 17, 39, .9), 0 0 2px rgba(8, 17, 39, .8); }
+html[data-tema="claro"].escenas .ev :is(.section-head p, .section-head .eyebrow, .art-context, .art-credit, .transition-explanation, .leyendas-aviso, .team-outcome, #contacto p) { text-shadow: 0 0 8px rgba(255, 250, 243, 1), 0 0 3px rgba(255, 250, 243, 1); }
+html.escenas .ev :is(.section-head h2) { text-shadow: 0 2px 14px rgba(8, 17, 39, .6); }
+html[data-tema="claro"].escenas .ev :is(.section-head h2) { text-shadow: 0 0 16px rgba(255, 250, 243, .9); }

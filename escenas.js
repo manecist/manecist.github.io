@@ -3,9 +3,10 @@
    Cada giro de la rueda (o flecha abajo / AvPág) pasa a la escena siguiente;
    las piezas aparecen con suavidad (sin estirarse). Algunas escenas tienen pasos
    internos (pestañas de desarrollo y juegos). Al entrar a las secciones grandes
-   pasa el hada volando desde la esquina superior derecha a la inferior izquierda
-   y, detrás de su varita, dibuja la escena siguiente sobre la actual con brillos
-   y estrellas. Los nodos de la página se mueven (no se copian), así la
+   pasa el hada volando desde la esquina superior derecha a la inferior izquierda:
+   la estela de cometa que nace de su varita tapa todo con niebla mágica, aparece
+   el nombre de la sección y en una segunda pasada la estela descubre la nueva.
+   Los nodos de la página se mueven (no se copian), así la
    calculadora, la caja, el oráculo y los juegos siguen funcionando.
    Solo en escritorio con mouse; ?normal vuelve a la página con scroll.
    ========================================================================== */
@@ -174,55 +175,96 @@
     paso = k; requestAnimationFrame(() => ajustar(e));
   })));
 
-  // ---------------------------------------------------------- el hada que dibuja la escena siguiente
+  // ---------------------------------------------------------- el hada que tapa todo con su estela y pinta la sección siguiente
+  // 1. vuela de la esquina superior derecha a la inferior izquierda; de la estrella de su varita nace una estela
+  //    de cometa que se ensancha detrás de ella hasta cubrir toda la pantalla de niebla blanca;
+  // 2. en la niebla, con brillitos celestes y rosados, aparece el nombre de la sección;
+  // 3. vuelve a pasar en la misma dirección y la misma estela de cometa va descubriendo la sección nueva.
   const magia = document.createElement('div'); magia.className = 'hechizo-paso'; magia.setAttribute('aria-hidden', 'true');
-  magia.innerHTML = '<div class="hechizo-brillo"></div><p class="hechizo-nombre"></p><img class="hechizo-hada" src="assets/hada-hechizo-3.webp" alt="">';
+  magia.innerHTML = '<canvas class="hechizo-niebla"></canvas><p class="hechizo-nombre"></p><img class="hechizo-hada" src="assets/hada-cometa.webp" alt="">';
   document.body.append(magia);
-  const brillo = $('.hechizo-brillo', magia), nombreHada = $('.hechizo-nombre', magia), hadaImg = $('.hechizo-hada', magia);
-  const HADA_ALTO = 210, PUNTA = [30 / 360, 372 / 480];             // la punta de la varita dentro de la imagen
-  const ESTRELLAS = ['✦', '✧', '⋆', '✶', '★'];
-  function estrella(x, y) {
+  const lienzo = $('.hechizo-niebla', magia), ctx = lienzo.getContext('2d'), nombreHada = $('.hechizo-nombre', magia), hadaImg = $('.hechizo-hada', magia);
+  const niebla = document.createElement('canvas'), nctx = niebla.getContext('2d');   // la niebla completa, para descubrirla en la segunda pasada
+  const HADA_ALTO = 230, HADA_ANCHO = HADA_ALTO * .75, PUNTA = [.833, .167];   // la estrella de la varita dentro de la imagen
+  const ESTRELLAS = ['✦', '✧', '⋆', '✶'], TONOS = ['#ffffff', '#bfe9ff', '#91dcff', '#ffd9ea', '#f5a8cf'];
+  function estrella(x, y, tam = 9 + Math.random() * 15) {
     const s = document.createElement('i'); s.className = 'hechizo-estrella'; s.textContent = ESTRELLAS[Math.random() * ESTRELLAS.length | 0];
-    s.style.cssText = `left:${x}px;top:${y}px;--t:${(10 + Math.random() * 18).toFixed(0)}px;--g:${(Math.random() * 360) | 0}deg;--c:${['#fff', '#ffd9ea', '#f5a8cf', '#f3d48a', '#d9c4ff'][Math.random() * 5 | 0]}`;
+    s.style.cssText = `left:${x}px;top:${y}px;--t:${tam.toFixed(0)}px;--g:${(Math.random() * 360) | 0}deg;--c:${TONOS[1 + (Math.random() * 4 | 0)]}`;
     magia.append(s); setTimeout(() => s.remove(), 1500);
   }
-  // r = avance del dibujo (0: esquina superior derecha, 100: inferior izquierda). La línea que separa
-  // lo dibujado de lo que falta es perpendicular al vuelo; detrás del hada ya está la escena nueva.
-  function hechizo(viejo, nuevo, texto, alFin) {
-    const w = W(), h = innerHeight, larga = Math.hypot(w, h);
-    const ancho = HADA_ALTO * .75;
-    magia.style.visibility = 'visible'; nombreHada.textContent = texto || '';
-    nuevo.classList.add('revela'); viejo.classList.add('queda');
-    nuevo.style.setProperty('--r', -12); viejo.style.setProperty('--r', -12);
-    const obj = { r: -12 }; let ultima = 0;
-    gsap.set(nombreHada, { opacity: 0, scale: .9 });
-    const tl = gsap.timeline({ onComplete: () => {
-      nuevo.classList.remove('revela'); viejo.classList.remove('queda'); nuevo.style.removeProperty('--r'); viejo.style.removeProperty('--r');
-      magia.style.visibility = 'hidden'; alFin && alFin();
-    } });
-    tl.to(obj, { r: 112, duration: 2.1, ease: 'sine.inOut', onUpdate() {
-      const r = obj.r;
-      [nuevo, viejo, brillo].forEach(el => el.style.setProperty('--r', r.toFixed(2)));
-      // la punta de la varita va por la diagonal, con un vaivén suave de vuelo
-      const s = Math.min(1.1, Math.max(-.1, r / 100)), ola = Math.sin(s * Math.PI * 3) * 22;
-      const px = w * (1 - s) + ola * (h / larga), py = h * s + ola * (w / larga);
-      hadaImg.style.transform = `translate(${(px - ancho * PUNTA[0]).toFixed(1)}px, ${(py - HADA_ALTO * PUNTA[1]).toFixed(1)}px) rotate(${(Math.sin(s * 9) * 4).toFixed(1)}deg)`;
-      // destellos en la varita y estrellas que caen a lo largo del borde que se va dibujando
-      if (window.Magia) Magia.estela(px, py, { n: 3, colores: ['#fff', '#ffd9ea', '#f5a8cf', '#f3d48a', '#d9c4ff'] });
+  function pintarNiebla() {                         // niebla blanca pareja con manchas celestes y rosadas
+    niebla.width = lienzo.width; niebla.height = lienzo.height;
+    nctx.fillStyle = '#fffafd'; nctx.fillRect(0, 0, niebla.width, niebla.height);
+    for (let q = 0; q < 16; q++) {
+      const x = Math.random() * niebla.width, y = Math.random() * niebla.height, r = 120 + Math.random() * 240;
+      const g = nctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, q % 2 ? 'rgba(191,233,255,.5)' : 'rgba(255,217,234,.55)'); g.addColorStop(1, 'rgba(255,250,253,0)');
+      nctx.fillStyle = g; nctx.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+  }
+  // la estela: un cono de luz que nace en la estrella y se abre hacia atrás, en tres capas (halo, cuerpo y núcleo)
+  function cola(camino, abre, quitar) {
+    const n = camino.length; if (n < 2) return;
+    const fin = camino[n - 1];
+    const capas = quitar ? [[1, 'rgba(0,0,0,.45)'], [.72, 'rgba(0,0,0,.75)'], [.42, 'rgba(0,0,0,1)']]
+      : [[1, 'rgba(214,238,255,.42)'], [.72, 'rgba(255,230,244,.62)'], [.42, 'rgba(255,255,255,.95)']];
+    capas.forEach(([f, color]) => {
+      const izq = [], der = [];
+      camino.forEach(p => {
+        const dist = fin.l - p.l, hw = (5 + dist * abre) * f + Math.sin(p.l / 38 + f * 3) * Math.min(14, dist * .05);   // la cola ondula un poco al abrirse
+        izq.push([p.x + p.nx * hw, p.y + p.ny * hw]); der.push([p.x - p.nx * hw, p.y - p.ny * hw]);
+      });
+      ctx.beginPath(); ctx.moveTo(izq[0][0], izq[0][1]);
+      izq.forEach(q => ctx.lineTo(q[0], q[1])); der.reverse().forEach(q => ctx.lineTo(q[0], q[1]));
+      ctx.closePath(); ctx.fillStyle = color; ctx.fill();
+    });
+    // la cabeza del cometa: un resplandor en la estrella de la varita
+    if (!quitar) { const g = ctx.createRadialGradient(fin.x, fin.y, 0, fin.x, fin.y, 34); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.4, 'rgba(255,236,248,.8)'); g.addColorStop(1, 'rgba(191,233,255,0)'); ctx.fillStyle = g; ctx.fillRect(fin.x - 34, fin.y - 34, 68, 68); }
+  }
+  // una pasada: la estrella va de afuera de la esquina superior derecha hasta afuera de la inferior izquierda
+  function pasada(descubrir, duracion) {
+    const w = lienzo.width, h = lienzo.height, D = Math.hypot(w, h);
+    const d = [-w / D, h / D], nrm = [h / D, w / D];
+    const desde = [w + 120 * w / D, -120 * h / D], largo = D + 420;
+    const camino = []; let ultima = 0;
+    const obj = { s: 0 };
+    return gsap.to(obj, { s: 1, duration: duracion, ease: 'none', onUpdate() {
+      const s = obj.s, l = largo * s, ola = Math.sin(s * Math.PI * 2.5) * 34;   // vuelo con un vaivén suave
+      const x = desde[0] + d[0] * l + nrm[0] * ola, y = desde[1] + d[1] * l + nrm[1] * ola;
+      camino.push({ x, y, l, nx: nrm[0], ny: nrm[1] });
+      const abre = .34 + .55 * s * s;                   // al final la cola se abre más y termina de cubrir las esquinas
+      ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, w, h);
+      if (descubrir) { ctx.drawImage(niebla, 0, 0); ctx.globalCompositeOperation = 'destination-out'; cola(camino, abre, true); ctx.globalCompositeOperation = 'source-over'; }
+      else cola(camino, abre, false);
+      // el hada lleva la varita en la mano: la estrella queda en la cabeza del cometa
+      hadaImg.style.transform = `translate(${(x - HADA_ANCHO * PUNTA[0]).toFixed(1)}px, ${(y - HADA_ALTO * PUNTA[1]).toFixed(1)}px) rotate(${(Math.sin(s * 10) * 3).toFixed(1)}deg)`;
+      if (window.Magia) Magia.estela(x, y, { n: 4, colores: TONOS });
       const ahora = performance.now();
-      if (ahora - ultima > 45 && s > 0 && s < 1) {
+      if (ahora - ultima > 40) {                        // brillitos celestes y rosados que quedan flotando en la cola
         ultima = ahora;
-        for (let k = 0; k < 2; k++) {
-          const u = (Math.random() - .5) * 1.4;                     // un punto al azar sobre la línea del borde
-          const x = px + u * w * .5, y = py + u * h * .5;
-          if (x > -20 && x < w + 20 && y > -20 && y < h + 20) estrella(x, y);
+        for (let q = 0; q < 3; q++) {
+          const atras = Math.random() ** 1.5 * Math.min(l, 900), ancho = (Math.random() - .5) * 2 * (5 + atras * abre) * .9;
+          estrella(x - d[0] * atras + nrm[0] * ancho, y - d[1] * atras + nrm[1] * ancho);
         }
       }
-    } })
-      .to(nombreHada, { opacity: 1, scale: 1, duration: .5, ease: 'power2.out' }, .7)
-      .to(nombreHada, { opacity: 0, duration: .5 }, 1.75)
-      .fromTo(nuevo.firstElementChild, { filter: 'grayscale(.85) brightness(1.35) contrast(.85)' }, { filter: 'grayscale(0) brightness(1) contrast(1)', duration: 1.1, ease: 'power1.inOut', clearProps: 'filter' }, .9);
-    if (window.Magia) tl.call(() => Magia.chispas(30, innerHeight - 40, { n: 40, vel: 5 }), null, 2.05);
+    } });
+  }
+  function hechizo(texto, alCubrir, alFin) {
+    lienzo.width = W(); lienzo.height = innerHeight; ctx.clearRect(0, 0, lienzo.width, lienzo.height); pintarNiebla();
+    magia.style.visibility = 'visible'; nombreHada.textContent = texto || '';
+    gsap.set(nombreHada, { opacity: 0, scale: .92 }); gsap.set(lienzo, { opacity: 1 });
+    const velo = { a: 0 };
+    const tl = gsap.timeline({ onComplete: () => { magia.style.visibility = 'hidden'; ctx.clearRect(0, 0, lienzo.width, lienzo.height); gsap.set(lienzo, { opacity: 1 }); alFin && alFin(); } });
+    tl.add(pasada(false, 2.1))
+      // lo que la cola no alcanzó se llena de niebla
+      .to(velo, { a: 1, duration: .35, onUpdate() { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = velo.a; ctx.drawImage(niebla, 0, 0); ctx.globalAlpha = 1; } }, '-=.3')
+      .call(() => alCubrir && alCubrir())
+      .to(nombreHada, { opacity: 1, scale: 1, duration: .5, ease: 'power2.out' })
+      .call(() => { for (let q = 0; q < 26; q++) setTimeout(() => estrella(W() * (.2 + Math.random() * .6), innerHeight * (.3 + Math.random() * .4), 12 + Math.random() * 18), q * 30); }, null, '<')
+      .to({}, { duration: .8 })
+      .to(nombreHada, { opacity: 0, duration: .35 })
+      .add(pasada(true, 2.1), '-=.1')
+      .to(lienzo, { opacity: 0, duration: .35 }, '-=.35')   // lo que quede de niebla se desvanece
+      .call(() => { if (window.Magia) Magia.chispas(40, innerHeight - 40, { n: 40, vel: 5, colores: TONOS }); });
     return tl;
   }
 
@@ -275,7 +317,7 @@
     E.forEach(x => x.ev.classList.toggle('activa', x === e));
     $$('button', indice).forEach((b, i) => b.classList.toggle('activo', E[i] === e));
     velo.classList.toggle('visible', e.id !== 'inicio');
-    if (reino) reino.style.setProperty('--scroll', e.id === 'inicio' ? '0' : '1');
+    raiz.classList.toggle('escena-contenido', e.id !== 'inicio');   // fuera de la portada, el velo propio de la escena reemplaza al de la portada
     pistaRueda.classList.toggle('oculta', e.id === 'contacto');
     marcarMenu(e);
     e.ev.scrollTop = 0; ajustar(e);
@@ -300,14 +342,13 @@
     const dir = i > actual ? 1 : -1, de = E[actual], a = E[i];
     if (tlEntrada) { tlEntrada.progress(1); limpiar(tlEntrada); tlEntrada = null; }
     if (conHada(de, a, dir)) {
-      // la escena nueva queda lista (sin animar sus piezas) y el hada la dibuja encima de la actual
-      actual = i; mostrar(a); de.ev.classList.add('activa');
-      paso = pasoInicial ?? (dir < 0 && a.pasos ? a.pasos - 1 : 0);
-      if (a.tabs) { const t = a.tabs[paso]; if (!t.classList.contains('active')) { sincronizando = true; t.click(); sincronizando = false; } }
-      ajustar(a);
-      hechizo(de.ev, a.ev, dir > 0 ? a.hada : (seccionDe(i) || NOMBRE[a.id]), () => {
-        de.ev.classList.remove('activa'); de.ev.scrollTop = 0; ocupado = false;
-      });
+      // el hada tapa la escena actual con su niebla; ya tapada, se cambia la escena y luego la pinta
+      hechizo(dir > 0 ? a.hada : (seccionDe(i) || NOMBRE[a.id]), () => {
+        de.ev.scrollTop = 0; actual = i; mostrar(a);
+        paso = pasoInicial ?? (dir < 0 && a.pasos ? a.pasos - 1 : 0);
+        if (a.tabs) { const t = a.tabs[paso]; if (!t.classList.contains('active')) { sincronizando = true; t.click(); sincronizando = false; } }
+        ajustar(a);
+      }, () => { ocupado = false; });
       return;
     }
     const sal = gsap.timeline();
