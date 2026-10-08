@@ -119,14 +119,12 @@ html.escenas .app-vitrina .botonera { display: flex; justify-content: center; ga
 .nido-escena { position: relative; width: max-content; margin: 34px auto 0; pointer-events: none; }
 .nido-crias { display: flex; align-items: flex-end; gap: 14px; }
 .nido-posada { width: 110px; height: 96px; flex: none; }
-.cria { flex: none; width: 96px; height: 91px; background: url("assets/intro/dragon-rosa.webp") 100% 0 / 864px 91px no-repeat; filter: drop-shadow(0 0 6px rgba(245, 168, 207, .6)); }
-.cria.c1, .cria.c2 { scale: -1 1; }                      /* las de la izquierda miran hacia el centro */
-.cria.c2 { filter: hue-rotate(-55deg) drop-shadow(0 0 6px rgba(186, 147, 240, .6)); }
-.cria.c3 { filter: hue-rotate(-135deg) saturate(.85) drop-shadow(0 0 6px rgba(145, 220, 255, .6)); }
-.cria.c4 { filter: hue-rotate(-25deg) drop-shadow(0 0 6px rgba(255, 190, 120, .6)); width: 80px; height: 76px; background-size: 720px 76px; }
-.cria.duerme { animation: cria-respira 2.6s ease-in-out infinite; }
+.cria { display: block; flex: none; height: 70px; width: auto; filter: drop-shadow(0 0 6px rgba(245, 168, 207, .55)); }
+.nido-posada ~ .cria { scale: -1 1; }                  /* las de la derecha se voltean para mirar al dragón del centro */
+.cria.duerme { height: 50px; transform-origin: 50% 100%; animation: cria-respira 2.6s ease-in-out infinite; }
 .nido-escena.llego .salta { animation: cria-salta .45s ease-out infinite alternate; }
-.nido-escena.llego .c3 { animation-delay: .15s; } .nido-escena.llego .c4 { animation-delay: .3s; }
+.nido-escena.llego .salta:nth-child(3) { animation-delay: .17s; } .nido-escena.llego .salta:nth-child(5) { animation-delay: .09s; }
+.nido-escena.llego .salta:nth-child(6) { animation-delay: .26s; } .nido-escena.llego .salta:nth-child(7) { animation-delay: .34s; }
 @keyframes cria-salta { to { translate: 0 -14px; } }
 @keyframes cria-respira { 50% { transform: scaleY(.94); } }
 /* el dragón posado deja de aletear */
@@ -136,3 +134,4 @@ html.escenas .ev-contacto .nido-escena { margin-top: 18px; }
 html.escenas .papel-app.app-calc { max-width: 1060px; margin-inline: auto; }
 html.escenas .papel-app .btn.ghost { color: #6a2c55; background: #fff6fb; border: 2px solid #f0d6e8; }
 html.escenas .papel-app .btn.primary { color: #fff; }
+.cria[src$="cria-4.webp"] { height: 54px; }
