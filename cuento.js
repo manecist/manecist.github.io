@@ -539,7 +539,12 @@
       { fondo: 'fondo-cima.webp', suelo: 'suelo-cima.webp', titulo: 'No es el fin…', texto: '…es solo el inicio.', pasos: [
         { nombre: 'ari', actor: 'baculo-anim', x: 50, alto: 17, efecto: 'brilla', ms: 2600, bucle: [0, 1], cicloMs: 3000,
           texto: { titulo: 'A pesar de los obstáculos…', texto: 'siempre debes alcanzar tu sueño.' } },
-        { evento: 'cuento-dibuja-mundo', ms: 6500 }                                           // un rato para leer, y Ari dibuja su mundo
+        // Ari se ilumina y se transforma en el hada…
+        { nombre: 'ari', clase: 'transforma', ms: 1500, pausa: 0 },
+        { nombre: 'hada', actor: 'hada-vuelo', x: 50, alto: 19, pj: false, clase: 'hada-final', reemplaza: 'ari', sigue: true, bucle: [0, 1], cicloMs: 1100, fx: { tipo: 'destello', x: 50, ancho: 22, y: 8, ms: 1300 }, ms: 1800, pausa: 0 },
+        // …lanza su hechizo y la luz cubre todo
+        { nombre: 'hada-h', actor: 'hada-hechizo', x: 50, alto: 19, pj: false, clase: 'hada-final', reemplaza: 'hada', sigue: true, de: 0, a: 1, ms: 900, pausa: 0 },
+        { evento: 'cuento-dibuja-mundo', ms: 400 }
       ] }
     ] },
     logros: { carpeta: 'logros/', hitos: [
@@ -892,41 +897,19 @@
   let dibujando = false;
   const dibujarMundo = origen => {
     if (dibujando) return; dibujando = true;
-    const capa = document.createElement('div'); capa.className = 'mundo-dibujo'; capa.setAttribute('aria-hidden', 'true');
-    const cv = document.createElement('canvas'), brillo = document.createElement('i'); capa.append(cv, brillo); document.body.append(capa);
-    const d = Math.min(devicePixelRatio || 1, 1.5), W = cv.width = Math.round(innerWidth * d), H = cv.height = Math.round(innerHeight * d), g = cv.getContext('2d');
-    const r = origen ? origen.getBoundingClientRect() : null, x0 = (r ? r.left + r.width * .62 : innerWidth / 2) * d, y0 = (r ? r.top + r.height * .04 : innerHeight / 2) * d;
-    const COL = ['#ffd9ea', '#ff8fc0', '#f3d48a', '#c9a6ff', '#ffffff', '#9fe3ff'];
-    // trazos: espirales y curvas que nacen del báculo y se abren hasta cubrir la pantalla
-    const trazos = Array.from({ length: 44 }, (_, i) => ({ a: i / 44 * Math.PI * 2 + Math.random() * .3, giro: (Math.random() < .5 ? -1 : 1) * (1.2 + Math.random() * 2.6), largo: Math.hypot(W, H) * (.8 + Math.random() * .7), c: COL[i % COL.length], w: (2 + Math.random() * 4) * d, ini: Math.random() * .35 }));
-    const DUR = quieto ? 0 : 3400, t0 = performance.now();
-    const paso = ahora => {
-      const t = Math.min(1, (ahora - t0) / Math.max(1, DUR));
-      g.globalCompositeOperation = 'lighter';
-      trazos.forEach(s => {
-        const u = Math.max(0, Math.min(1, (t - s.ini) / (1 - s.ini))); if (u <= 0) return;
-        const p = q => { const rr = q * s.largo, an = s.a + s.giro * q; return [x0 + Math.cos(an) * rr, y0 + Math.sin(an) * rr * .8]; };
-        const [ax, ay] = p(Math.max(0, u - .04)), [bx, by] = p(u);
-        g.strokeStyle = s.c; g.lineWidth = s.w; g.lineCap = 'round'; g.shadowColor = s.c; g.shadowBlur = 14 * d;
-        g.beginPath(); g.moveTo(ax, ay); g.lineTo(bx, by); g.stroke();
-        if (window.Magia && Math.random() < .25) Magia.estela(bx / d, by / d, { n: 1, colores: COL });
-      });
-      if (t < 1) requestAnimationFrame(paso);
-      else entrar();
-    };
-    // zoom hacia dentro del dibujo con la pantalla brillando; en el blanco cambia a la versión clásica
-    const entrar = () => {
-      capa.classList.add('entra');
-      const escL = document.getElementById('escena'); if (escL) { escL.style.transition = 'opacity 1.2s ease'; escL.style.opacity = '0'; setTimeout(() => { escL.style.opacity = ''; escL.style.transition = ''; }, 2600); }
-      setTimeout(() => {
-        // el libro desaparece de inmediato bajo el brillo (no se ve cómo se levanta ni sus hojas en blanco)
-        const esc = document.getElementById('escena'); if (esc) { esc.style.visibility = 'hidden'; setTimeout(() => { esc.style.visibility = ''; }, 2500); }
-        window.MCELibro?.aClasico(null, { pintar: true });
-        capa.classList.add('sale');
-        setTimeout(() => { capa.remove(); dibujando = false; }, 1100);
-      }, quieto ? 0 : 1500);
-    };
-    requestAnimationFrame(paso);
+    const capa = document.createElement('div'); capa.className = 'mundo-luz'; capa.setAttribute('aria-hidden', 'true');
+    const r = origen ? origen.getBoundingClientRect() : null;
+    capa.style.setProperty('--lx', (r ? r.left + r.width * .5 : innerWidth / 2) + 'px'); capa.style.setProperty('--ly', (r ? r.top + r.height * .35 : innerHeight / 2) + 'px');
+    document.body.append(capa);
+    if (window.Magia && r) Magia.chispas(r.left + r.width / 2, r.top + r.height * .3, { n: 60, vel: 6 });
+    requestAnimationFrame(() => requestAnimationFrame(() => capa.classList.add('cubre')));
+    // cuando la luz cubre todo, aparece la página y el hada la dibuja desde la hoja en blanco
+    setTimeout(() => {
+      const esc = document.getElementById('escena'); if (esc) { esc.style.visibility = 'hidden'; setTimeout(() => { esc.style.visibility = ''; }, 2500); }
+      window.MCELibro?.aClasico(null, { pintar: true });
+      capa.classList.add('sale');
+      setTimeout(() => { capa.remove(); dibujando = false; }, 1300);
+    }, quieto ? 0 : 1900);
   };
   window.addEventListener('cuento-dibuja-mundo', e => { const z = e.detail && e.detail.zona; dibujarMundo(z && z.querySelector('.hito-actor')); });
   document.addEventListener('click', e => { if (e.target.closest('[data-entrar-mundo]')) { e.preventDefault(); dibujarMundo(document.querySelector('[data-hitos="final"] .hito-actor')); } });

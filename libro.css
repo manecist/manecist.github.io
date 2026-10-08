@@ -2083,3 +2083,11 @@ html.pantalla-corta .cielo-lado li b{font-size:.58rem}html.pantalla-corta .cielo
 @keyframes central-aparece{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 .hitos-cartel.vacio,.teatro .colgante:has(.hitos-cartel.vacio){visibility:hidden}
+
+/* ✦ final: Ari se ilumina, se convierte en el hada y la luz de su hechizo cubre todo */
+.hito-actor.transforma{animation:ari-transforma 1.5s ease-in forwards}
+@keyframes ari-transforma{0%{filter:drop-shadow(0 0 6px #fff)}100%{filter:brightness(3.2) saturate(.2) drop-shadow(0 0 30px #fff) drop-shadow(0 0 60px #ffd9ea)}}
+.hito-actor.hada-final{filter:drop-shadow(0 0 14px #ffe7f4) drop-shadow(0 0 28px #f3d48a)}
+.mundo-luz{position:fixed;inset:0;z-index:2000;pointer-events:none;background:radial-gradient(circle at var(--lx) var(--ly),#fff 0,#fff8fc 22%,rgba(255,236,248,.85) 40%,rgba(255,220,240,0) 60%);background-size:100% 100%;opacity:0;clip-path:circle(0 at var(--lx) var(--ly));transition:clip-path 1.8s cubic-bezier(.5,0,.3,1),opacity .4s}
+.mundo-luz.cubre{opacity:1;clip-path:circle(150% at var(--lx) var(--ly));background:radial-gradient(circle at var(--lx) var(--ly),#fff 0,#fff8fc 55%,#fff1f8 100%)}
+.mundo-luz.sale{background:#f4f1ea;opacity:0;transition:opacity 1.2s ease .1s}

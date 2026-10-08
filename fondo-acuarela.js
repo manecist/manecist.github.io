@@ -128,7 +128,7 @@ window.FondoAcuarela = (() => {
   // ---------------------------------------------------------- dibujo de un cuadro
   const PUNTA = [[72, 97], [113, 42], [22, 318], [30, 372]], HADA_ALTO = 118, HADA_ESC = HADA_ALTO / 480;
   // acercamiento de la cámara en el tiempo (1 = la escena completa cubre la pantalla)
-  const ZOOM_CERCA = 1.5, CLAVES = [[0, 1.14], [.9, 1.14], [2, ZOOM_CERCA], [9, ZOOM_CERCA], [10.2, 1.14], [DURACION, 1.08]];
+  const ZOOM_CERCA = 1.5, CLAVES = [[0, 1.08], [DURACION, 1.08]];   // sin acercamiento: la escena se ve completa todo el tiempo
   function acercamiento(t) {
     if (t >= DURACION) return 1.08;
     for (let i = 1; i < CLAVES.length; i++) if (t <= CLAVES[i][0]) { const [t0, z0] = CLAVES[i - 1], [t1, z1] = CLAVES[i]; return z0 + (z1 - z0) * suave((t - t0) / (t1 - t0)); }
@@ -226,7 +226,7 @@ window.FondoAcuarela = (() => {
   const mascaraTrazo = lienzo(W / 2, H / 2), lineaTrazo = lienzo(W, H);
   function trazar(ctx, t, px, py) {
     if (!listos) return;
-    const cw = ctx.canvas.width, ch = ctx.canvas.height, k = Math.max(cw / W, ch / H) * 1.14;
+    const cw = ctx.canvas.width, ch = ctx.canvas.height, k = Math.max(cw / W, ch / H) * 1.08;
     const ox = (cw - W * k) / 2, oy = (ch - H * k) / 2;
     ctx.fillStyle = '#f4f1ea'; ctx.fillRect(0, 0, cw, ch);
     // la máscara crece por donde pasa la varita; al final el lineart queda completo
