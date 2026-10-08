@@ -1245,7 +1245,7 @@
         const final = rc.contains('escenas') ? rc.contains('escena-final') : scrollY + innerHeight >= document.documentElement.scrollHeight - 40;
         const r = final && posada ? posada.getBoundingClientRect() : null;
         let tx, ty;
-        if (r && r.width) { tx = r.left + (r.width - 110) / 2; ty = r.bottom - 96; }
+        if (r && r.width) { tx = r.left + (r.width - 110) / 2; ty = r.bottom - 104; }
         else { tx = innerWidth - 110 - (innerWidth < 700 ? 10 : 34); ty = Math.min(innerHeight - 112, Math.max(76, objY ?? innerHeight * .45)); }
         x += (tx - x) * (r ? .06 : .08); y += (ty - y) * (r ? .06 : .08);
         const vx = tx - x; if (Math.abs(vx) > 6) mira = vx > 0 ? 1 : -1; else if (!r) mira = -1;

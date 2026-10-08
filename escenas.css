@@ -24,11 +24,11 @@ html.escenas .ev-contacto footer { background: none; border: 0; margin-top: 34px
 html.escenas .ev-contacto .ev-caja { text-align: center; }
 html.escenas .ev-leyendas .leyendas-grid { max-height: none; }
 
-/* velo: el reino de acuarela queda detrás, más tenue, cuando hay contenido encima */
+/* velo: el mismo oscurecimiento que kdelrio.github.io, para que todo se lea bien sobre el reino */
 .escenas-velo { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .8s ease;
-  background: radial-gradient(ellipse 80% 75% at 50% 52%, rgba(8, 17, 39, .66), rgba(8, 17, 39, .3)); }
+  background: radial-gradient(ellipse 90% 85% at 50% 50%, rgba(3, 11, 26, .78), rgba(3, 11, 26, .5)); }
 .escenas-velo.visible { opacity: 1; }
-html[data-tema="claro"] .escenas-velo { background: radial-gradient(ellipse 80% 75% at 50% 52%, rgba(255, 250, 243, .72), rgba(255, 250, 243, .28)); }
+html[data-tema="claro"] .escenas-velo { background: radial-gradient(ellipse 90% 85% at 50% 50%, rgba(244, 248, 255, .86), rgba(244, 248, 255, .55)); }
 
 /* menú: la sección que se está mirando */
 html.escenas .topbar nav a.activo { color: var(--white); background: rgba(245, 168, 207, .16); border-radius: 10px; box-shadow: inset 0 -2px 0 var(--rosa, #f5a8cf); }
@@ -72,37 +72,70 @@ html:has(#site.pintando) .escenas-indice, html:has(#site.pintando) .escenas-pist
 
 /* fuera de la portada solo queda el velo suave de la escena: el reino de acuarela se sigue viendo detrás */
 html.escena-contenido .reino-velo { opacity: 0 !important; }
-/* los textos sueltos sobre el paisaje llevan un halo suave para leerse bien */
-html.escenas .ev :is(.section-head p, .section-head .eyebrow, .art-context, .art-credit, .transition-explanation, .leyendas-aviso, .team-outcome, #contacto p) { text-shadow: 0 1px 8px rgba(8, 17, 39, .9), 0 0 2px rgba(8, 17, 39, .8); }
-html[data-tema="claro"].escenas .ev :is(.section-head p, .section-head .eyebrow, .art-context, .art-credit, .transition-explanation, .leyendas-aviso, .team-outcome, #contacto p) { text-shadow: 0 0 8px rgba(255, 250, 243, 1), 0 0 3px rgba(255, 250, 243, 1); }
-html.escenas .ev :is(.section-head h2) { text-shadow: 0 2px 14px rgba(8, 17, 39, .6); }
-html[data-tema="claro"].escenas .ev :is(.section-head h2) { text-shadow: 0 0 16px rgba(255, 250, 243, .9); }
-
 /* ---------------------------------------------------------------- ancho completo: la escena usa toda la pantalla
    (a la izquierda las estrellas del índice, a la derecha el carril por donde vuela el dragón) */
 html.escenas .ev { padding: 14px 170px 56px 90px; }
 html.escenas .ev-caja { width: 100%; max-width: none; }
 html.escenas .ev :is(.wrap, .hero) { width: 100%; max-width: none; margin-inline: 0; }
 
-/* ---------------------------------------------------------------- tarjetas coherentes en toda la página: vidrio suave según el tema */
-:root { --vidrio: rgba(14, 22, 50, .72); --vidrio2: rgba(255, 255, 255, .05); --vidrio-borde: rgba(255, 255, 255, .13); }
-html[data-tema="claro"] { --vidrio: rgba(255, 250, 243, .84); --vidrio2: rgba(106, 77, 120, .05); --vidrio-borde: rgba(106, 77, 120, .2); }
-html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .studio-team, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta) {
-  background: var(--vidrio); border: 1px solid var(--vidrio-borde); border-radius: 22px; backdrop-filter: blur(10px); box-shadow: 0 14px 34px rgba(5, 10, 30, .25); }
-html.escenas .ev :is(.role-node, .journey-step, .transition-path a) { background: var(--vidrio2); border: 1px solid var(--vidrio-borde); }
-html.escenas .ev .studio-brand-card { padding: 28px 32px; }
+/* ---------------------------------------------------------------- un mismo sistema en toda la página (estructura de kdelrio, identidad de esta página) */
+:root { --e-texto: #f6f2fb; --e-suave: #d3cfe3; --e-tenue: #a9a3c2; --e-oro: #e2ba53; --e-oro2: #f3d48a; --e-rosa: #f5a8cf;
+  --e-panel: rgba(10, 16, 40, .74); --e-linea: rgba(226, 186, 83, .3); --e-sombra: 0 18px 40px rgba(0, 0, 0, .32); }
+html[data-tema="claro"] { --e-texto: #2b2140; --e-suave: #4a4060; --e-tenue: #6a5f80; --e-oro: #9c6a10; --e-oro2: #9c6a10; --e-rosa: #c2457f;
+  --e-panel: rgba(255, 252, 246, .92); --e-linea: rgba(156, 106, 16, .3); --e-sombra: 0 14px 30px rgba(60, 40, 90, .16); }
 
-/* ---------------------------------------------------------------- marcos de papel: las aplicaciones como en el libro */
-html.escenas .papel-app { position: relative; padding: 30px 40px 34px; background: #fff8ef url("assets/cuento/marco-app.webp") center/100% 100% no-repeat; border-radius: 18px; box-shadow: 0 18px 34px rgba(10, 6, 30, .45); }
+/* encabezado de cada escena: etiqueta dorada, título y una bajada corta, centrados */
+html.escenas .ev .section-head { display: block; max-width: 900px; margin: 0 auto 26px; text-align: center; }
+html.escenas .ev .section-head .eyebrow { margin: 0 0 6px; color: var(--e-oro); font: 700 .78rem/1.4 var(--sans); letter-spacing: .16em; text-transform: uppercase; }
+html.escenas .ev .section-head h2 { margin: 0 0 12px; color: var(--e-texto); font: 700 clamp(1.9rem, 3.6vw, 2.9rem)/1.12 var(--titulo, "Cinzel", serif); letter-spacing: .02em; }
+html.escenas .ev .section-head h2 br { display: none; }
+html.escenas .ev .section-head > p { max-width: 820px; margin: 0 auto; color: var(--e-suave); font-size: 1.05rem; line-height: 1.55; }
+html.escenas .ev :is(.art-context, .art-credit, .transition-explanation, .leyendas-aviso, .team-outcome) { color: var(--e-suave); text-align: center; }
+
+/* paneles: todos iguales */
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .contacto) {
+  background: var(--e-panel); border: 1px solid var(--e-linea); border-radius: 14px; box-shadow: var(--e-sombra); backdrop-filter: none; color: var(--e-texto); }
+html.escenas .ev :is(.studio-team, .studio-hero) { background: none; border: 0; box-shadow: none; padding: 0; }
+html.escenas .ev .studio-team > div:first-child { text-align: center; max-width: 820px; margin: 0 auto 20px; }
+html.escenas .ev .studio-team > div:first-child .eyebrow { color: var(--e-oro); }
+html.escenas .ev :is(h3, h4) { color: var(--e-texto); }
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .health-card, .credential-gallery article, .cv-cta, .design-story) p { color: var(--e-suave); }
+html.escenas .ev .studio-brand-card { padding: 26px 30px; }
+html.escenas .ev .journey-step { background: rgba(255, 255, 255, .04); border: 1px solid var(--e-linea); border-radius: 12px; }
+html.escenas .ev .chip { color: var(--e-oro2); border-color: var(--e-linea); }
+html.escenas .ev .btn.primary { background: linear-gradient(135deg, #f5a8cf, #ba93f0); color: #1c1233; border: 0; }
+html.escenas .ev .btn.ghost { color: var(--e-texto); border: 1px solid var(--e-linea); background: transparent; }
+
+/* aplicaciones (calculadora, caja, tienda en vivo y juegos): una ventana clara y simple, con el arte del libro adentro */
+html.escenas .papel-app { position: relative; padding: 20px 24px 24px; background: #fff8ef; border: 1px solid var(--e-linea); border-radius: 14px; box-shadow: var(--e-sombra); }
 html.escenas .papel-marcos > .papel-app:not(.activo) { display: none; }
 html.escenas .papel-app .game-panel { display: block; }
-html.escenas .app-oraculo { padding: 26px 32px 30px; }
-html.escenas .app-vitrina .vitrina-viva iframe { height: min(58vh, 620px); }
-html.escenas .app-vitrina .botonera { display: flex; justify-content: center; gap: 12px; margin: 10px 0 0; }
-.papel-pestanas { display: flex; gap: 10px; margin: 0 0 14px; }
-.papel-pestanas button { font: 700 .9rem 'Mali', sans-serif; padding: 8px 18px; border-radius: 16px; border: 3px solid #fff; background: #fff6fb; color: #6a2c55; box-shadow: 0 3px 0 #e2c4dc; cursor: pointer; transition: transform .15s; }
-.papel-pestanas button:hover { transform: translateY(-2px); }
-.papel-pestanas button.activo { background: #c98bb8; color: #fff; box-shadow: 0 4px 0 #a26a94; }
+html.escenas .papel-app .app-nota { margin: 0 0 12px; }
+html.escenas .app-vitrina .vitrina-viva { padding: 0; }
+html.escenas .app-vitrina .vitrina-viva iframe { height: min(56vh, 600px); }
+html.escenas .app-vitrina .botonera { display: flex; justify-content: center; gap: 12px; margin: 12px 0 0; }
+html.escenas .papel-app.app-calc { max-width: 1000px; margin-inline: auto; }
+html.escenas .papel-app .btn.ghost { color: #6a2c55; background: #fff6fb; border: 2px solid #f0d6e8; }
+html.escenas .papel-app .btn.primary { color: #fff; background: #c98bb8; }
+.papel-pestanas { display: flex; justify-content: center; gap: 10px; margin: 0 0 16px; }
+.papel-pestanas button { font: 700 .88rem var(--sans); padding: 9px 18px; border-radius: 999px; border: 1px solid var(--e-linea); background: var(--e-panel); color: var(--e-suave); cursor: pointer; transition: border-color .2s, color .2s; }
+.papel-pestanas button:hover { color: var(--e-texto); border-color: var(--e-oro); }
+.papel-pestanas button.activo { color: #1c1233; background: linear-gradient(135deg, #f5a8cf, #ba93f0); border-color: transparent; }
+
+/* contacto: tarjetas con ícono, título y dato, como en kdelrio */
+.contactos { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 22px auto 0; max-width: 1200px; }
+.contacto { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 22px 12px; text-decoration: none; text-align: center; transition: transform .2s, border-color .2s; }
+.contacto:hover { transform: translateY(-3px); border-color: var(--e-oro) !important; }
+.contacto svg { width: 30px; height: 30px; fill: var(--e-oro2); }
+.contacto b { font: 700 1.05rem var(--sans); color: var(--e-texto); }
+.contacto small { color: var(--e-tenue); word-break: break-all; font-size: .82rem; }
+@media (max-width: 900px) { .contactos { grid-template-columns: 1fr 1fr; } }
+html.escenas .ev-contacto .section-head { margin-bottom: 0; }
+html.escenas .ev-contacto footer .wrap { display: block; }
+html.escenas .ev-contacto footer { margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--e-linea); text-align: center; }
+html.escenas .ev-contacto footer p { margin: 4px auto; max-width: 900px; color: var(--e-tenue); font: 400 .82rem/1.5 var(--sans); letter-spacing: 0; }
+html.escenas .ev-contacto footer p:first-child { color: var(--e-suave); font-size: .9rem; }
+html.escenas .ev-contacto footer a { color: var(--e-rosa); }
 
 /* ---------------------------------------------------------------- el salón de los juegos: las máquinas del libro */
 .salon-arcade { display: flex; justify-content: center; align-items: flex-end; gap: clamp(30px, 6vw, 110px); padding: 10px 0 0; }
@@ -118,7 +151,7 @@ html.escenas .app-vitrina .botonera { display: flex; justify-content: center; ga
 /* ---------------------------------------------------------------- al final, los dragoncitos esperan al dragón */
 .nido-escena { position: relative; width: max-content; margin: 34px auto 0; pointer-events: none; }
 .nido-crias { display: flex; align-items: flex-end; gap: 14px; }
-.nido-posada { width: 110px; height: 96px; flex: none; }
+.nido-posada { width: 110px; height: 104px; flex: none; }
 .cria { display: block; flex: none; height: 70px; width: auto; filter: drop-shadow(0 0 6px rgba(245, 168, 207, .55)); }
 .nido-posada ~ .cria { scale: -1 1; }                  /* las de la derecha se voltean para mirar al dragón del centro */
 .cria.duerme { height: 50px; transform-origin: 50% 100%; animation: cria-respira 2.6s ease-in-out infinite; }
@@ -128,10 +161,36 @@ html.escenas .app-vitrina .botonera { display: flex; justify-content: center; ga
 @keyframes cria-salta { to { translate: 0 -14px; } }
 @keyframes cria-respira { 50% { transform: scaleY(.94); } }
 /* el dragón posado deja de aletear */
-.dragoncito.posado .dragoncito-spr { animation: none; background-position: -440px 0; }
+.dragoncito.posado .dragoncito-spr { animation: none; transform: none; background: url("assets/dragon-posado.webp") 50% 100% / contain no-repeat; }   /* sentado, como el de kdelrio */
 .dragoncito.posado .dragoncito-globo { opacity: 0; }
 html.escenas .ev-contacto .nido-escena { margin-top: 18px; }
-html.escenas .papel-app.app-calc { max-width: 1060px; margin-inline: auto; }
-html.escenas .papel-app .btn.ghost { color: #6a2c55; background: #fff6fb; border: 2px solid #f0d6e8; }
-html.escenas .papel-app .btn.primary { color: #fff; }
 .cria[src$="cria-4.webp"] { height: 54px; }
+
+/* ---------------------------------------------------------------- cuadros mágicos: una ventanita al cosmos del reino
+   fondo de cielo con manchas de acuarela y polvo de estrellas, borde brillante en degradé y destellos en las esquinas */
+:root { --estrellas: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'240'%20height%3D'240'%3E%3Ccircle%20cx%3D'0.0'%20cy%3D'31.6'%20r%3D'1.00'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.80'%2F%3E%3Ccircle%20cx%3D'127.9'%20cy%3D'52.6'%20r%3D'1.25'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.38'%2F%3E%3Ccircle%20cx%3D'163.0'%20cy%3D'224.3'%20r%3D'1.07'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.58'%2F%3E%3Ccircle%20cx%3D'199.4'%20cy%3D'8.3'%20r%3D'1.08'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.38'%2F%3E%3Ccircle%20cx%3D'161.1'%20cy%3D'1.8'%20r%3D'0.57'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.58'%2F%3E%3Ccircle%20cx%3D'100.2'%20cy%3D'164.8'%20r%3D'1.52'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.70'%2F%3E%3Ccircle%20cx%3D'203.1'%20cy%3D'126.5'%20r%3D'1.22'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.41'%2F%3E%3Ccircle%20cx%3D'99.8'%20cy%3D'168.3'%20r%3D'1.34'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.90'%2F%3E%3Ccircle%20cx%3D'63.0'%20cy%3D'11.4'%20r%3D'0.86'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.79'%2F%3E%3Ccircle%20cx%3D'151.8'%20cy%3D'181.5'%20r%3D'0.90'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.94'%2F%3E%3Ccircle%20cx%3D'59.3'%20cy%3D'235.8'%20r%3D'1.33'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.78'%2F%3E%3Ccircle%20cx%3D'156.4'%20cy%3D'17.4'%20r%3D'1.47'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.73'%2F%3E%3Ccircle%20cx%3D'65.5'%20cy%3D'104.7'%20r%3D'1.03'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.81'%2F%3E%3Ccircle%20cx%3D'57.1'%20cy%3D'66.0'%20r%3D'0.68'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.57'%2F%3E%3Ccircle%20cx%3D'116.8'%20cy%3D'215.4'%20r%3D'0.57'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.90'%2F%3E%3Ccircle%20cx%3D'217.1'%20cy%3D'121.1'%20r%3D'0.85'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.66'%2F%3E%3Ccircle%20cx%3D'236.8'%20cy%3D'118.6'%20r%3D'0.60'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.51'%2F%3E%3Ccircle%20cx%3D'227.5'%20cy%3D'17.7'%20r%3D'0.92'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.65'%2F%3E%3Ccircle%20cx%3D'66.5'%20cy%3D'219.3'%20r%3D'1.01'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.67'%2F%3E%3Ccircle%20cx%3D'225.8'%20cy%3D'12.0'%20r%3D'1.35'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.81'%2F%3E%3Ccircle%20cx%3D'198.7'%20cy%3D'30.1'%20r%3D'1.26'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.36'%2F%3E%3Ccircle%20cx%3D'208.4'%20cy%3D'151.1'%20r%3D'1.30'%20fill%3D'%23ffffff'%20fill-opacity%3D'0.79'%2F%3E%3Cpath%20d%3D'M239.9%20209.6L240.8%20212.3L243.6%20213.3L240.8%20214.2L239.9%20217.0L238.9%20214.2L236.2%20213.3L238.9%20212.3Z'%20fill%3D'%23ffffff'%20fill-opacity%3D'.8'%2F%3E%3Cpath%20d%3D'M73.5%2079.7L74.7%2083.1L78.1%2084.2L74.7%2085.4L73.5%2088.8L72.4%2085.4L69.0%2084.2L72.4%2083.1Z'%20fill%3D'%23ffffff'%20fill-opacity%3D'.8'%2F%3E%3Cpath%20d%3D'M141.9%20198.8L142.9%20202.0L146.1%20203.0L142.9%20204.1L141.9%20207.3L140.8%20204.1L137.6%20203.0L140.8%20202.0Z'%20fill%3D'%23ffffff'%20fill-opacity%3D'.8'%2F%3E%3C%2Fsvg%3E");
+  --cosmos: radial-gradient(120% 85% at 0% 0%, rgba(186, 147, 240, .26), transparent 55%), radial-gradient(90% 75% at 100% 100%, rgba(245, 168, 207, .2), transparent 60%),
+    radial-gradient(70% 55% at 85% 8%, rgba(145, 220, 255, .16), transparent 60%), var(--estrellas) 0 0 / 240px 240px, linear-gradient(160deg, rgba(24, 18, 60, .94), rgba(9, 13, 36, .94));
+  --borde-magico: linear-gradient(135deg, #f3d48a, #f5a8cf 35%, #ba93f0 65%, #91dcff); --brillo-magico: rgba(186, 147, 240, .32); }
+html[data-tema="claro"] { --estrellas: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'240'%20height%3D'240'%3E%3Ccircle%20cx%3D'0.0'%20cy%3D'31.6'%20r%3D'1.00'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.80'%2F%3E%3Ccircle%20cx%3D'127.9'%20cy%3D'52.6'%20r%3D'1.25'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.38'%2F%3E%3Ccircle%20cx%3D'163.0'%20cy%3D'224.3'%20r%3D'1.07'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.58'%2F%3E%3Ccircle%20cx%3D'199.4'%20cy%3D'8.3'%20r%3D'1.08'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.38'%2F%3E%3Ccircle%20cx%3D'161.1'%20cy%3D'1.8'%20r%3D'0.57'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.58'%2F%3E%3Ccircle%20cx%3D'100.2'%20cy%3D'164.8'%20r%3D'1.52'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.70'%2F%3E%3Ccircle%20cx%3D'203.1'%20cy%3D'126.5'%20r%3D'1.22'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.41'%2F%3E%3Ccircle%20cx%3D'99.8'%20cy%3D'168.3'%20r%3D'1.34'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.90'%2F%3E%3Ccircle%20cx%3D'63.0'%20cy%3D'11.4'%20r%3D'0.86'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.79'%2F%3E%3Ccircle%20cx%3D'151.8'%20cy%3D'181.5'%20r%3D'0.90'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.94'%2F%3E%3Ccircle%20cx%3D'59.3'%20cy%3D'235.8'%20r%3D'1.33'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.78'%2F%3E%3Ccircle%20cx%3D'156.4'%20cy%3D'17.4'%20r%3D'1.47'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.73'%2F%3E%3Ccircle%20cx%3D'65.5'%20cy%3D'104.7'%20r%3D'1.03'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.81'%2F%3E%3Ccircle%20cx%3D'57.1'%20cy%3D'66.0'%20r%3D'0.68'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.57'%2F%3E%3Ccircle%20cx%3D'116.8'%20cy%3D'215.4'%20r%3D'0.57'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.90'%2F%3E%3Ccircle%20cx%3D'217.1'%20cy%3D'121.1'%20r%3D'0.85'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.66'%2F%3E%3Ccircle%20cx%3D'236.8'%20cy%3D'118.6'%20r%3D'0.60'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.51'%2F%3E%3Ccircle%20cx%3D'227.5'%20cy%3D'17.7'%20r%3D'0.92'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.65'%2F%3E%3Ccircle%20cx%3D'66.5'%20cy%3D'219.3'%20r%3D'1.01'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.67'%2F%3E%3Ccircle%20cx%3D'225.8'%20cy%3D'12.0'%20r%3D'1.35'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.81'%2F%3E%3Ccircle%20cx%3D'198.7'%20cy%3D'30.1'%20r%3D'1.26'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.36'%2F%3E%3Ccircle%20cx%3D'208.4'%20cy%3D'151.1'%20r%3D'1.30'%20fill%3D'%23c08a1e'%20fill-opacity%3D'0.79'%2F%3E%3Cpath%20d%3D'M239.9%20209.6L240.8%20212.3L243.6%20213.3L240.8%20214.2L239.9%20217.0L238.9%20214.2L236.2%20213.3L238.9%20212.3Z'%20fill%3D'%23c08a1e'%20fill-opacity%3D'.8'%2F%3E%3Cpath%20d%3D'M73.5%2079.7L74.7%2083.1L78.1%2084.2L74.7%2085.4L73.5%2088.8L72.4%2085.4L69.0%2084.2L72.4%2083.1Z'%20fill%3D'%23c08a1e'%20fill-opacity%3D'.8'%2F%3E%3Cpath%20d%3D'M141.9%20198.8L142.9%20202.0L146.1%20203.0L142.9%20204.1L141.9%20207.3L140.8%20204.1L137.6%20203.0L140.8%20202.0Z'%20fill%3D'%23c08a1e'%20fill-opacity%3D'.8'%2F%3E%3C%2Fsvg%3E");
+  --cosmos: radial-gradient(120% 85% at 0% 0%, rgba(186, 147, 240, .2), transparent 55%), radial-gradient(90% 75% at 100% 100%, rgba(245, 168, 207, .22), transparent 60%),
+    radial-gradient(70% 55% at 85% 8%, rgba(145, 220, 255, .2), transparent 60%), var(--estrellas) 0 0 / 240px 240px, linear-gradient(160deg, rgba(255, 252, 246, .97), rgba(253, 244, 248, .97));
+  --brillo-magico: rgba(226, 109, 156, .22); }
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .contacto) {
+  position: relative; border: 1.5px solid transparent; border-radius: 18px; background: var(--cosmos) padding-box, var(--borde-magico) border-box;
+  box-shadow: 0 0 20px var(--brillo-magico), 0 18px 40px rgba(0, 0, 0, .3); overflow: hidden; transition: transform .3s, box-shadow .3s; }
+html[data-tema="claro"].escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .contacto) {
+  box-shadow: 0 0 18px var(--brillo-magico), 0 12px 28px rgba(60, 40, 90, .14); }
+/* destellos que titilan en dos esquinas */
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .health-card, .credential-gallery article, .cv-cta, .contacto, .leyendas, .design-story)::before,
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .health-card, .credential-gallery article, .cv-cta, .contacto, .leyendas, .design-story)::after {
+  position: absolute; z-index: 2; pointer-events: none; font-style: normal; line-height: 1; text-shadow: 0 0 8px currentColor, 0 0 16px currentColor; animation: titila 3.2s ease-in-out infinite; }
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .health-card, .credential-gallery article, .cv-cta, .contacto, .leyendas, .design-story)::before { content: "✦"; top: 9px; left: 11px; font-size: 13px; color: #f3d48a; }
+html.escenas .ev :is(.studio-brand-card, .service-gallery article, .service-more article, .role-node, .health-card, .credential-gallery article, .cv-cta, .contacto, .leyendas, .design-story)::after { content: "✧"; right: 11px; bottom: 9px; font-size: 12px; color: #f5a8cf; animation-delay: 1.6s; }
+@keyframes titila { 0%, 100% { opacity: .35; transform: scale(.8) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(25deg); } }
+/* al pasar el mouse: sube y brilla más */
+html.escenas .ev :is(.service-gallery article, .service-more article, .role-node, .credential-gallery article, .contacto, .transition-path a):hover { transform: translateY(-4px); box-shadow: 0 0 30px rgba(245, 168, 207, .45), 0 20px 44px rgba(0, 0, 0, .32); }
+html.escenas .ev :is(.service-gallery article, .service-more article, .role-node, .credential-gallery article, .contacto, .transition-path a) > :first-child { position: relative; z-index: 1; }
+/* las ventanas de las aplicaciones llevan el mismo borde brillante */
+html.escenas .papel-app { border: 1.5px solid transparent; border-radius: 18px; background: linear-gradient(#fff8ef, #fff8ef) padding-box, var(--borde-magico) border-box; box-shadow: 0 0 22px var(--brillo-magico), 0 18px 40px rgba(0, 0, 0, .3); }
+@media (prefers-reduced-motion: reduce) { html.escenas .ev *::before, html.escenas .ev *::after { animation: none !important; } }

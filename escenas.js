@@ -19,6 +19,8 @@
   const main = $('#site main'), site = $('#site'), reino = $('#reino');
   if (!main || !site) return;
   raiz.classList.add('escenas');
+  // los títulos van en una sola línea centrada: el salto de línea pasa a ser un espacio
+  $$('.section-head h2 br').forEach(b => b.replaceWith(' '));
 
   // ---------------------------------------------------------- piezas
   const velo = document.createElement('div'); velo.className = 'escenas-velo'; main.append(velo);   // oscurece el reino detrás del contenido
@@ -191,10 +193,10 @@
   // ---------------------------------------------------------- 14. contacto
   const pie = $('#site > footer');
   E.push({
-    id: 'contacto', ev: crear('ev-contacto', $('#contacto'), pie),
+    id: 'contacto', ev: crear('ev-contacto', $('#contacto'), pie, $('.nido-escena')),   // como en kdelrio: las crías esperan debajo del pie
     entrar(tl, ev) {
-      sube(tl, $$('#contacto .wrap > :not(.contact-buttons)', ev));
-      sube(tl, $$('.contact-buttons a', ev), '-=.2', { stagger: .08 });
+      sube(tl, $('.section-head > *, .section-head > div > *', ev));
+      sube(tl, $('.contacto', ev), '-=.2', { stagger: .08 });
       tl.from(pie, { opacity: 0, duration: .5 }, '-=.2');
     },
   });
