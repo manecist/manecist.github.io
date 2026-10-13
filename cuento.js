@@ -600,9 +600,10 @@
         { nombre: 'profe', actor: 'aula-anim', x: 46, alto: 19.5, pj: true, bucle: [0, 1], cicloMs: 3100, ms: 3200 }      // enseña a los niños de básica
       ] },
       { fondo: 'fondo-taller3d.webp', suelo: 'suelo-box.webp', pasos: [
-        { nombre: 'f1', img: 'foto3d-stitch.webp', x: 20, alto: 12, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
-        { nombre: 'f2', img: 'foto3d-pokemon.webp', x: 34, alto: 12, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
-        { nombre: 'f3', img: 'foto3d-bob.webp', x: 66, alto: 12, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
+        { nombre: 'f1', img: 'obj3d-soporte.webp', x: 20, alto: 10, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
+        { nombre: 'f2', img: 'obj3d-matias.webp', x: 33, alto: 10, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
+        { nombre: 'f3', img: 'obj3d-casita.webp', x: 67, alto: 11, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
+        { nombre: 'ender', img: 'ender3.webp', x: 84, alto: 13, fila: 'medio', clase: 'rebote', ms: 600, pausa: 200 },   // su impresora Ender 3
         { nombre: 'ari3d', img: 'ari-impresora.webp', x: 50, alto: 16, pj: true, efecto: 'brilla', ms: 2600 }   // muestra su figura impresa y pintada a mano
       ] }
     ] },
