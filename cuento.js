@@ -609,7 +609,9 @@
   };
   const ruta = (esc, n) => n.startsWith('assets/') ? n : 'assets/cuento/' + esc.carpeta + n;
   const hojas = {};
-  const hojaDe = src => hojas[src] || (hojas[src] = fetch(src.replace(/\.webp$/, '.json')).then(r => r.json()).then(m => ({ ...m, marcas: m.marcas || [...Array(m.n).keys()] })));
+  // la hoja queda lista (datos e imagen ya decodificada) antes de mostrarse: así un personaje reemplaza a otro sin parpadeo
+  const imagenLista = src => { const i = new Image(); i.src = src; return (i.decode ? i.decode() : new Promise(ok => { i.onload = ok; })).catch(() => {}); };
+  const hojaDe = src => hojas[src] || (hojas[src] = Promise.all([fetch(src.replace(/\.webp$/, '.json')).then(r => r.json()), imagenLista(src)]).then(([m]) => ({ ...m, marcas: m.marcas || [...Array(m.n).keys()] })));
   // las hojas pesan: se cargan recién al llegar al pliego, la primera escena antes que las demás
   const precargar = esc => esc.hitos.forEach((h, i) => setTimeout(() => {
     if (h.fondo) new Image().src = ruta(esc, h.fondo); new Image().src = ruta(esc, h.suelo);
