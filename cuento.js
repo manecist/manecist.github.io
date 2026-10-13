@@ -474,11 +474,9 @@
         { espera: 'tienda-boleta', cierraApp: true, ms: 900 },                                                                  // cuando se entrega la boleta…
         // …Rancek les entrega las bolsas y cierra la tienda para ir con ellos
         { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: [{ tipo: 'destello', x: 58, ancho: 10, y: 12, ms: 900 }, { tipo: 'destello', x: 50, ancho: 16, y: 6, ms: 1100, tras: 500 }], ms: 900, pausa: 0 },
-        { nombre: 'pareja-r', actor: 'pareja-bolsas', x: 48.2, alto: 18.4, delante: true, reemplaza: 'pareja', sigue: true, de: 0, a: 1, ms: 4100, junto: true },   // Ari y Coen reciben una bolsa cada uno
         { nombre: 'mago-e', actor: 'rancek-entrega', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0 },
         { nombre: 'mago', actor: 'rancek-atiende', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, bucle: [0, 1], cicloMs: 2400, ms: 0, pausa: 0 },   // las bolsas pasan de sus manos…
-        { ms: 1500 },
-        { nombre: 'pareja-b', actor: 'paseo', camina: [0, 0], x: 46, alto: 17, delante: true, reemplaza: 'pareja-r', sigue: true, ms: 1600 },   // …a las de ellos
+        { nombre: 'pareja-r', actor: 'pareja-bolsas', x: 48.3, alto: 17.3, delante: true, reemplaza: 'pareja', sigue: true, de: 0, a: 1, ms: 2200 },   // …a las de ellos: Ari y Coen las levantan felices
         // Rancek sale de detrás del mostrador caminando y se pone delante
         { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek-c', actor: 'rancek-casual-anda', camina: [0, 1], cicloMs: 1000, x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ruta: [[0, 76], [1, 88]], ms: 2000, junto: true },
         { ms: 700 },
