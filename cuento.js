@@ -542,8 +542,9 @@
         // Ari se transforma como una chica mágica: cintas de luz la envuelven y queda con el traje y las alas del hada
         { nombre: 'ari-t', actor: 'transforma-anim', x: 49.6, alto: 17.1, pj: true, clase: 'hada-final', reemplaza: 'ari', sigue: true, de: 0, a: 2, ms: 5200, pausa: 300,
           fx: [{ tipo: 'destello', x: 50, ancho: 26, y: 6, ms: 1400 }, { tipo: 'destello', x: 50, ancho: 30, y: 10, ms: 1300, tras: 3800 }] },
-        // …y con su varita lanza el hechizo: la luz cubre todo
-        { evento: 'cuento-dibuja-mundo', ms: 400 }
+        // …ya vestida de hada dibuja un círculo de luz con su varita; al terminar el encantamiento, la niebla nace de la estrella
+        { nombre: 'ari-h', actor: 'hechizo-ari', x: 49.6, alto: 17.1, pj: true, clase: 'hada-final', reemplaza: 'ari-t', sigue: true, de: 0, a: 1, ms: 4000, pausa: 0 },
+        { evento: 'cuento-dibuja-mundo', ms: 50 }
       ] }
     ] },
     logros: { carpeta: 'logros/', hitos: [
@@ -925,7 +926,7 @@
   const dibujarMundo = origen => {
     if (dibujando) return; dibujando = true;
     const r = origen ? origen.getBoundingClientRect() : null;
-    const cx = r ? r.left + r.width * .5 : innerWidth / 2, cy = r ? r.top + r.height * .35 : innerHeight / 2;
+    const cx = r ? r.left + r.width * .5 : innerWidth / 2, cy = r ? r.top + r.height * .51 : innerHeight / 2;   // la estrella de la varita
     nieblaCircular(cx, cy, () => {
       const esc = document.getElementById('escena'); if (esc) { esc.style.visibility = 'hidden'; setTimeout(() => { esc.style.visibility = ''; }, 2500); }
       window.MCELibro?.aClasico(null, { pintar: true });   // ya tapado, aparece la página y el hada la pinta
@@ -937,7 +938,7 @@
     e.preventDefault(); e.stopImmediatePropagation(); dibujando = true;
     nieblaCircular(innerWidth / 2, innerHeight / 2, () => window.MCELibro?.aClasico()).then(() => { dibujando = false; });
   }, true);
-  window.addEventListener('cuento-dibuja-mundo', e => { const z = e.detail && e.detail.zona; dibujarMundo(z && z.querySelector('.hito-actor')); });
+  window.addEventListener('cuento-dibuja-mundo', e => { const z = e.detail && e.detail.zona; dibujarMundo(z && [...z.querySelectorAll('.hito-actor')].pop()); });
   document.addEventListener('click', e => { if (e.target.closest('[data-entrar-mundo]')) { e.preventDefault(); dibujarMundo(document.querySelector('[data-hitos="final"] .hito-actor')); } });
 
   document.addEventListener('submit', e => {
