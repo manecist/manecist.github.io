@@ -418,9 +418,9 @@
     const w = el.offsetWidth, h = el.offsetHeight;
     const r = libro.getBoundingClientRect();
     const nav = $('#libro-nav').getBoundingClientRect();
-    const x = una ? 2 : (r.left > w * .9 ? r.left - w * .9 : 6);
+    const x = una ? 2 : (r.left > w + 16 ? r.left - w - 12 : 6);   // al lado del libro, sin montarse en su borde
     // siempre dentro de la pantalla (con el libro acostado su borde inferior puede quedar más abajo)
-    const y = Math.min(innerHeight - h - 4, una ? innerHeight - h - 4 : (r.left > w * .9 ? r.bottom - h : innerHeight - h - 2));
+    const y = Math.min(innerHeight - h - 4, una ? innerHeight - h - 4 : (r.left > w + 16 ? r.bottom - h : innerHeight - h - 2));
     const m = (el.style.transform.match(/translate\(([-\d.]+)px,\s*([-\d.]+)px/) || [0, x, y]).slice(1).map(Number);
     el.classList.add('vuela');
     volar(el, [m, [m[0] - 40, m[1] - 80], [x + 30, y - 60], [x, y]], 1200).then(() => el.classList.remove('vuela'));

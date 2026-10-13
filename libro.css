@@ -2094,3 +2094,12 @@ html.pantalla-corta .cielo-lado li b{font-size:.58rem}html.pantalla-corta .cielo
 
 /* mientras la escena espera la boleta, la caja no se puede subir a mano */
 .app-obligada .colgante-app:not(.arriba) .app-pestana{visibility:hidden}
+
+/* ✦ sobre el cielo el texto va centrado: la letra capitular se queda pegada a su palabra (no flota al borde) */
+.cielo-bloque .cuento .letra{float:none;display:inline-block;margin:0 2px 0 0;font-size:2.3em;line-height:.8;vertical-align:-.12em}
+/* ✦ cuando baja una aplicación (caja, calculadora, juegos, vitrina) el hada de la orilla se aparta para no taparla */
+#hada-escena{transition:opacity .5s}
+body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-events:none}
+/* ✦ salto de verdad: se agacha, salta alto y aterriza (dos veces, y queda quieta) */
+.hito-actor.salto > *{transform-origin:50% 100%;animation:hito-salto 1.05s cubic-bezier(.3,.7,.4,1) 2}
+@keyframes hito-salto{0%{transform:none}14%{transform:translateY(0) scale(1.06,.86)}24%{transform:translateY(-6%) scale(.95,1.08)}50%{transform:translateY(-34%) scale(1)}76%{transform:translateY(0) scale(1.05,.9)}88%{transform:translateY(-3%) scale(.99,1.02)}100%{transform:none}}

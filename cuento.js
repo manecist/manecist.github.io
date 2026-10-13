@@ -474,9 +474,11 @@
         { espera: 'tienda-boleta', cierraApp: true, ms: 900 },                                                                  // cuando se entrega la boleta…
         // …Rancek les entrega las bolsas y cierra la tienda para ir con ellos
         { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: [{ tipo: 'destello', x: 58, ancho: 10, y: 12, ms: 900 }, { tipo: 'destello', x: 50, ancho: 16, y: 6, ms: 1100, tras: 500 }], ms: 900, pausa: 0 },
+        { nombre: 'pareja-r', actor: 'pareja-bolsas', x: 48.2, alto: 18.4, delante: true, reemplaza: 'pareja', sigue: true, de: 0, a: 1, ms: 4100, junto: true },   // Ari y Coen reciben una bolsa cada uno
         { nombre: 'mago-e', actor: 'rancek-entrega', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0 },
         { nombre: 'mago', actor: 'rancek-atiende', x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, bucle: [0, 1], cicloMs: 2400, ms: 0, pausa: 0 },   // las bolsas pasan de sus manos…
-        { nombre: 'pareja-b', actor: 'paseo', camina: [0, 0], x: 46, alto: 17, delante: true, reemplaza: 'pareja', sigue: true, ms: 1600 },   // …a las de ellos
+        { ms: 1500 },
+        { nombre: 'pareja-b', actor: 'paseo', camina: [0, 0], x: 46, alto: 17, delante: true, reemplaza: 'pareja-r', sigue: true, ms: 1600 },   // …a las de ellos
         // Rancek sale de detrás del mostrador caminando y se pone delante
         { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek-c', actor: 'rancek-casual-anda', camina: [0, 1], cicloMs: 1000, x: 76, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ruta: [[0, 76], [1, 88]], ms: 2000, junto: true },
         { ms: 700 },
@@ -495,7 +497,7 @@
         { nombre: 'vitrina', img: 'vitrina.webp', x: 52, alto: 19, fila: 'medio', efecto: 'brilla', ms: 1800 },
         { nombre: 'ari', actor: 'ari-casual', x: 28, alto: 16, delante: true, de: 0, a: 1, ms: 2600, pausa: 300 },                       // Ari llega como clienta…
         { nombre: 'coen', actor: 'coen-vii', x: 76, alto: 17, delante: true, de: 0, a: 1, ms: 3000 },                     // …y Coen la acompaña
-        { nombre: 'ari', efecto: 'salta', ms: 1400 },
+        { nombre: 'ari', efecto: 'salto', ms: 2200 },
         { app: true, ms: 400 }
       ] }
     ] },
@@ -539,18 +541,17 @@
       { fondo: 'fondo-cima.webp', suelo: 'suelo-cima.webp', titulo: 'No es el fin…', texto: '…es solo el inicio.', pasos: [
         { nombre: 'ari', actor: 'baculo-anim', x: 50, alto: 17, efecto: 'brilla', ms: 2600, bucle: [0, 1], cicloMs: 3000,
           texto: { titulo: 'A pesar de los obstáculos…', texto: 'siempre debes alcanzar tu sueño.' } },
-        // Ari se ilumina y se transforma en el hada…
-        { nombre: 'ari', clase: 'transforma', ms: 1500, pausa: 0 },
-        { nombre: 'hada', actor: 'hada-vuelo', x: 50, alto: 19, pj: false, clase: 'hada-final', reemplaza: 'ari', sigue: true, bucle: [0, 1], cicloMs: 1100, fx: { tipo: 'destello', x: 50, ancho: 22, y: 8, ms: 1300 }, ms: 1800, pausa: 0 },
-        // …lanza su hechizo y la luz cubre todo
-        { nombre: 'hada-h', actor: 'hada-hechizo', x: 50, alto: 19, pj: false, clase: 'hada-final', reemplaza: 'hada', sigue: true, de: 0, a: 1, ms: 900, pausa: 0 },
+        // Ari se transforma como una chica mágica: cintas de luz la envuelven y queda con el traje y las alas del hada
+        { nombre: 'ari-t', actor: 'transforma-anim', x: 50, alto: 19, pj: false, clase: 'hada-final', reemplaza: 'ari', sigue: true, de: 0, a: 2, ms: 5200, pausa: 300,
+          fx: [{ tipo: 'destello', x: 50, ancho: 26, y: 6, ms: 1400 }, { tipo: 'destello', x: 50, ancho: 30, y: 10, ms: 1300, tras: 3800 }] },
+        // …y con su varita lanza el hechizo: la luz cubre todo
         { evento: 'cuento-dibuja-mundo', ms: 400 }
       ] }
     ] },
     logros: { carpeta: 'logros/', hitos: [
       { fondo: 'fondo-podio.webp', suelo: 'suelo-podio.webp', central: 'Después de tantas noches de código, llegó su recompensa: en junio de 2026 terminó el curso Desarrollo de Aplicaciones Full Stack Java, 480 horas de SENCE y Talento Digital. Su medalla es digital y cualquiera puede verificarla. Pero Ari nunca deja de aprender: hoy estudia el Certificado de Análisis de Datos de Google, con cinco cursos ya aprobados.', titulo: 'Logro desbloqueado', texto: 'Un reconocimiento muy importante para su carrera.', pasos: [
         { nombre: 'ari', actor: 'medalla', x: 50, alto: 16, efecto: 'brilla', ms: 2800, bucle: [0, 1], cicloMs: 3000 },                       // Ari levanta su medalla en el podio
-        { nombre: 'ari', efecto: 'salta', ms: 2600 }
+        { nombre: 'ari', efecto: 'salto', ms: 2400 }   // salta de alegría con su medalla
       ] },
       { fondo: 'fondo-stream.webp', suelo: 'suelo-stream.webp', central: 'Y cuando caía la noche, encendía la cámara junto a Coen. En ArianesDCoen jugaban, reían y compartían sus aventuras con una pequeña comunidad que los acompañaba en cada partida.', titulo: '¡En vivo!', texto: 'El público animaba con corazones y barras de luz.', pasos: [
         { nombre: 'streamers', actor: 'streamers-anim', x: 50, alto: 15.7, fila: 'medio', ms: 2400, bucle: [0, 1], cicloMs: 3000 },                                                  // Ari y Coen juegan en vivo
@@ -596,7 +597,7 @@
         { actor: 'pla', x: 44, alto: 15, de: 0, a: 1, ms: 4500 }                      // los papeles se vuelven planilla
       ] },
       { fondo: 'fondo-aula.webp', suelo: 'assets/cuento/cap2/g02-suelo.webp', pasos: [
-        { nombre: 'profe', img: 'ari-profe.webp', x: 46, alto: 17, pj: true, efecto: 'brilla', ms: 2600 }      // enseña a los niños de básica
+        { nombre: 'profe', actor: 'aula-anim', x: 46, alto: 19.5, pj: true, bucle: [0, 1], cicloMs: 3100, ms: 3200 }      // enseña a los niños de básica
       ] },
       { fondo: 'fondo-taller3d.webp', suelo: 'suelo-box.webp', pasos: [
         { nombre: 'f1', img: 'foto3d-stitch.webp', x: 20, alto: 12, fila: 'medio', clase: 'rebote', ms: 500, pausa: 200 },
