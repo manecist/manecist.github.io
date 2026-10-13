@@ -540,10 +540,10 @@
         { nombre: 'ari', actor: 'baculo-anim', x: 50, alto: 17, efecto: 'brilla', ms: 2600, bucle: [0, 1], cicloMs: 3000,
           texto: { titulo: 'A pesar de los obstáculos…', texto: 'siempre debes alcanzar tu sueño.' } },
         // Ari se transforma como una chica mágica: cintas de luz la envuelven y queda con el traje y las alas del hada
-        { nombre: 'ari-t', actor: 'transforma-anim', x: 49.6, alto: 17.1, pj: true, clase: 'hada-final', reemplaza: 'ari', sigue: true, de: 0, a: 2, ms: 5200, pausa: 300,
+        { nombre: 'ari-t', actor: 'final-anim', x: 49.6, alto: 17.4, pj: true, clase: 'hada-final', reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 5200, pausa: 300,
           fx: [{ tipo: 'destello', x: 50, ancho: 26, y: 6, ms: 1400 }, { tipo: 'destello', x: 50, ancho: 30, y: 10, ms: 1300, tras: 3800 }] },
         // …ya vestida de hada dibuja un círculo de luz con su varita; al terminar el encantamiento, la niebla nace de la estrella
-        { nombre: 'ari-h', actor: 'hechizo-ari', x: 49.6, alto: 17.1, pj: true, clase: 'hada-final', reemplaza: 'ari-t', sigue: true, de: 0, a: 1, ms: 4000, pausa: 0 },
+        { nombre: 'ari-t', de: 1, a: 2, ms: 4000, pausa: 0 },   // la misma animación sigue, sin cambiar de imagen
         { evento: 'cuento-dibuja-mundo', ms: 50 }
       ] }
     ] },
@@ -653,7 +653,8 @@
     const nombre = p => p.nombre || p.actor || p.img;
     const levantar = (im, d) => { if (document.getElementById('libro')?.classList.contains('recien-girado') && /fondo/.test(im.className)) { im.classList.add('ya'); (im.classList.contains('amb') ? el.querySelector('.vida-ambiente') : zona).append(im); return; } im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); zona.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
     const plegar = n => { const a = n.nodeType ? n : actores[n]; if (!a) return; a.classList.add('pliega'); setTimeout(() => a.remove(), 900); if (!n.nodeType) delete actores[n]; };
-    const sacar = n => { const a = actores[n]; if (a) { a.remove(); delete actores[n]; } };   // sin plegarse: otro actor toma su lugar
+    // sin plegarse: otro actor toma su lugar. El anterior se queda debajo unos instantes, hasta que el nuevo ya se pintó (sin parpadeo)
+    const sacar = n => { const a = actores[n]; if (!a) return; delete actores[n]; requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => a.remove(), 140))); };
     // un cuadro de la hoja; entre dos cuadros se funde (suaviza los saltos)
     const cuadro = (a, f) => {
       const m = a._m; if (!m) return;
