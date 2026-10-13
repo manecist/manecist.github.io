@@ -2103,3 +2103,8 @@ body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-
 /* ✦ salto de verdad: se agacha, salta alto y aterriza (dos veces, y queda quieta) */
 .hito-actor.salto > *{transform-origin:50% 100%;animation:hito-salto 1.05s cubic-bezier(.3,.7,.4,1) 2}
 @keyframes hito-salto{0%{transform:none}14%{transform:translateY(0) scale(1.06,.86)}24%{transform:translateY(-6%) scale(.95,1.08)}50%{transform:translateY(-34%) scale(1)}76%{transform:translateY(0) scale(1.05,.9)}88%{transform:translateY(-3%) scale(.99,1.02)}100%{transform:none}}
+/* ✦ del cuento a la página: niebla mágica que se abre en círculo desde el centro */
+.niebla-circular{position:fixed;inset:0;z-index:2000;width:100vw;height:100vh;pointer-events:none;filter:blur(2.5px) drop-shadow(0 0 16px rgba(191,233,255,.8))}
+.niebla-brillos{position:fixed;inset:0;z-index:2001;pointer-events:none}
+.niebla-brillos .hechizo-estrella{position:absolute;font-style:normal;font-size:var(--t);line-height:1;color:var(--c);translate:-50% -50%;text-shadow:0 0 6px var(--c),0 0 14px rgba(145,220,255,.9);animation:hechizo-estrella 1.4s ease-out forwards}
+@keyframes hechizo-estrella{0%{opacity:0;transform:scale(.2) rotate(var(--g))}20%{opacity:1;transform:scale(1.25) rotate(calc(var(--g) + 40deg))}100%{opacity:0;transform:translateY(22px) scale(.5) rotate(calc(var(--g) + 160deg))}}

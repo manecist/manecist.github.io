@@ -895,22 +895,48 @@
   // ✦ Final: el báculo dibuja trazos de luz por toda la pantalla, la cámara entra al dibujo con un brillo
   // y aparece la versión clásica, donde el hada dibuja el lineart desde la hoja en blanco y luego lo pinta
   let dibujando = false;
+  // ✦ niebla mágica en círculo: nace en (cx, cy), se abre con un borde ondulado de mechones de luz hasta tapar todo;
+  //   ya tapado se cambia de vista (alCubrir) y luego la niebla se abre desde el mismo centro para descubrir la página
+  const TONOS_NIEBLA = ['#ffffff', '#bfe9ff', '#91dcff', '#ffd9ea', '#f5a8cf'];
+  const nieblaCircular = (cx, cy, alCubrir) => new Promise(fin => {
+    const W = innerWidth, H = innerHeight, cv = document.createElement('canvas'), cx2 = cv.getContext('2d');
+    cv.width = W; cv.height = H; cv.className = 'niebla-circular'; cv.setAttribute('aria-hidden', 'true'); document.body.append(cv);
+    const capa = document.createElement('div'); capa.className = 'niebla-brillos'; document.body.append(capa);
+    // la niebla completa: blanca con manchas suaves celestes y rosadas
+    const nb = document.createElement('canvas'); nb.width = W; nb.height = H; const n = nb.getContext('2d');
+    n.fillStyle = '#fffafd'; n.fillRect(0, 0, W, H);
+    for (let q = 0; q < 18; q++) { const x = Math.random() * W, y = Math.random() * H, r = 120 + Math.random() * 260, g = n.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, q % 2 ? 'rgba(191,233,255,.5)' : 'rgba(255,217,234,.55)'); g.addColorStop(1, 'rgba(255,250,253,0)'); n.fillStyle = g; n.fillRect(x - r, y - r, r * 2, r * 2); }
+    const LEJOS = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) + 140;
+    const MECHONES = 46, fases = Array.from({ length: MECHONES }, () => Math.random() * 6.28), largos = Array.from({ length: MECHONES }, () => .75 + Math.random() * .5);
+    // contorno ondulado: cada mechón de luz avanza un poco más o menos que el radio medio, como colas de cometa hacia afuera
+    const contorno = (R, t) => { cx2.beginPath(); for (let k = 0; k <= 180; k++) { const ang = k / 180 * Math.PI * 2, i = Math.floor(k / 180 * MECHONES) % MECHONES; const r = R * (1 + .16 * (largos[i] - 1)) + Math.sin(ang * 9 + t * 3 + fases[i]) * R * .045; const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r; k ? cx2.lineTo(x, y) : cx2.moveTo(x, y); } cx2.closePath(); };
+    const estrella = (x, y) => { if (x < -10 || y < -10 || x > W + 10 || y > H + 10) return; const e = document.createElement('i'); e.className = 'hechizo-estrella'; e.textContent = ['✦', '✧', '⋆', '✶'][Math.random() * 4 | 0];
+      e.style.cssText = 'left:' + x.toFixed(0) + 'px;top:' + y.toFixed(0) + 'px;--t:' + (10 + Math.random() * 16).toFixed(0) + 'px;--g:' + (Math.random() * 360 | 0) + 'deg;--c:' + TONOS_NIEBLA[1 + (Math.random() * 4 | 0)]; capa.append(e); setTimeout(() => e.remove(), 1500); };
+    const brillosBorde = (R, t) => { for (let q = 0; q < 5; q++) { const ang = Math.random() * 6.28, r = R * (.82 + Math.random() * .28); estrella(cx + Math.cos(ang) * r, cy + Math.sin(ang) * r); } if (window.Magia && Math.random() < .5) { const ang = Math.random() * 6.28; Magia.estela(cx + Math.cos(ang) * R, cy + Math.sin(ang) * R, { n: 3, colores: TONOS_NIEBLA }); } };
+    const fase = (ms, dibujar) => new Promise(listo => { const t0 = performance.now(); let ult = 0; const paso = ahora => { const u = Math.min(1, (ahora - t0) / ms), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; dibujar(e, ahora / 1000); if (ahora - ult > 45) { ult = ahora; brillosBorde(e * LEJOS, ahora / 1000); } if (u < 1) requestAnimationFrame(paso); else listo(); }; requestAnimationFrame(paso); });
+    const tapar = (e, t) => { cx2.clearRect(0, 0, W, H); cx2.save(); contorno(Math.max(4, e * LEJOS), t); cx2.clip(); cx2.drawImage(nb, 0, 0); cx2.restore(); };
+    const abrir = (e, t) => { cx2.globalCompositeOperation = 'source-over'; cx2.clearRect(0, 0, W, H); cx2.drawImage(nb, 0, 0); cx2.globalCompositeOperation = 'destination-out'; contorno(Math.max(1, e * LEJOS), t); cx2.fill(); cx2.globalCompositeOperation = 'source-over'; };
+    if (window.Magia) Magia.chispas(cx, cy, { n: 50, vel: 6, colores: TONOS_NIEBLA });
+    fase(quieto ? 1 : 1700, tapar).then(() => { alCubrir && alCubrir(); return new Promise(r => setTimeout(r, quieto ? 0 : 450)); })
+      .then(() => fase(quieto ? 1 : 1700, abrir))
+      .then(() => { cv.remove(); setTimeout(() => capa.remove(), 1500); fin(); });
+  });
+  window.MCENiebla = nieblaCircular;
   const dibujarMundo = origen => {
     if (dibujando) return; dibujando = true;
-    const capa = document.createElement('div'); capa.className = 'mundo-luz'; capa.setAttribute('aria-hidden', 'true');
     const r = origen ? origen.getBoundingClientRect() : null;
-    capa.style.setProperty('--lx', (r ? r.left + r.width * .5 : innerWidth / 2) + 'px'); capa.style.setProperty('--ly', (r ? r.top + r.height * .35 : innerHeight / 2) + 'px');
-    document.body.append(capa);
-    if (window.Magia && r) Magia.chispas(r.left + r.width / 2, r.top + r.height * .3, { n: 60, vel: 6 });
-    requestAnimationFrame(() => requestAnimationFrame(() => capa.classList.add('cubre')));
-    // cuando la luz cubre todo, aparece la página y el hada la dibuja desde la hoja en blanco
-    setTimeout(() => {
+    const cx = r ? r.left + r.width * .5 : innerWidth / 2, cy = r ? r.top + r.height * .35 : innerHeight / 2;
+    nieblaCircular(cx, cy, () => {
       const esc = document.getElementById('escena'); if (esc) { esc.style.visibility = 'hidden'; setTimeout(() => { esc.style.visibility = ''; }, 2500); }
-      window.MCELibro?.aClasico(null, { pintar: true });
-      capa.classList.add('sale');
-      setTimeout(() => { capa.remove(); dibujando = false; }, 1300);
-    }, quieto ? 0 : 1900);
+      window.MCELibro?.aClasico(null, { pintar: true });   // ya tapado, aparece la página y el hada la pinta
+    }).then(() => { dibujando = false; });
   };
+  // el botón «Versión clásica» del libro también pasa con la niebla mágica, desde el centro de la pantalla
+  document.addEventListener('click', e => {
+    const b = e.target.closest('#libro-clasico, #escena [data-modo="clasico"]'); if (!b || dibujando) return;
+    e.preventDefault(); e.stopImmediatePropagation(); dibujando = true;
+    nieblaCircular(innerWidth / 2, innerHeight / 2, () => window.MCELibro?.aClasico()).then(() => { dibujando = false; });
+  }, true);
   window.addEventListener('cuento-dibuja-mundo', e => { const z = e.detail && e.detail.zona; dibujarMundo(z && z.querySelector('.hito-actor')); });
   document.addEventListener('click', e => { if (e.target.closest('[data-entrar-mundo]')) { e.preventDefault(); dibujarMundo(document.querySelector('[data-hitos="final"] .hito-actor')); } });
 
