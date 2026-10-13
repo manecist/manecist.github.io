@@ -540,7 +540,7 @@
         { nombre: 'ari', actor: 'baculo-anim', x: 50, alto: 17, efecto: 'brilla', ms: 2600, bucle: [0, 1], cicloMs: 3000,
           texto: { titulo: 'A pesar de los obstáculos…', texto: 'siempre debes alcanzar tu sueño.' } },
         // Ari se transforma como una chica mágica: cintas de luz la envuelven y queda con el traje y las alas del hada
-        { nombre: 'ari-t', actor: 'transforma-anim', x: 50, alto: 19, pj: false, clase: 'hada-final', reemplaza: 'ari', sigue: true, de: 0, a: 2, ms: 5200, pausa: 300,
+        { nombre: 'ari-t', actor: 'transforma-anim', x: 49.6, alto: 17.1, pj: true, clase: 'hada-final', reemplaza: 'ari', sigue: true, de: 0, a: 2, ms: 5200, pausa: 300,
           fx: [{ tipo: 'destello', x: 50, ancho: 26, y: 6, ms: 1400 }, { tipo: 'destello', x: 50, ancho: 30, y: 10, ms: 1300, tras: 3800 }] },
         // …y con su varita lanza el hechizo: la luz cubre todo
         { evento: 'cuento-dibuja-mundo', ms: 400 }
