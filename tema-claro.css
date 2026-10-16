@@ -47,7 +47,8 @@ html[data-tema="claro"] p.official-slogan{color:#9c7015!important}
 html[data-tema="claro"] .credential-gallery a,html[data-tema="claro"] .derechos a{color:var(--pink)}
 /* título, logo y pestañas activas sobre fondo claro */
 html[data-tema="claro"] .hero h1 span{background-image:linear-gradient(90deg,#8c2f62,#c2457f 48%,#7a4fc0)}
-html[data-tema="claro"] :is(.studio-wordmark,.transition-finale img){filter:invert(1) hue-rotate(180deg) brightness(.45) sepia(.4)}
+/* logo: de día el de letras azules (transparencia real); de noche el de letras claras */
+html[data-tema="claro"] .logo-noche,html:not([data-tema="claro"]) .logo-dia{display:none}
 html[data-tema="claro"] :is(.dev-tab,.game-tab).active{background:linear-gradient(135deg,#c2457f,#7a4fc0);border-color:transparent;color:#fff}
 .tema-boton{flex:none}
 @media (max-width:700px){.tema-boton{width:34px;height:34px;font-size:1rem;margin-right:4px}}
