@@ -514,7 +514,7 @@
         { nombre: 'alicanto', img: 'assets/galeria/alicanto.webp', x: 20.7, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
         { nombre: 'lascar', img: 'assets/galeria/lascar.webp', x: 32.4, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
         { nombre: 'lica', img: 'assets/galeria/lica.webp', x: 44.1, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'puma', img: 'assets/galeria/puma.webp', x: 55.8, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'pachamama', img: 'assets/galeria/pachamama.webp', x: 55.8, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
         { nombre: 'reina-noche', img: 'assets/galeria/reina-noche.webp', x: 67.5, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
         { nombre: 'supai', img: 'assets/galeria/supai.webp', x: 79.2, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
         { nombre: 'tirana-1', img: 'assets/galeria/tirana-1.webp', x: 90.9, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
@@ -1002,7 +1002,7 @@
   });
 
   // VII · la galería saluda con vocecitas
-  const SALUDOS = { 'Achachila': '¡Hola! Soy el Achachila, cuido los cerros.', 'Alicanto': '¡Hola! Soy el Alicanto, ¡mis alas brillan!', 'Supai': 'Hola… soy Supai, del mundo de abajo.', 'Láscar': '¡Soy Láscar, el volcán!', 'La Tirana': '¡Hola! ¡A bailar en La Tirana!', 'Reina de la Noche': 'Buenas noches… soy la Reina de la Noche.', 'Lica': '¡Hola, hola! Soy Lica.', 'Puma': '¡Grrr… hola! Soy el Puma.', 'Emilia': '¡Hola! ¡Soy Emilia!', 'Regalo': '¡Hola! Soy un regalo hecho con cariño.' };
+  const SALUDOS = { 'Achachila': '¡Hola! Soy el Achachila, cuido los cerros.', 'Alicanto': '¡Hola! Soy el Alicanto, ¡mis alas brillan!', 'Supai': 'Hola… soy Supai, del mundo de abajo.', 'Láscar': '¡Soy Láscar, el volcán!', 'La Tirana': '¡Hola! ¡A bailar en La Tirana!', 'Reina de la Noche': 'Buenas noches… soy la Reina de la Noche.', 'Lica': '¡Hola, hola! Soy Lica.', 'Pachamama': 'Hola, soy la Pachamama, la Madre Tierra.', 'Make-Make': '¡Hola! Soy Make-Make, de Rapa Nui.', 'Benja': '¡Hola! ¡Soy Benja!', 'Mochilero': '¡Hola! ¿Vamos de viaje?', 'Chibi': '¡Hola, hola!', 'Emilia': '¡Hola! ¡Soy Emilia!', 'Regalo': '¡Hola! Soy un regalo hecho con cariño.' };
   $$('[data-saludar]').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.hitos-escena .hito-actor.cuadro').forEach((a, i) => { a.classList.remove('saluda'); void a.offsetWidth; a.style.setProperty('--k', i); a.classList.add('saluda'); setTimeout(() => a.classList.remove('saluda'), 3200); }); }));
   $$('[data-saludar]').forEach(b => b.addEventListener('click', async () => {
     const obras = $$('#leyendas .obra'); b.disabled = true;

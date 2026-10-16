@@ -253,6 +253,9 @@
     const OBRAS = [
       ['achachila', 'Achachila', 'leyenda', 'Espíritu protector de los cerros en la tradición aymara.'],
       ['alicanto', 'Alicanto', 'leyenda', 'Ave mítica del desierto de Atacama; sus alas brillan con la luz de los metales.'],
+      ['alicanto-cria', 'Alicanto · cría', 'leyenda', 'El Alicanto pequeño, en lineart.'],
+      ['make-make', 'Make-Make', 'leyenda', 'Dios creador del pueblo rapanui, con su máscara de ave.'],
+      ['pachamama', 'Pachamama', 'leyenda', 'La Madre Tierra en la cosmovisión andina.'],
       ['supai', 'Supai', 'leyenda', 'Espíritu del mundo de abajo en la cosmovisión andina.'],
       ['lascar', 'Láscar', 'leyenda', 'El volcán de Atacama convertido en personaje.'],
       ['tirana-1', 'La Tirana', 'leyenda', 'Inspirada en la fiesta de La Tirana, en Tarapacá.'],
@@ -260,11 +263,18 @@
       ['reina-noche', 'Reina de la Noche', 'leyenda', 'Personaje de la serie de leyendas.'],
       ['lica', 'Lica', 'leyenda', 'Personaje de la serie de leyendas.'],
       ['emilia-expresiones', 'Emilia · expresiones', 'proceso', 'Hoja de expresiones de Emilia, personaje de Studios Conari.'],
-      ['emilia-vistas', 'Emilia · vistas', 'proceso', 'Vistas de frente, perfil y espalda para animación.'],
-      ['puma', 'Puma', 'proceso', 'Lineart y paleta de color del guardián de la cordillera.'],
       ['tirana-proceso', 'La Tirana · proceso', 'proceso', 'Boceto de trabajo antes del color.'],
+      ['alicanto-lineart', 'Alicanto · lineart', 'proceso', 'La línea del Alicanto antes del color.'],
+      ['make-make-rostro', 'Make-Make · sin máscara', 'proceso', 'Variante de Make-Make sin la máscara de ave.'],
+      ['benja', 'Benja', 'proceso', 'Pose principal del personaje.'],
+      ['benja-base', 'Benja · base', 'proceso', 'Cuerpo base antes del vestuario.'],
+      ['mochilero', 'Mochilero', 'proceso', 'Pose principal con su mochila de viaje.'],
+      ['mochilero-base', 'Mochilero · base', 'proceso', 'Cuerpo base antes del vestuario.'],
+      ['chibi', 'Chibi', 'proceso', 'Pose principal en estilo chibi.'],
+      ['chibi-base', 'Chibi · base', 'proceso', 'Cuerpo base antes del vestuario.'],
       ['regalo-1', 'Regalo', 'regalo', 'Ilustración hecha como regalo.'],
-      ['regalo-2', 'Regalo', 'regalo', 'Ilustración hecha como regalo.']
+      ['regalo-2', 'Regalo', 'regalo', 'Ilustración hecha como regalo.'],
+      ['regalo-2-lineart', 'Regalo · lineart', 'regalo', 'La línea del regalo antes del color.']
     ];
     let vista = OBRAS, idx = 0, hoja = 0;
     // en el libro la galería se recorre por hojas de seis (en la versión clásica se ven todas)
