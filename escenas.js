@@ -7,7 +7,7 @@
    la estela de cometa que nace de su varita tapa todo con niebla mágica, aparece
    el nombre de la sección y en una segunda pasada la estela descubre la nueva.
    Los nodos de la página se mueven (no se copian), así la
-   calculadora, la caja, el oráculo y los juegos siguen funcionando.
+   calculadora, la caja, los tableros y los juegos siguen funcionando.
    Solo en escritorio con mouse; ?normal vuelve a la página con scroll.
    ========================================================================== */
 (() => {
@@ -62,7 +62,7 @@
   // la marca (logo, lema, descripción y botones) a la izquierda, sin tarjeta; a la derecha la lista de lo que hace el estudio
   const card = de('.studio-brand-card', est), cuerpo = card && card.querySelector(':scope > div');
   const lema = document.createElement('p'); lema.className = 'estudio-lema'; lema.textContent = 'Donde nacen mundos y leyendas eternas';
-  const marca = div('estudio-marca', $('.studio-wordmark', card), lema, cuerpo && cuerpo.querySelector(':scope > p:not(.official-slogan)'), cuerpo && cuerpo.querySelector('.studio-actions'));
+  const marca = div('estudio-marca', ...$$('.studio-wordmark', card), lema, cuerpo && cuerpo.querySelector(':scope > p:not(.official-slogan)'), cuerpo && cuerpo.querySelector('.studio-actions'));
   const ICONOS = { 'Documentación y propuestas': 'assets/icon-document.webp', 'Modelado y animación 3D': 'assets/emblema-conari-magico.webp' };
   const servicios = div('estudio-servicios', [...$$('.service-gallery article, .service-more article', $(est))].map(a => {
     const t = a.querySelector('h3')?.textContent || '', ico = a.querySelector('img')?.getAttribute('src') || ICONOS[t] || 'assets/icon-company.webp';
@@ -99,12 +99,16 @@
     papel('app-caja app-tres', nota('Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.'),
       div('app-doble', div('', pasoCaja(1, 'Elige productos y descuento'), $('#m4-picker')), div('', pasoCaja(2, 'Revisa el recibo y paga'), $('#m4-recibo')), div('', pasoCaja(3, 'Cobra en la caja'), $('#caja')))),
     papel('app-vitrina', nota('<b>Magical Alliance</b>, mi proyecto final Full Stack Java, aquí mismo: recórrela como clienta o como administradora, llena el carrito y mira cómo cambia el stock.'), div('vitrina-viva', vitrina), $('#dev-m7 .botonera')),
+    papel('app-banco', $('#banco-card')),
   ];
-  const botonesDev = pestanas(['Calculadora Java', 'Tienda Java · M4', 'Magical Alliance · M7']);
+  const botonesDev = pestanas(['Calculadora Java', 'Tienda Java · M4', 'Magical Alliance · M7', 'Banco de Evaluaciones']);
   E.push({
     id: 'desarrollo', hada: 'Desarrollo', ev: crear('ev-desarrollo', cabeza(dev), botonesDev, div('papel-marcos', marcosDev)),
     pasos: marcosDev.length, marcos: marcosDev, botones: [...botonesDev.children],
-    alMostrar(i) { if (i === 2 && vitrina.dataset.src) { vitrina.src = vitrina.dataset.src; vitrina.removeAttribute('data-src'); } },   // la tienda en vivo carga recién al verla
+    alMostrar(i) {   // la tienda y el banco en vivo cargan recién al verlos
+      if (i === 2 && vitrina.dataset.src) { vitrina.src = vitrina.dataset.src; vitrina.removeAttribute('data-src'); }
+      if (i === 3) window.MCEBanco?.cargar();
+    },
     entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, this.botones, '-=.2', { duration: .35, stagger: .06 }); this.paso(tl, 0, 1, true); },
     paso(tl, i, dir, primero) { cambiarMarco(tl, this, i, dir, primero); },
   });
@@ -123,7 +127,7 @@
   });
   E.push({
     id: 'leyendas', ev: crear('ev-leyendas', $('#leyendas')),
-    entrar(tl, ev) { sube(tl, $$('.leyendas-cabeza > *', ev)); crece(tl, $$('.leyendas-grid > *', ev).slice(0, 16), '-=.2', { stagger: .04 }); tl.from($('.leyendas-aviso', ev), { opacity: 0, duration: .4 }, '-=.2'); },
+    entrar(tl, ev) { sube(tl, $$('.leyendas-cabeza > *', ev)); crece(tl, $('.ley-cuadro', ev), '-=.2'); crece(tl, $$('.leyendas-grid > *', ev).slice(0, 18), '-=.3', { stagger: .03 }); tl.from($('.leyendas-aviso', ev), { opacity: 0, duration: .4 }, '-=.2'); },
   });
   E.push({
     id: 'historia', ev: crear('ev-historia', de('.design-story', dis)),
@@ -134,14 +138,14 @@
     },
   });
 
-  // ---------------------------------------------------------- 9. datos: el oráculo
+  // ---------------------------------------------------------- 9. datos: los cinco tableros de salud, en su marco de papel
   const dat = '#datos';
   E.push({
-    id: 'datos', ev: crear('ev-datos', cabeza(dat), $('#oraculo')),
+    id: 'datos', ev: crear('ev-datos', cabeza(dat), papel('app-tableros activo', $('#tableros'))),
     entrar(tl, ev) {
       sube(tl, $$('.section-head > *', ev));
-      lado(tl, $('.oraculo-form', ev), -1, '-=.2'); lado(tl, $('.oraculo-viz', ev), 1, '<.1');
-      crece(tl, $$('.oraculo-kpis > *', ev), '-=.2');
+      crece(tl, $('.app-tableros', ev), '-=.2', { duration: .6 });
+      sube(tl, $$('.tab-tema', ev), '-=.3', { stagger: .06, duration: .35 });
     },
   });
 
@@ -158,6 +162,12 @@
   E.push({
     id: 'salud', ev: crear('ev-salud', $('#salud-card')),
     entrar(tl, ev) { crece(tl, $('.health-card', ev), 0, { duration: .6 }); sube(tl, $$('.health-card > div > *', ev), '-=.3'); },
+  });
+  // la matrona hoy: cápsulas en video, páginas interactivas y planilla PAP
+  E.push({
+    id: 'matrona', ev: crear('ev-matrona', papel('app-matrona activo', $('#matrona-hoy'))),
+    entrar(tl, ev) { crece(tl, $('.app-matrona', ev), 0, { duration: .6 }); sube(tl, $$('.mh-cabeza > *, .mh-tab', ev), '-=.3', { stagger: .06 }); },
+    salir() { window.MCEMatrona?.pausar(); },
   });
 
   // ---------------------------------------------------------- 12. formación
@@ -320,27 +330,30 @@
     return tl;
   }
 
-  // ---------------------------------------------------------- leyendas: carrusel infinito, un dibujo a la vez, que vuelve a empezar sin saltos
+  // ---------------------------------------------------------- leyendas: como en un museo, la obra elegida completa en su marco y al lado el muro de cuadritos
   const rejilla = $('#leyendas-grid');
   if (rejilla) {
-    const marco = div('carrusel-leyendas'); rejilla.before(marco); marco.append(rejilla);
-    const flecha = (t, lbl) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'carrusel-flecha'; b.textContent = t; b.setAttribute('aria-label', lbl); marco.append(b); return b; };
-    const antF = flecha('‹', 'Dibujo anterior'), sigF = flecha('›', 'Dibujo siguiente');
-    let moviendo = false, encima = false;
-    const paso = () => { const p = rejilla.firstElementChild; return p ? p.getBoundingClientRect().width / (parseFloat(rejilla.closest('.ev-caja')?.style.zoom) || 1) + 16 : 0; };
-    const fijar = (x, anima) => { rejilla.style.transition = anima ? 'transform .8s cubic-bezier(.45,0,.25,1)' : 'none'; rejilla.style.transform = 'translateX(' + x + 'px)'; };
-    // adelante: se desliza un dibujo y el primero pasa al final; atrás: el último pasa al principio y se desliza a su lugar
-    const avanzarCarrusel = dir => {
-      if (moviendo || rejilla.children.length < 2) return; moviendo = true;
-      const d = paso();
-      if (dir > 0) { fijar(-d, true); setTimeout(() => { rejilla.append(rejilla.firstElementChild); fijar(0, false); moviendo = false; }, 820); }
-      else { rejilla.prepend(rejilla.lastElementChild); fijar(-d, false); void rejilla.offsetWidth; fijar(0, true); setTimeout(() => { moviendo = false; }, 820); }
+    const cuadro = document.createElement('figure'); cuadro.className = 'ley-cuadro';
+    cuadro.innerHTML = '<div class="ley-marco"><img alt="" draggable="false"></div><figcaption><b></b><span></span><button type="button" class="btn ghost ley-ver">⤢ Ver en grande</button></figcaption>';
+    const cImg = $('img', cuadro), cTit = $('b', cuadro), cTxt = $('figcaption span', cuadro);
+    const muro = div('ley-muro'); rejilla.before(div('ley-museo', cuadro, muro)); muro.append(rejilla);
+    let elegida = null;
+    const destacar = b => {
+      if (!b) return; elegida = b;
+      const im = b.querySelector('img'), alt = im.alt || '', corte = alt.indexOf('. ');
+      cImg.src = im.src; cImg.alt = alt;
+      cTit.textContent = b.querySelector('.obra-nombre')?.textContent || alt.slice(0, corte);
+      cTxt.textContent = corte >= 0 ? alt.slice(corte + 2) : '';
+      $$('.obra', rejilla).forEach(o => o.classList.toggle('elegida', o === b));
     };
-    sigF.addEventListener('click', () => avanzarCarrusel(1)); antF.addEventListener('click', () => avanzarCarrusel(-1));
-    marco.addEventListener('pointerenter', () => { encima = true; }); marco.addEventListener('pointerleave', () => { encima = false; });
-    setInterval(() => { if (E[actual]?.id === 'leyendas' && !encima && !document.hidden && !bloqueada()) avanzarCarrusel(1); }, 3200);
-    // al cambiar el filtro, la fila vuelve a empezar desde su lugar
-    new MutationObserver(() => { if (!moviendo) fijar(0, false); }).observe(rejilla, { childList: true });
+    // en el muro, tocar un cuadrito lo lleva al marco grande; el visor ampliado se abre desde el marco
+    rejilla.addEventListener('click', e => { const b = e.target.closest('.obra'); if (!b || b._directo) return; e.stopImmediatePropagation(); destacar(b); }, true);
+    const ampliar = () => { if (!elegida) return; elegida._directo = true; elegida.click(); elegida._directo = false; };
+    $('.ley-ver', cuadro).addEventListener('click', ampliar); cImg.addEventListener('click', ampliar);
+    cImg.addEventListener('contextmenu', e => e.preventDefault());
+    // al cambiar el filtro, el marco muestra la primera obra del filtro
+    new MutationObserver(() => destacar(rejilla.firstElementChild)).observe(rejilla, { childList: true });
+    destacar(rejilla.firstElementChild);
   }
 
   // ---------------------------------------------------------- destellos en los bordes: aparecen aquí y allá, alternados, sobre los cuadros de la escena
@@ -362,7 +375,7 @@
   }, 180);
 
   // ---------------------------------------------------------- índice lateral: una estrella por escena
-  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'El equipo', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos', trayectoria: 'Trayectoria', salud: 'Matrona', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
+  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'El equipo', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos de salud', trayectoria: 'Trayectoria', salud: 'Matrona', matrona: 'Matrona hoy', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
   const SECCION = ['inicio', 'estudio', 'desarrollo', 'diseno', 'datos', 'trayectoria', 'formacion', 'arcade', 'contacto'];
   const indice = document.createElement('nav'); indice.className = 'escenas-indice'; indice.setAttribute('aria-label', 'Escenas');
   E.forEach((e, i) => {
@@ -393,7 +406,7 @@
     if (ajustando) return;
     requestAnimationFrame(() => { ajustando = true; ajustar(E[actual]); requestAnimationFrame(() => { ajustando = false; }); });
   });
-  ['.papel-marcos', '#lab-viz', '#leyendas-grid', '.creative-journey', '#arcade-zona', '#m7-galeria', '#printer-output'].forEach(s => { const n = $(s); if (n) ro.observe(n); });
+  ['.papel-marcos', '.tab-panel', '.tab-tira', '.mh-capsulas', '.mh-paginas-lista', '#leyendas-grid', '.creative-journey', '#arcade-zona', '#m7-galeria', '#printer-output'].forEach(s => { const n = $(s); if (n) ro.observe(n); });
   $$('img', capa).forEach(img => {                 // las imágenes diferidas cambian el alto al cargar
     img.loading = 'eager';
     if (!img.complete) img.addEventListener('load', () => { if (img.closest('.ev.activa')) requestAnimationFrame(() => ajustar(E[actual])); }, { once: true });
@@ -403,7 +416,7 @@
   let actual = 0, paso = 0, ocupado = false, tlEntrada = null;
   const objetivos = tl => [...new Set(tl.getChildren(true, true, false).flatMap(t => t.targets()))].filter(t => t instanceof Element);
   const marcarMenu = e => {
-    const zona = { servicios: 'estudio', equipo: 'estudio', leyendas: 'diseno', historia: 'diseno', salud: 'trayectoria' }[e.id] || e.id;
+    const zona = { servicios: 'estudio', equipo: 'estudio', leyendas: 'diseno', historia: 'diseno', salud: 'trayectoria', matrona: 'trayectoria' }[e.id] || e.id;
     $$('.topbar nav a, .topbar .mini-cta').forEach(a => a.classList.toggle('activo', a.getAttribute('href') === '#' + zona));
   };
   function mostrar(e) {
@@ -434,6 +447,7 @@
     if (ocupado || i === actual || i < 0 || i >= E.length) return;
     ocupado = true;
     const dir = i > actual ? 1 : -1, de = E[actual], a = E[i];
+    de.salir && de.salir();   // por ejemplo, la cápsula en video se pausa al dejar la escena
     if (tlEntrada) { tlEntrada.progress(1); limpiar(tlEntrada); tlEntrada = null; }
     if (conHada(de, a, dir)) {
       // el hada tapa la escena actual con su niebla; ya tapada, se cambia la escena y luego la pinta
@@ -492,7 +506,7 @@
       const puede = e.deltaY > 0 ? ev.scrollTop + ev.clientHeight < ev.scrollHeight - 2 : ev.scrollTop > 0;
       if (puede) return;
     }
-    const det = e.target.closest('details[open] > div, .table-wrap, .printer-output');   // un recuadro con su propio scroll
+    const det = e.target.closest('details[open] > div, .table-wrap, .printer-output, .tab-panel, .mh-capsulas, .mh-paginas-lista');   // un recuadro con su propio scroll
     if (det && det.scrollHeight > det.clientHeight + 2) { const puede = e.deltaY > 0 ? det.scrollTop + det.clientHeight < det.scrollHeight - 2 : det.scrollTop > 0; if (puede) return; }
     e.preventDefault();
     if (ahora - ultimaRueda > 220) { gestoUsado = false; acumulado = 0; }   // un gesto nuevo tras una pausa
@@ -508,7 +522,7 @@
     if (e.key === 'Home') { e.preventDefault(); irA(0); }
     if (e.key === 'End') { e.preventDefault(); irA(E.length - 1); }
   });
-  const DESTINO = { inicio: 'inicio', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'diseno', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'salud', formacion: 'formacion', arcade: 'arcade', contacto: 'contacto' };
+  const DESTINO = { inicio: 'inicio', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'diseno', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'salud', 'matrona-hoy': 'matrona', formacion: 'formacion', arcade: 'arcade', contacto: 'contacto' };
   const indiceDe = id => E.findIndex(e => e.id === id);
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]'); if (!a || !site.contains(a)) return;
