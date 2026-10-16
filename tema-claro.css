@@ -41,7 +41,7 @@ html[data-tema="claro"] .contact-section{background:linear-gradient(180deg,rgba(
 html[data-tema="claro"] .contact-buttons a,html[data-tema="claro"] .contact-section a{color:var(--white);border-color:rgba(70,45,100,.28)}
 html[data-tema="claro"] footer{color:var(--text)}
 /* el escenario del libro también amanece */
-html[data-tema="claro"] .escena-cielo{background-image:url("assets/fondo/dia.webp")}
+html[data-tema="claro"] .escena-cielo{background-image:url("assets/fondo/galaxia-dia.webp")}
 html[data-tema="claro"] :is(.dev-tab,.game-tab):not(.active){background:rgba(255,255,255,.62);color:var(--text)}
 html[data-tema="claro"] p.official-slogan{color:#9c7015!important}
 html[data-tema="claro"] .credential-gallery a,html[data-tema="claro"] .derechos a{color:var(--pink)}
