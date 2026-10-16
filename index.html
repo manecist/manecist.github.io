@@ -25,7 +25,8 @@
   <link rel="stylesheet" href="libro.css?v=20261013b">
   <link rel="stylesheet" href="tema-claro.css?v=20261016a">
   <link rel="stylesheet" href="intro.css?v=20260929f">
-  <link rel="stylesheet" href="escenas.css?v=20261108j">
+  <link rel="stylesheet" href="salud.css?v=20261016b">
+  <link rel="stylesheet" href="escenas.css?v=20261108k">
   <link rel="icon" href="assets/emblema-estrella.png">
   <script>
     // modo día o noche: lo elegido antes o, si no, la preferencia del sistema
@@ -41,12 +42,14 @@
   <script src="app.js?v=20261016a" defer></script>
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261016a" defer></script>
-  <script src="secciones.js?v=20261017b" defer></script>
+  <script src="secciones.js?v=20261017c" defer></script>
+  <script src="datos-salud.js?v=20261016a" defer></script>
+  <script src="salud.js?v=20261016a" defer></script>
   <script src="libro.js?v=20261013a" defer></script>
   <script src="cuento.js?v=20261017a" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
-  <script src="escenas.js?v=20261108j" defer></script>
+  <script src="escenas.js?v=20261108k" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
   <script src="intro.js?v=20261002a" defer></script>
 </head>
@@ -215,6 +218,7 @@
     <button class="dev-tab active" data-dev="calc">Calculadora Java</button>
     <button class="dev-tab" data-dev="m4">Tienda Java · M4</button>
     <button class="dev-tab" data-dev="m7">eCommerce final · M7</button>
+    <button class="dev-tab" data-dev="banco">Banco de Evaluaciones</button>
   </div>
 
   <div class="dev-panel active" id="dev-calc">
@@ -295,6 +299,30 @@ double total = subtotal - ahorro;</code></pre>
       <p class="botonera"><a class="btn primary" href="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/" target="_blank" rel="noopener">Abrir la vitrina interactiva ↗</a> <a class="btn ghost" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Ver repositorio M7 ↗</a></p>
     </div>
   </div>
+
+  <div class="dev-panel" id="dev-banco">
+    <div class="banco-card" id="banco-card">
+      <div class="banco-texto">
+        <span class="chip">DEMO TÉCNICO · STUDIOS CONARI SPA</span>
+        <h3>Banco de Evaluaciones</h3>
+        <p>Un banco de preguntas para educación técnica de nivel superior: los docentes escriben, revisan, reutilizan y analizan sus evaluaciones. <b>La IA ayuda, pero no decide: la respuesta correcta siempre la confirma una persona.</b></p>
+        <ol class="banco-flujo">
+          <li><b>📄 Prueba en papel</b><span>Una prueba antigua, escaneada o en Word, se separa en preguntas y alternativas.</span></li>
+          <li><b>✍️ Redacción guiada</b><span>Nueva pregunta en 5 pasos, con un asesor que explica cómo corregir cada detalle.</span></li>
+          <li><b>🔎 Revisión y visación</b><span>Nadie aprueba sus propias preguntas; si hay dudas, opina un par experto.</span></li>
+          <li><b>🖨️ Papel o 💻 Moodle</b><span>Formas A y B barajadas, pauta, hoja para lector óptico y exportación a Moodle.</span></li>
+          <li><b>📊 Análisis de ítems</b><span>Dificultad, discriminación y alertas que explican qué pregunta revisar.</span></li>
+        </ol>
+        <p class="banco-moodle">✅ <b>Probado con un Moodle 4.5 real</b> (16-10-2026): ida y vuelta con 9 de 9 preguntas reconocidas, notas idénticas y sin datos personales.</p>
+        <div class="stack-cloud"><span>TypeScript</span><span>React</span><span>Node.js</span><span>PostgreSQL</span><span>OpenAPI</span><span>Docker</span></div>
+        <p class="small-note">Prueba de capacidad técnica con datos ficticios: no es un sistema de ninguna institución.</p>
+      </div>
+      <div class="banco-vivo">
+        <div class="vitrina-viva"><iframe title="Banco de Evaluaciones, el demo en vivo" data-src="https://manecist.github.io/banco-evaluaciones-demo/" loading="lazy"></iframe></div>
+        <p class="botonera"><a class="btn primary" href="https://manecist.github.io/banco-evaluaciones-demo/" target="_blank" rel="noopener">Abrir el demo ↗</a> <a class="btn ghost" href="https://github.com/manecist/banco-evaluaciones-demo/tree/main/docs/prueba-integracion-moodle" target="_blank" rel="noopener">Informe de la prueba con Moodle ↗</a> <a class="btn ghost" href="https://github.com/manecist/banco-evaluaciones-demo" target="_blank" rel="noopener">Ver repositorio ↗</a></p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="diseno" class="section wrap">
@@ -342,42 +370,10 @@ double total = subtotal - ahorro;</code></pre>
 
 <section id="datos" class="section wrap">
   <div class="section-head">
-    <div><p class="eyebrow">04 · DATOS</p><h2>Guardar, ordenar y<br>entender información.</h2></div>
-    <p>Un pequeño laboratorio de datos: registra edad, color y música favorita, y el oráculo los ordena en un mapa que se lee de un vistazo. Cada lectura dice cuántas personas la sostienen.</p>
+    <div><p class="eyebrow">04 · DATOS</p><h2>Datos de salud<br>que se entienden.</h2></div>
+    <p>Como matrona hice cinco tableros en Power BI y Tableau con datos públicos de Chile. Cada uno responde una pregunta real, explica sus indicadores y termina con lo que concluyo. Elige un tema, revisa lo que encontré y recorre las páginas del tablero.</p>
   </div>
-
-  <div class="oraculo" id="oraculo">
-    <form id="lab-form" class="oraculo-form" novalidate>
-      <span class="chip">EL ORÁCULO DE LOS COLORES · DEMO</span>
-      <h3>Cuéntale al oráculo</h3>
-      <div class="fila2"><label>Nombre<input id="lab-nombre" maxlength="30" placeholder="Ej. Luna" autocomplete="off"></label><label>Edad<input id="lab-edad" type="number" inputmode="numeric" min="1" max="120" placeholder="Ej. 28"></label></div>
-      <fieldset class="paleta"><legend>Color favorito · <b id="lab-color-nombre">Rosado</b></legend><div id="lab-colores" class="paleta-gotas"></div></fieldset>
-      <label>Música favorita<select id="lab-musica"></select></label>
-      <label id="lab-otra-wrap" hidden>¿Cuál?<input id="lab-otra" maxlength="30" placeholder="Escribe el género"></label>
-      <button class="btn primary" type="submit">✦ Guardar en el oráculo</button>
-      <p id="lab-msg" class="lab-msg" role="status"></p>
-      <div class="oraculo-acciones"><button type="button" id="lab-ejemplo" class="btn ghost">Ejemplo ficticio · 20 personas</button><button type="button" id="lab-limpiar" class="btn ghost">Vaciar</button></div>
-      <small class="lab-privado">Los registros viven solo en esta página: no se guardan ni se envían a ningún servidor.</small>
-    </form>
-    <div class="oraculo-viz" id="lab-viz">
-      <div class="oraculo-kpis" id="lab-kpis"></div>
-      <figure class="oraculo-mapa">
-        <figcaption><strong>¿Qué colores eligen las distintas edades?</strong><span>Cada burbuja reúne a las personas de un color y un tramo de edad; su tamaño es la cantidad. Toca una burbuja para escuchar su música.</span></figcaption>
-        <div id="lab-mapa" class="mapa"></div>
-      </figure>
-      <div class="oraculo-lectura" id="lab-lectura" aria-live="polite"></div>
-      <details class="oraculo-tabla" id="lab-tabla-det"><summary>Ver los registros como tabla</summary><div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Edad</th><th>Color</th><th>Música</th></tr></thead><tbody id="lab-tabla"></tbody></table></div>
-        <p id="lab-tabla-mas" class="lab-tabla-mas"></p>
-        <pre><code>INSERT INTO preferencias (nombre, edad, color, musica)
-VALUES (?, ?, ?, ?);</code></pre></details>
-      <details class="oraculo-ciencia" id="lab-ciencia-det"><summary>✧ Lo que investiga la ciencia sobre color, música y edad</summary>
-        <article><h5>Color, emoción y sonido</h5><p>En un experimento con música clásica, participantes de Estados Unidos y México asociaron piezas rápidas en modo mayor con colores más claros, saturados y amarillos; las emociones compartidas ayudaron a explicarlo. Elegir un color para una canción no es lo mismo que tener un color favorito: no permite concluir «si te gusta el rojo, te gusta el pop».</p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3670360/" target="_blank" rel="noopener noreferrer">Palmer y colaboradores · PNAS, 2013 ↗</a></article>
-        <article><h5>Las preferencias cambian con la edad</h5><p>Dos estudios con más de 250.000 personas encontraron diferencias entre adolescencia y mediana edad: en promedio, la música «intensa» y «contemporánea» disminuye con los años y otras aumentan. Son tendencias de grupos, no reglas para cada persona.</p><a href="https://pubmed.ncbi.nlm.nih.gov/23895269/" target="_blank" rel="noopener noreferrer">Bonneville-Roussy y colaboradores · JPSP, 2013 ↗</a></article>
-        <p class="small-note">El oráculo solo describe los registros de esta página; las fuentes son contexto y no se usan para inventar resultados.</p>
-      </details>
-    </div>
-  </div>
-
+  <div class="tableros" id="tableros"></div>
 </section>
 
 <section id="trayectoria" class="section wrap">
@@ -420,6 +416,7 @@ VALUES (?, ?, ?, ?);</code></pre></details>
       </p>
     </div>
   </div>
+  <div class="matrona-hoy" id="matrona-hoy"></div>
 </section>
 
 <section id="formacion" class="section wrap">
