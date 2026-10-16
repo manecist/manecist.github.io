@@ -59,3 +59,15 @@ html[data-tema="claro"] :is(.dev-tab,.game-tab).active{background:linear-gradien
 html[data-tema="claro"] #inicio .hero-copy{background:rgba(255,250,243,.86);box-shadow:0 18px 40px rgba(74,42,82,.18);border:1px solid rgba(201,139,184,.35)}
 html[data-tema="claro"] #inicio .hero-copy p{color:#3d2b4a}
 @media(max-width:600px){#inicio .hero-copy{padding:18px}}
+/* barra superior de día: vidrio claro con un hilo dorado y rosado, letras ciruela y botones en píldora */
+html[data-tema="claro"] .site .topbar{background:linear-gradient(180deg,rgba(255,251,246,.9),rgba(255,244,250,.84));backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:0;box-shadow:0 8px 28px rgba(106,60,120,.12)}
+html[data-tema="claro"] .site .topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:linear-gradient(90deg,transparent,#e9c77e 18%,#f0a6c8 50%,#b796e6 82%,transparent);opacity:.9;pointer-events:none}
+html[data-tema="claro"] .topbar .brand small{color:#4a2a52;font-family:var(--titulo,"Cinzel",serif);font-weight:700;letter-spacing:.02em}
+html[data-tema="claro"] .topbar .brand span{background:linear-gradient(135deg,#e48bb8,#9a74d6);color:#fff;box-shadow:0 4px 14px rgba(154,116,214,.35)}
+html[data-tema="claro"] #main-nav a{color:#5b3d66;font-weight:600;padding:6px 10px;border-radius:999px;transition:color .2s,background .2s}
+html[data-tema="claro"] #main-nav a:hover{color:#b03f78;background:rgba(240,166,200,.16)}
+html[data-tema="claro"].escenas .topbar nav a.activo{color:#8c2f62;background:rgba(240,166,200,.22);box-shadow:none}
+html[data-tema="claro"] .abrir-cuento{background:linear-gradient(135deg,#f7d9ea,#e2d2f7);color:#5a2a5e;border:1px solid rgba(201,139,184,.55);box-shadow:0 3px 10px rgba(154,116,214,.18)}
+html[data-tema="claro"] .topbar .mini-cta{color:#5a2a5e;background:#fff;border:1px solid rgba(201,139,184,.5);border-radius:999px;box-shadow:0 3px 10px rgba(106,60,120,.08)}
+html[data-tema="claro"] .topbar .mini-cta:hover{background:#fff4fa}
+html[data-tema="claro"] .topbar .menu-toggle{color:#5a2a5e;background:#fff;border:1px solid rgba(201,139,184,.5);border-radius:999px;box-shadow:0 3px 10px rgba(106,60,120,.08)}
