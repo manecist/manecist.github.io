@@ -27,10 +27,10 @@ window.FondoAcuarela = (() => {
     { id: '01-cielo', prof: .05 },
     { id: '02-cordillera', prof: .15 },
     { id: '03-valle', prof: .3 },
-    { id: '04-dragon', prof: .42, flota: [1.3, 7], figura: true },
-    { id: '05-mago', prof: .55, flota: [1.7, 9], figura: true },
-    { id: '06-primer-plano', prof: .85 },
-    { id: '07-pareja', prof: 1, figura: true }
+    { id: '04-dragon', prof: .42, flota: [1.3, 7], figura: true, aura: [1.1, 0] },
+    { id: '05-mago', prof: .55, flota: [1.7, 9], figura: true, aura: [1.5, 1.3] },
+    { id: '06-primer-plano', prof: .85, aura: [.8, 2.4] },        // el árbol
+    { id: '07-pareja', prof: 1, figura: true, aura: [1.3, 3.6] }
   ];
 
   // recorrido del hada: capas que pinta en cada tramo y la capa que da su profundidad
@@ -127,48 +127,64 @@ window.FondoAcuarela = (() => {
       // lineart en blanco y negro, ajustado al marco común; se calcula una sola vez
       const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, 0, 0, W, H);
       const co = lienzo(W, H); co.getContext('2d').drawImage(acu, 0, 0, W, H);
-      juego[c.id] = { bn, co, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
+      // aura de energía de la figura: un halo con sus propios colores que late suave
+      const aura = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp`).catch(() => null) : null;
+      juego[c.id] = { bn, co, aura, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
     }));
+    // la escena entera, chica y difuminada, para rellenar los bordes cuando la pantalla no tiene su misma proporción
+    const chica = lienzo(W / 8, H / 8), cg = chica.getContext('2d');
+    CAPAS.forEach(c => cg.drawImage(juego[c.id].co, 0, 0, W / 8, H / 8));
+    const relleno = lienzo(W / 4, H / 4), rg = relleno.getContext('2d');
+    rg.filter = 'blur(6px)'; rg.drawImage(chica, -8, -8, W / 4 + 16, H / 4 + 16);
+    juego.relleno = relleno; juego.tema = tema;
     return juego;
   }
 
   // ---------------------------------------------------------- dibujo de un cuadro
   const PUNTA = [[72, 97], [113, 42], [22, 318], [30, 372]], HADA_ALTO = 118, HADA_ESC = HADA_ALTO / 480;
-  // acercamiento de la cámara en el tiempo (1 = la escena completa cubre la pantalla)
-  const ZOOM_CERCA = 1.5, CLAVES = [[0, 1.08], [DURACION, 1.08]];   // sin acercamiento: la escena se ve completa todo el tiempo
-  function acercamiento(t) {
-    if (t >= DURACION) return 1.08;
-    for (let i = 1; i < CLAVES.length; i++) if (t <= CLAVES[i][0]) { const [t0, z0] = CLAVES[i - 1], [t1, z1] = CLAVES[i]; return z0 + (z1 - z0) * suave((t - t0) / (t1 - t0)); }
-    return 1.08;
-  }
-  // el foco es la posición del hada suavizada: promedia su recorrido cercano para que el paneo sea fluido
-  function foco_(t) {
-    let x = 0, y = 0, n = 0;
-    for (let d = -.7; d <= .71; d += .1) { const q = varita(Math.max(.9, Math.min(DURACION, t + d))).p; x += q[0]; y += q[1]; n++; }
-    return [x / n, y / n];
-  }
   const DESPLAZA = 38;                              // desplazamiento máximo del parallax, en px del marco
+  // encuadre: el lienzo completo (alas del dragón y pie de la escena incluidos) bajo la barra superior,
+  // con un pequeño margen para el parallax; en pantallas verticales cubre la pantalla
+  let arriba = 0;                                   // alto de la barra superior, en px del lienzo
+  function encuadre(cw, ch) {
+    const disp = ch - arriba, vertical = cw / disp < 1.2;
+    const k = (vertical ? Math.max(cw / W, disp / H) : Math.min(cw / W, disp / H)) * 1.045;
+    return { k, ox: (cw - W * k) / 2, oy: arriba + (disp - H * k) / 2 };
+  }
+  // los bordes que quedan fuera del lienzo se rellenan con la misma escena, ampliada y difuminada
+  function rellenar(ctx, cw, ch, a) {
+    if (!img.relleno || a <= 0) return;
+    const k = Math.max(cw / W, ch / H) * 1.1;
+    ctx.save(); ctx.globalAlpha = a; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img.relleno, (cw - W * k) / 2, (ch - H * k) / 2, W * k, H * k);
+    ctx.fillStyle = img.tema === 'dia' ? 'rgba(255,248,239,.25)' : 'rgba(8,10,30,.35)'; ctx.fillRect(0, 0, cw, ch);
+    ctx.restore();
+  }
 
   function pintar(ctx, t, px = 0, py = 0) {
     if (!listos) return;
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
-    // cámara: plano general al inicio; se acerca y hace paneo siguiendo al hada mientras pinta cada capa;
-    // se abre para el hechizo de la luna y termina en el encuadre del fondo (con margen para el parallax)
-    const zoom = acercamiento(t), cerca = (zoom - 1.08) / (ZOOM_CERCA - 1.08);
-    const k = Math.max(cw / W, ch / H) * zoom, foco = foco_(t);
-    const cx = W / 2 + (foco[0] - W / 2) * cerca, cy = H / 2 + (foco[1] - H / 2) * cerca;
-    const mw = (W * k - cw) / 2, mh = (H * k - ch) / 2;   // cuánto puede moverse sin mostrar bordes
-    const ox = (cw - W * k) / 2 + Math.max(-mw, Math.min(mw, (W / 2 - cx) * k)) * .92;
-    const oy = (ch - H * k) / 2 + Math.max(-mh, Math.min(mh, (H / 2 - cy) * k)) * .92;
+    const { k, ox, oy } = encuadre(cw, ch);
     // durante la intro la cámara se balancea suave para mostrar la profundidad
     const intro = 1 - suave((t - DURACION) / 1.5);
     const mx = px + intro * Math.sin(t * .42) * .55, my = py + intro * Math.sin(t * .31 + 1) * .2;
     const v = varita(Math.min(t, DURACION));
     ctx.fillStyle = '#f4f1ea'; ctx.fillRect(0, 0, cw, ch);
+    rellenar(ctx, cw, ch, suave((t - HECHIZO) / 1.6));   // el borde se tiñe junto con el cielo
     if (t >= DURACION) {
+      // la energía aparece de a poco cuando la escena ya está pintada y luego late suave
+      const energia = suave((t - DURACION) / 2.5) * (img.tema === 'dia' ? .38 : .72);
       CAPAS.forEach((c, i) => {
         const dx = -mx * DESPLAZA * c.prof, dy = -my * DESPLAZA * c.prof + (c.flota ? Math.sin(t * c.flota[0] + i) * c.flota[1] : 0);
-        ctx.drawImage(img[c.id].co, ox + dx * k, oy + dy * k, W * k, H * k);
+        const x = ox + dx * k, y = oy + dy * k, I = img[c.id];
+        ctx.drawImage(I.co, x, y, W * k, H * k);
+        if (I.aura && energia > 0) {
+          const [vel, fase] = c.aura;
+          ctx.globalCompositeOperation = 'screen';
+          ctx.globalAlpha = energia * (.45 + .55 * (.5 + .5 * Math.sin(t * vel + fase)) * (.75 + .25 * Math.sin(t * vel * 2.7 + fase)));
+          ctx.drawImage(I.aura, x, y, W * k, H * k);
+          ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+        }
       });
       return;
     }
@@ -233,8 +249,7 @@ window.FondoAcuarela = (() => {
   const mascaraTrazo = lienzo(W / 2, H / 2), lineaTrazo = lienzo(W, H);
   function trazar(ctx, t, px, py) {
     if (!listos) return;
-    const cw = ctx.canvas.width, ch = ctx.canvas.height, k = Math.max(cw / W, ch / H) * 1.08;
-    const ox = (cw - W * k) / 2, oy = (ch - H * k) / 2;
+    const cw = ctx.canvas.width, ch = ctx.canvas.height, { k, ox, oy } = encuadre(cw, ch);
     ctx.fillStyle = '#f4f1ea'; ctx.fillRect(0, 0, cw, ch);
     // la máscara crece por donde pasa la varita; al final el lineart queda completo
     const g = mascaraTrazo.getContext('2d'); g.clearRect(0, 0, W / 2, H / 2);
@@ -258,13 +273,18 @@ window.FondoAcuarela = (() => {
     const ctx = canvas.getContext('2d');
     let t0 = null, t = 0, fin = null, saltado = false, px = 0, py = 0, vivo = true;
     let actual = null, anterior = null, fundidoIni = 0, pedido = temaInicial;   // fundido entre modos
-    const ajustar = () => { const d = Math.min(devicePixelRatio || 1, 1.5); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round(innerHeight * d); };
+    const ajustar = () => {
+      const d = Math.min(devicePixelRatio || 1, 1.5); canvas.width = Math.round(innerWidth * d); canvas.height = Math.round(innerHeight * d);
+      arriba = Math.round((document.querySelector('#site .topbar')?.getBoundingClientRect().bottom || 0) * d);
+    };
     ajustar(); addEventListener('resize', ajustar);
     const cargado = preparar(temaInicial).then(j => { actual = j; });
     function bucle(ahora) {
       if (!vivo) return;
       requestAnimationFrame(bucle);
       if (document.hidden) return;
+      // la barra superior puede aparecer o cambiar de alto: la escena queda siempre debajo
+      const barra = document.querySelector('#site .topbar'); arriba = barra ? Math.round(Math.max(0, barra.getBoundingClientRect().bottom) * canvas.height / innerHeight) : 0;
       if (t0 !== null && !saltado) { t = (ahora - t0) / 1000; if (t >= TRAZO + DURACION && fin) { const f = fin; fin = null; f(); } }
       // tras la animación el tiempo sigue corriendo solo para que el dragón y el mago floten
       if (saltado || t0 === null) t = TRAZO + DURACION + 2 + ahora / 1000;
