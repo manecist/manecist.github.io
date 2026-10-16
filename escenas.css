@@ -200,19 +200,37 @@ html.escenas .papel-app { border: 1.5px solid transparent; border-radius: 18px; 
 @keyframes brillo-borde { 0% { opacity: 0; transform: scale(.1) rotate(0deg); } 45% { opacity: 1; transform: scale(1) rotate(45deg); } 100% { opacity: 0; transform: scale(.2) rotate(90deg); } }
 @media (prefers-reduced-motion: reduce) { .brillos-borde { display: none; } }
 
-/* ---------------------------------------------------------------- leyendas: carrusel infinito */
-html.escenas .carrusel-leyendas { position: relative; overflow: hidden; margin: 6px -4px 10px; padding: 6px 4px; }
-html.escenas .carrusel-leyendas .leyendas-grid { display: flex; flex-wrap: nowrap; gap: 16px; will-change: transform; }
-html.escenas .carrusel-leyendas .obra { flex: none; height: min(46vh, 430px); width: auto; aspect-ratio: 3 / 4; }
-html.escenas .carrusel-leyendas .obra.obra-horizontal { aspect-ratio: 16 / 10; }
-html.escenas .carrusel-leyendas .obra.fuera-hoja { display: block; }
+/* ---------------------------------------------------------------- leyendas: un museo en papel claro, la obra completa en su marco y el muro de cuadritos */
+html.escenas .ev.ev-leyendas .leyendas { background: #fff8ef; color: #4a2a52; padding: 18px 22px 14px; }
+html.escenas .ev.ev-leyendas .leyendas::before { display: none; }
+html.escenas .ev-leyendas .leyendas-cabeza { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; margin-bottom: 12px; }
+html.escenas .ev-leyendas .leyendas-cabeza .chip { color: #8a5cc8; border-color: #e3cdef; }
+html.escenas .ev-leyendas .leyendas-cabeza h3 { color: #4a2a52; margin: 0; font: 700 1.3rem/1.2 var(--titulo, "Cinzel", serif); flex: 1 1 auto; }
+html.escenas .ev-leyendas .leyendas-filtros button { color: #6e5577; background: #fff; border: 2px solid #ecd8e6; }
+html.escenas .ev-leyendas .leyendas-filtros button[aria-pressed="true"] { color: #fff; background: linear-gradient(135deg, #e48bb8, #9a74d6); border-color: transparent; }
+html.escenas .ley-museo { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(0, 1.5fr); gap: 22px; align-items: stretch; }
+html.escenas .ley-cuadro { margin: 0; display: grid; grid-template-rows: 1fr auto; gap: 10px; min-height: 0; }
+html.escenas .ley-marco { display: grid; place-items: center; padding: 12px; background: #fff; border-radius: 6px; box-shadow: 0 0 0 2px #e9cf8f, 0 0 0 7px #fff8ef, 0 0 0 9px #e3c37a, 0 14px 30px rgba(74, 42, 82, .22); }
+html.escenas .ley-marco img { display: block; max-width: 100%; height: min(48vh, 440px); object-fit: contain; cursor: zoom-in; user-select: none; }
+html.escenas .ley-cuadro figcaption { display: grid; gap: 3px; justify-items: center; text-align: center; }
+html.escenas .ley-cuadro figcaption b { font: 700 1.05rem var(--titulo, "Cinzel", serif); color: #4a2a52; }
+html.escenas .ley-cuadro figcaption span { font-size: .84rem; line-height: 1.4; color: #6e5577; max-width: 420px; }
+html.escenas .ley-cuadro .ley-ver { margin-top: 4px; padding: 7px 12px; font-size: .72rem; width: auto; color: #6a2c55; background: #fff6fb; border: 2px solid #f0d6e8; }
+html.escenas .ley-muro { min-height: 0; max-height: calc(min(48vh, 440px) + 100px); overflow-y: auto; padding: 4px 8px 8px 4px; scrollbar-width: thin; }
+html.escenas .ley-muro .leyendas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 14px 12px; transform: none !important; }
+html.escenas .ley-muro .obra { display: grid; grid-template-rows: auto auto; gap: 5px; height: auto; aspect-ratio: auto; padding: 0; background: transparent; border: 0; border-radius: 0; overflow: visible; box-shadow: none; transform: none; cursor: pointer; }
+html.escenas .ley-muro .obra.fuera-hoja { display: grid; }
+html.escenas .ley-muro .obra img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: contain; object-position: center; padding: 5px; background: #fff; border-radius: 4px; box-shadow: 0 0 0 1px #ecd8e6, 0 4px 10px rgba(74, 42, 82, .12); transition: transform .25s, box-shadow .25s; }
+html.escenas .ley-muro .obra-horizontal img { aspect-ratio: 3 / 4; }
+html.escenas .ley-muro .obra:hover img { transform: translateY(-3px); box-shadow: 0 0 0 2px #e3b6d2, 0 8px 16px rgba(74, 42, 82, .18); }
+html.escenas .ley-muro .obra.elegida img { box-shadow: 0 0 0 3px #c98bb8, 0 8px 16px rgba(74, 42, 82, .2); }
+html.escenas .ley-muro .obra-nombre { position: static; padding: 0; background: none; color: #6e5577; font: 700 .68rem/1.2 var(--sans, sans-serif); letter-spacing: .02em; text-align: center; }
+html.escenas .ley-muro .obra.elegida .obra-nombre { color: #c2457f; }
+html.escenas .ley-muro .obra-escudo { display: none; }
+html.escenas .ev-leyendas .leyendas-aviso { margin: 10px 0 0; font-size: .72rem; color: #8d7896; }
 html.escenas .ev-leyendas .leyendas-hojas { display: none; }
-.carrusel-flecha { position: absolute; top: 50%; translate: 0 -50%; z-index: 3; width: 46px; height: 46px; border-radius: 50%; cursor: pointer;
   font: 700 1.6rem/1 var(--sans); color: #fff6fb; border: 1.5px solid rgba(243, 212, 138, .7); background: rgba(24, 18, 60, .7);
   box-shadow: 0 0 16px rgba(186, 147, 240, .5); transition: transform .2s, box-shadow .2s; }
-.carrusel-flecha:hover { transform: scale(1.1); box-shadow: 0 0 24px rgba(245, 168, 207, .8); }
-.carrusel-flecha:first-of-type { left: 8px; } .carrusel-flecha:last-of-type { right: 8px; }
-html[data-tema="claro"] .carrusel-flecha { color: #6a2c55; background: rgba(255, 250, 243, .85); }
 
 /* ---------------------------------------------------------------- disposición de kdelrio: encabezado corto arriba a la izquierda, sin párrafo,
    y el contenido ocupa la altura de la pantalla */
@@ -242,3 +260,5 @@ html.escenas .ev .studio-team > div:first-child > p:not(.eyebrow) { display: non
 html.escenas .ev .studio-team > div:first-child .eyebrow { margin: 0 0 6px; font: 700 .78rem/1.4 var(--sans); letter-spacing: .16em; text-transform: uppercase; }
 html.escenas .ev .studio-team > div:first-child h3 { margin: 0; font: 700 clamp(1.9rem, 3.3vw, 2.8rem)/1.12 var(--titulo, "Cinzel", serif); color: var(--e-texto); letter-spacing: .02em; }
 html.escenas .ev .role-node p { font-size: .95rem; line-height: 1.55; }
+html.escenas .ley-muro .obra.obra-horizontal { grid-column: auto; grid-row: auto; }
+html.escenas .ev .ley-cuadro .btn.ley-ver { color: #6a2c55; background: #fff6fb; border: 2px solid #f0d6e8; }

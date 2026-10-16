@@ -127,7 +127,7 @@
   });
   E.push({
     id: 'leyendas', ev: crear('ev-leyendas', $('#leyendas')),
-    entrar(tl, ev) { sube(tl, $$('.leyendas-cabeza > *', ev)); crece(tl, $$('.leyendas-grid > *', ev).slice(0, 16), '-=.2', { stagger: .04 }); tl.from($('.leyendas-aviso', ev), { opacity: 0, duration: .4 }, '-=.2'); },
+    entrar(tl, ev) { sube(tl, $$('.leyendas-cabeza > *', ev)); crece(tl, $('.ley-cuadro', ev), '-=.2'); crece(tl, $$('.leyendas-grid > *', ev).slice(0, 18), '-=.3', { stagger: .03 }); tl.from($('.leyendas-aviso', ev), { opacity: 0, duration: .4 }, '-=.2'); },
   });
   E.push({
     id: 'historia', ev: crear('ev-historia', de('.design-story', dis)),
@@ -330,27 +330,30 @@
     return tl;
   }
 
-  // ---------------------------------------------------------- leyendas: carrusel infinito, un dibujo a la vez, que vuelve a empezar sin saltos
+  // ---------------------------------------------------------- leyendas: como en un museo, la obra elegida completa en su marco y al lado el muro de cuadritos
   const rejilla = $('#leyendas-grid');
   if (rejilla) {
-    const marco = div('carrusel-leyendas'); rejilla.before(marco); marco.append(rejilla);
-    const flecha = (t, lbl) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'carrusel-flecha'; b.textContent = t; b.setAttribute('aria-label', lbl); marco.append(b); return b; };
-    const antF = flecha('‹', 'Dibujo anterior'), sigF = flecha('›', 'Dibujo siguiente');
-    let moviendo = false, encima = false;
-    const paso = () => { const p = rejilla.firstElementChild; return p ? p.getBoundingClientRect().width / (parseFloat(rejilla.closest('.ev-caja')?.style.zoom) || 1) + 16 : 0; };
-    const fijar = (x, anima) => { rejilla.style.transition = anima ? 'transform .8s cubic-bezier(.45,0,.25,1)' : 'none'; rejilla.style.transform = 'translateX(' + x + 'px)'; };
-    // adelante: se desliza un dibujo y el primero pasa al final; atrás: el último pasa al principio y se desliza a su lugar
-    const avanzarCarrusel = dir => {
-      if (moviendo || rejilla.children.length < 2) return; moviendo = true;
-      const d = paso();
-      if (dir > 0) { fijar(-d, true); setTimeout(() => { rejilla.append(rejilla.firstElementChild); fijar(0, false); moviendo = false; }, 820); }
-      else { rejilla.prepend(rejilla.lastElementChild); fijar(-d, false); void rejilla.offsetWidth; fijar(0, true); setTimeout(() => { moviendo = false; }, 820); }
+    const cuadro = document.createElement('figure'); cuadro.className = 'ley-cuadro';
+    cuadro.innerHTML = '<div class="ley-marco"><img alt="" draggable="false"></div><figcaption><b></b><span></span><button type="button" class="btn ghost ley-ver">⤢ Ver en grande</button></figcaption>';
+    const cImg = $('img', cuadro), cTit = $('b', cuadro), cTxt = $('figcaption span', cuadro);
+    const muro = div('ley-muro'); rejilla.before(div('ley-museo', cuadro, muro)); muro.append(rejilla);
+    let elegida = null;
+    const destacar = b => {
+      if (!b) return; elegida = b;
+      const im = b.querySelector('img'), alt = im.alt || '', corte = alt.indexOf('. ');
+      cImg.src = im.src; cImg.alt = alt;
+      cTit.textContent = b.querySelector('.obra-nombre')?.textContent || alt.slice(0, corte);
+      cTxt.textContent = corte >= 0 ? alt.slice(corte + 2) : '';
+      $$('.obra', rejilla).forEach(o => o.classList.toggle('elegida', o === b));
     };
-    sigF.addEventListener('click', () => avanzarCarrusel(1)); antF.addEventListener('click', () => avanzarCarrusel(-1));
-    marco.addEventListener('pointerenter', () => { encima = true; }); marco.addEventListener('pointerleave', () => { encima = false; });
-    setInterval(() => { if (E[actual]?.id === 'leyendas' && !encima && !document.hidden && !bloqueada()) avanzarCarrusel(1); }, 3200);
-    // al cambiar el filtro, la fila vuelve a empezar desde su lugar
-    new MutationObserver(() => { if (!moviendo) fijar(0, false); }).observe(rejilla, { childList: true });
+    // en el muro, tocar un cuadrito lo lleva al marco grande; el visor ampliado se abre desde el marco
+    rejilla.addEventListener('click', e => { const b = e.target.closest('.obra'); if (!b || b._directo) return; e.stopImmediatePropagation(); destacar(b); }, true);
+    const ampliar = () => { if (!elegida) return; elegida._directo = true; elegida.click(); elegida._directo = false; };
+    $('.ley-ver', cuadro).addEventListener('click', ampliar); cImg.addEventListener('click', ampliar);
+    cImg.addEventListener('contextmenu', e => e.preventDefault());
+    // al cambiar el filtro, el marco muestra la primera obra del filtro
+    new MutationObserver(() => destacar(rejilla.firstElementChild)).observe(rejilla, { childList: true });
+    destacar(rejilla.firstElementChild);
   }
 
   // ---------------------------------------------------------- destellos en los bordes: aparecen aquí y allá, alternados, sobre los cuadros de la escena
