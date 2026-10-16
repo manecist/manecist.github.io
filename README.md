@@ -44,7 +44,7 @@ El archivo `.nojekyll` evita que GitHub procese el sitio con Jekyll.
 | `libro.js`, `libro.css` | Escena del libro mágico, modo cuento y estilos nuevos |
 | `magia.js` | Chispas y el hada viva (parpadeo y hechizo con fotogramas intermedios) |
 | `tema-claro.css` | Modo día: paleta clara, velo luminoso y botón ☀/☾ |
-| `fondo-acuarela.js` | Escena del reino: del lineart a la acuarela pintada por el hada, y paralaje por capas (imágenes en `assets/fondo/acuarela/`) |
+| `fondo-acuarela.js` | Escena del reino: del lineart a la acuarela pintada por el hada, y paralaje por capas (capas en `assets/fondo/reino/`, armadas desde `assets/nuevo fondo/`) |
 | `secciones.js` | Calculadora encantada, oráculo de los colores, leyendas dibujadas, reino de fondo, Ari que vuelve arriba y diálogos de la tienda |
 | `tetris.js` | Motor de Bloques Encantados |
 | `constellations.js` | Coordenadas y trazados de las diez constelaciones |

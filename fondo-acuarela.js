@@ -12,7 +12,7 @@
    para cambiar de escena con un fundido (las imágenes de cada modo se cargan al usarse).
    ========================================================================== */
 window.FondoAcuarela = (() => {
-  const W = 1660, H = 948;                         // marco común de todas las capas
+  const W = 1672, H = 941;                         // marco común de todas las capas
   const DURACION = 13;                             // segundos de la animación de pintado (desde el lineart)
   const TRAZO = 5.2;                               // segundos previos: el hada dibuja el lineart sobre la hoja en blanco
 
@@ -21,22 +21,26 @@ window.FondoAcuarela = (() => {
   const suave = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
   const lienzo = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
 
-  // capas de la más lejana a la más cercana. orden: cuándo las pinta el hada (0 = primero)
+  // capas de la más lejana a la más cercana (todas con el marco completo de 1672 × 941).
+  // figura: su lineart es el mismo de día y de noche
   const CAPAS = [
-    { id: '01-fondo', prof: .12, orden: 3 },
-    { id: '02-dragon', prof: .3, orden: 2, flota: [1.3, 7] },
-    // el mago no trae el marco panorámico: se ubica sobre el valle, bajo el dragón
-    { id: '06-mago-baculo', prof: .6, orden: 1, flota: [1.7, 9], region: [180, 420, 560, 373] },
-    { id: '07-primer-plano-integrado', prof: 1, orden: 0 }
+    { id: '01-cielo', prof: .05 },
+    { id: '02-cordillera', prof: .15 },
+    { id: '03-valle', prof: .3 },
+    { id: '04-dragon', prof: .42, flota: [1.3, 7], figura: true },
+    { id: '05-mago', prof: .55, flota: [1.7, 9], figura: true },
+    { id: '06-primer-plano', prof: .85 },
+    { id: '07-pareja', prof: 1, figura: true }
   ];
 
-  // recorrido del hada sobre cada capa (coordenadas del marco de 1660 × 948)
+  // recorrido del hada: capas que pinta en cada tramo y la capa que da su profundidad
   const TRAMOS = [
-    { capa: 3, ini: 1.1, fin: 4.2, radio: 170, ruta: [[880, 880], [1050, 760], [1250, 880], [1450, 760], [1600, 860], [1560, 570], [1330, 610], [1170, 470], [1320, 330], [1220, 250], [1560, 330], [1600, 150], [1380, 60], [1120, 100], [900, 50]] },
-    { capa: 2, ini: 4.75, fin: 6.9, radio: 140, ruta: [[230, 560], [330, 500], [440, 470], [400, 600], [520, 560], [610, 610], [710, 560], [580, 700], [430, 740], [300, 650]] },
-    { capa: 1, ini: 7.35, fin: 8.9, radio: 150, ruta: [[640, 290], [520, 240], [400, 180], [270, 140], [170, 120], [300, 100], [450, 150], [330, 250], [560, 320]] }
+    { capas: [5, 6], capa: 6, ini: 1.1, fin: 4.2, radio: 170, ruta: [[880, 880], [1050, 760], [1250, 880], [1450, 760], [1600, 860], [1560, 570], [1330, 610], [1170, 470], [1320, 330], [1220, 250], [1560, 330], [1600, 150], [1380, 60], [1120, 100], [900, 50]] },
+    { capas: [4], capa: 4, ini: 4.75, fin: 6.9, radio: 120, ruta: [[200, 560], [280, 480], [380, 430], [460, 470], [560, 440], [610, 540], [520, 600], [420, 560], [320, 630], [220, 600]] },
+    { capas: [3], capa: 3, ini: 7.35, fin: 8.9, radio: 150, ruta: [[640, 290], [520, 240], [400, 180], [270, 140], [150, 110], [300, 80], [450, 150], [330, 250], [560, 320]] }
   ];
-  const LUNA = [797, 465], HECHIZO = 9.55;
+  const FONDO = [0, 1, 2];                         // las capas que pinta el hechizo de la luna
+  const LUNA = [700, 464], HECHIZO = 9.55;
 
   // ---------------------------------------------------------- recorridos suaves (Catmull-Rom)
   function curva(pts) {
@@ -53,7 +57,7 @@ window.FondoAcuarela = (() => {
   // posición de la punta de la varita en el tiempo t y la capa sobre la que está
   function varita(t) {
     const entrada = [W + 120, 760];
-    if (t < TRAMOS[0].ini) { const f = suave((t - .5) / (TRAMOS[0].ini - .5)); const a = TRAMOS[0].c.en(0); return { p: [entrada[0] + (a[0] - entrada[0]) * f, entrada[1] + (a[1] - entrada[1]) * f], capa: 3, pose: 0 }; }
+    if (t < TRAMOS[0].ini) { const f = suave((t - .5) / (TRAMOS[0].ini - .5)); const a = TRAMOS[0].c.en(0); return { p: [entrada[0] + (a[0] - entrada[0]) * f, entrada[1] + (a[1] - entrada[1]) * f], capa: 6, pose: 0 }; }
     for (let i = 0; i < TRAMOS.length; i++) {
       const tr = TRAMOS[i];
       if (t <= tr.fin) return { p: tr.c.en(suave((t - tr.ini) / (tr.fin - tr.ini)) * .15 + (t - tr.ini) / (tr.fin - tr.ini) * .85), capa: tr.capa, pose: 3 };
@@ -76,14 +80,18 @@ window.FondoAcuarela = (() => {
     for (let i = 0; i <= pasos; i++) {
       const f = i / pasos, nace = tr.ini + f * (tr.fin - tr.ini);
       const [x, y] = tr.c.en(f);
-      manchas[tr.capa].push({ x: x + (r() - .5) * 60, y: y + (r() - .5) * 60, R: tr.radio * (.85 + r() * .4), nace, v: r() * 4 | 0 });
+      const m = { x: x + (r() - .5) * 60, y: y + (r() - .5) * 60, R: tr.radio * (.85 + r() * .4), nace, v: r() * 4 | 0 };
+      tr.capas.forEach(c => manchas[c].push(m));
     }
   });
-  manchas[0].push({ x: LUNA[0], y: LUNA[1], R: 1500, nace: HECHIZO + .15, crece: 1.9, v: 0 });
+  const hechizo = [{ x: LUNA[0], y: LUNA[1], R: 1500, nace: HECHIZO + .15, crece: 1.9, v: 0 }];
   [[880, 560], [300, 380], [1400, 480], [1250, 150], [350, 120], [600, 700], [1500, 750]].forEach(([x, y], i) =>
-    manchas[0].push({ x, y, R: 420 + r() * 120, nace: HECHIZO + .5 + i * .1, crece: 1, v: i % 4 }));
-  // al cerrar cada tramo, el color termina de asentarse en toda la capa
-  const ASIENTA = { 3: TRAMOS[0].fin + .25, 2: TRAMOS[1].fin + .25, 1: TRAMOS[2].fin + .25, 0: HECHIZO + 1.9 };
+    hechizo.push({ x, y, R: 420 + r() * 120, nace: HECHIZO + .5 + i * .1, crece: 1, v: i % 4 }));
+  FONDO.forEach(c => manchas[c].push(...hechizo));
+  // al cerrar cada tramo, el color termina de asentarse en todas sus capas
+  const ASIENTA = {};
+  TRAMOS.forEach(tr => tr.capas.forEach(c => { ASIENTA[c] = tr.fin + .25; }));
+  FONDO.forEach(c => { ASIENTA[c] = HECHIZO + 1.9; });
 
   // sellos: cada uno es una mancha irregular hecha de círculos difusos
   const sellos = [0, 1, 2, 3].map(v => {
@@ -103,8 +111,8 @@ window.FondoAcuarela = (() => {
   const juegos = {}; let img = null, hada = null, listos = false;
   const tmp = lienzo(W, H);
   const cargar = src => new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => mal(new Error(src)); i.src = src; });
-  // de día solo cambian las acuarelas y el lineart del fondo (sin luna); el resto del dibujo es común
-  const ruta = (tema, id, e) => `assets/fondo/${tema === 'dia' && (e === 'acuarela' || id === '01-fondo') ? 'acuarela-dia' : 'acuarela'}/${id}-${e}.webp`;
+  // el lineart de las figuras es común a los dos modos; el paisaje trae el suyo (sol o luna)
+  const ruta = (tema, c, e) => `assets/fondo/reino/${e === 'lineart' && c.figura ? 'comun' : tema}/${c.id}-${e}.webp`;
   async function preparar(tema = 'noche') {
     if (!juegos[tema]) juegos[tema] = cargarJuego(tema);
     const juego = await juegos[tema];
@@ -115,11 +123,10 @@ window.FondoAcuarela = (() => {
   async function cargarJuego(tema) {
     const juego = {};
     await Promise.all(CAPAS.map(async c => {
-      const [lin, acu] = await Promise.all(['lineart', 'acuarela'].map(e => cargar(ruta(tema, c.id, e))));
+      const [lin, acu] = await Promise.all(['lineart', 'acuarela'].map(e => cargar(ruta(tema, c, e))));
       // lineart en blanco y negro, ajustado al marco común; se calcula una sola vez
-      const zona = c.region || [0, 0, W, H];
-      const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, ...zona);
-      const co = lienzo(W, H); co.getContext('2d').drawImage(acu, ...zona);
+      const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, 0, 0, W, H);
+      const co = lienzo(W, H); co.getContext('2d').drawImage(acu, 0, 0, W, H);
       juego[c.id] = { bn, co, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
     }));
     return juego;
@@ -211,7 +218,7 @@ window.FondoAcuarela = (() => {
       // luz del hechizo sobre la luna
       const luz = Math.max(0, 1 - Math.abs(t - (HECHIZO + .35)) / .55);
       if (luz > 0) {
-        const lx = ox + (LUNA[0] - mx * DESPLAZA * .12) * k, ly = oy + (LUNA[1] - my * DESPLAZA * .12) * k, rad = (120 + 380 * luz) * k;
+        const lx = ox + (LUNA[0] - mx * DESPLAZA * CAPAS[0].prof) * k, ly = oy + (LUNA[1] - my * DESPLAZA * CAPAS[0].prof) * k, rad = (120 + 380 * luz) * k;
         const gr = ctx.createRadialGradient(lx, ly, 0, lx, ly, rad);
         gr.addColorStop(0, `rgba(255,255,255,${.95 * luz})`); gr.addColorStop(.3, `rgba(255,226,240,${.6 * luz})`); gr.addColorStop(1, 'rgba(255,200,230,0)');
         ctx.fillStyle = gr; ctx.fillRect(lx - rad, ly - rad, rad * 2, rad * 2);
