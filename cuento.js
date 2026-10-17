@@ -621,11 +621,11 @@
         { nombre: 'g-embarazo', img: 'assets/cuento/hechizos/gema-embarazo.webp', x: 34, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Embarazo y matronas', ms: 300, pausa: 120 },
         { nombre: 'g-ajuar', img: 'assets/cuento/hechizos/gema-ajuar.webp', x: 46, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'El ajuar', ms: 300, pausa: 120 },
         { nombre: 'g-cancer', img: 'assets/cuento/hechizos/gema-cancer.webp', x: 58, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Cáncer', ms: 300, pausa: 120 },
-        { nombre: 'g-anticonceptivos', clase: 'encendida', perg: 'Ofrecer primero los métodos de larga duración es lo que más ayuda.', texto: { titulo: 'Anticonceptivos', texto: 'Elegir bien es más importante que elegir cualquier método: ofrecer primero los métodos de larga duración, sobre todo a adolescentes, es la medida con más impacto.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600 },
-        { nombre: 'g-its', clase: 'encendida', perg: 'Hace falta más testeo, tratamiento a tiempo y condón.', texto: { titulo: 'ITS', texto: 'Las ITS van en sentido contrario al embarazo adolescente: hace falta más testeo, tratamiento oportuno y uso de condón, y medir las ITS que hoy no se vigilan.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600 },
-        { nombre: 'g-embarazo', clase: 'encendida', perg: 'La prevención funciona: las matronas deben estar en los colegios.', texto: { titulo: 'Embarazo y matronas', texto: 'La prevención funciona y Chile tiene más matronas que nunca: el desafío es ponerlas donde está la prevención, como los colegios.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600 },
-        { nombre: 'g-ajuar', clase: 'encendida', perg: 'Llega a casi todas las familias: hay que cuidar su cadena.', texto: { titulo: 'El ajuar', texto: 'El ajuar llega a casi todas las familias de la red pública; cuidar la cadena de compra es lo que mantiene ese logro.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600 },
-        { nombre: 'g-cancer', clase: 'encendida', perg: 'Llegar a tiempo cambia todo: PAP, mamografía y vacuna VPH.', texto: { titulo: 'Cáncer', texto: 'En cáncer, llegar a tiempo cambia todo: la mamografía, el PAP, el test VPH y la vacuna VPH son lo que más vidas salva.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600 },
+        { nombre: 'g-anticonceptivos', clase: 'encendida', perg: 'Ofrecer primero los métodos de larga duración es lo que más ayuda.', texto: { titulo: 'Anticonceptivos', texto: 'Elegir bien es más importante que elegir cualquier método: ofrecer primero los métodos de larga duración, sobre todo a adolescentes, es la medida con más impacto.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-its', clase: 'encendida', perg: 'Hace falta más testeo, tratamiento a tiempo y condón.', texto: { titulo: 'ITS', texto: 'Las ITS van en sentido contrario al embarazo adolescente: hace falta más testeo, tratamiento oportuno y uso de condón, y medir las ITS que hoy no se vigilan.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-embarazo', clase: 'encendida', perg: 'La prevención funciona: las matronas deben estar en los colegios.', texto: { titulo: 'Embarazo y matronas', texto: 'La prevención funciona y Chile tiene más matronas que nunca: el desafío es ponerlas donde está la prevención, como los colegios.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-ajuar', clase: 'encendida', perg: 'Llega a casi todas las familias: hay que cuidar su cadena.', texto: { titulo: 'El ajuar', texto: 'El ajuar llega a casi todas las familias de la red pública; cuidar la cadena de compra es lo que mantiene ese logro.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-cancer', clase: 'encendida', perg: 'Llegar a tiempo cambia todo: PAP, mamografía y vacuna VPH.', texto: { titulo: 'Cáncer', texto: 'En cáncer, llegar a tiempo cambia todo: la mamografía, el PAP, el test VPH y la vacuna VPH son lo que más vidas salva.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
         { texto: { titulo: '', texto: 'Toca una gema para abrir sus tableros.' }, ms: 900 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'Ocho cápsulas nuevas', texto: 'Animadas y narradas por ella, con la información vigente en Chile.', pasos: [
@@ -850,7 +850,7 @@
         if (!ok) return;
         if (p.bucle && a._m) vivir(a, a._m.marcas[p.bucle[0]], a._m.marcas[p.bucle[1]], p.cicloMs || 2600, mia);
         if (voz && p.texto) { await voz; if (mia !== vuelta) return; }   // el siguiente paso espera a que la voz termine este cartel
-        if (!(await espera(p.pausa ?? 1300, mia))) return;
+        if (!(await espera(!voz && p.lee ? p.lee : p.pausa ?? 1300, mia))) return;   // lee: sin narrador, el tiempo para leer el cartel
       }
       if (voz) { await voz; if (mia !== vuelta) return; }   // la escena no cambia mientras el narrador sigue hablando
       if (!(await espera(conVoz ? 900 : 1800, mia))) return;
