@@ -630,9 +630,15 @@
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'Ocho cápsulas nuevas', texto: 'Animadas y narradas por ella, con la información vigente en Chile.', pasos: [
         { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 16, alto: 16, delante: true, ms: 900, pausa: 300 },
-        { nombre: 'c1', img: 'assets/matrona/portada_01_como_guardo_mi_leche.webp', x: 40, alto: 9, fila: 'atras', clase: 'cuadro', abre: 'capsulas', ms: 300, pausa: 150 },
-        { nombre: 'c2', img: 'assets/matrona/portada_04_sueno_seguro.webp', x: 60, alto: 9, fila: 'atras', clase: 'cuadro', abre: 'capsulas', ms: 300, pausa: 150 },
-        { nombre: 'c3', img: 'assets/matrona/portada_06_que_es_el_pap.webp', x: 80, alto: 9, fila: 'atras', clase: 'cuadro', abre: 'capsulas', ms: 300, pausa: 150 },
+        // una cápsula aparece, se abre en dos y de adentro van saliendo las cápsulas de video
+        { nombre: 'capsula', img: 'assets/cuento/hechizos/capsula.webp', x: 60, alto: 6, fila: 'atras', efecto: 'flota', fx: { tipo: 'destello', x: 60, ancho: 14, y: 8 }, ms: 1100, pausa: 300 },
+        { nombre: 'cap-d', img: 'assets/cuento/hechizos/capsula-der.webp', x: 63.4, alto: 6, fila: 'atras', entra: true, junto: true, sigue: true },   // la mitad derecha se pone encima, idéntica: luego las dos se separan a la vez
+        { nombre: 'cap-i', img: 'assets/cuento/hechizos/capsula-izq.webp', x: 56.6, alto: 6, fila: 'atras', reemplaza: 'capsula', junto: true, sigue: true, ruta: [[0, 56.6], [.6, 49, 4, -18], [1, 47.5, 2, -24]], suave: 'cubic-bezier(.3,.8,.3,1)', ms: 900 },
+        { nombre: 'cap-d', sigue: true, ruta: [[0, 63.4], [.6, 71, 4, 18], [1, 72.5, 2, 24]], suave: 'cubic-bezier(.3,.8,.3,1)', fx: { tipo: 'destello', x: 60, ancho: 16, y: 6, ms: 1200 }, ms: 900, pausa: 100 },
+        { nombre: 'c1', img: 'assets/matrona/portada_01_como_guardo_mi_leche.webp', desde: 60, x: 36, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 1], [.55, 47, 10], [1, 36, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
+        { nombre: 'c2', img: 'assets/matrona/portada_04_sueno_seguro.webp', desde: 60, x: 60, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 1], [.55, 60, 12], [1, 60, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
+        { nombre: 'c3', img: 'assets/matrona/portada_06_que_es_el_pap.webp', desde: 60, x: 84, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 1], [.55, 73, 10], [1, 84, 0]], suave: 'ease-out', ms: 1000, pausa: 300 },
+        { muere: ['cap-i', 'cap-d'], ms: 700 },
         { texto: { titulo: 'Ari:', texto: '«Leche materna, Shantala, sueño seguro, el PAP… ¡para ver en la sala de espera o en la casa!»' }, nombre: 'ari', efecto: 'brilla', ms: 1800 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'El Banco de Evaluaciones', texto: 'Un banco de preguntas para docentes, probado con un Moodle real.', pasos: [
