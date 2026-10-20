@@ -499,26 +499,23 @@
         { nombre: 'coen-n', sigue: true, ruta: [[0, 47], [.2, 58, 1.5], [.4, 70, 0], [.6, 82, 1.5], [.8, 94, 0], [1, 118, 0]], ms: 3600, junto: true },
         { nombre: 'ari-m', sigue: true, ruta: [[0, 32], [.2, 44, 1.5], [.4, 56, 0], [.6, 68, 1.5], [.8, 80, 0], [1, 106, 0]], ms: 3600, junto: true },
         { ms: 2600 },
-        { texto: { titulo: '', texto: 'Y Rancek se quedó pensando…' }, nombre: 'mago-d', clase: 'tras-mostrador', ms: 2200 }
+        { texto: { titulo: '', texto: 'Y Rancek se quedó pensando…' }, nombre: 'mago-d', clase: 'tras-mostrador', ms: 2400 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Sí! ¡Voy con todo!»' }, nombre: 'mago-s', img: 'assets/cuento/tienda/rancek-presume-1.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-d', sigue: true, fx: { tipo: 'destello', x: 78, ancho: 12, y: 14 }, ms: 1800 },
+        { texto: { titulo: 'Rancek:', texto: '«…¿Eh? ¿Ya se fueron?»' }, nombre: 'mago-x', img: 'assets/cuento/tienda/rancek-presume-3.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-s', sigue: true, ms: 2400 }
       ] }
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
       { fondo: 'fondo-paseo.webp', suelo: 'suelo-paseo.webp', titulo: 'Con sus compras puestas…', texto: 'Ari con su Vestido Magical; Coen con su jogger blanco y su polera burdeo.', pasos: [
-        // salen a pasear por el reino (recortes de papel que avanzan dando saltitos)
+        // pasean por el reino con su ropa nueva de Magical Alliance
         { nombre: 'coen', img: 'assets/cuento/tienda/coen-paseo.webp', x: 64, alto: 17.5, delante: true, entra: true, sigue: true, ruta: [[0, -6], [.2, 8, 1.5], [.4, 22, 0], [.6, 36, 1.5], [.8, 50, 0], [1, 64, 0]], ms: 5200, junto: true },
         { nombre: 'ari', img: 'assets/cuento/tienda/ari-look-magical.webp', x: 52, alto: 15.8, delante: true, entra: true, ruta: [[0, -18], [.2, -4, 1.5], [.4, 10, 0], [.6, 24, 1.5], [.8, 38, 0], [1, 52, 0]], ms: 5200 },
         { nombre: 'ari', clase: 'saluda', ms: 600, pausa: 0 },
-        { nombre: 'coen', clase: 'saluda', ms: 1400 }
-      ] }
-    ] },
-    sigue: { carpeta: 'cap6/', hitos: [
-      { fondo: 'fondo-paseo.webp', suelo: 'suelo-paseo.webp', titulo: 'Tiempo después…', texto: 'Ari y Coen paseaban por el reino, pensando en su idea.', pasos: [
-        { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1280, x: -10, alto: 17.5, delante: true, entra: true, ruta: [[0, -10], [1, 58]], ms: 5200, pausa: 0 },
-        { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 58, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 300 },
-        // Rancek llega corriendo: ya lo pensó
-        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! ¡Ya lo pensé… cuenten conmigo!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre', camina: [0, 1], cicloMs: 640, x: 30, alto: 17.1, delante: true, entra: true, ruta: [[0, -8], [1, 30]], ms: 2600 },
+        { nombre: 'coen', clase: 'saluda', ms: 1200 },
+        // …y Rancek llega corriendo con la respuesta que no alcanzó a darles en la tienda
+        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! ¡Ya lo pensé… voy con todo!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre', camina: [0, 1], cicloMs: 640, x: 30, alto: 17.1, delante: true, entra: true, ruta: [[0, -8], [1, 30]], ms: 2600 },
         { nombre: 'rancek', img: 'assets/cuento/tienda/rancek-presume-4.webp', x: 30, alto: 17, delante: true, reemplaza: 'rancek-c', sigue: true, ms: 600 },
-        { texto: { titulo: 'Ari y Coen:', texto: '«¡Sabíamos que vendrías! ✧»' }, nombre: 'pareja2', img: 'assets/cuento/tienda/pareja-5.webp', x: 58, alto: 17.5, delante: true, reemplaza: 'pareja', sigue: true, fx: { tipo: 'destello', x: 54, ancho: 12, y: 15 }, ms: 2200 },
+        { texto: { titulo: 'Ari y Coen:', texto: '«¡Sabíamos que vendrías! ✧»' }, nombre: 'ari', clase: 'saluda', fx: { tipo: 'destello', x: 58, ancho: 16, y: 12 }, ms: 600, pausa: 0 },
+        { nombre: 'coen', clase: 'saluda', ms: 1800 },
         { texto: { titulo: '', texto: 'Y así, los tres juntos, empezaron a crear algo nuevo…' }, fx: [{ tipo: 'destello', x: 30, ancho: 12, y: 10, ms: 1200 }, { tipo: 'destello', x: 58, ancho: 16, y: 10, ms: 1200, tras: 300 }], ms: 2600 }
       ] }
     ] },
