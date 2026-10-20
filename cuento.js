@@ -647,9 +647,9 @@
         // la cápsula aparece cerrada, se abre y de adentro van saliendo las cápsulas de video
         { nombre: 'capsula', img: 'assets/cuento/hechizos/capsula.webp', x: 60, alto: 9, fila: 'atras', efecto: 'flota', fx: { tipo: 'destello', x: 60, ancho: 14, y: 8 }, ms: 1100, pausa: 400 },
         { nombre: 'capsula-ab', img: 'assets/cuento/hechizos/capsula-abierta.webp', x: 60, alto: 10.1, fila: 'atras', reemplaza: 'capsula', sigue: true, fx: { tipo: 'destello', x: 60, ancho: 18, y: 10, ms: 1200 }, ms: 700, pausa: 200 },
-        { nombre: 'c1', img: 'assets/matrona/portada_01_como_guardo_mi_leche.webp', desde: 60, x: 36, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 6], [.55, 47, 13], [1, 36, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
-        { nombre: 'c2', img: 'assets/matrona/portada_04_sueno_seguro.webp', desde: 60, x: 60, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 6], [.55, 60, 15], [1, 60, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
-        { nombre: 'c3', img: 'assets/matrona/portada_06_que_es_el_pap.webp', desde: 60, x: 84, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 6], [.55, 73, 13], [1, 84, 0]], suave: 'ease-out', ms: 1000, pausa: 300 },
+        { nombre: 'c1', img: 'assets/matrona/portada_01_como_guardo_mi_leche.webp', desde: 60, x: 36, alto: 9, fila: 'medio', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 6], [.55, 47, 13], [1, 36, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
+        { nombre: 'c2', img: 'assets/matrona/portada_04_sueno_seguro.webp', desde: 60, x: 60, alto: 9, fila: 'medio', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 6], [.55, 60, 15], [1, 60, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
+        { nombre: 'c3', img: 'assets/matrona/portada_06_que_es_el_pap.webp', desde: 60, x: 84, alto: 9, fila: 'medio', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 6], [.55, 73, 13], [1, 84, 0]], suave: 'ease-out', ms: 1000, pausa: 300 },
         { muere: 'capsula-ab', ms: 700 },
         { texto: { titulo: 'Ari:', texto: '«Leche materna, Shantala, sueño seguro, el PAP… ¡para ver en la sala de espera o en la casa!»' }, nombre: 'ari', efecto: 'brilla', ms: 1800 }
       ] },
