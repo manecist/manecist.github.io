@@ -2108,3 +2108,18 @@ body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-
 .niebla-brillos{position:fixed;inset:0;z-index:2001;pointer-events:none}
 .niebla-brillos .hechizo-estrella{position:absolute;font-style:normal;font-size:var(--t);line-height:1;color:var(--c);translate:-50% -50%;text-shadow:0 0 6px var(--c),0 0 14px rgba(145,220,255,.9);animation:hechizo-estrella 1.4s ease-out forwards}
 @keyframes hechizo-estrella{0%{opacity:0;transform:scale(.2) rotate(var(--g))}20%{opacity:1;transform:scale(1.25) rotate(calc(var(--g) + 40deg))}100%{opacity:0;transform:translateY(22px) scale(.5) rotate(calc(var(--g) + 160deg))}}
+/* IX · practicando sus hechizos: gemas que se encienden y el pergamino que escribe lo descubierto */
+.hito-actor.gema>img:first-child{filter:saturate(.55) brightness(.9);opacity:.85;transition:filter .6s,opacity .6s}
+.hito-actor.gema.encendida>img:first-child{filter:none;opacity:1;animation:gema-luz 2.6s ease-in-out infinite}
+@keyframes gema-luz{0%,100%{filter:drop-shadow(0 0 6px rgba(245,168,207,.7))}50%{filter:drop-shadow(0 0 16px rgba(255,214,236,1)) brightness(1.08)}}
+.hito-actor.gema .hito-rotulo{font-size:clamp(7px,.75vw,11px)}
+.pergamino-hechizo{container-type:inline-size}
+.pergamino-hechizo .perg-texto{position:absolute;left:15%;right:15%;top:9%;height:43%;display:grid;align-content:center;justify-items:center;gap:3cqw;text-align:center;color:#5e2f52;font-family:"Mali",sans-serif;pointer-events:none;opacity:0}
+.pergamino-hechizo .perg-texto b{font:700 8cqw/1.1 "Mali",sans-serif;color:#a33a72}
+.pergamino-hechizo .perg-texto span{font:600 5.6cqw/1.3 "Mali",sans-serif}
+.pergamino-hechizo .perg-texto.aparece{animation:perg-escribe .9s ease-out forwards}
+@keyframes perg-escribe{from{opacity:0;filter:blur(3px);transform:translateY(4px)}to{opacity:1;filter:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.hito-actor.gema.encendida>img:first-child{animation:none}.pergamino-hechizo .perg-texto.aparece{animation:none;opacity:1}}
+/* las cápsulas de video salen de adentro de la cápsula: crecen desde chiquititas mientras vuelan */
+.hito-actor.sale-capsula>img:first-child{animation:sale-capsula 1s cubic-bezier(.2,.9,.3,1.15) both;transform-origin:50% 100%}
+@keyframes sale-capsula{0%{transform:scale(.12);opacity:0}25%{opacity:1}100%{transform:scale(1);opacity:1}}

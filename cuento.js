@@ -606,6 +606,52 @@
         { nombre: 'ari3d', img: 'ari-impresora.webp', x: 50, alto: 16, pj: true, efecto: 'brilla', ms: 2600 }   // muestra su figura impresa y pintada a mano
       ] }
     ] },
+    // IX · practicando sus hechizos: en la torre, el libro de hechizos de la matrona (tableros), sus cápsulas y el banco
+    hechizos: { carpeta: 'cap9/', hitos: [
+      { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'La torre de los hechizos', texto: 'Después de sus medallas, Ari siguió practicando cada día.', pasos: [
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 22, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { texto: { titulo: 'Ari:', texto: '«Lo que aprendí de datos… ¡lo voy a usar en lo que conozco de cerca!»' }, nombre: 'ari', efecto: 'salto', ms: 1800 },
+        { nombre: 'perg', img: 'pergamino.webp', x: 62, alto: 19, clase: 'pergamino-hechizo', fx: { tipo: 'destello', x: 62, ancho: 14, y: 12 }, ms: 1200 }
+      ] },
+      { suelo: 'suelo-torre.webp', titulo: 'El libro de hechizos de la matrona', texto: 'Cinco tableros con datos de salud de Chile. Cada gema guarda lo que descubrió.', pasos: [
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 92, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { nombre: 'perg', img: 'pergamino.webp', x: 72, alto: 24, clase: 'pergamino-hechizo', ms: 600, pausa: 200 },
+        { nombre: 'g-anticonceptivos', img: 'assets/cuento/hechizos/gema-anticonceptivos.webp', x: 10, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Anticonceptivos', ms: 300, pausa: 120 },
+        { nombre: 'g-its', img: 'assets/cuento/hechizos/gema-its.webp', x: 22, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'ITS', ms: 300, pausa: 120 },
+        { nombre: 'g-embarazo', img: 'assets/cuento/hechizos/gema-embarazo.webp', x: 34, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Embarazo y matronas', ms: 300, pausa: 120 },
+        { nombre: 'g-ajuar', img: 'assets/cuento/hechizos/gema-ajuar.webp', x: 46, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'El ajuar', ms: 300, pausa: 120 },
+        { nombre: 'g-cancer', img: 'assets/cuento/hechizos/gema-cancer.webp', x: 58, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Cáncer', ms: 300, pausa: 120 },
+        { nombre: 'g-anticonceptivos', clase: 'encendida', perg: 'Ofrecer primero los métodos de larga duración es lo que más ayuda.', texto: { titulo: 'Anticonceptivos', texto: 'Elegir bien es más importante que elegir cualquier método: ofrecer primero los métodos de larga duración, sobre todo a adolescentes, es la medida con más impacto.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-its', clase: 'encendida', perg: 'Hace falta más testeo, tratamiento a tiempo y condón.', texto: { titulo: 'ITS', texto: 'Las ITS van en sentido contrario al embarazo adolescente: hace falta más testeo, tratamiento oportuno y uso de condón, y medir las ITS que hoy no se vigilan.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-embarazo', clase: 'encendida', perg: 'La prevención funciona: las matronas deben estar en los colegios.', texto: { titulo: 'Embarazo y matronas', texto: 'La prevención funciona y Chile tiene más matronas que nunca: el desafío es ponerlas donde está la prevención, como los colegios.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-ajuar', clase: 'encendida', perg: 'Llega a casi todas las familias: hay que cuidar su cadena.', texto: { titulo: 'El ajuar', texto: 'El ajuar llega a casi todas las familias de la red pública; cuidar la cadena de compra es lo que mantiene ese logro.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { nombre: 'g-cancer', clase: 'encendida', perg: 'Llegar a tiempo cambia todo: PAP, mamografía y vacuna VPH.', texto: { titulo: 'Cáncer', texto: 'En cáncer, llegar a tiempo cambia todo: la mamografía, el PAP, el test VPH y la vacuna VPH son lo que más vidas salva.' }, evento: 'hechizo-pergamino', ms: 500, pausa: 600, lee: 4500 },
+        { texto: { titulo: '', texto: 'Toca una gema para abrir sus tableros.' }, ms: 900 }
+      ] },
+      { suelo: 'suelo-torre.webp', titulo: 'Ocho cápsulas nuevas', texto: 'Animadas y narradas por ella, con la información vigente en Chile.', pasos: [
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 16, alto: 16, delante: true, ms: 900, pausa: 300 },
+        // una cápsula aparece, se abre en dos y de adentro van saliendo las cápsulas de video
+        { nombre: 'capsula', img: 'assets/cuento/hechizos/capsula.webp', x: 60, alto: 6, fila: 'atras', efecto: 'flota', fx: { tipo: 'destello', x: 60, ancho: 14, y: 8 }, ms: 1100, pausa: 300 },
+        { nombre: 'cap-d', img: 'assets/cuento/hechizos/capsula-der.webp', x: 63.4, alto: 6, fila: 'atras', entra: true, junto: true, sigue: true },   // la mitad derecha se pone encima, idéntica: luego las dos se separan a la vez
+        { nombre: 'cap-i', img: 'assets/cuento/hechizos/capsula-izq.webp', x: 56.6, alto: 6, fila: 'atras', reemplaza: 'capsula', junto: true, sigue: true, ruta: [[0, 56.6], [.6, 49, 4, -18], [1, 47.5, 2, -24]], suave: 'cubic-bezier(.3,.8,.3,1)', ms: 900 },
+        { nombre: 'cap-d', sigue: true, ruta: [[0, 63.4], [.6, 71, 4, 18], [1, 72.5, 2, 24]], suave: 'cubic-bezier(.3,.8,.3,1)', fx: { tipo: 'destello', x: 60, ancho: 16, y: 6, ms: 1200 }, ms: 900, pausa: 100 },
+        { nombre: 'c1', img: 'assets/matrona/portada_01_como_guardo_mi_leche.webp', desde: 60, x: 36, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 1], [.55, 47, 10], [1, 36, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
+        { nombre: 'c2', img: 'assets/matrona/portada_04_sueno_seguro.webp', desde: 60, x: 60, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 1], [.55, 60, 12], [1, 60, 0]], suave: 'ease-out', ms: 1000, pausa: 250 },
+        { nombre: 'c3', img: 'assets/matrona/portada_06_que_es_el_pap.webp', desde: 60, x: 84, alto: 9, fila: 'atras', clase: 'cuadro sale-capsula', abre: 'capsulas', entra: true, ruta: [[0, 60, 1], [.55, 73, 10], [1, 84, 0]], suave: 'ease-out', ms: 1000, pausa: 300 },
+        { muere: ['cap-i', 'cap-d'], ms: 700 },
+        { texto: { titulo: 'Ari:', texto: '«Leche materna, Shantala, sueño seguro, el PAP… ¡para ver en la sala de espera o en la casa!»' }, nombre: 'ari', efecto: 'brilla', ms: 1800 }
+      ] },
+      { suelo: 'suelo-torre.webp', titulo: 'El Banco de Evaluaciones', texto: 'Un banco de preguntas para docentes, probado con un Moodle real.', pasos: [
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 20, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { nombre: 'banco', img: 'assets/cuento/hechizos/banco.webp', x: 62, alto: 12, fila: 'medio', clase: 'cuadro', abre: 'banco', fx: { tipo: 'destello', x: 62, ancho: 16, y: 10 }, ms: 900 },
+        { texto: { titulo: 'Ari:', texto: '«La inteligencia artificial ayuda, pero la respuesta correcta siempre la confirma una persona.»' }, nombre: 'ari', efecto: 'salto', ms: 1800 }
+      ] },
+      { suelo: 'suelo-torre.webp', titulo: '', texto: '', pasos: [
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 50, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { texto: { titulo: 'Ari:', texto: '«Cada hechizo que aprendo lo uso para ayudar a alguien.»' }, nombre: 'ari', efecto: 'brilla', fx: { tipo: 'destello', x: 50, ancho: 14, y: 14 }, ms: 1800 },
+        { texto: { titulo: '', texto: 'Y sin que nadie lo notara, algo más grande empezaba a nacer…' }, ms: 2200 }
+      ] }
+    ] },
   };
   const ruta = (esc, n) => n.startsWith('assets/') ? n : 'assets/cuento/' + esc.carpeta + n;
   const hojas = {};
@@ -788,7 +834,7 @@
         if (p.fx) [].concat(p.fx).forEach(f => luego(() => { if (mia !== vuelta) return; efecto(f.tipo, f.x, f.ancho, f.y, f.ms); [].concat(f.golpe || []).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } }); }, f.tras || 0));
         if (p.golpe) [].concat(p.golpe).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } });
         if (p.muere) [].concat(p.muere).forEach((n, i) => { const g = actores[n]; if (!g) return; delete actores[n]; luego(() => { const x = parseFloat(g.style.left) + g._ancho / 2; g.classList.add('muere'); efecto('humo', x, g._ancho * 1.4, 0, 1000); setTimeout(() => g.remove(), 700); }, i * 120); });
-        if (p.evento) { const ev = p.evento; luego(() => { if (mia === vuelta) window.dispatchEvent(new CustomEvent(ev, { detail: { zona } })); }, p.ms || 400); }
+        if (p.evento) { const ev = p.evento; luego(() => { if (mia === vuelta) window.dispatchEvent(new CustomEvent(ev, { detail: { zona, paso: p } })); }, p.ms || 400); }
         if (!nombre(p)) { if (!(await espera(p.ms || 600, mia))) return; if (voz && p.texto) { await voz; if (mia !== vuelta) return; } continue; }
         const nuevo = !actores[nombre(p)];
         const a = await actor(p, p.d ?? .1, !!p.reemplaza || !!p.entra);   // entra: llega corriendo o volando desde fuera, sin levantarse del papel
@@ -810,7 +856,7 @@
         if (!ok) return;
         if (p.bucle && a._m) vivir(a, a._m.marcas[p.bucle[0]], a._m.marcas[p.bucle[1]], p.cicloMs || 2600, mia);
         if (voz && p.texto) { await voz; if (mia !== vuelta) return; }   // el siguiente paso espera a que la voz termine este cartel
-        if (!(await espera(p.pausa ?? 1300, mia))) return;
+        if (!(await espera(!voz && p.lee ? p.lee : p.pausa ?? 1300, mia))) return;   // lee: sin narrador, el tiempo para leer el cartel
       }
       if (voz) { await voz; if (mia !== vuelta) return; }   // la escena no cambia mientras el narrador sigue hablando
       if (!(await espera(conVoz ? 900 : 1800, mia))) return;
@@ -892,6 +938,14 @@
     document.querySelectorAll('[data-hitos="ix"] .hito-texto').forEach(t => { if (A2 && t.closest('.hitos').dataset.cartel === '1') t.textContent = `${A2.etapas[0].nom}: ${A2.etapas[0].color} y ${A2.etapas[0].musica}. ${A2.etapas[A2.etapas.length - 1].nom}: ${A2.etapas[A2.etapas.length - 1].color} y ${A2.etapas[A2.etapas.length - 1].musica}. Mira el análisis completo ↑`; });
   };
   window.addEventListener('oraculo-datos', pintarAnalisis);
+  // IX · el pergamino escribe lo que descubrió el tablero de la gema que se enciende (lo mismo que dice el cartel)
+  window.addEventListener('hechizo-pergamino', e => {
+    const zona = e.detail?.zona, paso = e.detail?.paso || {}, txt = { titulo: paso.texto?.titulo, texto: paso.perg || paso.texto?.texto }, perg = zona?.querySelector('.pergamino-hechizo'); if (!perg) return;
+    let t = perg.querySelector('.perg-texto'); if (!t) { t = document.createElement('div'); t.className = 'perg-texto'; perg.append(t); }
+    const b = document.createElement('b'), x = document.createElement('span');
+    b.textContent = txt.titulo || ''; x.textContent = txt.texto || '';
+    t.replaceChildren(b, x); t.classList.remove('aparece'); void t.offsetWidth; t.classList.add('aparece');
+  });
   window.addEventListener('cuento-actor', e => { if (e.detail.classList.contains('pergamino-datos')) requestAnimationFrame(pintarAnalisis); });
   window.addEventListener('oraculo-cartel', e => { const H = e.detail?.zona?.closest('.hitos'); if (H) H.dataset.cartel = '1'; pintarAnalisis(); });
   setTimeout(pintarAnalisis, 0);

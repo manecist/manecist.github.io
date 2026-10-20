@@ -563,7 +563,7 @@
   escena.addEventListener('click', e => {
     const irA = e.target.closest('[data-ir]'), modo = e.target.closest('[data-modo]');
     if (irA && abierto) { e.preventDefault(); ir(posDe(Number(irA.dataset.ir))); }
-    if (modo && modo.dataset.modo === 'clasico') { e.preventDefault(); aClasico(); }
+    if (modo && modo.dataset.modo === 'clasico') { e.preventDefault(); const d = modo.dataset.destino; if (d) history.replaceState(null, '', d); aClasico(d); }   // destino: una sección de la versión clásica
   });
   $('#libro-prev').addEventListener('click', () => pasar(-1));
   $('#libro-next').addEventListener('click', () => pasar(1));

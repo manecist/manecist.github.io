@@ -22,8 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Mali:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261016b">
-  <link rel="stylesheet" href="tema-claro.css?v=20261016b">
+  <link rel="stylesheet" href="libro.css?v=20261018a">
+  <link rel="stylesheet" href="tema-claro.css?v=20261016e">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="stylesheet" href="salud.css?v=20261016b">
   <link rel="stylesheet" href="escenas.css?v=20261108l">
@@ -43,10 +43,10 @@
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261016c" defer></script>
   <script src="secciones.js?v=20261017c" defer></script>
-  <script src="datos-salud.js?v=20261016a" defer></script>
+  <script src="datos-salud.js?v=20261017a" defer></script>
   <script src="salud.js?v=20261016a" defer></script>
-  <script src="libro.js?v=20261013a" defer></script>
-  <script src="cuento.js?v=20261017a" defer></script>
+  <script src="libro.js?v=20261017a" defer></script>
+  <script src="cuento.js?v=20261018a" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="escenas.js?v=20261108l" defer></script>
@@ -553,12 +553,13 @@ double total = subtotal - ahorro;</code></pre>
       <li><button type="button" data-ir-cap="II"><span>II</span>La niña que se fue transformando</button></li>
       <li><button type="button" data-ir-cap="III"><span>III</span>Sus huellas</button></li>
       <li><button type="button" data-ir-cap="IV"><span>IV</span>Noches de código</button></li>
-      <li><button type="button" data-ir-cap="V"><span>V</span>La gran tienda Magical Alliance</button></li>
-      <li><button type="button" data-ir-cap="VI"><span>VI</span>La tienda del mago</button></li>
+      <li><button type="button" data-ir-cap="V"><span>V</span>La tienda del mago</button></li>
+      <li><button type="button" data-ir-cap="VI"><span>VI</span>La gran tienda Magical Alliance</button></li>
       <li><button type="button" data-ir-cap="VII"><span>VII</span>El salón de los juegos</button></li>
       <li><button type="button" data-ir-cap="VIII"><span>VIII</span>Medallas, streams y su currículum</button></li>
-      <li><button type="button" data-ir-cap="IX"><span>IX</span>El reino que salió del libro</button></li>
-      <li><button type="button" data-ir-cap="X"><span>X</span>No es el fin</button></li>
+      <li><button type="button" data-ir-cap="IX"><span>IX</span>Practicando sus hechizos</button></li>
+      <li><button type="button" data-ir-cap="X"><span>X</span>El reino que salió del libro</button></li>
+      <li><button type="button" data-ir-cap="XI"><span>XI</span>No es el fin</button></li>
     </ol>
   </article>
 
@@ -693,9 +694,37 @@ double total = subtotal - ahorro;</code></pre>
   </article>
   <article class="pagina pagina-hueco" data-cap="IV · Noches de código"></article>
 
-  <!-- 20 · capítulo VII: Magical Alliance (pliego pop-up; la vitrina baja colgando) -->
-  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap7/suelo-mercado.webp" data-cap="V · La gran tienda Magical Alliance">
+  <!-- 16 · capítulo V: la tienda del mago (pliego pop-up; la caja baja colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-tienda.webp" data-cap="V · La tienda del mago">
     <p class="cap-num">Capítulo V</p>
+    <h2 class="cap-titulo">La tienda del mago</h2>
+    <p class="cuento">Un día, Ari y Coen caminaron hasta la tienda mágica de <b>Rancek</b>. Ahí el mago vende de todo: joyas, vestidos, perfumes y trajes encantados. Tú manejas la caja: elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!</p>
+    <div class="hitos" data-hitos="vi">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+    </div>
+    <div class="colgar-app app-caja app-tres" data-app="la caja">
+      <p class="cuento nota app-nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
+      <div class="app-doble"><div><p class="caja-paso"><span>1</span>Elige productos y descuento</p><div class="ranura" data-widget="#m4-picker"></div></div><div><p class="caja-paso"><span>2</span>Revisa el recibo y paga</p><div class="ranura" data-widget="#m4-recibo"></div></div><div><p class="caja-paso"><span>3</span>Cobra en la caja</p><div class="ranura" data-widget="#caja"></div></div></div>
+    </div>
+  </article>
+  <article class="pagina pagina-hueco" data-cap="V · La tienda del mago"></article>
+
+  <!-- 18 · pliego ancho: salen de paseo con la ropa nueva -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-paseo.webp" data-cap="V · La tienda del mago">
+    <p class="cap-num">✦</p>
+    <h2 class="cap-titulo">Ari y Coen estrenan su compra</h2>
+    <p class="cuento">Con sus compras puestas —Ari con su vestido de chica mágica y sus botas de plataforma, Coen con su jogger blanco y su polera burdeo— salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.</p>
+    <div class="hitos" data-hitos="paseo">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+    </div>
+  </article>
+  <article class="pagina pagina-hueco" data-cap="V · La tienda del mago"></article>
+
+  <!-- 20 · capítulo VI: Magical Alliance (pliego pop-up; la vitrina baja colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap7/suelo-mercado.webp" data-cap="VI · La gran tienda Magical Alliance">
+    <p class="cap-num">Capítulo VI</p>
     <h2 class="cap-titulo">La gran tienda Magical Alliance</h2>
     <p class="cuento"><span class="letra">L</span>a tiendita creció hasta convertirse en un mercado entero: <b>Magical Alliance</b>, su proyecto final Full Stack Java. Tiene registro e inicio de sesión por roles, catálogo con filtros, carrito, cupones, pedidos, historial de compras, control de stock y un panel para administrar todo.</p>
     <div class="hitos" data-hitos="vii">
@@ -709,35 +738,7 @@ double total = subtotal - ahorro;</code></pre>
       <div class="vitrina-viva"><iframe title="Magical Alliance, la tienda en vivo" data-src="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/#/inicio" loading="lazy" allow="clipboard-write"></iframe></div>
     </div>
   </article>
-  <article class="pagina pagina-hueco" data-cap="V · La gran tienda Magical Alliance"></article>
-
-  <!-- 16 · capítulo VI: la tienda del mago (pliego pop-up; la caja baja colgando) -->
-  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-tienda.webp" data-cap="VI · La tienda del mago">
-    <p class="cap-num">Capítulo VI</p>
-    <h2 class="cap-titulo">La tienda del mago</h2>
-    <p class="cuento">Un día, Ari y Coen caminaron hasta la tienda mágica de <b>Rancek</b>. Ahí el mago vende de todo: joyas, vestidos, perfumes y trajes encantados. Tú manejas la caja: elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!</p>
-    <div class="hitos" data-hitos="vi">
-      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
-      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
-    </div>
-    <div class="colgar-app app-caja app-tres" data-app="la caja">
-      <p class="cuento nota app-nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
-      <div class="app-doble"><div><p class="caja-paso"><span>1</span>Elige productos y descuento</p><div class="ranura" data-widget="#m4-picker"></div></div><div><p class="caja-paso"><span>2</span>Revisa el recibo y paga</p><div class="ranura" data-widget="#m4-recibo"></div></div><div><p class="caja-paso"><span>3</span>Cobra en la caja</p><div class="ranura" data-widget="#caja"></div></div></div>
-    </div>
-  </article>
-  <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
-
-  <!-- 18 · pliego ancho: salen de paseo con la ropa nueva -->
-  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-paseo.webp" data-cap="VI · La tienda del mago">
-    <p class="cap-num">✦</p>
-    <h2 class="cap-titulo">Ari y Coen estrenan su compra</h2>
-    <p class="cuento">Con sus compras puestas —Ari con su vestido de chica mágica y sus botas de plataforma, Coen con su jogger blanco y su polera burdeo— salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.</p>
-    <div class="hitos" data-hitos="paseo">
-      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
-      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
-    </div>
-  </article>
-  <article class="pagina pagina-hueco" data-cap="VI · La tienda del mago"></article>
+  <article class="pagina pagina-hueco" data-cap="VI · La gran tienda Magical Alliance"></article>
 
   <!-- 28 · capítulo X: el salón arcade (cada máquina abre su juego, que baja colgando) -->
   <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap10/suelo-juegos.webp" data-cap="VII · El salón de los juegos">
@@ -811,9 +812,35 @@ double total = subtotal - ahorro;</code></pre>
   </article>
   <article class="pagina pagina-hueco" data-cap="VIII · Medallas, streams y su currículum"></article>
 
-  <!-- 14 · pliego ancho: el reino sale del libro (escenario pop-up en 5 pasos) -->
-  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/reino/suelo-reino.webp" data-cap="IX · El reino que salió del libro">
+  <!-- 13b · capítulo IX: practicando sus hechizos (pliego pop-up en la torre; los tableros, las cápsulas y el banco bajan colgando) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap9/suelo-torre.webp" data-cap="IX · Practicando sus hechizos">
     <p class="cap-num">Capítulo IX</p>
+    <h2 class="cap-titulo">Practicando sus hechizos</h2>
+    <p class="cuento"><span class="letra">C</span>on sus medallas puestas, Ari no se detuvo: siguió practicando cada hechizo nuevo. Y un día volvió a los temas que conocía de cerca, los de su vida de matrona, para convertirlos en datos que cualquiera puede entender, en cápsulas para las familias y en herramientas para enseñar.</p>
+    <div class="hitos" data-hitos="hechizos">
+      <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
+      <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
+      <div class="vida-controles hitos-controles"><button type="button" class="btn ghost hito-ant" aria-label="Escena anterior">‹</button><button type="button" class="btn ghost hito-play" aria-label="Pausar">❚❚</button><button type="button" class="btn ghost hito-sig" aria-label="Escena siguiente">›</button><span class="hito-num"></span></div>
+    </div>
+    <div class="colgar-app" data-app="los tableros" data-verbo="Abrir" data-app-id="tableros">
+      <p class="cuento nota app-nota">Su libro de hechizos: cinco tableros con datos de salud de Chile. Elige un tema, toca sus indicadores y recorre cada página.</p>
+      <div class="ranura" data-widget="#tableros"></div>
+    </div>
+    <div class="colgar-app" data-app="las cápsulas" data-verbo="Ver" data-app-id="capsulas">
+      <p class="cuento nota app-nota">Sus ocho cápsulas nuevas en video, sus páginas para las familias y su planilla PAP.</p>
+      <div class="ranura" data-widget="#matrona-hoy"></div>
+    </div>
+    <div class="colgar-app" data-app="el banco" data-verbo="Probar" data-app-id="banco">
+      <p class="cuento nota app-nota">El Banco de Evaluaciones en vivo: escribe, revisa y analiza preguntas como lo haría una docente.</p>
+      <div class="ranura" data-widget="#banco-card"></div>
+    </div>
+    <p class="botonera"><button type="button" class="btn primary" data-modo="clasico" data-destino="#datos">Abrir el libro de hechizos ✦</button></p>
+  </article>
+  <article class="pagina pagina-hueco" data-cap="IX · Practicando sus hechizos"></article>
+
+  <!-- 14 · pliego ancho: el reino sale del libro (escenario pop-up en 5 pasos) -->
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/reino/suelo-reino.webp" data-cap="X · El reino que salió del libro">
+    <p class="cap-num">Capítulo X</p>
     <h2 class="cap-titulo">El reino que salió del libro</h2>
     <div class="hitos" data-hitos="reino">
       <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
@@ -821,11 +848,11 @@ double total = subtotal - ahorro;</code></pre>
       <div class="vida-controles hitos-controles"><button type="button" class="btn ghost hito-play" aria-label="Ver de nuevo">↻</button></div>
     </div>
   </article>
-  <article class="pagina pagina-hueco" data-cap="IX · El reino que salió del libro"></article>
+  <article class="pagina pagina-hueco" data-cap="X · El reino que salió del libro"></article>
 
   <!-- 30 · final: en la cima Ari alcanza su báculo, dibuja toda la pantalla y entramos a su mundo -->
-  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/final/suelo-cima.webp" data-cap="X · No es el fin">
-    <p class="cap-num">Capítulo X</p>
+  <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/final/suelo-cima.webp" data-cap="XI · No es el fin">
+    <p class="cap-num">Capítulo XI</p>
     <h2 class="cap-titulo">No es el fin… es solo el inicio</h2>
     <p class="cuento">A pesar de los obstáculos, siempre debes alcanzar tu sueño.</p>
     <div class="hitos" data-hitos="final">
@@ -835,7 +862,7 @@ double total = subtotal - ahorro;</code></pre>
     <div class="colgar fin-contacto"><p class="fin-titulo">¿Escribimos juntos el próximo capítulo?</p><p class="fin-texto">Desarrollo, diseño, videojuegos, datos y salud pueden encontrarse en una misma conversación.</p><p class="fin-links"><a href="mailto:manecisterna@gmail.com">✉ manecisterna@gmail.com</a><a href="mailto:studiosconari@gmail.com">✉ studiosconari@gmail.com</a><a href="https://github.com/manecist" target="_blank" rel="noopener">GitHub ↗</a><a href="https://www.linkedin.com/in/maria-cisterna-e/" target="_blank" rel="noopener">LinkedIn ↗</a><a href="assets/cv-maria-cisterna.pdf" target="_blank" rel="noopener">Currículum (PDF) ↗</a></p></div>
     <p class="botonera"><button type="button" class="btn gold-btn" data-entrar-mundo>✦ Entrar a mi mundo</button><button type="button" class="btn primary" data-ir="0">Volver al comienzo</button><button type="button" class="btn ghost" data-modo="clasico">Ver versión clásica</button></p>
   </article>
-  <article class="pagina pagina-hueco" data-cap="X · No es el fin"></article>
+  <article class="pagina pagina-hueco" data-cap="XI · No es el fin"></article>
 </div>
 </body>
 </html>

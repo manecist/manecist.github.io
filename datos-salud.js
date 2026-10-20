@@ -14,7 +14,7 @@ window.TABLEROS = [
    "14 de 21 medicamentos o situaciones revisadas bajan la eficacia de algún método; ninguna afecta al DIU ni al condón.",
    "El riesgo de trombosis de la píldora con levonorgestrel (5 a 7 por 10.000) es menor que el del embarazo (5 a 20) y el posparto (40 a 65)."
   ],
-  "concluyo": "Elegir bien es más importante que elegir cualquier método: ofrecer primero los métodos de larga duración, sobre todo a adolescentes, es la medida con más impacto.\n\n---",
+  "concluyo": "Elegir bien es más importante que elegir cualquier método: ofrecer primero los métodos de larga duración, sobre todo a adolescentes, es la medida con más impacto.",
   "kpi": [
    {
     "nombre": "Tasa de falla en el primer año (uso típico)",
@@ -210,7 +210,7 @@ window.TABLEROS = [
    "Solo 4 de las 10 ITS revisadas son de notificación obligatoria; clamidia, VPH, herpes y tricomoniasis casi no tienen datos en Chile.",
    "La sífilis se concentra entre los 20 y 29 años y la gonorrea crece más rápido en mujeres."
   ],
-  "concluyo": "Las ITS van en sentido contrario al embarazo adolescente: hace falta más testeo, tratamiento oportuno y uso de condón, y medir las ITS que hoy no se vigilan.\n\n---",
+  "concluyo": "Las ITS van en sentido contrario al embarazo adolescente: hace falta más testeo, tratamiento oportuno y uso de condón, y medir las ITS que hoy no se vigilan.",
   "kpi": [
    {
     "nombre": "Tasa de incidencia notificada de sífilis",
@@ -380,7 +380,7 @@ window.TABLEROS = [
    "La mortalidad materna de Chile (10 por 100 mil nacidos vivos) es de las más bajas de la región.",
    "El último dato nacional de embarazo no planificado es de 2010."
   ],
-  "concluyo": "La prevención funciona y Chile tiene más matronas que nunca: el desafío es ponerlas donde está la prevención, como los colegios, y volver a medir el embarazo no planificado.\n\n---",
+  "concluyo": "La prevención funciona y Chile tiene más matronas que nunca: el desafío es ponerlas donde está la prevención, como los colegios, y volver a medir el embarazo no planificado.",
   "kpi": [
    {
     "nombre": "Tasa específica de fecundidad de 15 a 19 años",
@@ -549,7 +549,7 @@ window.TABLEROS = [
    "Cada set cuesta cerca de $67.480 y la ejecución del presupuesto fue 85% en 2018; en 2026 el presupuesto bajó 10,5%.",
    "95,5% de las madres participa en el taller educativo, donde aprende sueño seguro, lactancia y cuidados."
   ],
-  "concluyo": "El ajuar llega a casi todas las familias de la red pública; cuidar la cadena de compra y el taller es lo que mantiene ese logro.\n\n---",
+  "concluyo": "El ajuar llega a casi todas las familias de la red pública; cuidar la cadena de compra y el taller es lo que mantiene ese logro.",
   "kpi": [
    {
     "nombre": "Cobertura del set",
@@ -688,7 +688,7 @@ window.TABLEROS = [
    "Cáncer de mama detectado localizado: 99% de sobrevida a 5 años; con metástasis: 32%.",
    "Cerca de 37,8% de los cánceres se asocia a factores que se pueden modificar."
   ],
-  "concluyo": "En cáncer, llegar a tiempo cambia todo: subir la pesquisa (mamografía, PAP, test VPH) y completar la vacuna VPH es lo que más vidas salva.\n\n---",
+  "concluyo": "En cáncer, llegar a tiempo cambia todo: subir la pesquisa (mamografía, PAP, test VPH) y completar la vacuna VPH es lo que más vidas salva.",
   "kpi": [
    {
     "nombre": "Casos nuevos de cáncer al año",
