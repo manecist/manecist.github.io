@@ -1,0 +1,21 @@
+ESPECIFICACIÓN DE GENERACIÓN — HERRAMIENTA DE IMAGEN INTEGRADA
+
+Redraw and refine the FIRST image as ONE complete coherent traditional anime animation cel. FIRST IMAGE is the EDIT TARGET and absolute pose/placement guide: keep its exact leg positions, knee height, feet positions, arm positions, pelvis centers and head centers. SECOND image is ONLY the identity, clean contour and rendering reference: do NOT copy its leg pose or wide stride. Preserve Ari and Coen's identities, glasses, hair, beard, eyes, outfits and colors. Repaint the first image fully with continuous anatomically correct contours and natural cloth folds; remove all cutout/mesh seams, angular joint artifacts and assembly lines. It must look like one fully drawn illustration, not assembled pieces. Two full-body characters walking in place to the right, synchronized, Ari foreground Coen behind, same hands joined. Flat clean solid colors, very little defined-edge shading, fine dark tapered uniform lineart, no textures, noise, grain or gradients. Ari's blue cargo pants have upper thigh pockets only NO calf pockets. Preserve exact first-image framing, canvas and transparent margin; actual transparent PNG alpha, no ground/cast shadow, text, guide lines, extra poses or watermark. Do not enlarge the characters to fill the canvas. ONE frame.
+
+FASES DEL CICLO
+1. Contact, near leg forward heel strike, far leg behind toe support.
+2. Transition after contact: accepting weight, feet progressively rolling.
+3. Down phase, near leg accepts weight, far foot starts lifting behind.
+4. Transition into passing, trailing far knee moves low forward.
+5. Passing: near support under body, far swing knee low beside it.
+6. Transition after passing, far foot swings low toward front.
+7. Up phase, near support rolls toward toes behind, far foot swings forward low.
+8. Preparing opposite contact, far shin extends toward right heel strike.
+9. Opposite contact, FAR leg forward heel strike, NEAR leg behind toe support. Ari free arm forward and Coen free arm backward.
+10. Transition accepting weight on FAR foot, NEAR foot trails.
+11. Opposite down phase, FAR support bends slightly, NEAR starts low swing.
+12. Transition into opposite passing, near swing knee passing low.
+13. Opposite passing, FAR support under hip, NEAR bent swing leg low beside it.
+14. Transition after opposite passing, near foot moving forward low.
+15. Opposite up phase, FAR support toe push behind, NEAR low swing forward.
+16. Preparing to loop smoothly into first contact: NEAR shin extending toward forward heel strike.
