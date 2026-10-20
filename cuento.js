@@ -487,18 +487,19 @@
         { si: '!magical', nombre: 'ari', img: 'assets/cuento/tienda/ari-casual.webp', x: 32, alto: 15.8, delante: true, reemplaza: 'ari-look', sigue: true, fx: { tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1100 }, ms: 300, pausa: 0 },
         { si: '!magical', nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 40, alto: 17.5, delante: true, reemplaza: ['ari', 'coen'], sigue: true, ms: 600 },
         // «vendo de todo»: y a ellos se les ocurre una idea
-        { texto: { titulo: 'Rancek:', texto: '«Vendo de todo y hago de todo… ¡hasta modelos 3D!»' }, nombre: 'mago', clase: 'tras-mostrador saluda', ms: 2000 },
+        { texto: { titulo: 'Rancek:', texto: '«Vendo de todo y hago de todo… ¡hasta modelos 3D!»' }, nombre: 'mago-p', img: 'assets/cuento/tienda/rancek-presume-1.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ms: 1300, pausa: 0 },   // se saca el delantal y abre los brazos, orgulloso
+        { nombre: 'mago-f', img: 'assets/cuento/tienda/rancek-presume-2.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-p', sigue: true, fx: { tipo: 'destello', x: 74, ancho: 6, y: 20, ms: 900 }, ms: 1600 },   // …y muestra una figurita que imprimió en 3D
         { nombre: 'pareja2', img: 'assets/cuento/tienda/pareja-2.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja', sigue: true, ms: 900, pausa: 0 },
         { nombre: 'pareja3', img: 'assets/cuento/tienda/pareja-3.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja2', sigue: true, ms: 900, pausa: 0 },
         { texto: { titulo: 'Ari y Coen:', texto: '«Tenemos una idea… ¿y si creamos algo juntos?»' }, nombre: 'pareja4', img: 'assets/cuento/tienda/pareja-4.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja3', sigue: true, fx: { tipo: 'destello', x: 36, ancho: 10, y: 15 }, ms: 2200 },
-        { texto: { titulo: 'Rancek:', texto: '«Mmm… aún no sé.»' }, nombre: 'mago', clase: 'tras-mostrador', ms: 2000 },
+        { texto: { titulo: 'Rancek:', texto: '«Mmm… aún no sé.»' }, nombre: 'mago-d', img: 'assets/cuento/tienda/rancek-presume-3.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-f', sigue: true, ms: 2000 },
         { texto: { titulo: 'Ari y Coen:', texto: '«¡Piénsalo! Nos vemos, Rancek ✧»' }, nombre: 'pareja5', img: 'assets/cuento/tienda/pareja-5.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja4', sigue: true, ms: 1600 },
         // se van caminando… y Rancek cierra la tienda y corre detrás
         { nombre: 'pareja-v', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1280, x: 40, alto: 17.5, delante: true, reemplaza: 'pareja5', sigue: true, ruta: [[0, 40], [1, 118]], ms: 4200, junto: true },
-        { ms: 1600 },
-        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek-c', img: 'assets/cuento/tienda/rancek-amigo.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ms: 1200, pausa: 0 },
-        { nombre: 'rancek-c', clase: 'tras-mostrador baja-delante', ms: 1300, pausa: 0 },
-        { nombre: 'rancek-c', ruta: [[0, 78], [.2, 84, 2], [.4, 90, 0], [.6, 96, 2], [.8, 102, 0], [1, 112, 1]], ms: 2200 }
+        { ms: 1200 },
+        { nombre: 'mago-s', img: 'assets/cuento/tienda/rancek-presume-4.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-d', sigue: true, ms: 1000, pausa: 200 },   // se decide…
+        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'mago-s', clase: 'tras-mostrador baja-delante', ms: 1300, pausa: 0 },
+        { nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre', camina: [0, 1], cicloMs: 640, x: 78, alto: 17.1, delante: true, reemplaza: 'mago-s', sigue: true, ruta: [[0, 78], [1, 116]], ms: 2400 }   // …y corre detrás de ellos
       ] }
     ] },
     paseo: { carpeta: 'cap6/', hitos: [
@@ -506,7 +507,8 @@
         // salen a pasear por el reino (recortes de papel que avanzan dando saltitos)
         { nombre: 'coen', img: 'assets/cuento/tienda/coen-paseo.webp', x: 64, alto: 17.5, delante: true, entra: true, sigue: true, ruta: [[0, -6], [.2, 8, 1.5], [.4, 22, 0], [.6, 36, 1.5], [.8, 50, 0], [1, 64, 0]], ms: 5200, junto: true },
         { nombre: 'ari', look: true, x: 52, alto: 15.8, delante: true, entra: true, ruta: [[0, -18], [.2, -4, 1.5], [.4, 10, 0], [.6, 24, 1.5], [.8, 38, 0], [1, 52, 0]], ms: 5200 },
-        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek', img: 'assets/cuento/tienda/rancek-amigo.webp', x: 30, alto: 17, delante: true, entra: true, ruta: [[0, -8], [.25, 3, 2], [.5, 14, 0], [.75, 23, 2], [1, 30, 0]], ms: 2600 }
+        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme! ¡Yo también voy!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre', camina: [0, 1], cicloMs: 640, x: 30, alto: 17.1, delante: true, entra: true, ruta: [[0, -8], [1, 30]], ms: 2600 },
+        { nombre: 'rancek', img: 'assets/cuento/tienda/rancek-presume-4.webp', x: 30, alto: 17, delante: true, reemplaza: 'rancek-c', sigue: true, ms: 600 }
       ] }
     ] },
     vii: { carpeta: 'cap7/', hitos: [
