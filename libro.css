@@ -2123,3 +2123,12 @@ body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-
 /* las cápsulas de video salen de adentro de la cápsula: crecen desde chiquititas mientras vuelan */
 .hito-actor.sale-capsula>img:first-child{animation:sale-capsula 1s cubic-bezier(.2,.9,.3,1.15) both;transform-origin:50% 100%}
 @keyframes sale-capsula{0%{transform:scale(.12);opacity:0}25%{opacity:1}100%{transform:scale(1);opacity:1}}
+/* la vitrina de looks de la tienda: cuatro probadores, quien lee elige uno */
+.looks-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:6px 2px 4px}
+.looks-grid .look{display:grid;justify-items:center;gap:4px;padding:10px 8px 12px;border:2px solid #e8c9dc;border-radius:16px;background:linear-gradient(180deg,#fff8fc,#f6ecff);color:#5e2f52;font:inherit;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
+.looks-grid .look img{width:100%;aspect-ratio:3/5;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(94,47,82,.18))}
+.looks-grid .look b{font:700 .95rem/1.2 "Mali",sans-serif;color:#a33a72;text-align:center}
+.looks-grid .look span{font-size:.78rem;line-height:1.25;text-align:center;opacity:.8}
+.looks-grid .look:hover,.looks-grid .look:focus-visible{transform:translateY(-4px);border-color:#d68bbd;box-shadow:0 10px 22px rgba(163,58,114,.18);outline:none}
+.looks-grid .look[aria-pressed="true"]{border-color:#a33a72;box-shadow:0 0 0 3px rgba(214,139,189,.45)}
+@media (max-width:640px){.looks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

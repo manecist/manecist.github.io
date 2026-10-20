@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Mali:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap">
   <link rel="stylesheet" href="styles.css?v=20261002a">
-  <link rel="stylesheet" href="libro.css?v=20261018a">
+  <link rel="stylesheet" href="libro.css?v=20261020a">
   <link rel="stylesheet" href="tema-claro.css?v=20261016e">
   <link rel="stylesheet" href="intro.css?v=20260929f">
   <link rel="stylesheet" href="salud.css?v=20261016b">
@@ -46,7 +46,7 @@
   <script src="datos-salud.js?v=20261017a" defer></script>
   <script src="salud.js?v=20261016a" defer></script>
   <script src="libro.js?v=20261017a" defer></script>
-  <script src="cuento.js?v=20261018a" defer></script>
+  <script src="cuento.js?v=20261020a" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
   <script src="escenas.js?v=20261108l" defer></script>
@@ -168,7 +168,7 @@
 
   <div class="studio-hero">
     <div class="studio-brand-card">
-      <img class="studio-wordmark logo-noche" src="assets/logo-oficial-oscuro.webp" alt="Studios Conari" loading="lazy"><img class="studio-wordmark logo-dia" src="assets/logo-oficial-claro.webp" alt="Studios Conari" loading="lazy">
+      <img class="studio-wordmark logo-noche" src="assets/logo-conari-claro.webp" alt="Studios Conari" loading="lazy"><img class="studio-wordmark logo-dia" src="assets/logo-conari-azul.webp" alt="Studios Conari" loading="lazy">
       <div>
         <span class="chip gold-chip">ESTUDIO CREATIVO CHILENO</span>
         <p class="official-slogan">Donde nacen mundos y leyendas eternas.</p><h3>Tu idea puede convertirse en un mundo propio.</h3>
@@ -394,7 +394,7 @@ double total = subtotal - ahorro;</code></pre>
     <i>→</i>
     <a href="#diseno"><img src="assets/icon-design.webp" alt="" loading="lazy"><span>Diseño</span></a>
     <i>→</i>
-    <a class="transition-finale" href="#estudio"><img class="logo-noche" src="assets/logo-oficial-oscuro.webp" alt="Studios Conari" loading="lazy"><img class="logo-dia" src="assets/logo-oficial-claro.webp" alt="" loading="lazy"><span>Un proyecto que reúne mis caminos</span></a>
+    <a class="transition-finale" href="#estudio"><img class="logo-noche" src="assets/logo-conari-claro.webp" alt="Studios Conari" loading="lazy"><img class="logo-dia" src="assets/logo-conari-azul.webp" alt="" loading="lazy"><span>Un proyecto que reúne mis caminos</span></a>
   </div>
 
   <p class="transition-explanation">No son etapas que se borran: son capacidades que se suman. Hoy las conecto en mi trabajo y en Studios Conari.</p><div id="salud-card" class="health-card">
@@ -698,12 +698,16 @@ double total = subtotal - ahorro;</code></pre>
   <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-tienda.webp" data-cap="V · La tienda del mago">
     <p class="cap-num">Capítulo V</p>
     <h2 class="cap-titulo">La tienda del mago</h2>
-    <p class="cuento">Un día, Ari y Coen caminaron hasta la tienda mágica de <b>Rancek</b>. Ahí el mago vende de todo: joyas, vestidos, perfumes y trajes encantados. Tú manejas la caja: elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!</p>
+    <p class="cuento">Un día, Ari y Coen caminaron hasta la tienda mágica de <b>Rancek</b>. Ahí Rancek vende de todo: joyas, vestidos, perfumes y trajes encantados. Tú eliges el look que Ari se prueba y manejas la caja: aplica un descuento, cobra… ¡y entrega la boleta!</p>
     <div class="hitos" data-hitos="vi">
       <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
       <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
     </div>
-    <div class="colgar-app app-caja app-tres" data-app="la caja">
+    <div class="colgar-app app-looks" data-app="la vitrina" data-verbo="Abrir" data-app-id="looks">
+      <p class="cuento nota app-nota">Rancek abre su vitrina de Magical Alliance: elige el look que Ari se va a probar.</p>
+      <div class="looks-grid"><button type="button" class="look" data-look="magical" aria-pressed="false"><img src="assets/cuento/tienda/ari-look-magical.webp" alt="" loading="lazy"><b>Vestido Magical</b><span>Lila con lunas doradas</span></button><button type="button" class="look" data-look="lila" aria-pressed="false"><img src="assets/cuento/tienda/ari-look-lila.webp" alt="" loading="lazy"><b>Set lila</b><span>Blusa, falda y cartera Moon</span></button><button type="button" class="look" data-look="corset" aria-pressed="false"><img src="assets/cuento/tienda/ari-look-corset.webp" alt="" loading="lazy"><b>Corset rosado</b><span>Con cargo celeste y cartera</span></button><button type="button" class="look" data-look="boda" aria-pressed="false"><img src="assets/cuento/tienda/ari-look-boda.webp" alt="" loading="lazy"><b>Vestido de gala</b><span>Tul celeste con lunas</span></button></div>
+    </div>
+    <div class="colgar-app app-caja app-tres" data-app="la caja" data-app-id="caja">
       <p class="cuento nota app-nota">Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.</p>
       <div class="app-doble"><div><p class="caja-paso"><span>1</span>Elige productos y descuento</p><div class="ranura" data-widget="#m4-picker"></div></div><div><p class="caja-paso"><span>2</span>Revisa el recibo y paga</p><div class="ranura" data-widget="#m4-recibo"></div></div><div><p class="caja-paso"><span>3</span>Cobra en la caja</p><div class="ranura" data-widget="#caja"></div></div></div>
     </div>
@@ -714,7 +718,7 @@ double total = subtotal - ahorro;</code></pre>
   <article class="pagina pagina-ancha pagina-hitos pagina-pop" data-suelo="assets/cuento/cap6/suelo-paseo.webp" data-cap="V · La tienda del mago">
     <p class="cap-num">✦</p>
     <h2 class="cap-titulo">Ari y Coen estrenan su compra</h2>
-    <p class="cuento">Con sus compras puestas —Ari con su vestido de chica mágica y sus botas de plataforma, Coen con su jogger blanco y su polera burdeo— salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.</p>
+    <p class="cuento">Con sus compras puestas —Ari con el look que eligió en la vitrina, Coen con su jogger blanco y su polera burdeo— salieron a pasear por el reino… y Rancek cerró la tienda a toda prisa para correr detrás de ellos.</p>
     <div class="hitos" data-hitos="paseo">
       <div class="hitos-escena" aria-hidden="true"><div class="hitos-suelo"><i class="ver"></i><i></i></div></div>
       <div class="vida-cartel hitos-cartel" aria-live="polite"><b class="vida-edad hito-titulo"></b><span class="vida-texto hito-texto"></span></div>
