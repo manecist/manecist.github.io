@@ -1,0 +1,20 @@
+ARI Y COEN — VERSIÓN CON CUADROS COMPLETOS
+
+16 ilustraciones completas en secuencia: 8 fases principales y 8 intermedios.
+1024 × 1024 px; PNG con alfa; sin suelo ni texto.
+Duración: 80 ms por cuadro; 1,28 s por ciclo; bucle continuo.
+
+GIF: vista animada, transparencia de 1 bit y paleta de 256 colores.
+PNG animado (APNG): conserva los colores y el canal alfa de los cuadros.
+cuadros/: secuencia completa de 16 PNG.
+8-poses-principales/: las 8 fases principales del mismo ciclo.
+
+Los cuadros finales son ilustraciones completas generadas individualmente
+con una guía de poses común. No se construye el GIF moviendo recortes de
+brazos o piernas. El ajuste de encuadre se aplica a cada ilustración entera.
+
+Generación de imagen integrada. Especificación usada: redibujar cada pose
+completa de Ari y Coen caminando sincronizados hacia la derecha, manteniendo
+identidad, ropa, colores, manos unidas y proporciones; contornos continuos,
+anatomía y pliegues coherentes, pasos bajos y naturales, colores planos,
+sombra mínima, lineart oscuro fino y fondo transparente.
