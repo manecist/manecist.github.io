@@ -2132,3 +2132,13 @@ body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-
 .looks-grid .look:hover,.looks-grid .look:focus-visible{transform:translateY(-4px);border-color:#d68bbd;box-shadow:0 10px 22px rgba(163,58,114,.18);outline:none}
 .looks-grid .look[aria-pressed="true"]{border-color:#a33a72;box-shadow:0 0 0 3px rgba(214,139,189,.45)}
 @media (max-width:640px){.looks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* escenas suaves (la tienda y el paseo): los personajes respiran, hablan con gestos leves y cambian de pose con un fundido */
+.suave .hito-actor.hito-fija > img:first-child{animation:respira 3.6s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes respira{0%,100%{transform:scale(1,1)}50%{transform:scale(1.006,1.012)}}
+.suave .hito-actor.hito-fija.saluda > img:first-child{animation:habla 1s ease-in-out}
+@keyframes habla{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(-2%) scale(1.01)}70%{transform:translateY(-.5%) scale(1.004)}}
+.suave .hito-actor.funde > :not(.hito-rotulo){animation:funde .36s ease-out both}
+.suave .hito-actor.funde.hito-fija > img:first-child{animation:funde .36s ease-out both,respira 3.6s ease-in-out .36s infinite}
+@keyframes funde{from{opacity:0}to{opacity:1}}
+.hito-actor.se-va{opacity:0;translate:5% 0 0;transition:opacity 1.2s ease-in,translate 1.2s ease-in!important}
+@media (prefers-reduced-motion: reduce){.suave .hito-actor > *{animation:none!important}}
