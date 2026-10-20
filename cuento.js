@@ -465,7 +465,7 @@
         { nombre: 'mago', img: 'assets/cuento/tienda/rancek-tienda.webp', x: 78, alto: 17, clase: 'tras-mostrador', ms: 500, pausa: 0 },
         { nombre: 'mesa', img: 'mesa-perfil.webp', x: 66, alto: 19, clase: 'mostrador espejo', ms: 600, pausa: 300 },
         // Ari y Coen llegan caminando de la mano
-        { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a la tienda mágica de Rancek.' }, nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1000, x: -10, alto: 17.5, delante: true, entra: true, ruta: [[0, -10], [1, 40]], ms: 3800, pausa: 0 },
+        { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a la tienda mágica de Rancek.' }, nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1280, x: -10, alto: 17.5, delante: true, entra: true, ruta: [[0, -10], [1, 40]], ms: 3800, pausa: 0 },
         { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
         { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: { tipo: 'destello', x: 78, ancho: 9, y: 16 }, ms: 1800 },
         { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'pareja', clase: 'saluda', ms: 1800 },
@@ -478,9 +478,14 @@
         { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: 'caja', ms: 600 },
         { espera: 'tienda-boleta', cierraApp: true, ms: 900 },
         // pagado: Ari vuelve a su ropa y las compras se van en bolsas
-        { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: [{ tipo: 'destello', x: 60, ancho: 10, y: 12, ms: 900 }, { tipo: 'destello', x: 40, ancho: 16, y: 6, ms: 1100, tras: 500 }], ms: 1400, pausa: 0 },
-        { nombre: 'ari', img: 'assets/cuento/tienda/ari-casual.webp', x: 32, alto: 15.8, delante: true, reemplaza: 'ari-look', sigue: true, ms: 200, pausa: 0 },
-        { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 40, alto: 17.5, delante: true, reemplaza: ['ari', 'coen'], sigue: true, ms: 600 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago-e', actor: 'assets/cuento/tienda/rancek-entrega', x: 76.2, alto: 17.1, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 3400, pausa: 0 },   // las recoge, las levanta y se las ofrece
+        { nombre: 'mago', img: 'assets/cuento/tienda/rancek-perfil.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, ms: 0, pausa: 0 },
+        // con el Vestido Magical puesto, Ari y Coen reciben las bolsas y las levantan felices
+        { si: 'magical', nombre: 'pareja-r', actor: 'assets/cuento/tienda/pareja-bolsas', x: 40, alto: 18.3, delante: true, reemplaza: ['ari-look', 'coen'], sigue: true, de: 0, a: 1, ms: 3200 },
+        { si: 'magical', nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja-r', sigue: true, fx: { tipo: 'destello', x: 36, ancho: 14, y: 8, ms: 1100 }, ms: 900 },
+        // con los otros looks: Ari vuelve a su ropa con un destello y las compras ya van en las bolsas
+        { si: '!magical', nombre: 'ari', img: 'assets/cuento/tienda/ari-casual.webp', x: 32, alto: 15.8, delante: true, reemplaza: 'ari-look', sigue: true, fx: { tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1100 }, ms: 300, pausa: 0 },
+        { si: '!magical', nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 40, alto: 17.5, delante: true, reemplaza: ['ari', 'coen'], sigue: true, ms: 600 },
         // «vendo de todo»: y a ellos se les ocurre una idea
         { texto: { titulo: 'Rancek:', texto: '«Vendo de todo y hago de todo… ¡hasta modelos 3D!»' }, nombre: 'mago', clase: 'tras-mostrador saluda', ms: 2000 },
         { nombre: 'pareja2', img: 'assets/cuento/tienda/pareja-2.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja', sigue: true, ms: 900, pausa: 0 },
@@ -489,7 +494,7 @@
         { texto: { titulo: 'Rancek:', texto: '«Mmm… aún no sé.»' }, nombre: 'mago', clase: 'tras-mostrador', ms: 2000 },
         { texto: { titulo: 'Ari y Coen:', texto: '«¡Piénsalo! Nos vemos, Rancek ✧»' }, nombre: 'pareja5', img: 'assets/cuento/tienda/pareja-5.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja4', sigue: true, ms: 1600 },
         // se van caminando… y Rancek cierra la tienda y corre detrás
-        { nombre: 'pareja-v', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1000, x: 40, alto: 17.5, delante: true, reemplaza: 'pareja5', sigue: true, ruta: [[0, 40], [1, 118]], ms: 4200, junto: true },
+        { nombre: 'pareja-v', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1280, x: 40, alto: 17.5, delante: true, reemplaza: 'pareja5', sigue: true, ruta: [[0, 40], [1, 118]], ms: 4200, junto: true },
         { ms: 1600 },
         { texto: { titulo: 'Rancek:', texto: '«¡Esperen! Cierro la tienda… ¡yo también voy!»' }, nombre: 'rancek-c', img: 'assets/cuento/tienda/rancek-amigo.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ms: 1200, pausa: 0 },
         { nombre: 'rancek-c', clase: 'tras-mostrador baja-delante', ms: 1300, pausa: 0 },
@@ -836,6 +841,7 @@
       }
       for (let p of H.pasos) {
         if (p.look) p = { ...p, img: window.MCELook() };   // el look que eligió quien lee en la vitrina
+        if (p.si && !window.MCELookEs(p.si)) continue;     // pasos que solo van con cierto look
         // cambia el fondo a mitad de la escena: el anterior se pliega y el nuevo se levanta
         if (p.fondo && p.fondo !== fondoActual) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = p.fondo; const f = document.createElement('img'); f.src = ruta(esc, p.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .3); }
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
@@ -955,6 +961,7 @@
   // la vitrina de looks de la tienda: quien lee elige qué se prueba Ari (y con qué sale a pasear)
   const LOOKS = ['magical', 'lila', 'corset', 'boda'];
   window.MCELook = () => { let k = null; try { k = sessionStorage.getItem('mce-look'); } catch (e) { /* sin almacenamiento */ } return 'assets/cuento/tienda/ari-look-' + (LOOKS.includes(k) ? k : 'magical') + '.webp'; };
+  window.MCELookEs = c => { const k = window.MCELook().replace(/.*ari-look-|\.webp$/g, ''); return c[0] === '!' ? k !== c.slice(1) : k === c; };
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-look]'); if (!b) return;
     try { sessionStorage.setItem('mce-look', b.dataset.look); } catch (er) { /* sin almacenamiento */ }
