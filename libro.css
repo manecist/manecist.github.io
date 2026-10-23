@@ -2142,3 +2142,19 @@ body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-
 @keyframes funde{from{opacity:0}to{opacity:1}}
 .hito-actor.se-va{opacity:0;translate:5% 0 0;transition:opacity 1.2s ease-in,translate 1.2s ease-in!important}
 @media (prefers-reduced-motion: reduce){.suave .hito-actor > *{animation:none!important}}
+
+/* escena animada (video Wan) dentro del pop-up: una lámina ilustrada que se levanta del papel */
+/* .hito-video{left:7%;width:86%;bottom:14%;z-index:30;pointer-events:none} */
+.hito-video{left:15%;width:70%;bottom:2%;z-index:30;pointer-events:none}
+.hito-video video,.hito-video img{display:block;width:100%;aspect-ratio:832/464;object-fit:cover;border:5px solid #fff;border-radius:10px;box-shadow:0 10px 26px rgba(40,20,60,.35);background:#f5ecf7}
+.hito-video img{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
+.hito-video img.ver{opacity:1}
+
+.tras-caja{bottom:33%}
+.calibra{opacity:.55}
+
+/* personajes quietos que siguen vivos: respiran y cambian el peso de un pie a otro */
+.suave .hito-actor.vive > img:first-child{transform-origin:50% 100%;animation:vive 3.4s ease-in-out infinite}
+@keyframes vive{0%,100%{transform:scale(1,1) rotate(0)}30%{transform:scale(1.008,1.022) rotate(-.7deg)}65%{transform:scale(1.004,1.012) rotate(.6deg)}}
+
+.hito-actor.encima{z-index:40}

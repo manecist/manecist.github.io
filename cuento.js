@@ -404,117 +404,309 @@
           texto: { titulo: '…y se unió al equipo un tercero', texto: 'María Inés (dirección creativa · Full Stack Java), Kevin (dirección técnica · videojuegos y datos) y Elías (animación y arte 3D).' } }
       ] }
     ] },
-    reino: { carpeta: 'reino/', hitos: [
-      { fondo: null, suelo: 'suelo-reino.webp', titulo: 'Entonces…', texto: 'el libro se abrió de par en par y de sus páginas brotó un humo mágico.', pasos: [
-        { nombre: 'humo', img: 'humo.webp', x: 50, alto: 18, efecto: 'flota', ms: 2600 },
-        { quita: 'humo', texto: { titulo: 'Del humo nacieron…', texto: 'la cordillera de los Andes, el sol, la luna y un gran castillo en lo alto.' }, ms: 300 },
-        { nombre: 'andes', img: 'assets/cuento/popup/andes.webp', x: 50, ancho: 94, fila: 'atras', ms: 200, pausa: 300 },
-        { nombre: 'sol', img: 'sol.webp', x: 12, alto: 8, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
-        { nombre: 'luna', img: 'luna.webp', x: 89, alto: 7, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
-        { nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 50, alto: 34, fila: 'medio', ms: 300, pausa: 300 },
-        { texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos.' }, ms: 300 },
-        { nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 66, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 73, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 80, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
-        { nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 87, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 300 },
+    reino: { carpeta: 'reino/', suave: true, hitos: [
+      // respaldo: el capítulo empezaba directo con el humo
+      // { fondo: null, suelo: 'suelo-reino.webp', titulo: 'Entonces…', texto: 'el libro se abrió de par en par y de sus páginas brotó un humo mágico.', pasos: [
+      // una noche, en un café cowork frente a la gran torre, Ari le cuenta a Rancek de qué se trata el proyecto… y se le cae el libro
+      { fondo: 'fondo-cafe.webp', suelo: 'assets/cuento/cap6/suelo-tienda.webp', titulo: 'Una noche…', texto: 'los tres se juntaron en un café a conversar.', pasos: [
+        // respaldo: piezas quietas
+        // { nombre: 'coen', img: 'cafe-coen.webp', x: 27, alto: 18.4, pj: true, delante: true, clase: 'vive', ms: 500, pausa: 0 },
+        // { nombre: 'ari', img: 'cafe-ari.webp', x: 43, alto: 17.6, pj: true, delante: true, clase: 'vive', ms: 500, pausa: 0 },
+        // { nombre: 'rancek', img: 'cafe-rancek.webp', x: 62, alto: 18.2, pj: true, delante: true, clase: 'vive', ms: 1200 },
+        // { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: de esto se trata lo que tenemos… un libro donde todo lo que soñamos cobra vida ✧»' }, nombre: 'ari', clase: 'vive saluda', ms: 3200 },
+        // { texto: { titulo: 'Rancek:', texto: '«¿En serio? ¡A ver, muéstrame!»' }, nombre: 'rancek', clase: 'vive saluda', ruta: [[0, 62], [1, 57]], ms: 1400 },
+        // // ¡pam!: se le cae el libro
+        // { texto: { titulo: '', texto: '¡Pam!' }, nombre: 'ari-u', img: 'cafe-ari-ups.webp', x: 43, alto: 17.6, pj: true, delante: true, reemplaza: 'ari', sigue: true, ms: 0, pausa: 0 },
+        // { nombre: 'libro', img: 'cafe-libro.webp', x: 49, alto: 5, delante: true, entra: true, sigue: true, ruta: [[0, 49, 9, 0], [.6, 50, 1, 70], [.8, 50.5, 2.5, 85], [1, 51, 0, 90]], ms: 900, suave: 'ease-in', fx: { tipo: 'destello', x: 51, ancho: 10, y: 1, tras: 700, ms: 1000 }, pausa: 300 },
+        // { texto: { titulo: '', texto: 'Las hojas comenzaron a pasar solas… el libro se abrió de par en par y brotó un humo mágico.' }, fx: [{ tipo: 'destello', x: 51, ancho: 16, y: 4, ms: 1400 }], ms: 2200 },
+        // respaldo: versión con Ari soltando el libro
+        // // cada uno con su propia animación (Wan): conversan, Ari le muestra el libro a Rancek, él se lo pide… y se le resbala
+        // { nombre: 'coen', actor: 'cafe-coen-escucha', x: 24, alto: 18.89, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 2100, ms: 500, pausa: 0 },
+        // { nombre: 'ari', actor: 'cafe-ari-habla', x: 40, alto: 18.96, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 2000, ms: 500, pausa: 0 },
+        // { nombre: 'rancek', actor: 'cafe-rancek-mira', x: 57, alto: 19.38, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 3800, ms: 1200 },
+        // { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: de esto se trata lo que tenemos… un libro donde todo lo que soñamos cobra vida ✧»' }, ms: 3400 },
+        // { nombre: 'ari-o', actor: 'cafe-ari-ofrece', x: 40, alto: 18.96, pj: true, delante: true, reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 2000, pausa: 0 },   // abre el libro y se lo muestra
+        // { texto: { titulo: 'Rancek:', texto: '«¿En serio? ¡A ver, préstamelo!»' }, nombre: 'rancek-p', actor: 'cafe-rancek-pide', x: 57, alto: 19.38, pj: true, delante: true, reemplaza: 'rancek', sigue: true, de: 0, a: 1, ms: 2000, pausa: 300 },   // se lo pide estirando las manos
+        // // al pasárselo… ¡se resbala!
+        // { texto: { titulo: '', texto: '¡Pam! Se le resbaló de las manos…' }, nombre: 'ari-u', img: 'cafe-ari-ups.webp', x: 40, alto: 17.6, pj: true, delante: true, reemplaza: 'ari-o', sigue: true, ms: 0, pausa: 0 },
+        // { nombre: 'libro', img: 'cafe-libro.webp', x: 48, alto: 5, delante: true, entra: true, sigue: true, ruta: [[0, 48, 9, 0], [.6, 49, 1, 70], [.8, 49.5, 2.5, 85], [1, 50, 0, 90]], ms: 900, suave: 'ease-in', fx: { tipo: 'destello', x: 50, ancho: 10, y: 1, tras: 700, ms: 1000 }, pausa: 300 },
+        // { texto: { titulo: '', texto: 'Las hojas comenzaron a pasar solas… el libro se abrió de par en par y brotó un humo mágico.' }, fx: [{ tipo: 'destello', x: 50, ancho: 16, y: 4, ms: 1400 }], ms: 2200 },
+        // conversan de cerca, cada uno con su animación (Wan); todas parten de la pose base, así el cambio no parpadea
+        { aLaVez: true, nombre: 'ari', actor: 'cafe-ari-habla', x: 40, alto: 18.96, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 500, junto: true, sigue: true },
+        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 31, alto: 18.89, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 1400, ms: 500, junto: true, sigue: true },
+        { nombre: 'rancek', actor: 'cafe-rancek-mira', x: 50.5, alto: 19.38, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 1200 },
+        { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: de esto se trata lo que tenemos… un libro donde todo lo que soñamos cobra vida ✧»' }, ms: 3400 },
+        { texto: { titulo: 'Coen:', texto: '«Ahí está todo lo que queremos crear juntos. ¡Tienes que verlo!»' }, ms: 3000 },
+        { nombre: 'ari', de: 0, a: 0, ms: 120, pausa: 0 },   // vuelve a su pose base…
+        { nombre: 'ari-o', actor: 'cafe-ari-ofrece', x: 40, alto: 18.96, pj: true, delante: true, clase: 'encima', reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 2000, pausa: 0 },   // …abre el libro y se lo muestra
+        { nombre: 'rancek', de: 0, a: 0, ms: 120, pausa: 0 },
+        { texto: { titulo: 'Rancek:', texto: '«¿En serio? ¡A ver, préstamelo!»' }, nombre: 'rancek-p', actor: 'cafe-rancek-pide', x: 50.5, alto: 19.38, pj: true, delante: true, reemplaza: 'rancek', sigue: true, de: 0, a: 1, ms: 2000, pausa: 200 },
+        // respaldo: entrega por piezas separadas (el libro cambiaba)
+        // // se lo pasa: en el mismo instante Ari queda con las manos vacías y Rancek con el libro
+        // { nombre: 'ari-e', actor: 'cafe-ari-entrega', x: 40, alto: 18.96, pj: true, delante: true, reemplaza: 'ari-o', sigue: true, de: 1, a: 1, ms: 10, pausa: 0 },
+        // { nombre: 'rancek-r', actor: 'cafe-rancek-resbala', x: 50.5, alto: 19.38, pj: true, delante: true, reemplaza: 'rancek-p', sigue: true, de: 0, a: 0, ms: 700, pausa: 0 },
+        // // …y se le resbala de las manos
+        // { texto: { titulo: '', texto: '¡Pam! Se le resbaló de las manos…' }, nombre: 'rancek-r', de: 0, a: 1, ms: 1000, pausa: 0 },   // hasta que el libro se le escapa
+        // // en ese cuadro el libro pasa a ser una pieza que cae (Rancek queda con las manos vacías intentando atraparlo)
+        // { nombre: 'rancek-v', actor: 'cafe-rancek-pide', x: 50.5, alto: 19.38, pj: true, delante: true, reemplaza: 'rancek-r', sigue: true, de: 1, a: 1, ms: 10, pausa: 0 },
+        // { nombre: 'libro', img: 'cafe-libro.webp', x: 47.5, alto: 5, delante: true, entra: true, sigue: true, ruta: [[0, 47.5, 10, 20], [.7, 47.8, 0.8, 80], [.85, 48, 2, 88], [1, 48.2, 0, 90]], ms: 650, suave: 'ease-in', fx: { tipo: 'destello', x: 48.2, ancho: 10, y: 1, tras: 500, ms: 1000 }, pausa: 0 },
+        // { nombre: 'ari-u', img: 'cafe-ari-ups.webp', x: 40, alto: 17.6, pj: true, delante: true, reemplaza: 'ari-e', sigue: true, ms: 600, pausa: 0 },
+        // Ari y Rancek en una sola animación (Wan): el mismo libro pasa de mano en mano, se le resbala a Rancek y cae abierto
+        { nombre: 'rancek-p', de: 1, a: 1, ms: 10, pausa: 0 },
+        { texto: { titulo: '', texto: '¡Pam! Se le resbaló de las manos…' }, nombre: 'par', actor: 'cafe-par-cae', x: 41.67, alto: 18.96, pj: true, delante: true, reemplaza: ['ari-o', 'rancek-p'], sigue: true, de: 0, a: 1, ms: 2500, junto: true },
+        { ms: 1150 },   // justo cuando el libro se escapa…
+        { nombre: 'coen', de: 0, a: 0, ms: 10, pausa: 0 },
+        { nombre: 'coen-s', actor: 'cafe-coen-sorpresa', x: 31, alto: 18.89, pj: true, delante: true, reemplaza: 'coen', sigue: true, de: 0, a: 1, ms: 1200, pausa: 0 },   // …Coen también se sorprende
+        { ms: 550 },
+        // { texto: { titulo: '', texto: 'Las hojas comenzaron a pasar solas… el libro se abrió de par en par y brotó un humo mágico.' }, fx: [{ tipo: 'destello', x: 46, ancho: 16, y: 2, ms: 1400 }], ms: 2200 },
+        { fx: [{ tipo: 'destello', x: 46, ancho: 16, y: 2, ms: 1400 }], ms: 900 },   // sin texto: la película muestra lo que pasa
+        { quita: ['coen-s', 'par'], sinFondo: true, suelo: 'suelo-reino.webp', ms: 900 },
+        // la película del reino (video sin bordes); si no carga, sigue el pop-up de respaldo
+        { nombre: 'pelicula', video: 'assets/cuento/reino/reino' },
+        { sinVideo: 'pelicula', nombre: 'humo', img: 'humo.webp', x: 50, alto: 18, efecto: 'flota', ms: 2600 },
+        { sinVideo: 'pelicula', quita: 'humo', texto: { titulo: 'Del humo nacieron…', texto: 'la cordillera de los Andes, el sol, la luna y un gran castillo en lo alto.' }, ms: 300 },
+        { sinVideo: 'pelicula', nombre: 'andes', img: 'assets/cuento/popup/andes.webp', x: 50, ancho: 94, fila: 'atras', ms: 200, pausa: 300 },
+        { sinVideo: 'pelicula', nombre: 'sol', img: 'sol.webp', x: 12, alto: 8, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
+        { sinVideo: 'pelicula', nombre: 'luna', img: 'luna.webp', x: 89, alto: 7, clase: 'en-cielo', efecto: 'flota', ms: 200, pausa: 200 },
+        { sinVideo: 'pelicula', nombre: 'castillo', img: 'assets/cuento/popup/castillo.webp', x: 50, alto: 34, fila: 'medio', ms: 300, pausa: 300 },
+        { sinVideo: 'pelicula', nombre: 'arbol', img: 'arbol.webp', x: 14, alto: 30, fila: 'medio', ms: 300, pausa: 300 },   // el árbol florido junto a la montaña
+        { sinVideo: 'pelicula', texto: { titulo: 'Pero de la niebla…', texto: 'salieron monstruitos.' }, ms: 300 },
+        { sinVideo: 'pelicula', nombre: 'mo1', img: 'assets/cuento/popup/mo-1.webp', x: 66, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
+        { sinVideo: 'pelicula', nombre: 'mo2', img: 'assets/cuento/popup/mo-2.webp', x: 73, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
+        { sinVideo: 'pelicula', nombre: 'mo3', img: 'assets/cuento/popup/mo-3.webp', x: 80, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 100 },
+        { sinVideo: 'pelicula', nombre: 'mo4', img: 'assets/cuento/popup/mo-4.webp', x: 87, alto: 5.5, delante: true, clase: 'espejo', efecto: 'salta', ms: 150, pausa: 300 },
         // Ari llega corriendo, ataca a los cuatro con su daga y vuelve de un salto hacia atrás
-        { texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', actor: 'ari-corre', camina: [0, 1], cicloMs: 700, x: -6, alto: 12.5, delante: true, entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
-        { nombre: 'ari', actor: 'ari-ataca', x: 54, alto: 14, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
+        { sinVideo: 'pelicula', texto: { titulo: 'Ari corrió hacia ellos…', texto: 'ágil como el viento, y los atacó uno a uno con su daga.' }, nombre: 'ari-corre', actor: 'ari-corre', camina: [0, 1], cicloMs: 700, x: -6, alto: 12.5, delante: true, entra: true, ruta: [[0, -6], [1, 54]], ms: 1500, pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'ari', actor: 'ari-ataca', x: 54, alto: 14, delante: true, reemplaza: 'ari-corre', sigue: true, de: 0, a: 1, ms: 2600, pausa: 0,
           ruta: [[0, 54, 0], [.25, 62, 3], [.5, 70, 0], [.75, 78, 3], [1, 84, 0]],
           fx: [{ tipo: 'tajo', x: 63, ancho: 8, y: 4, tras: 480, golpe: 'mo1' }, { tipo: 'tajo', x: 71, ancho: 8, y: 4, tras: 1100, golpe: 'mo2' }, { tipo: 'tajo', x: 79, ancho: 8, y: 4, tras: 1720, golpe: 'mo3' }, { tipo: 'tajo', x: 87, ancho: 8, y: 4, tras: 2340, golpe: 'mo4' }] },
         // y vuelve con una voltereta hacia atrás
-        { nombre: 'ari-vuelta', actor: 'ari-atras', x: 84, alto: 14, delante: true, reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 1700, pausa: 200,
+        { sinVideo: 'pelicula', nombre: 'ari-vuelta', actor: 'ari-atras', x: 84, alto: 14, delante: true, reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 1700, pausa: 200,
           ruta: [[0, 84, 0], [.25, 81, 0], [.6, 52, 13], [.85, 32, 2], [1, 28, 0]] },
-        { nombre: 'ari-h', img: 'ari-heroica.webp', x: 28, alto: 12.5, delante: true, reemplaza: 'ari-vuelta', sigue: true, pj: true, ms: 200, pausa: 200 },   // queda en guardia, lista para más
+        { sinVideo: 'pelicula', nombre: 'ari-h', img: 'ari-heroica.webp', x: 28, alto: 12.5, delante: true, reemplaza: 'ari-vuelta', sigue: true, pj: true, ms: 200, pausa: 200 },   // queda en guardia, lista para más
         // Coen llega, salta al centro de los monstruos, los golpea con una onda de choque y vuelve a cubrir a Ari
-        { texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: -6, alto: 14, delante: true, entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
-        { nombre: 'coen', actor: 'coen-golpe', x: 24, alto: 15.4, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 2400, suave: 'linear', pausa: 0,
+        { sinVideo: 'pelicula', texto: { titulo: 'Entonces llegó Coen…', texto: 'saltó al centro de los monstruos y su espada abrió una onda de choque.' }, nombre: 'coen-corre', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: -6, alto: 14, delante: true, entra: true, ruta: [[0, -6], [1, 24]], ms: 1200, pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'coen', actor: 'coen-golpe', x: 24, alto: 15.4, delante: true, reemplaza: 'coen-corre', sigue: true, de: 0, a: 1, ms: 2400, suave: 'linear', pausa: 0,
           ruta: [[0, 24, 0], [.3, 40, 0], [.5, 56, 12], [.65, 64, 0], [1, 64, 0]], fx: { tipo: 'onda', x: 76, ancho: 38, ms: 1000, tras: 1000, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
-        { nombre: 'coen-v', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: 64, alto: 14, delante: true, clase: 'espejo', reemplaza: 'coen', sigue: true, ruta: [[0, 64], [1, 41]], ms: 1100, pausa: 0 },
-        { nombre: 'coen', img: 'coen-heroico.webp', x: 41, alto: 13.3, delante: true, pj: true, reemplaza: 'coen-v', sigue: true, ms: 200, pausa: 300 },
+        { sinVideo: 'pelicula', nombre: 'coen-v', actor: 'coen-corre', camina: [0, 1], cicloMs: 800, x: 64, alto: 14, delante: true, clase: 'espejo', reemplaza: 'coen', sigue: true, ruta: [[0, 64], [1, 41]], ms: 1100, pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'coen', img: 'coen-heroico.webp', x: 41, alto: 13.3, delante: true, pj: true, reemplaza: 'coen-v', sigue: true, ms: 200, pausa: 300 },
         // Rancek llega volando sobre su báculo: círculo mágico bajo los monstruos y picos de hielo
-        { texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', actor: 'rancek-vuela', camina: [0, 1], cicloMs: 3000, bucle: [0, 1], x: -12, alto: 11.7, entra: true, ruta: [[0, -12, 20], [1, 10, 9]], ms: 1600, suave: 'ease-out', pausa: 0 },
-        { fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
-        { nombre: 'rancek', ruta: [[0, 10, 9], [1, 12, 0]], ms: 800, suave: 'ease-in', pausa: 0 },
-        { nombre: 'rancek-h', img: 'rancek-heroico.webp', x: 13, alto: 13.6, delante: true, reemplaza: 'rancek', sigue: true, pj: true, ms: 200, pausa: 200 },
+        { sinVideo: 'pelicula', texto: { titulo: 'Desde el cielo…', texto: 'llegó Rancek volando sobre su báculo y abrió un círculo mágico: ¡picos de hielo!' }, nombre: 'rancek', actor: 'rancek-vuela', camina: [0, 1], cicloMs: 3000, bucle: [0, 1], x: -12, alto: 11.7, entra: true, ruta: [[0, -12, 20], [1, 10, 9]], ms: 1600, suave: 'ease-out', pausa: 0 },
+        { sinVideo: 'pelicula', fx: [{ tipo: 'circulo', x: 75, ancho: 40, ms: 2600 }, { tipo: 'picos', x: 75, ancho: 36, ms: 1700, tras: 900, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] }], ms: 2300 },
+        { sinVideo: 'pelicula', nombre: 'rancek', ruta: [[0, 10, 9], [1, 12, 0]], ms: 800, suave: 'ease-in', pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'rancek-h', img: 'rancek-heroico.webp', x: 13, alto: 13.6, delante: true, reemplaza: 'rancek', sigue: true, pj: true, ms: 200, pausa: 200 },
         // el dragón vuelve y les lanza su fuego
-        { texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'dragon', actor: 'dragon-vuela', camina: [0, 1], cicloMs: 700, x: -20, alto: 11, clase: 'vuela', entra: true, ruta: [[0, -20, 10], [1, 46, 3]], ms: 1800, suave: 'ease-out', pausa: 0 },
-        { nombre: 'fuego', actor: 'dragon-sopla', x: 46, alto: 11, clase: 'vuela llama-suave', reemplaza: 'dragon', sigue: true, de: 0, a: 1, ms: 3000, pausa: 0, fx: { tipo: 'llamas', x: 76, ancho: 34, y: 1, ms: 1500, tras: 1000, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
-        { muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
+        { sinVideo: 'pelicula', texto: { titulo: 'Y el dragón rosado…', texto: 'llegó volando y les lanzó su fuego. ¡Los monstruitos desaparecieron!' }, nombre: 'dragon', actor: 'dragon-vuela', camina: [0, 1], cicloMs: 700, x: -20, alto: 11, clase: 'vuela', entra: true, ruta: [[0, -20, 10], [1, 46, 3]], ms: 1800, suave: 'ease-out', pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'fuego', actor: 'dragon-sopla', x: 46, alto: 11, clase: 'vuela llama-suave', reemplaza: 'dragon', sigue: true, de: 0, a: 1, ms: 3000, pausa: 0, fx: { tipo: 'llamas', x: 76, ancho: 34, y: 1, ms: 1500, tras: 1000, golpe: ['mo1', 'mo2', 'mo3', 'mo4'] } },
+        { sinVideo: 'pelicula', muere: ['mo1', 'mo2', 'mo3', 'mo4'], ms: 1500 },
         // la niebla se despeja: la montaña y el castillo lejano se pliegan y se levanta la fachada del castillo, a la escala de los héroes
-        { quita: ['fuego', 'castillo', 'andes'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 700 },
-        { nombre: 'fachada', actor: 'fachada', x: 50, ancho: 96, fila: 'atras', pj: false, ms: 900, pausa: 0 },
+        { sinVideo: 'pelicula', quita: ['fuego', 'castillo', 'andes', 'arbol'], texto: { titulo: 'Cuando la niebla se despejó…', texto: 'los tres caminaron juntos hacia el castillo. Porque, a pesar de las dificultades, siempre llegarán a la cima: al castillo soñado.' }, ms: 700 },
+        { sinVideo: 'pelicula', nombre: 'fachada', actor: 'fachada', x: 50, ancho: 96, fila: 'atras', pj: false, ms: 900, pausa: 0 },
         // las puertas se abren…
-        { nombre: 'fachada', de: 0, a: 1, ms: 1400, fx: { tipo: 'destello', x: 50, ancho: 14, y: 14, tras: 900, ms: 1200 }, pausa: 200 },
+        { sinVideo: 'pelicula', nombre: 'fachada', de: 0, a: 1, ms: 1400, fx: { tipo: 'destello', x: 50, ancho: 14, y: 14, tras: 900, ms: 1200 }, pausa: 200 },
         // …y los tres caminan en fila hasta la puerta y entran uno tras otro: Coen, Ari y Rancek
-        { nombre: 'pcoen', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 41, alto: 13.3, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 50]], ms: 1700, junto: true },
-        { nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 28, alto: 12.5, delante: true, reemplaza: 'ari-h', sigue: true, ruta: [[0, 28], [1, 50]], ms: 3500, junto: true },
-        { nombre: 'prancek', actor: 'rancek-anda', camina: [0, 1], cicloMs: 1000, x: 12, alto: 13.3, delante: true, reemplaza: 'rancek-h', sigue: true, ruta: [[0, 12], [1, 50]], ms: 5300, junto: true },
-        { ms: 1650 },
-        { nombre: 'ecoen', img: 'assets/personajes/coen-espalda.webp', x: 50, alto: 13.3, delante: true, reemplaza: 'pcoen', sigue: true, ms: 350, pausa: 0 },   // de espaldas, mirando la puerta…
-        { nombre: 'ecoen', clase: 'adentro', ms: 1400, pausa: 0 },                                                                                     // …y entra
-        { nombre: 'eari', img: 'assets/personajes/ari-espalda.webp', x: 50, alto: 12.5, delante: true, reemplaza: 'pari', sigue: true, ms: 350, pausa: 0 },
-        { nombre: 'eari', clase: 'adentro', ms: 1400, pausa: 0 },
-        { nombre: 'erancek', img: 'assets/personajes/rancek-espalda.webp', x: 50, alto: 13.3, delante: true, reemplaza: 'prancek', sigue: true, ms: 350, pausa: 0 },
-        { nombre: 'erancek', clase: 'adentro', fx: { tipo: 'destello', x: 50, ancho: 16, y: 10, tras: 500, ms: 1200 }, ms: 1600, pausa: 600 }
+        { sinVideo: 'pelicula', nombre: 'pcoen', actor: 'coen-anda', camina: [0, 1], cicloMs: 1000, x: 41, alto: 13.3, delante: true, reemplaza: 'coen', sigue: true, ruta: [[0, 41], [1, 50]], ms: 1700, junto: true },
+        { sinVideo: 'pelicula', nombre: 'pari', actor: 'ari-anda', camina: [0, 1], cicloMs: 1000, x: 28, alto: 12.5, delante: true, reemplaza: 'ari-h', sigue: true, ruta: [[0, 28], [1, 50]], ms: 3500, junto: true },
+        { sinVideo: 'pelicula', nombre: 'prancek', actor: 'rancek-anda', camina: [0, 1], cicloMs: 1000, x: 12, alto: 13.3, delante: true, reemplaza: 'rancek-h', sigue: true, ruta: [[0, 12], [1, 50]], ms: 5300, junto: true },
+        { sinVideo: 'pelicula', ms: 1650 },
+        { sinVideo: 'pelicula', nombre: 'ecoen', img: 'assets/personajes/coen-espalda.webp', x: 50, alto: 13.3, delante: true, reemplaza: 'pcoen', sigue: true, ms: 350, pausa: 0 },   // de espaldas, mirando la puerta…
+        { sinVideo: 'pelicula', nombre: 'ecoen', clase: 'adentro', ms: 1400, pausa: 0 },                                                                                     // …y entra
+        { sinVideo: 'pelicula', nombre: 'eari', img: 'assets/personajes/ari-espalda.webp', x: 50, alto: 12.5, delante: true, reemplaza: 'pari', sigue: true, ms: 350, pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'eari', clase: 'adentro', ms: 1400, pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'erancek', img: 'assets/personajes/rancek-espalda.webp', x: 50, alto: 13.3, delante: true, reemplaza: 'prancek', sigue: true, ms: 350, pausa: 0 },
+        { sinVideo: 'pelicula', nombre: 'erancek', clase: 'adentro', fx: { tipo: 'destello', x: 50, ancho: 16, y: 10, tras: 500, ms: 1200 }, ms: 1600, pausa: 600 }
       ] }
     ] },
     vi: { carpeta: 'cap6/', suave: true, hitos: [
       { fondo: 'fondo-tienda.webp', suelo: 'suelo-tienda.webp', titulo: 'Magical Alliance', texto: 'La tienda mágica donde atiende Rancek: joyas, vestidos, perfumes y trajes encantados.', pasos: [
         // Rancek atiende detrás de su mesa, con su delantal de Magical Alliance
-        { nombre: 'mago', img: 'assets/cuento/tienda/rancek-tienda.webp', x: 78, alto: 17, clase: 'tras-mostrador', ms: 500, pausa: 0 },
+        { nombre: 'mago', img: 'assets/cuento/tienda/rancek-tienda-m.webp', x: 78, alto: 17.85, clase: 'tras-mostrador', ms: 500, pausa: 0 },
         { nombre: 'mesa', img: 'mesa-perfil.webp', x: 66, alto: 19, clase: 'mostrador espejo', abre: 'tienda', rotulo: 'Magical Alliance', ms: 600, pausa: 300 },   // el mostrador abre la tienda real en línea
         // Ari y Coen llegan caminando de la mano
-        { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a Magical Alliance.' }, nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1280, x: -10, alto: 17.5, delante: true, entra: true, ruta: [[0, -10], [1, 40]], ms: 3800, pausa: 0 },
-        { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
+        // respaldo: caminata anterior (ropa casual vieja)
+        // { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a Magical Alliance.' }, nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-anda', camina: [0, 1], cicloMs: 1280, x: -10, alto: 17.5, delante: true, entra: true, ruta: [[0, -10], [1, 40]], ms: 3800, pausa: 0 },
+        // { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-1.webp', x: 40, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
+        // llegan de la mano con su ropa casual nueva (ciclo Wan de 19 cuadros)
+        { texto: { titulo: 'Un día…', texto: 'Ari y Coen llegaron a Magical Alliance.' }, nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-casual-anda-m', camina: [0, 1], cicloMs: 1900, x: 7, alto: 18.38, delante: true, entra: true, ruta: [[0, 7], [1, 40]], ms: 2300, pausa: 0 },
+        { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-casual-quieta-m.webp', x: 40, alto: 18.17, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
         { texto: { titulo: 'Rancek:', texto: '«¡Bienvenidos a mi tienda! ¿Qué se les ofrece?»' }, nombre: 'mago', clase: 'tras-mostrador saluda', fx: { tipo: 'destello', x: 78, ancho: 9, y: 16 }, ms: 1800 },
         { texto: { titulo: 'Ari:', texto: '«¡Algo bonito para la fiesta del reino! ✧»' }, nombre: 'pareja', clase: 'saluda', ms: 1800 },
         // se sueltan: Ari va a probarse ropa y Coen la espera
-        { nombre: 'coen', img: 'assets/cuento/tienda/coen-casual.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'pareja', sigue: true, ms: 200, pausa: 0 },
-        { nombre: 'ari', img: 'assets/cuento/tienda/ari-casual.webp', x: 32, alto: 15.8, delante: true, entra: true, sigue: true, ms: 600, pausa: 200 },
+        { nombre: 'coen', img: 'assets/cuento/tienda/coen-casual-m.webp', x: 47, alto: 18.39, delante: true, reemplaza: 'pareja', sigue: true, ms: 200, pausa: 0 },
+        // { nombre: 'ari', img: 'assets/cuento/tienda/ari-casual.webp', x: 32, alto: 15.8, delante: true, entra: true, sigue: true, ms: 600, pausa: 200 },   // respaldo: casual vieja
+        { nombre: 'ari', img: 'assets/cuento/tienda/ari-casual-2-m.webp', x: 32, alto: 16.59, delante: true, clase: 'vive', entra: true, sigue: true, ms: 600, pausa: 200 },
         { texto: { titulo: 'La vitrina de Magical Alliance', texto: 'Elige el look que Ari se va a probar.' }, app: 'looks', espera: 'look-elegido', cierraApp: true, ms: 300 },
-        { texto: { titulo: '¡Magia!', texto: 'Ari se lo prueba con un destello.' }, nombre: 'ari-look', look: true, x: 32, alto: 15.8, delante: true, reemplaza: 'ari', sigue: true, fx: [{ tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1200 }], ms: 900 },
+        // { texto: { titulo: '¡Magia!', texto: 'Ari se lo prueba con un destello.' }, nombre: 'ari-look', look: true, x: 32, alto: 15.8, delante: true, reemplaza: 'ari', sigue: true, fx: [{ tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1200 }], ms: 900 },
+        // el hada vuela hasta Ari, la envuelve en luz y le pone el look elegido
+        { texto: { titulo: '¡Magia!', texto: 'El hada vuela hasta Ari y, con un remolino de luz, le pone el look que elegiste.' }, hadaSobre: 'ari' },
+        { nombre: 'ari-look', look: true, x: 32, alto: 16.59, delante: true, clase: 'vive', reemplaza: 'ari', sigue: true, fx: [{ tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1200 }], ms: 900 },
         // se queda con el Vestido Magical y sale de la tienda con él puesto
-        { si: '!magical', texto: { titulo: 'Ari:', texto: '«Me encanta… pero me quedo con el Vestido Magical ✧»' }, nombre: 'ari-m', img: 'assets/cuento/tienda/ari-look-magical.webp', x: 32, alto: 15.8, delante: true, reemplaza: 'ari-look', sigue: true, fx: [{ tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1200 }], ms: 1800 },
-        { si: 'magical', texto: { titulo: 'Ari:', texto: '«¡Me lo llevo puesto! ✧»' }, nombre: 'ari-m', img: 'assets/cuento/tienda/ari-look-magical.webp', x: 32, alto: 15.8, delante: true, reemplaza: 'ari-look', sigue: true, ms: 1600 },
+        // respaldo: se quedaba con el Vestido Magical desde el probador
+        // { si: '!magical', texto: { titulo: 'Ari:', texto: '«Me encanta… pero me quedo con el Vestido Magical ✧»' }, hadaSobre: 'ari-look' },   // lo dice y el hada la vuelve a cambiar
+        // { si: '!magical', texto: { titulo: 'Ari:', texto: '«Me encanta… pero me quedo con el Vestido Magical ✧»' }, nombre: 'ari-m', img: 'assets/cuento/tienda/ari-look-magical.webp', x: 32, alto: 15.8, delante: true, reemplaza: 'ari-look', sigue: true, fx: [{ tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1200 }], ms: 1800 },
+        // { si: 'magical', texto: { titulo: 'Ari:', texto: '«¡Me lo llevo puesto! ✧»' }, nombre: 'ari-m', img: 'assets/cuento/tienda/ari-look-magical.webp', x: 32, alto: 15.8, delante: true, reemplaza: 'ari-look', sigue: true, ms: 1600 },
+        // { texto: { titulo: 'Coen:', texto: '«Te queda precioso… yo pago 😅»' }, nombre: 'coen', clase: 'saluda', ms: 1800 },
+        // dice que se lo lleva, Coen paga… y el hada la devuelve a su ropa casual para ir a la caja
+        { si: '!magical', texto: { titulo: 'Ari:', texto: '«Me encanta… pero me llevo el Vestido Magical ✧»' }, nombre: 'ari-look', clase: 'saluda', ms: 2000 },
+        { si: 'magical', texto: { titulo: 'Ari:', texto: '«¡Me encanta! Me lo llevo ✧»' }, nombre: 'ari-look', clase: 'saluda', ms: 1800 },
         { texto: { titulo: 'Coen:', texto: '«Te queda precioso… yo pago 😅»' }, nombre: 'coen', clase: 'saluda', ms: 1800 },
+        { texto: { titulo: '', texto: 'Y el hada la devolvió a su ropa de siempre para ir a pagar.' }, hadaSobre: 'ari-look' },
+        { nombre: 'ari-c2', img: 'assets/cuento/tienda/ari-casual-2-m.webp', x: 32, alto: 16.59, delante: true, clase: 'vive', reemplaza: 'ari-look', sigue: true, fx: [{ tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1200 }], ms: 1200 },
         { texto: { titulo: 'Tú manejas la caja', texto: 'Elige lo que compran, aplica un descuento, cobra… ¡y entrega la boleta!' }, app: 'caja', ms: 600 },
         { espera: 'tienda-boleta', cierraApp: true, ms: 900 },
-        // ¡a estrenar!: Coen también se pone lo suyo
-        { texto: { titulo: '¡A estrenar!', texto: 'Coen también estrena su polera burdeo y su jogger blanco.' }, nombre: 'coen-n', img: 'assets/cuento/tienda/coen-paseo.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'coen', sigue: true, fx: { tipo: 'destello', x: 47, ancho: 14, y: 8, ms: 1200 }, ms: 1600 },
-        // Rancek les entrega las bolsas con lo que traían puesto
-        { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago-e', actor: 'assets/cuento/tienda/rancek-entrega', x: 76.2, alto: 17.1, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 1900, pausa: 300 },
-        { nombre: 'mago', img: 'assets/cuento/tienda/rancek-perfil.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, ms: 0, pausa: 0 },
-        { nombre: 'ari-m', clase: 'saluda', fx: { tipo: 'destello', x: 40, ancho: 16, y: 6, ms: 1100 }, ms: 500, pausa: 0 },
-        { nombre: 'coen-n', clase: 'saluda', ms: 900 },
+        // respaldo: lámina de video y entrega por piezas sueltas (rompían el estilo pop-up)
+        // // la caja como escena continua (Wan): Rancek empaca la polera burdeo, se las pasa a Coen en la mano y los despide
+        // { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'caja-v', video: 'assets/cuento/tienda/escena-caja' },
+        // // y recién ahí el hada le pone a Coen su ropa nueva
+        // { texto: { titulo: '¡A estrenar!', texto: 'Y el hada le puso a Coen su ropa nueva: polera burdeo y jogger blanco.' }, nombre: 'caja-v', hada: 'assets/cuento/tienda/escena-caja-hada.webp', fxX: 36, ms: 1800 },
+        // // detrás de la lámina el pop-up queda como terminó la escena, y la lámina se pliega
+        // { conVideo: 'caja-v', nombre: 'coen-n', img: 'assets/cuento/tienda/coen-con-bolsas.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'coen', sigue: true, ms: 0, pausa: 0 },
+        // { conVideo: 'caja-v', quita: 'caja-v', ms: 700 },
+        // // respaldo pop-up si el video no carga
+        // // ¡a estrenar!: Coen también se pone lo suyo
+        // { sinVideo: 'caja-v', texto: { titulo: '¡A estrenar!', texto: 'Coen también estrena su polera burdeo y su jogger blanco.' }, nombre: 'coen-n', img: 'assets/cuento/tienda/coen-paseo.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'coen', sigue: true, fx: { tipo: 'destello', x: 47, ancho: 14, y: 8, ms: 1200 }, ms: 1600 },
+        // // Rancek les entrega las bolsas con lo que traían puesto
+        // // respaldo: entrega con bolsas sin nombre
+        // // { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago-e', actor: 'assets/cuento/tienda/rancek-entrega', x: 76.2, alto: 17.1, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 1900, pausa: 300 },
+        // // respaldo: entrega por partes (se veía cortada)
+        // // { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago-e', actor: 'assets/cuento/tienda/rancek-entrega-ma', x: 76.2, alto: 17.1, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 1900, pausa: 300 },
+        // // // Coen estira los brazos y toma las bolsas «Magical Alliance» (Wan, primer→último cuadro)
+        // // { nombre: 'coen-b', actor: 'assets/cuento/tienda/coen-toma-bolsas', x: 47, alto: 17.5, delante: true, reemplaza: 'coen-n', sigue: true, de: 0, a: 1, ms: 2300, pausa: 0 },
+        // // { nombre: 'coen-n', img: 'assets/cuento/tienda/coen-con-bolsas.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'coen-b', sigue: true, ms: 0, pausa: 200 },
+        // // una sola animación continua (Wan encadenado): Rancek se agacha, recoge las bolsas «Magical Alliance», se levanta y se las extiende
+        // { sinVideo: 'caja-v', texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago-e', actor: 'assets/cuento/tienda/rancek-entrega-fluida', x: 76.2, alto: 17.1, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 1, ms: 10750, junto: true },
+        // { sinVideo: 'caja-v', ms: 7300 },   // …hasta que suelta las bolsas
+        // // y Coen las recibe a la par
+        // { sinVideo: 'caja-v', nombre: 'coen-b', actor: 'assets/cuento/tienda/coen-toma-bolsas', x: 47, alto: 17.5, delante: true, reemplaza: 'coen-n', sigue: true, de: 0, a: 1, ms: 3000, pausa: 0 },
+        // { sinVideo: 'caja-v', nombre: 'coen-n', img: 'assets/cuento/tienda/coen-con-bolsas.webp', x: 47, alto: 17.5, delante: true, reemplaza: 'coen-b', sigue: true, ms: 0, pausa: 0 },
+        // { sinVideo: 'caja-v', ms: 500 },
+        // respaldo: animación grupal Wan (se deformaba y cambiaba de tamaño)
+        // la caja en pop-up: Coen y Rancek son un solo recorte animado (Wan) y el mueble de la caja va pegado encima, idéntico al real.
+        // Rancek se agacha tras el mueble, se levanta con la polera burdeo y las bolsas, las empaca y se las pasa a Coen en la mano.
+        // { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'grupo', actor: 'assets/cuento/tienda/grupo-caja', x: 61.9, alto: 19.78, delante: true, reemplaza: ['coen', 'mago', 'mesa'], sigue: true, de: 0, a: 1, ms: 10333, pausa: 0 },
+        // al terminar, cada uno vuelve a ser su propia pieza, en el mismo lugar del último cuadro
+        // { nombre: 'mesa', img: 'mesa-perfil.webp', x: 66, alto: 19, clase: 'mostrador espejo', abre: 'tienda', rotulo: 'Magical Alliance', directo: true, sigue: true, ms: 0, pausa: 0 },
+        // { nombre: 'coen-g', img: 'assets/cuento/tienda/coen-caja-fin.webp', x: 44.38, alto: 17.03, delante: true, directo: true, sigue: true, ms: 0, pausa: 0 },
+        // { nombre: 'mago', img: 'assets/cuento/tienda/rancek-caja-fin.webp', x: 74.37, alto: 16.701, delante: true, reemplaza: 'grupo', sigue: true, ms: 0, pausa: 300 },
+        // y recién ahí el hada le pone a Coen su ropa nueva
+        // { texto: { titulo: '¡A estrenar!', texto: 'Y el hada le puso a Coen su ropa nueva: polera burdeo y jogger blanco.' }, hadaSobre: 'coen-g' },
+        // { texto: { titulo: '¡A estrenar!', texto: 'Y el hada les puso su ropa nueva: a Coen, su polera burdeo y su jogger blanco…' }, hadaSobre: 'coen-g' },
+        // { nombre: 'coen-n', img: 'assets/cuento/tienda/coen-caja-burdeo.webp', x: 44.38, alto: 17.03, delante: true, reemplaza: 'coen-g', sigue: true, fx: { tipo: 'destello', x: 44.32, ancho: 14, y: 8, ms: 1200 }, ms: 1600 },
+        // la caja como dibujo animado: poses dibujadas desde tus piezas originales (mismo tamaño en todas), sin Wan
+        { texto: { titulo: 'Rancek:', texto: '«¡Aquí tienen sus bolsas! Gracias por su compra ✦»' }, nombre: 'mago-a', actor: 'assets/cuento/tienda/rancek-poses', x: 78, alto: 18.21, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, de: 0, a: 0, ms: 300, pausa: 0 },
+        { nombre: 'coen-a', actor: 'assets/cuento/tienda/coen-poses', x: 47, alto: 18.75, delante: true, reemplaza: 'coen', sigue: true, de: 0, a: 0, ms: 200, pausa: 0 },
+        // { nombre: 'mago-a', de: 1, a: 1, ruta: [[0, 78], [1, 74]], ms: 700, pausa: 0 },   // Rancek camina hasta el mueble de la caja
+        { nombre: 'mago-w', actor: 'assets/cuento/tienda/rancek-anda-tienda', camina: [0, 1], cicloMs: 2917, x: 73.5, alto: 19.12, clase: 'tras-mostrador', reemplaza: 'mago-a', sigue: true, ruta: [[0, 78], [1, 73.5]], ms: 250, pausa: 0 },   // Rancek camina (Wan) hasta el mueble
+        { nombre: 'mago-a', actor: 'assets/cuento/tienda/rancek-poses', x: 73.5, alto: 18.21, clase: 'tras-mostrador', reemplaza: 'mago-w', sigue: true, de: 2, a: 2, ms: 10, pausa: 0 },
+        { nombre: 'mago-a', de: 2, a: 2, ms: 750, pausa: 0 },     // se agacha y toma las bolsas
+        { nombre: 'mago-a', de: 3, a: 3, ms: 1300, pausa: 0 },    // guarda la polera burdeo
+        // { nombre: 'coen-a', de: 1, a: 1, ruta: [[0, 47], [1, 57.5]], ms: 1000, pausa: 0 },   // Coen camina hasta la caja
+        // Coen camina hasta la caja con un ciclo de caminata dibujado (25 % de escena por ciclo: el avance calza con el paso)
+        { nombre: 'coen-w', actor: 'assets/cuento/tienda/coen-anda-der', camina: [0, 1], cicloMs: 1500, x: 57.5, alto: 20.61, delante: true, reemplaza: 'coen-a', sigue: true, ruta: [[0, 47], [1, 57.5]], ms: 600, pausa: 0 },
+        // { nombre: 'coen-a', de: 2, a: 2, ms: 350, junto: true, sigue: true },              // estira la mano…
+        { nombre: 'coen-a', actor: 'assets/cuento/tienda/coen-poses', x: 57.5, alto: 18.75, delante: true, reemplaza: 'coen-w', sigue: true, de: 2, a: 2, ms: 350, junto: true },   // estira la mano…
+        { nombre: 'mago-a', de: 4, a: 4, ms: 700, pausa: 0 },     // …y Rancek le ofrece las bolsas
+        { nombre: 'coen-a', de: 3, a: 3, ms: 250, junto: true, sigue: true },              // Coen las toma de su mano…
+        { nombre: 'mago-a', de: 5, a: 5, sigue: true, ms: 900, pausa: 0 },     // …en el mismo instante en que Rancek las suelta
+        // { nombre: 'coen-a', de: 5, a: 5, ruta: [[0, 57.5], [1, 47]], ms: 1000, junto: true, sigue: true },   // Coen vuelve con las bolsas
+        { nombre: 'coen-w2', actor: 'assets/cuento/tienda/coen-anda-bolsas', camina: [0, 1], cicloMs: 1750, x: 47, alto: 20.61, delante: true, reemplaza: 'coen-a', sigue: true, ruta: [[0, 57.5], [1, 47]], ms: 705, junto: true },   // Coen vuelve caminando con las bolsas
+        // { nombre: 'mago-a', de: 1, a: 1, clase: 'espejo', ruta: [[0, 74], [1, 78]], ms: 700, pausa: 0 },   // y vuelve a su lugar
+        { nombre: 'mago-w2', actor: 'assets/cuento/tienda/rancek-anda-tienda', camina: [0, 1], cicloMs: 2917, x: 78, alto: 19.12, clase: 'tras-mostrador espejo', reemplaza: 'mago-a', sigue: true, ruta: [[0, 73.5], [1, 78]], ms: 250, pausa: 0 },   // y vuelve caminando a su lugar
+        // { nombre: 'mago-a', quitaClase: 'espejo', de: 6, a: 6, ms: 500, pausa: 0 },     // Rancek queda tranquilo
+        { nombre: 'mago-a', actor: 'assets/cuento/tienda/rancek-poses', x: 78, alto: 18.21, clase: 'tras-mostrador', reemplaza: 'mago-w2', sigue: true, de: 6, a: 6, ms: 500, pausa: 0 },     // Rancek queda tranquilo
+        { nombre: 'coen-g', img: 'assets/cuento/tienda/coen-pose-bolsas.webp', x: 47, alto: 18.75, delante: true, reemplaza: 'coen-w2', sigue: true, ms: 0, pausa: 0 },
+        { nombre: 'mago', img: 'assets/cuento/tienda/rancek-pose-tranquilo.webp', x: 78, alto: 18.21, clase: 'tras-mostrador', reemplaza: 'mago-a', sigue: true, ms: 0, pausa: 300 },
+        // y recién ahí el hada les pone su ropa nueva
+        { texto: { titulo: '¡A estrenar!', texto: 'Y el hada les puso su ropa nueva: a Coen, su polera burdeo y su jogger blanco…' }, hadaSobre: 'coen-g' },
+        { nombre: 'coen-n', img: 'assets/cuento/tienda/coen-pose-burdeo.webp', x: 47, alto: 18.75, delante: true, reemplaza: 'coen-g', sigue: true, fx: { tipo: 'destello', x: 47, ancho: 14, y: 8, ms: 1200 }, ms: 1600 },
+        { texto: { titulo: '¡A estrenar!', texto: '…y a Ari, su Vestido Magical ✧' }, hadaSobre: 'ari-c2' },
+        { nombre: 'ari-m', img: 'assets/cuento/tienda/ari-look-magical-2-m.webp', x: 32, alto: 16.59, delante: true, clase: 'vive', reemplaza: 'ari-c2', sigue: true, fx: { tipo: 'destello', x: 32, ancho: 14, y: 8, ms: 1200 }, ms: 1600 },
+        // respaldo: conversación anterior (Ari y Coen desaparecían; Rancek sin delantal desde el principio)
+        // { nombre: 'mago', img: 'assets/cuento/tienda/rancek-perfil-m.webp', x: 78, alto: 17.86, clase: 'tras-mostrador', reemplaza: 'mago-e', sigue: true, ms: 0, pausa: 0 },
+        // { nombre: 'ari-m', clase: 'saluda', fx: { tipo: 'destello', x: 40, ancho: 16, y: 6, ms: 1100 }, ms: 500, pausa: 0 },
+        // { nombre: 'coen-n', clase: 'saluda', ms: 900 },
         // «vendo de todo»: y a ellos se les ocurre una idea
-        { texto: { titulo: 'Rancek:', texto: '«Vendo de todo y hago de todo… ¡hasta modelos 3D!»' }, nombre: 'mago-p', img: 'assets/cuento/tienda/rancek-presume-1.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ms: 1300, pausa: 0 },   // se saca el delantal y abre los brazos, orgulloso
-        { nombre: 'mago-f', img: 'assets/cuento/tienda/rancek-presume-2.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-p', sigue: true, fx: { tipo: 'destello', x: 74, ancho: 6, y: 20, ms: 900 }, ms: 1600 },   // …y muestra una figurita que imprimió en 3D
-        { nombre: 'ari-m', clase: 'saluda', ms: 500, pausa: 0 },   // se miran…
-        { nombre: 'coen-n', clase: 'saluda', ms: 700, pausa: 200 },
-        { texto: { titulo: 'Ari y Coen:', texto: '«Tenemos una idea… ¿y si creamos algo juntos?»' }, nombre: 'ari-m', clase: 'saluda', fx: { tipo: 'destello', x: 32, ancho: 10, y: 15 }, ms: 2200 },
-        { texto: { titulo: 'Rancek:', texto: '«Mmm… aún no sé. Lo voy a pensar.»' }, nombre: 'mago-d', img: 'assets/cuento/tienda/rancek-presume-3.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-f', sigue: true, ms: 2000 },
-        { texto: { titulo: 'Ari y Coen:', texto: '«¡Piénsalo! Nos vemos, Rancek ✧»' }, nombre: 'coen-n', clase: 'saluda', ms: 1600 },
+        // { texto: { titulo: 'Rancek:', texto: '«Vendo de todo y hago de todo… ¡hasta modelos 3D!»' }, nombre: 'mago-p', img: 'assets/cuento/tienda/rancek-presume-1-m.webp', x: 78, alto: 17.85, clase: 'tras-mostrador', reemplaza: 'mago', sigue: true, ms: 1300, pausa: 0 },   // se saca el delantal y abre los brazos, orgulloso
+        // { nombre: 'mago-f', img: 'assets/cuento/tienda/rancek-presume-2-m.webp', x: 78, alto: 17.85, clase: 'tras-mostrador', reemplaza: 'mago-p', sigue: true, fx: { tipo: 'destello', x: 74, ancho: 6, y: 20, ms: 900 }, ms: 1600 },   // …y muestra una figurita que imprimió en 3D
+        // { nombre: 'ari-m', clase: 'saluda', ms: 500, pausa: 0 },   // se miran…
+        // { nombre: 'coen-n', clase: 'saluda', ms: 700, pausa: 200 },
+        // { texto: { titulo: 'Ari y Coen:', texto: '«Tenemos una idea… ¿y si creamos algo juntos?»' }, nombre: 'ari-m', clase: 'saluda', fx: { tipo: 'destello', x: 32, ancho: 10, y: 15 }, ms: 2200 },
+        // { texto: { titulo: 'Rancek:', texto: '«Mmm… aún no sé. Lo voy a pensar.»' }, nombre: 'mago-d', img: 'assets/cuento/tienda/rancek-presume-3-m.webp', x: 78, alto: 17.85, clase: 'tras-mostrador', reemplaza: 'mago-f', sigue: true, ms: 2000 },
+        // { texto: { titulo: 'Ari y Coen:', texto: '«¡Piénsalo! Nos vemos, Rancek ✧»' }, nombre: 'coen-n', clase: 'saluda', ms: 1600 },
         // se van con su ropa nueva… y Rancek se queda pensando
-        { sale: ['ari-m', 'coen-n'], ms: 1400 },
-        { ms: 2600 },
-        { texto: { titulo: '', texto: 'Y Rancek se quedó pensando…' }, nombre: 'mago-d', clase: 'tras-mostrador', ms: 2400 },
-        { texto: { titulo: 'Rancek:', texto: '«¡Sí! ¡Voy con todo!»' }, nombre: 'mago-s', img: 'assets/cuento/tienda/rancek-presume-1.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-d', sigue: true, fx: { tipo: 'destello', x: 78, ancho: 12, y: 14 }, ms: 1800 },
-        { texto: { titulo: 'Rancek:', texto: '«…¿Eh? ¿Ya se fueron?»' }, nombre: 'mago-x', img: 'assets/cuento/tienda/rancek-presume-3.webp', x: 78, alto: 17, clase: 'tras-mostrador', reemplaza: 'mago-s', sigue: true, ms: 2400 }
+        // { sale: ['ari-m', 'coen-n'], ms: 1400 },
+        // { ms: 2600 },
+        // { texto: { titulo: '', texto: 'Y Rancek se quedó pensando…' }, nombre: 'mago-d', clase: 'tras-mostrador', ms: 2400 },
+        // { texto: { titulo: 'Rancek:', texto: '«¡Sí! ¡Voy con todo!»' }, nombre: 'mago-s', img: 'assets/cuento/tienda/rancek-presume-1-m.webp', x: 78, alto: 17.85, clase: 'tras-mostrador', reemplaza: 'mago-d', sigue: true, fx: { tipo: 'destello', x: 78, ancho: 12, y: 14 }, ms: 1800 },
+        // { texto: { titulo: 'Rancek:', texto: '«…¿Eh? ¿Ya se fueron?»' }, nombre: 'mago-x', img: 'assets/cuento/tienda/rancek-presume-3-m.webp', x: 78, alto: 17.85, clase: 'tras-mostrador', reemplaza: 'mago-s', sigue: true, ms: 2400 }
+        // la conversación completa: Rancek con su delantal, poses dibujadas desde su pieza
+        { texto: { titulo: 'Rancek:', texto: '«Chicos, aquí yo solo vendo… pero para que sepan, hago modelos 3D. Si necesitan algo, se los hago ✦»' }, nombre: 'mago-f', img: 'assets/cuento/tienda/rancek-figurita.webp', x: 78, alto: 19.69, clase: 'tras-mostrador vive', reemplaza: 'mago', sigue: true, fx: { tipo: 'destello', x: 73, ancho: 6, y: 22, ms: 900 }, ms: 3200 },
+        { nombre: 'ari-m', clase: 'vive saluda', ms: 400, pausa: 0 },   // se miran…
+        { nombre: 'coen-n', clase: 'saluda', ms: 600, pausa: 0 },
+        { texto: { titulo: 'Ari y Coen:', texto: '«¿Y si te sumas a nosotros? Estamos creando algo importante ✧»' }, nombre: 'ari-m', clase: 'vive saluda', fx: { tipo: 'destello', x: 39, ancho: 12, y: 15 }, ms: 2800 },
+        { texto: { titulo: 'Rancek:', texto: '«Mmm… no sé. Es que trabajo en varios lados…»' }, nombre: 'mago-p', img: 'assets/cuento/tienda/rancek-piensa.webp', x: 78, alto: 19.69, clase: 'tras-mostrador vive', reemplaza: 'mago-f', sigue: true, ms: 2600 },
+        // mientras él piensa, Ari y Coen se toman de la mano y salen de la tienda caminando (Wan, avance real) hasta el borde del libro
+        // respaldo: caminata reflejada (Ari y Coen cambiaban de lado)
+        // { texto: { titulo: '', texto: 'Y Rancek se quedó pensando… mientras Ari y Coen salían de la tienda.' }, nombre: 'pareja-s1', actor: 'assets/cuento/tienda/pareja-paseo-real-1', x: 25.7, alto: 17.98, delante: true, clase: 'espejo', reemplaza: ['ari-m', 'coen-n'], sigue: true, de: 0, a: 1, ms: 3000, pausa: 0 },
+        // { nombre: 'pareja-s2', actor: 'assets/cuento/tienda/pareja-paseo-real-1', x: -2, alto: 17.98, delante: true, clase: 'espejo', reemplaza: 'pareja-s1', sigue: true, de: 0, a: 1, ms: 3000, junto: true },
+        // { ms: 1050 },
+        // respaldo: salida en dos tramos (al cambiar de tramo parpadeaba)
+        // { texto: { titulo: '', texto: 'Y Rancek se quedó pensando… mientras Ari y Coen salían de la tienda.' }, nombre: 'pareja-s1', actor: 'assets/cuento/tienda/pareja-sale', x: 26.7, alto: 18.63, delante: true, reemplaza: ['ari-m', 'coen-n'], sigue: true, de: 0, a: 1, ms: 3000, pausa: 0 },
+        // { nombre: 'pareja-s2', actor: 'assets/cuento/tienda/pareja-sale', x: 1.1, alto: 18.63, delante: true, reemplaza: 'pareja-s1', sigue: true, de: 0, a: 1, ms: 3000, junto: true },
+        // { ms: 3000 },   // camina hasta cruzar el borde del libro
+        // { sale: ['pareja-s2'], ms: 200 },
+        // { texto: { titulo: '', texto: 'Y Rancek se quedó pensando… mientras Ari y Coen salían de la tienda.' }, nombre: 'pareja-s1', actor: 'assets/cuento/tienda/pareja-sale-larga', x: 13.97, alto: 18.63, delante: true, reemplaza: ['ari-m', 'coen-n'], sigue: true, de: 0, a: 1, ms: 6000, pausa: 0 },   // una sola caminata continua hasta cruzar el borde
+        { texto: { titulo: '', texto: 'Y Rancek se quedó pensando… mientras Ari y Coen salían de la tienda.' }, nombre: 'pareja-s1', actor: 'assets/cuento/tienda/pareja-sale-centro', x: 39.5, alto: 18.63, delante: true, reemplaza: ['ari-m', 'coen-n'], sigue: true, de: 0, a: 1, ruta: [[0, 39.5], [1, -11.67]], ms: 6000, pausa: 0 },   // caminan de verdad hasta cruzar el borde
+        { sale: ['pareja-s1'], ms: 200 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Sí! ¡Voy con todo!»' }, nombre: 'mago-s', img: 'assets/cuento/tienda/rancek-voy.webp', x: 78, alto: 19.69, clase: 'tras-mostrador vive', reemplaza: 'mago-p', sigue: true, fx: { tipo: 'destello', x: 78, ancho: 12, y: 16 }, ms: 2000 },
+        { texto: { titulo: 'Rancek:', texto: '«…¿Eh? ¡Ay, no! ¡Se fueron!»' }, nombre: 'mago-x', img: 'assets/cuento/tienda/rancek-sorpresa.webp', x: 78, alto: 19.69, clase: 'tras-mostrador vive', reemplaza: 'mago-s', sigue: true, ms: 2200 },
+        { texto: { titulo: '', texto: 'Se sacó el delantal…' }, nombre: 'mago-d', img: 'assets/cuento/tienda/rancek-delantal.webp', x: 78, alto: 19.69, clase: 'tras-mostrador', reemplaza: 'mago-x', sigue: true, ms: 1300 },
+        // …y salió corriendo tras ellos hasta el borde del libro
+        { texto: { titulo: 'Rancek:', texto: '«¡Espérenme!»' }, nombre: 'mago-c', actor: 'assets/cuento/tienda/rancek-corre-amigo-m', camina: [0, 1], cicloMs: 900, x: -12, alto: 17.96, clase: 'tras-mostrador espejo', reemplaza: 'mago-d', sigue: true, ruta: [[0, 78], [1, -12]], ms: 3270, pausa: 0 },
+        { sale: ['mago-c'], ms: 300 }
       ] }
     ] },
     paseo: { carpeta: 'cap6/', suave: true, hitos: [
       { fondo: 'fondo-paseo.webp', suelo: 'suelo-paseo.webp', titulo: 'Con sus compras puestas…', texto: 'Ari con su Vestido Magical; Coen con su jogger blanco y su polera burdeo.', pasos: [
         // pasean por el reino con su ropa nueva de Magical Alliance
-        { nombre: 'coen', img: 'assets/cuento/tienda/coen-paseo.webp', x: 64, alto: 17.5, delante: true, ms: 500, pausa: 0 },
-        { nombre: 'ari', img: 'assets/cuento/tienda/ari-look-magical.webp', x: 52, alto: 15.8, delante: true, ms: 1400 },
-        { nombre: 'ari', clase: 'saluda', ms: 600, pausa: 0 },
-        { nombre: 'coen', clase: 'saluda', ms: 1200 },
+        // respaldo: pareja quieta
+        // { nombre: 'coen', img: 'assets/cuento/tienda/coen-paseo.webp', x: 64, alto: 17.5, delante: true, ms: 500, pausa: 0 },
+        // { nombre: 'ari', img: 'assets/cuento/tienda/ari-look-magical.webp', x: 52, alto: 15.8, delante: true, ms: 1400 },
+        // { nombre: 'ari', clase: 'saluda', ms: 600, pausa: 0 },
+        // { nombre: 'coen', clase: 'saluda', ms: 1200 },
+        // caminan de la mano desde el borde del libro, Coen con las bolsas (ciclo Wan de 18 cuadros)
+        // { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-paseo-anda', camina: [0, 1], cicloMs: 1800, x: 8, alto: 17.5, delante: true, entra: true, ruta: [[0, 8], [1, 58]], ms: 3500, pausa: 0 },
+        // caminan de la mano hasta el centro; la caminata termina en el cuadro en que empiezan a darse vuelta
+        // { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-paseo-anda', camina: [0, 1], cicloMs: 1800, x: 60, alto: 17.5, delante: true, entra: true, ruta: [[0, 8], [1, 60]], ms: 3150, junto: true },
+        // { ms: 1350 },
+        // caminata con avance real (Wan): los pies pisan el suelo, no resbalan; dos tramos encadenados desde el borde del libro
+        { nombre: 'pareja-r1', actor: 'assets/cuento/tienda/pareja-paseo-real-1', x: 22.35, alto: 17.98, delante: true, entra: true, de: 0, a: 1, ms: 3000, pausa: 0 },
+        { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-paseo-real-2', x: 49.22, alto: 17.98, delante: true, reemplaza: 'pareja-r1', sigue: true, de: 0, a: 1, ms: 3000, junto: true },
+        { ms: 1150 },
+        // { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-paseo-quieta.webp', x: 58, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
+        // { nombre: 'pareja', clase: 'saluda', ms: 1200 },
         // …y Rancek llega corriendo con la respuesta que no alcanzó a darles en la tienda
-        { texto: { titulo: 'Rancek:', texto: '«¡Esperen! ¡Ya lo pensé… voy con todo!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre', camina: [0, 1], cicloMs: 640, x: 30, alto: 17.1, delante: true, entra: true, ruta: [[0, -8], [1, 30]], ms: 2600 },
-        { nombre: 'rancek', img: 'assets/cuento/tienda/rancek-presume-4.webp', x: 30, alto: 17, delante: true, reemplaza: 'rancek-c', sigue: true, ms: 600 },
-        { texto: { titulo: 'Ari y Coen:', texto: '«¡Sabíamos que vendrías! ✧»' }, nombre: 'ari', clase: 'saluda', fx: { tipo: 'destello', x: 58, ancho: 16, y: 12 }, ms: 600, pausa: 0 },
-        { nombre: 'coen', clase: 'saluda', ms: 1800 },
+        // respaldo: carrera y diálogo anteriores
+        // { texto: { titulo: 'Rancek:', texto: '«¡Esperen! ¡Ya lo pensé… voy con todo!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre', camina: [0, 1], cicloMs: 640, x: 30, alto: 17.1, delante: true, entra: true, ruta: [[0, 5], [1, 30]], ms: 2600 },
+        // { nombre: 'rancek', img: 'assets/cuento/tienda/rancek-presume-4.webp', x: 30, alto: 17, delante: true, reemplaza: 'rancek-c', sigue: true, ms: 600 },
+        // { texto: { titulo: 'Ari y Coen:', texto: '«¡Sabíamos que vendrías! ✧»' }, nombre: 'pareja', clase: 'saluda', fx: { tipo: 'destello', x: 58, ancho: 16, y: 12 }, ms: 600, pausa: 0 },
+        // { nombre: 'pareja', clase: 'saluda', ms: 1800 },
+        // respaldo: llegada anterior (Rancek quieto de frente y la pareja sin darse vuelta)
+        // // Rancek llega corriendo desde el borde del libro, gritando (carrera Wan de 18 cuadros)
+        // { texto: { titulo: 'Rancek:', texto: '«¡Espéreeeen!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre-amigo', camina: [0, 1], cicloMs: 800, x: 34, alto: 17.1, delante: true, entra: true, ruta: [[0, 5], [1, 34]], ms: 1500, pausa: 0 },
+        // { nombre: 'rancek', img: 'assets/cuento/tienda/rancek-presume-4.webp', x: 34, alto: 17, delante: true, reemplaza: 'rancek-c', sigue: true, ms: 1400 },
+        // { texto: { titulo: 'Rancek:', texto: '«¡Sí, sí! Ya lo pensé… ¡voy con todo! Hagamos de todo juntos.»' }, nombre: 'rancek', clase: 'saluda', fx: { tipo: 'destello', x: 34, ancho: 12, y: 14 }, ms: 3000 },
+        // { texto: { titulo: 'Ari y Coen:', texto: '«¡Sabíamos que vendrías! ✧»' }, nombre: 'pareja', clase: 'saluda', fx: { tipo: 'destello', x: 58, ancho: 16, y: 12 }, ms: 2600 },
+        // Rancek llega corriendo desde el borde del libro, gritando; dos zancadas completas para frenar en el cuadro de partida
+        // { texto: { titulo: 'Rancek:', texto: '«¡Espéreeeen!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre-amigo', camina: [0, 1], cicloMs: 800, x: 34, alto: 17.1, delante: true, entra: true, ruta: [[0, 5], [1, 34]], ms: 1600, pausa: 0 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Espéreeeen!»' }, nombre: 'rancek-c', actor: 'assets/cuento/tienda/rancek-corre-amigo-m', camina: [0, 1], cicloMs: 900, x: 38, alto: 17.96, delante: true, entra: true, ruta: [[0, 2], [1, 38]], ms: 1800, pausa: 0 },
+        // Ari y Coen lo escuchan y se dan vuelta de la mano mientras él frena (Wan)
+        { nombre: 'pareja-g', actor: 'assets/cuento/tienda/pareja-gira', x: 62.65, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, de: 0, a: 1, ms: 2500, junto: true },
+        { nombre: 'rancek-f', actor: 'assets/cuento/tienda/rancek-frena', x: 38, alto: 17.1, delante: true, reemplaza: 'rancek-c', sigue: true, de: 0, a: 1, ms: 2100, pausa: 0 },
+        // y ya frente a frente, Rancek les habla gesticulando
+        { nombre: 'rancek', actor: 'assets/cuento/tienda/rancek-habla', x: 38, alto: 17.1, delante: true, reemplaza: 'rancek-f', sigue: true, bucle: [0, 1], cicloMs: 2500, ms: 200, pausa: 0 },
+        { texto: { titulo: 'Rancek:', texto: '«¡Sí, sí! Ya lo pensé… ¡voy con todo! Hagamos de todo juntos.»' }, fx: { tipo: 'destello', x: 38, ancho: 12, y: 14 }, ms: 3200 },
+        { texto: { titulo: 'Ari y Coen:', texto: '«¡Sabíamos que vendrías! ✧»' }, nombre: 'pareja-g', clase: 'saluda', fx: { tipo: 'destello', x: 62.65, ancho: 16, y: 12 }, ms: 2600 },
         { texto: { titulo: '', texto: 'Y así, los tres juntos, empezaron a crear algo nuevo…' }, fx: [{ tipo: 'destello', x: 30, ancho: 12, y: 10, ms: 1200 }, { tipo: 'destello', x: 58, ancho: 16, y: 10, ms: 1200, tras: 300 }], ms: 2600 }
       ] }
     ] },
@@ -712,6 +904,14 @@
     precargar(esc);
     if (esc.suave) el.classList.add('suave');   // personajes que respiran, hablan con gestos leves y cambian de pose con un fundido
     const pagina = el.closest('.pagina'), zona = el.querySelector('.hitos-escena'), lis = esc.textos === 'huellas' ? [...pagina.querySelectorAll('.huellas > li')] : [];
+    // el libro tiene límites: lo que pasa del canto de la página se recorta, así los personajes entran y salen justo por el borde
+    if (zona) { const borde = () => { if (!el.isConnected) return;
+      if (zona.offsetWidth) { const f = zona.querySelector(':scope > .hito-fondo'), z = (f && f.offsetWidth ? f : zona).getBoundingClientRect();   // el borde es el telón del escenario
+        zona.querySelectorAll(':scope > .hito-actor').forEach(a => { const r = a.getBoundingClientRect(); if (!r.width) return;
+          const iz = Math.max(0, (z.left - r.left) / r.width), de = Math.max(0, (r.right - z.right) / r.width);
+          const v = iz || de ? 'inset(-30% ' + (de * 100).toFixed(2) + '% -10% ' + (iz * 100).toFixed(2) + '%)' : '';
+          if (a.style.clipPath !== v) a.style.clipPath = v; }); }
+      requestAnimationFrame(borde); }; requestAnimationFrame(borde); }
     const titulo = el.querySelector('.hito-titulo'), texto = el.querySelector('.hito-texto'), num = el.querySelector('.hito-num'), play = el.querySelector('.hito-play');
     const total = esc.hitos.length;
     let h = -1, pausa = false, vuelta = 0, fondoActual = '';
@@ -727,11 +927,16 @@
     const levantar = (im, d) => { if (document.getElementById('libro')?.classList.contains('recien-girado') && /fondo/.test(im.className)) { im.classList.add('ya'); (im.classList.contains('amb') ? el.querySelector('.vida-ambiente') : zona).append(im); return; } im.classList.add('pliega'); im.style.setProperty('--d', d + 's'); zona.append(im); requestAnimationFrame(() => requestAnimationFrame(() => im.classList.remove('pliega'))); };
     const plegar = n => { const a = n.nodeType ? n : actores[n]; if (!a) return; a.classList.add('pliega'); setTimeout(() => a.remove(), 900); if (!n.nodeType) delete actores[n]; };
     // sin plegarse: otro actor toma su lugar. El anterior se queda debajo unos instantes, hasta que el nuevo ya se pintó (sin parpadeo)
-    const sacar = n => { const a = actores[n]; if (!a) return; delete actores[n]; requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => a.remove(), esc.suave ? 380 : 140))); };
+    // const sacar = n => { const a = actores[n]; if (!a) return; delete actores[n]; requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => a.remove(), esc.suave ? 380 : 140))); };
+    // encadenado (sigue): el nuevo ya está pintado, así que el anterior se va en el mismo cuadro, sin verse doble ni transparente
+    // const sacar = (n, directo) => { const a = actores[n]; if (!a) return; delete actores[n]; requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => a.remove(), directo ? 0 : esc.suave ? 380 : 140))); };
+    // directo: la pieza anterior se oculta en el mismo cuadro en que se agrega la nueva (nunca se ven las dos)
+    const sacar = (n, directo) => { const a = actores[n]; if (!a) return; delete actores[n]; if (directo) { requestAnimationFrame(() => requestAnimationFrame(() => { a.style.visibility = 'hidden'; setTimeout(() => a.remove(), 60); })); return; } requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => a.remove(), esc.suave ? 380 : 140))); };
     // un cuadro de la hoja; entre dos cuadros se funde (suaviza los saltos)
     const cuadro = (a, f) => {
       const m = a._m; if (!m) return;
-      const k = Math.max(0, Math.min(m.n - 1, Math.floor(f))), fr = m.n < 24 ? 0 : f - k, filas = Math.ceil(m.n / m.cols);   // con pocos cuadros, como dibujo animado: sin fundir uno con otro
+      // const k = Math.max(0, Math.min(m.n - 1, Math.floor(f))), fr = m.n < 24 ? 0 : f - k, filas = Math.ceil(m.n / m.cols);   // con pocos cuadros, como dibujo animado: sin fundir uno con otro
+      const k = Math.max(0, Math.min(m.n - 1, Math.floor(f))), fr = m.n < 24 || m.corte ? 0 : f - k, filas = Math.ceil(m.n / m.cols);   // corte: hojas de video (Wan), cuadro a cuadro; fundirlas las muestra dobles
       const pos = j => ((j % m.cols) / Math.max(1, m.cols - 1) * 100) + '% ' + (Math.floor(j / m.cols) / Math.max(1, filas - 1) * 100) + '%';
       a.children[0].style.backgroundPosition = pos(k); a.children[1].style.backgroundPosition = pos(Math.min(m.n - 1, k + 1)); a.children[1].style.opacity = fr.toFixed(3);
     };
@@ -755,7 +960,9 @@
       a.style.left = ((p.desde ?? p.x) - a._ancho / 2) + '%'; a.style.width = a._ancho + '%'; a.style.aspectRatio = w + ' / ' + hh;
       if (a._m) cuadro(a, a._m.marcas[p.camina ? p.camina[0] : (p.de ?? 0)]);
       actores[n] = a; window.dispatchEvent(new CustomEvent('cuento-actor', { detail: a }));
-      if (sinPliegue) { a.classList.add('ya'); if (esc.suave && p.reemplaza) a.classList.add('funde'); zona.append(a); } else levantar(a, d);
+      // if (sinPliegue) { a.classList.add('ya'); if (esc.suave && p.reemplaza) a.classList.add('funde'); zona.append(a); } else levantar(a, d);
+      // if (sinPliegue) { a.classList.add('ya'); if (esc.suave && p.reemplaza && !p.sigue) a.classList.add('funde'); zona.append(a); } else levantar(a, d);   // encadenado: corte directo, sin fundido
+      if (sinPliegue) { a.classList.add('ya'); zona.append(a); } else levantar(a, d);   // sin fundido: el reemplazo es directo
       return a;
     };
     const tramo = (a, de, al, ms, mia) => new Promise(fin => {
@@ -813,6 +1020,28 @@
       else trazar();
     });
     const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms));
+    // escena animada (video Wan): una lámina que se levanta del papel como cualquier pop-up; si no carga, corren los pasos de respaldo (sinVideo)
+    const videos = {};
+    const verVideo = (p, mia) => new Promise(fin => {
+      const n = nombre(p), c = document.createElement('div'); c.className = 'hito-pop hito-video';
+      c.innerHTML = '<video muted playsinline preload="auto"></video><img alt="">';
+      const v = c.firstChild; v.poster = ruta(esc, p.video + '.jpg');
+      ['webm', 'mp4'].forEach(t => { const s = document.createElement('source'); s.src = ruta(esc, p.video + '.' + t); s.type = 'video/' + t; v.append(s); });
+      actores[n] = c; levantar(c, .05);
+      let listo = false; const termina = ok => { if (listo) return; listo = true; clearInterval(vig); fin(ok && mia === vuelta); };
+      const vig = setInterval(() => { if (mia !== vuelta) termina(false); }, 400);
+      v.addEventListener('ended', () => termina(true));
+      v.addEventListener('error', () => termina(false), true);
+      setTimeout(() => { if (v.readyState < 2) termina(false); }, 6000);   // no cargó a tiempo: respaldo
+      setTimeout(() => v.play().catch(() => termina(false)), 900);         // espera a que la lámina termine de levantarse
+    });
+    // el hada cambia la escena del video (ropa nueva): vuela, lanza su magia y aparece la imagen final
+    const hadaEnVideo = (p, mia) => new Promise(fin => {
+      const c = actores[nombre(p)], im = c && c.querySelector('img'); if (!im) { fin(true); return; }
+      im.src = ruta(esc, p.hada); let hecho = false;
+      const una = () => { if (hecho) return; hecho = true; im.classList.add('ver'); efecto('destello', p.fxX ?? 50, 22, 12, 1400); luego(() => fin(mia === vuelta), 900); };
+      if (!quieto && window.MCELibro?.hadaMagia) { MCELibro.hadaMagia(c, una); setTimeout(una, 6500); } else una();
+    });
     const suelo = src => { const capas = zona.querySelectorAll('.hitos-suelo i'), nueva = [...capas].find(c => !c.classList.contains('ver')) || capas[0]; nueva.style.backgroundImage = 'url("' + ruta(esc, src) + '")'; capas.forEach(c => c.classList.toggle('ver', c === nueva)); };
     const cartel = (n, H) => {
       const li = lis[n], t = H.titulo ?? (li ? li.querySelector('b').textContent : ''), x = H.texto ?? (li ? li.querySelector('span').textContent : '');
@@ -854,9 +1083,16 @@
         if (p.si && !window.MCELookEs(p.si)) continue;     // pasos que solo van con cierto look
         // cambia el fondo a mitad de la escena: el anterior se pliega y el nuevo se levanta
         if (p.fondo && p.fondo !== fondoActual) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = p.fondo; const f = document.createElement('img'); f.src = ruta(esc, p.fondo); f.alt = ''; f.className = 'hito-pop hito-fondo'; levantar(f, .3); }
+        if (p.sinVideo && videos[p.sinVideo] !== false) continue;   // respaldo pop-up: solo si el video no cargó
+        if (p.conVideo && !videos[p.conVideo]) continue;
+        if (p.sinFondo) { zona.querySelectorAll('.hito-fondo').forEach(plegar); fondoActual = null; }
+        if (p.suelo) suelo(p.suelo);
         if (p.quita) { [].concat(p.quita).forEach(plegar); if (!(await espera(500, mia))) return; }
         if (p.texto) { if (titulo && p.texto.titulo != null) titulo.textContent = p.texto.titulo; if (texto) texto.textContent = p.texto.texto ?? ''; if (conVoz && enVista()) { const d = MCENarrador.sinRepetir(p.texto.titulo, p.texto.texto); voz = d ? MCENarrador.encolar(d) : null; } }
         if (p.app) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: p.app } }));
+        if (p.video) { const n = nombre(p); videos[n] = await verVideo(p, mia); if (mia !== vuelta) return; if (!videos[n]) plegar(n); continue; }
+        if (p.hadaSobre) { const t = actores[p.hadaSobre]; if (t && !quieto && window.MCELibro?.hadaMagia) await new Promise(fin => { let hecho = false; const una = () => { if (!hecho) { hecho = true; fin(); } }; MCELibro.hadaMagia(t, una); setTimeout(una, 6500); }); if (mia !== vuelta) return; continue; }
+        if (p.hada) { if (!videos[nombre(p)] || !(await hadaEnVideo(p, mia)) || !(await espera(p.ms || 1200, mia))) { if (mia !== vuelta) return; } continue; }
         // espera a que pase algo afuera del cuento (por ejemplo, que se entregue la boleta en la caja); mientras, la caja no se puede subir
         if (p.espera) { document.body.classList.add('app-obligada'); const ok = await new Promise(fin => { const f = () => { clearInterval(vig); removeEventListener(p.espera, f); fin(mia === vuelta); }; const vig = setInterval(() => { if (mia !== vuelta) { clearInterval(vig); removeEventListener(p.espera, f); fin(false); } }, 500); addEventListener(p.espera, f); }); document.body.classList.remove('app-obligada'); if (!ok) return; }
         if (p.cierraApp) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: false } }));
@@ -867,9 +1103,13 @@
         if (p.evento) { const ev = p.evento; luego(() => { if (mia === vuelta) window.dispatchEvent(new CustomEvent(ev, { detail: { zona, paso: p } })); }, p.ms || 400); }
         if (!nombre(p)) { if (!(await espera(p.ms || 600, mia))) return; if (voz && p.texto) { await voz; if (mia !== vuelta) return; } continue; }
         const nuevo = !actores[nombre(p)];
-        const a = await actor(p, p.d ?? .1, !!p.reemplaza || !!p.entra);   // entra: llega corriendo o volando desde fuera, sin levantarse del papel
-        if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
-        if (!(nuevo ? p.entra || (p.reemplaza && p.sigue) : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;   // sigue: encadenado al paso anterior, sin respiro
+        // const a = await actor(p, p.d ?? .1, !!p.reemplaza || !!p.entra);
+        const a = await actor(p, p.d ?? .1, !!p.reemplaza || !!p.entra || !!p.directo);   // directo: aparece en su lugar sin levantarse del papel   // entra: llega corriendo o volando desde fuera, sin levantarse del papel
+        // if (p.reemplaza) [].concat(p.reemplaza).forEach(sacar);
+        // if (p.reemplaza) [].concat(p.reemplaza).forEach(n => sacar(n, p.sigue));
+        if (p.reemplaza) [].concat(p.reemplaza).forEach(n => sacar(n, p.sigue || esc.suave));   // en escenas suaves, siempre corte directo
+        // if (!(nuevo ? p.entra || (p.reemplaza && p.sigue) : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;
+        if (!(nuevo ? p.entra || p.directo || p.aLaVez || (p.reemplaza && p.sigue) : p.sigue) && !(await espera(nuevo && !p.reemplaza ? 1100 : 300, mia))) return;   // sigue: encadenado al paso anterior, sin respiro
         if (p.efecto) a.classList.add(p.efecto);
         if (p.quitaClase) a.classList.remove(...p.quitaClase.split(' '));
         if (!nuevo && p.clase) { const cs = p.clase.split(' '); a.classList.remove(...cs); void a.offsetWidth; a.classList.add(...cs); }   // vuelve a hacer su gesto
@@ -971,8 +1211,12 @@
   // IX · el pergamino escribe lo que descubrió el tablero de la gema que se enciende (lo mismo que dice el cartel)
   // la vitrina de looks de la tienda: quien lee elige qué se prueba Ari (y con qué sale a pasear)
   const LOOKS = ['magical', 'lila', 'corset', 'boda'];
-  window.MCELook = () => { let k = null; try { k = sessionStorage.getItem('mce-look'); } catch (e) { /* sin almacenamiento */ } return 'assets/cuento/tienda/ari-look-' + (LOOKS.includes(k) ? k : 'magical') + '.webp'; };
-  window.MCELookEs = c => { const k = window.MCELook().replace(/.*ari-look-|\.webp$/g, ''); return c[0] === '!' ? k !== c.slice(1) : k === c; };
+  // respaldo: looks originales (cuerpo distinto al de la Ari casual)
+  // window.MCELook = () => { let k = null; try { k = sessionStorage.getItem('mce-look'); } catch (e) { /* sin almacenamiento */ } return 'assets/cuento/tienda/ari-look-' + (LOOKS.includes(k) ? k : 'magical') + '.webp'; };
+  // window.MCELookEs = c => { const k = window.MCELook().replace(/.*ari-look-|\.webp$/g, ''); return c[0] === '!' ? k !== c.slice(1) : k === c; };
+  // looks -2: mismo diseño, con el cuerpo de la Ari casual, para que el cambio del hada no salte
+  window.MCELook = () => { let k = null; try { k = sessionStorage.getItem('mce-look'); } catch (e) { /* sin almacenamiento */ } return 'assets/cuento/tienda/ari-look-' + (LOOKS.includes(k) ? k : 'magical') + '-2m.webp'; };
+  window.MCELookEs = c => { const k = window.MCELook().replace(/.*ari-look-|-2m?\.webp$|\.webp$/g, ''); return c[0] === '!' ? k !== c.slice(1) : k === c; };
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-look]'); if (!b) return;
     try { sessionStorage.setItem('mce-look', b.dataset.look); } catch (er) { /* sin almacenamiento */ }
