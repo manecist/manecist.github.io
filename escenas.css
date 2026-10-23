@@ -165,6 +165,14 @@ html.escenas .ev-contacto footer a { color: var(--e-rosa); }
 .dragoncito.posado .dragoncito-globo { opacity: 0; }
 html.escenas .ev-contacto .nido-escena { margin-top: 18px; }
 .cria[src$="cria-4.webp"] { height: 54px; }
+/* en celular el nido entero (seis crías y el lugar del dragón) se achica para no salirse por el costado */
+@media (max-width: 600px) {
+  .nido-crias { gap: 6px; }
+  .nido-posada { width: 70px; height: 66px; }
+  .cria { height: 42px; }
+  .cria.duerme { height: 30px; }
+  .cria[src$="cria-4.webp"] { height: 33px; }
+}
 
 /* ---------------------------------------------------------------- cuadros mágicos: una ventanita al cosmos del reino
    fondo de cielo con manchas de acuarela y polvo de estrellas, borde brillante en degradé y destellos en las esquinas */

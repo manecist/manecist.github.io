@@ -435,7 +435,7 @@
         { aLaVez: true, nombre: 'ari', actor: 'cafe-ari-habla', x: 40, alto: 18.96, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 500, junto: true, sigue: true },
         { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 31, alto: 18.89, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 1400, ms: 500, junto: true, sigue: true },
         { nombre: 'rancek', actor: 'cafe-rancek-mira', x: 50.5, alto: 19.38, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 1200 },
-        { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: de esto se trata lo que tenemos… un libro donde todo lo que soñamos cobra vida ✧»' }, ms: 3400 },
+        { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: estas son nuestras ilustraciones. Creamos un estudio: queremos hacer un videojuego, soluciones digitales, diseño… ¡de todo! ✧»' }, ms: 3400 },
         { texto: { titulo: 'Coen:', texto: '«Ahí está todo lo que queremos crear juntos. ¡Tienes que verlo!»' }, ms: 3000 },
         { nombre: 'ari', de: 0, a: 0, ms: 120, pausa: 0 },   // vuelve a su pose base…
         { nombre: 'ari-o', actor: 'cafe-ari-ofrece', x: 40, alto: 18.96, pj: true, delante: true, clase: 'encima', reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 2000, pausa: 0 },   // …abre el libro y se lo muestra

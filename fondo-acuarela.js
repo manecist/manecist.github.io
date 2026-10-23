@@ -112,7 +112,8 @@ window.FondoAcuarela = (() => {
   const tmp = lienzo(W, H);
   const cargar = src => new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => mal(new Error(src)); i.src = src; });
   // el lineart de las figuras es común a los dos modos; el paisaje trae el suyo (sol o luna)
-  const ruta = (tema, c, e) => `assets/fondo/reino/${e === 'lineart' && c.figura ? 'comun' : tema}/${c.id}-${e}.webp`;
+  const VER = '?v=2';                            // fondo redibujado: dragón azul/blanco, techos fucsia y personajes corregidos
+  const ruta = (tema, c, e) => `assets/fondo/reino/${e === 'lineart' && c.figura ? 'comun' : tema}/${c.id}-${e}.webp${VER}`;
   async function preparar(tema = 'noche') {
     if (!juegos[tema]) juegos[tema] = cargarJuego(tema);
     const juego = await juegos[tema];
@@ -128,7 +129,7 @@ window.FondoAcuarela = (() => {
       const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, 0, 0, W, H);
       const co = lienzo(W, H); co.getContext('2d').drawImage(acu, 0, 0, W, H);
       // aura de energía de la figura: un halo con sus propios colores que late suave
-      const aura = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp`).catch(() => null) : null;
+      const aura = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp${VER}`).catch(() => null) : null;
       juego[c.id] = { bn, co, aura, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
     }));
     // la escena entera, chica y difuminada, para rellenar los bordes cuando la pantalla no tiene su misma proporción
@@ -147,10 +148,16 @@ window.FondoAcuarela = (() => {
   // con un pequeño margen para el parallax; en pantallas verticales cubre la pantalla
   let arriba = 0;                                   // alto de la barra superior, en px del lienzo
   function encuadre(cw, ch) {
+    // la escena cubre toda la pantalla (también detrás de la barra), sin franjas difuminadas arriba ni abajo
+    const k = Math.max(cw / W, ch / H) * 1.045;
+    return { k, ox: (cw - W * k) / 2, oy: (ch - H * k) / 2 };
+  }
+  /* versión anterior (escena entera bajo la barra, bordes rellenos con la escena difuminada):
+  function encuadre(cw, ch) {
     const disp = ch - arriba, vertical = cw / disp < 1.2;
     const k = (vertical ? Math.max(cw / W, disp / H) : Math.min(cw / W, disp / H)) * 1.045;
     return { k, ox: (cw - W * k) / 2, oy: arriba + (disp - H * k) / 2 };
-  }
+  } */
   // los bordes que quedan fuera del lienzo se rellenan con la misma escena, ampliada y difuminada
   function rellenar(ctx, cw, ch, a) {
     if (!img.relleno || a <= 0) return;
