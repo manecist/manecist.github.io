@@ -92,6 +92,21 @@
     m.querySelector('img').src = a.querySelector('img')?.getAttribute('src') || '';
     m.querySelector('b').textContent = a.querySelector('h3')?.textContent || '';
     m.querySelector('small').textContent = a.querySelector('span')?.textContent || '';
+    // el detalle de cada credencial (lo que antes estaba en la escena Formación) se abre al pasar el mouse o tocarla
+    const det = document.createElement('div'); det.className = 'perfil-medalla-detalle';
+    det.append(Object.assign(document.createElement('p'), { textContent: a.querySelector('p')?.textContent || '' }));
+    const ver = a.querySelector('a'); if (ver) det.append(Object.assign(ver.cloneNode(true), { className: 'perfil-verificar' }));
+    // Google Data Analytics: los ocho cursos aprobados, cada uno con su verificación en Coursera
+    if (/Google/.test(a.querySelector('h3')?.textContent || '')) {
+      const CURSOS = [['Introducing Data Analytics and Analytical Thinking', '72KSUXXUTTN8'], ['Ask Effective Questions', 'QCHGFWSZVHAX'], ['Make Data-Driven Decisions', 'G3M3UPJH8XBW'],
+        ['Foundations: Data, Data, Everywhere', 'V2VZ8253MZM4'], ['Always Remember the Stakeholder', '6G83E5NKKUZ2'], ['Data Responsibility', 'GBTX8I7UTNHN'],
+        ['Ask Questions to Make Data-Driven Decisions', '5XHJQVCJB0YE'], ['The Importance of Integrity', 'PQV30EPTHB4T']];
+      const ol = document.createElement('ol'); ol.className = 'perfil-cursos';
+      CURSOS.forEach(([t, c]) => { const li = document.createElement('li'), l = document.createElement('a'); l.href = 'https://coursera.org/verify/' + c; l.target = '_blank'; l.rel = 'noopener'; l.textContent = t + ' ↗'; li.append(l); ol.append(li); });
+      det.append(ol); det.classList.add('con-cursos');
+    }
+    m.append(det); m.tabIndex = 0;
+    m.addEventListener('click', e => { if (!e.target.closest('a')) m.classList.toggle('abierta'); });
     return m;
   }));
   const cv = document.createElement('a'); cv.className = 'perfil-cv'; cv.href = 'assets/cv-maria-cisterna.pdf'; cv.target = '_blank'; cv.rel = 'noopener'; cv.download = '';
@@ -100,6 +115,13 @@
   const perfilPro = $('#estudio .perfil-pro'); if (perfilPro) perfilPro.append(credPerfil);
   E.push({
     id: 'equipo', ev: crear('ev-equipo', de('.studio-team', est)),
+    // al llegar sin animación (por ejemplo al volver del cuento) el pergamino se muestra ya abierto con sus credenciales
+    listo(ev) {
+      const perg = $('.perfil-pro-texto', ev); if (!perg) return;
+      gsap.set(perg, { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }); perg.style.clipPath = ''; perg.classList.add('abierto');
+      const rollo = $('.perfil-rollito', ev); if (rollo) rollo.style.opacity = 0;
+      gsap.set($$('.perfil-medalla, .perfil-cv', ev), { opacity: 1 });
+    },
     entrar(tl, ev) {
       // el perfil profesional: primero el retrato, luego el texto línea por línea
       // el pergamino llega cerrado; el hada vuela, lo toca con su varita y se desenrolla; después aparecen las credenciales
@@ -437,20 +459,40 @@
 
   // ---------------------------------------------------------- 12. formación
   const form = '#formacion';
+  /* antes: escena propia de Formación (repetía las medallas del perfil; sus detalles ahora van en cada medalla)
   E.push({
     id: 'formacion', ev: crear('ev-formacion', cabeza(form), de('.credential-gallery', form), de('.cv-cta', form)),
     entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, $$('.credential-gallery article', ev), '-=.2', { stagger: .1 }); sube(tl, $('.cv-cta', ev), '-=.1'); },
   });
+  */
 
   // ---------------------------------------------------------- 13. arcade: el salón de los juegos con sus máquinas
   const arc = '#arcade';
   const acciones = () => div('juego-acciones', ...[['btn juego-salon', '← Volver al salón'], ['btn juego-empezar', '▶ Jugar'], ['btn juego-volver', '← Ver instrucciones']].map(([c, t]) => { const b = document.createElement('button'); b.type = 'button'; b.className = c; b.textContent = t; return b; }));
   const portada = document.createElement('img'); portada.className = 'arcade-portada'; portada.src = 'assets/cuento/cap10/arcade-bloques.webp'; portada.alt = '';
   $('#game-tetris')?.classList.add('active');
+  /* antes: cada juego en un papel crema con su portada y el tablero al lado
   const juegos = {
     bloques: papel('app-juego app-bloques', acciones(), portada, ranura($('#game-tetris'))),
     gemas: papel('app-juego app-gemas', acciones(), div('app-doble', div('arcade-dibujo', ranura($('#match-grid'))), div('juego-papel', ranura($('#gema-intro')), ranura($('#gema-guia')), ranura($('#gema-lado'))))),
     estrellas: papel('app-juego app-estrellas', acciones(), div('app-doble', div('arcade-dibujo', ranura($('#constellation-board'))), div('juego-papel', ranura($('#estrellas-intro')), ranura($('#estrellas-lado')), ranura($('#estrellas-leccion'))))),
+  };
+  */
+  // cada juego se juega dentro de la pantalla de su propia máquina (vista de cerca, grande); los puntos y el botón principal
+  // van en el tablero de controles de la máquina y las instrucciones en un pergamino al lado
+  const maquina = (n, pantalla, ...tablero) => div('maq-juego maq-' + n, div('maq-pantalla', pantalla), div('maq-tablero', ...tablero));
+  const ladoJuego = (...hijos) => div('juego-lado', acciones(), div('juego-lado-texto', ...hijos));   // el texto se recorre dentro del papel
+  const fila = sel => $(sel)?.closest('.score-row');
+  const juegos = {
+    bloques: papel('app-juego app-bloques jugando', div('maq-escena',
+      maquina(1, $('#game-tetris .tetris-frame'), fila('#play-score'), fila('#play-lines'), fila('#play-level'), $('#play-start')),
+      ladoJuego($('#game-tetris .game-side'), $('#game-tetris .control-magico')))),
+    gemas: papel('app-juego app-gemas jugando', div('maq-escena',
+      maquina(2, $('#match-grid'), fila('#match-score'), $('#match-reset')),
+      ladoJuego($('#gema-intro'), $('#gema-lado')))),
+    estrellas: papel('app-juego app-estrellas jugando', div('maq-escena',
+      maquina(3, $('#constellation-board'), fila('#star-progress'), $('#star-reset')),
+      ladoJuego($('#estrellas-intro'), $('#estrellas-lado')))),
   };
   const MAQUINAS = [['bloques', 'arcade1-anim', 'Bloques encantados'], ['gemas', 'arcade2-anim', 'Jardín de gemas lunares'], ['estrellas', 'arcade3-anim', 'Cielo de constelaciones']];
   const salon = div('salon-arcade', MAQUINAS.map(([id, hoja, nombre]) => {
@@ -462,13 +504,21 @@
   let cuadroMaq = 0;
   setInterval(() => { if (E[actual]?.id !== 'arcade' || salon.hidden) return; cuadroMaq = (cuadroMaq + 1) % 37; $$('.maquina-spr', salon).forEach((m, k) => { const c = (cuadroMaq + k * 9) % 37; m.style.backgroundPosition = (c % 8) / 7 * 100 + '% ' + Math.floor(c / 8) / 4 * 100 + '%'; }); }, 85);
   const sala = div('papel-marcos sala-juegos', Object.values(juegos));
+  let maqTocada = null;   // la máquina del salón que se eligió: el juego crece desde ella
   const abrirJuego = id => {
-    salon.hidden = !!id; sala.classList.toggle('abierta', !!id);
+    const desde = maqTocada?.getBoundingClientRect(); maqTocada = null;
+    salon.hidden = !!id; sala.classList.toggle('abierta', !!id); E.find(e => e.id === 'arcade')?.ev.classList.toggle('jugando-arcade', !!id);
+    if (id && desde) requestAnimationFrame(() => {
+      const m = $('.app-juego.activo .maq-juego', sala); if (!m) return; const r = m.getBoundingClientRect();
+      gsap.fromTo(m, { x: desde.left + desde.width / 2 - (r.left + r.width / 2), y: desde.top + desde.height / 2 - (r.top + r.height / 2), scale: desde.height / r.height, transformOrigin: '50% 50%' },
+        { x: 0, y: 0, scale: 1, duration: .7, ease: 'power3.out', clearProps: 'transform' });
+      gsap.from($('.app-juego.activo .juego-lado', sala), { opacity: 0, x: 40, duration: .5, delay: .35, clearProps: 'all' });
+    });
     Object.entries(juegos).forEach(([k, j]) => j.classList.toggle('activo', k === id));
     if (id && window.Magia) { const r = sala.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + 60, { n: 30, vel: 4 }); }
     requestAnimationFrame(() => ajustar(E[actual]));
   };
-  salon.addEventListener('click', e => { const m = e.target.closest('.maquina'); if (m) abrirJuego(m.dataset.juego); });
+  salon.addEventListener('click', e => { const m = e.target.closest('.maquina'); if (m) { maqTocada = m; abrirJuego(m.dataset.juego); } });
   sala.addEventListener('click', e => { if (e.target.closest('.juego-salon')) { e.target.closest('.colgar-app').classList.remove('jugando'); abrirJuego(null); } });
   E.push({
     id: 'arcade', hada: 'Arcade mágico', ev: crear('ev-arcade', cabeza(arc), salon, sala),
@@ -488,7 +538,7 @@
 
   // el orden de lectura: primero quién es y de dónde viene (perfil y trayectoria), después lo que hace;
   // «Matrona hoy» queda junto a Datos (las dos son su trabajo actual en salud)
-  const ORDEN = ['inicio', 'estudio', 'equipo', 'trayectoria', 'desarrollo', 'diseno', 'leyendas', 'historia', 'datos', 'matrona', 'formacion', 'arcade', 'contacto'];
+  const ORDEN = ['inicio', 'estudio', 'equipo', 'trayectoria', 'desarrollo', 'diseno', 'leyendas', 'historia', 'datos', 'matrona', 'arcade', 'contacto'];
   E.sort((a, b) => (ORDEN.indexOf(a.id) + 1 || 99) - (ORDEN.indexOf(b.id) + 1 || 99));
 
   // los marcos de un paso a otro se cambian con un fundido y un leve deslizamiento
@@ -622,11 +672,68 @@
     cuadro.innerHTML = '<div class="ley-marco"><img alt="" draggable="false"></div><figcaption><b></b><span></span><button type="button" class="btn ghost ley-ver">⤢ Ver en grande</button></figcaption>';
     const cImg = $('img', cuadro), cTit = $('b', cuadro), cTxt = $('figcaption span', cuadro);
     const muro = div('ley-muro'); rejilla.before(div('ley-museo', cuadro, muro)); muro.append(rejilla);
+    // «Mi trazo»: el cuaderno de bocetos de Ari. La obra elegida en la hoja izquierda; los filtros y los dibujitos en la derecha
+    const leyendasCab = $('#leyendas .leyendas-cabeza');
+    if (leyendasCab) {
+      const chip = $('.chip', leyendasCab), h3 = $('h3', leyendasCab), filtros = $('.leyendas-filtros', leyendasCab);
+      if (chip) chip.textContent = 'MI TRAZO · CUADERNO DE BOCETOS';
+      if (h3) h3.textContent = 'Así dibujo: leyendas, procesos y regalos';
+      if (filtros) muro.prepend(filtros);
+    }
     let elegida = null;
+    // la obra se dibuja sobre la hoja: sin el fondo blanco, primero las líneas y luego el color, con un lápiz que recorre la hoja
+    const lienzo = document.createElement('canvas'); lienzo.className = 'ley-lienzo'; lienzo.setAttribute('role', 'img');
+    const lapiz = document.createElement('span'); lapiz.className = 'ley-lapiz'; lapiz.setAttribute('aria-hidden', 'true');
+    lapiz.innerHTML = '<svg viewBox="0 0 64 64"><path d="M50 4l10 10-34 34-14 4 4-14z" fill="#f6a9cc" stroke="#6a2c55" stroke-width="2"/><path d="M42 12l10 10" stroke="#6a2c55" stroke-width="2"/><path d="M50 4l10 10 3-3a3 3 0 0 0 0-4l-6-6a3 3 0 0 0-4 0z" fill="#d9b56a" stroke="#6a2c55" stroke-width="2"/><path d="M16 38l10 10-14 4z" fill="#fbe3c8" stroke="#6a2c55" stroke-width="2"/><path d="M12 52l-2 2 4-1z" fill="#4a2556"/></svg>';
+    $('.ley-marco', cuadro).append(lienzo, lapiz);
+    lienzo.addEventListener('contextmenu', e => e.preventDefault());
+    let dibujo = 0;
+    function dibujar(src, alt) {
+      const yo = ++dibujo, img = new Image();
+      img.onload = () => {
+        if (yo !== dibujo) return;
+        const marco = $('.ley-marco', cuadro), W = marco.clientWidth, H = marco.clientHeight; if (!W || !H) return;
+        const k = Math.min(W * .96 / img.width, H * .96 / img.height), w = Math.round(img.width * k), h = Math.round(img.height * k), dpr = Math.min(2, devicePixelRatio || 1);
+        lienzo.width = w * dpr; lienzo.height = h * dpr; lienzo.style.width = w + 'px'; lienzo.style.height = h + 'px'; lienzo.setAttribute('aria-label', alt);
+        // el dibujo sin el blanco: cuanto más claro el píxel, más transparente (las líneas y el color quedan sobre el papel)
+        const mk = () => { const c = document.createElement('canvas'); c.width = lienzo.width; c.height = lienzo.height; return c; };
+        const color = mk(), cx = color.getContext('2d'); cx.drawImage(img, 0, 0, color.width, color.height);
+        const d = cx.getImageData(0, 0, color.width, color.height), p = d.data;
+        const lineas = mk(), lx = lineas.getContext('2d'), dl = lx.createImageData(color.width, color.height), q = dl.data;
+        for (let i = 0; i < p.length; i += 4) {
+          const mx = Math.max(p[i], p[i + 1], p[i + 2]), mn = Math.min(p[i], p[i + 1], p[i + 2]), lum = (p[i] + p[i + 1] + p[i + 2]) / 3;
+          p[i + 3] = Math.round(Math.min(1, Math.max((255 - mn) / 60, (mx - mn) / 40)) * 255);   // blanco → transparente
+          const tinta = lum < 150 ? Math.min(1, (150 - lum) / 70) : 0;                          // solo los trazos oscuros, para el boceto
+          q[i] = 74; q[i + 1] = 37; q[i + 2] = 86; q[i + 3] = Math.round(tinta * 200);
+        }
+        cx.putImageData(d, 0, 0); lx.putImageData(dl, 0, 0);
+        const ctx = lienzo.getContext('2d'), mascara = mk(), mctx = mascara.getContext('2d');
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { ctx.clearRect(0, 0, lienzo.width, lienzo.height); ctx.drawImage(color, 0, 0); lapiz.style.opacity = 0; return; }
+        const pasadas = [{ capa: lineas, ms: 1500, ancho: .07 }, { capa: color, ms: 1300, ancho: .11 }];
+        let n = 0, t0 = performance.now(), hechoLineas = false, prev = null;
+        // el lápiz va de lado a lado bajando fila por fila (en zigzag)
+        const zig = (u, filas) => { const f = Math.min(filas - 1, Math.floor(u * filas)), v = u * filas - f; return [f % 2 ? 1 - v : v, (f + .5) / filas]; };
+        const paso = ahora => {
+          if (yo !== dibujo) return;
+          const ps = pasadas[n], u = Math.min(1, (ahora - t0) / ps.ms), [x, y] = zig(u, Math.round(1 / ps.ancho)), X = x * lienzo.width, Y = y * lienzo.height;
+          mctx.lineCap = 'round'; mctx.lineWidth = lienzo.height * ps.ancho * 1.6; mctx.strokeStyle = '#000';
+          if (prev) { mctx.beginPath(); mctx.moveTo(prev[0], prev[1]); mctx.lineTo(X, Y); mctx.stroke(); } prev = [X, Y];
+          ctx.clearRect(0, 0, lienzo.width, lienzo.height);
+          if (hechoLineas) ctx.drawImage(lineas, 0, 0);
+          const tmp = mk(), tx = tmp.getContext('2d'); tx.drawImage(mascara, 0, 0); tx.globalCompositeOperation = 'source-in'; tx.drawImage(ps.capa, 0, 0); ctx.drawImage(tmp, 0, 0);
+          lapiz.style.opacity = 1; lapiz.style.transform = `translate(${(lienzo.offsetLeft - w / 2 + x * w).toFixed(1)}px, ${(lienzo.offsetTop - h / 2 + y * h).toFixed(1)}px)`;
+          if (u < 1) { requestAnimationFrame(paso); return; }
+          if (n === 0) { hechoLineas = true; n = 1; t0 = performance.now(); mctx.clearRect(0, 0, mascara.width, mascara.height); prev = null; requestAnimationFrame(paso); return; }
+          ctx.clearRect(0, 0, lienzo.width, lienzo.height); ctx.drawImage(color, 0, 0); lapiz.style.opacity = 0;
+        };
+        requestAnimationFrame(paso);
+      };
+      img.src = src;
+    }
     const destacar = b => {
       if (!b) return; elegida = b;
       const im = b.querySelector('img'), alt = im.alt || '', corte = alt.indexOf('. ');
-      cImg.src = im.src; cImg.alt = alt;
+      cImg.src = im.src; cImg.alt = alt; dibujar(im.src, alt);
       cTit.textContent = b.querySelector('.obra-nombre')?.textContent || alt.slice(0, corte);
       cTxt.textContent = corte >= 0 ? alt.slice(corte + 2) : '';
       $$('.obra', rejilla).forEach(o => o.classList.toggle('elegida', o === b));
@@ -635,7 +742,7 @@
     rejilla.addEventListener('click', e => { const b = e.target.closest('.obra'); if (!b || b._directo) return; e.stopImmediatePropagation(); destacar(b); }, true);
     const ampliar = () => { if (!elegida) return; elegida._directo = true; elegida.click(); elegida._directo = false; };
     $('.ley-ver', cuadro).addEventListener('click', ampliar); cImg.addEventListener('click', ampliar);
-    cImg.addEventListener('contextmenu', e => e.preventDefault());
+    cImg.addEventListener('contextmenu', e => e.preventDefault()); lienzo.addEventListener('click', ampliar);
     // al cambiar el filtro, el marco muestra la primera obra del filtro
     new MutationObserver(() => destacar(rejilla.firstElementChild)).observe(rejilla, { childList: true });
     destacar(rejilla.firstElementChild);
@@ -660,8 +767,8 @@
   }, 180);
 
   // ---------------------------------------------------------- índice lateral: una estrella por escena
-  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'Mi perfil', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos de salud', trayectoria: 'Trayectoria', salud: 'Matrona', matrona: 'Matrona hoy', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
-  const SECCION = ['inicio', 'estudio', 'trayectoria', 'desarrollo', 'diseno', 'datos', 'formacion', 'arcade', 'contacto'];
+  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'Mi perfil', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Mi trazo', historia: 'Por qué dibuja', datos: 'Datos de salud', trayectoria: 'Trayectoria', salud: 'Matrona', matrona: 'Matrona hoy', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
+  const SECCION = ['inicio', 'estudio', 'trayectoria', 'desarrollo', 'diseno', 'datos', 'arcade', 'contacto'];
   const indice = document.createElement('nav'); indice.className = 'escenas-indice'; indice.setAttribute('aria-label', 'Escenas');
   E.forEach((e, i) => {
     const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', NOMBRE[e.id]); b.dataset.nombre = NOMBRE[e.id];
@@ -682,7 +789,7 @@
     const disp = e.ev.clientHeight - 70, alto = caja.scrollHeight;   // margen para la pista de la rueda
     // la tienda no se achica: se recorre con la rueda (sus objetos necesitan su tamaño real para usarse)
     // el escritorio de Datos y el diario mural de Trayectoria van a todo el ancho y no se achican: si no cabe, se recorre hacia abajo
-    if (['datos', 'trayectoria', 'matrona'].includes(e.id)) { if (alto > e.ev.clientHeight + 2) e.ev.classList.add('desborda'); return; }
+    if (['datos', 'trayectoria', 'matrona', 'arcade'].includes(e.id)) { if (alto > e.ev.clientHeight + 2) e.ev.classList.add('desborda'); return; }
     if (alto > disp) {
       const k = Math.max(.62, disp / alto); caja.style.zoom = k.toFixed(3);
       if (caja.scrollHeight * k > disp + 2) e.ev.classList.add('desborda');
@@ -779,6 +886,7 @@
     if (tlEntrada) { tlEntrada.progress(1); limpiar(tlEntrada); tlEntrada = null; }
     actual = i; paso = 0; ocupado = false; mostrar(E[i]);
     if (E[i].marcos) marcar(E[i], 0);
+    E[i].listo?.(E[i].ev);
     raiz.classList.toggle('escena-final', E[i].id === 'contacto');
   }
   window.MCEEscenas = { irA: n => irA(typeof n === 'string' ? E.findIndex(e => e.id === n) : n), avanzar, saltar: n => saltar(typeof n === 'string' ? E.findIndex(e => e.id === n) : n) };
@@ -810,7 +918,7 @@
     if (e.key === 'Home') { e.preventDefault(); irA(0); }
     if (e.key === 'End') { e.preventDefault(); irA(E.length - 1); }
   });
-  const DESTINO = { inicio: 'inicio', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'diseno', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'trayectoria', 'matrona-hoy': 'matrona', formacion: 'formacion', arcade: 'arcade', contacto: 'contacto' };
+  const DESTINO = { inicio: 'inicio', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'diseno', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'trayectoria', 'matrona-hoy': 'matrona', formacion: 'equipo', arcade: 'arcade', contacto: 'contacto' };
   const indiceDe = id => E.findIndex(e => e.id === id);
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]'); if (!a || !site.contains(a)) return;

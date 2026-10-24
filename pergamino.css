@@ -1046,3 +1046,179 @@ html.escenas .sala-tele.reproduciendo .sala-tele-play, html.escenas .sala-tele.l
 .sala-pantalla iframe { position: relative; z-index: 1; background: transparent !important; opacity: 0; transition: opacity .35s; }
 .sala-pantalla iframe.cargada { opacity: 1; background: #fff !important; }
 @keyframes sala-latido { 50% { opacity: .45; } }
+
+/* el detalle de cada credencial: se despliega bajo su nombre al pasar el mouse o tocarla (antes era la escena Formación) */
+.perfil-medalla { position: relative; cursor: pointer; outline: none; }
+.perfil-medalla-detalle { position: absolute; right: calc(100% + 10px); top: 50%; z-index: 8; width: 250px; padding: 10px 12px; border-radius: 12px; background: #fff8fc; border: 1px solid #e9c3d8; box-shadow: 0 0 0 3px rgba(201, 150, 58, .35), 0 10px 24px rgba(40, 14, 56, .28); opacity: 0; visibility: hidden; transform: translate(8px, -50%); transition: opacity .2s, transform .2s, visibility .2s; }
+.perfil-medalla-detalle::after { content: ""; position: absolute; right: -7px; top: 50%; width: 12px; height: 12px; background: #fff8fc; border-right: 1px solid #e9c3d8; border-top: 1px solid #e9c3d8; transform: translateY(-50%) rotate(45deg); }
+.perfil-medalla:hover .perfil-medalla-detalle, .perfil-medalla:focus-visible .perfil-medalla-detalle, .perfil-medalla.abierta .perfil-medalla-detalle { opacity: 1; visibility: visible; transform: translate(0, -50%); }
+.perfil-medalla-detalle p { margin: 0; font: 600 13px/1.45 var(--sans, sans-serif); color: #4a2556; }
+.perfil-verificar { display: inline-block; margin-top: 6px; font: 700 12.5px var(--sans, sans-serif); color: #b2477f; text-decoration: none; }
+.perfil-verificar:hover { text-decoration: underline; }
+.perfil-medalla:hover img, .perfil-medalla.abierta img { filter: drop-shadow(0 0 10px rgba(245, 168, 207, .9)); }
+.perfil-medalla-detalle.con-cursos { width: 330px; }
+.perfil-cursos { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 3px; }
+.perfil-cursos li { font: 600 12px/1.3 var(--sans, sans-serif); color: #8a6f96; }
+.perfil-cursos a { color: #4a2556; text-decoration: none; }
+.perfil-cursos a:hover { color: #b2477f; text-decoration: underline; }
+
+/* ================================================================ Mi trazo: el cuaderno de bocetos (cuaderno.webp, 1575 × 905)
+   hoja izquierda: la obra elegida con su nombre · hoja derecha: los filtros como pestañas y los dibujitos pegados con cinta */
+html.escenas .ev-leyendas .leyendas-cabeza { display: flex; flex-direction: column; align-items: center; gap: 2px; margin: 0 0 6px; text-align: center; }
+html.escenas .ev-leyendas .leyendas-cabeza .chip { background: none !important; border: 0 !important; padding: 0 !important; font: 700 .78rem var(--sans, sans-serif); letter-spacing: .16em; color: #b0437a; }
+html.escenas .ev-leyendas .leyendas-cabeza h3 { margin: 0; font: italic 600 clamp(1.3rem, 2.2vw, 1.8rem) "Cormorant Garamond", Georgia, serif; color: #4a2556; text-shadow: 0 0 8px #fff, 0 0 16px rgba(255, 255, 255, .9); }
+html[data-tema="oscuro"].escenas .ev-leyendas .leyendas-cabeza h3 { color: #fbe6f3; text-shadow: 0 0 10px rgba(40, 14, 56, .9); }
+html.escenas .ev-leyendas .ley-museo { position: relative; display: block !important; width: min(100%, calc((100vh - 190px) * 1575 / 905)); aspect-ratio: 1575 / 905; margin: 0 auto; container-type: inline-size;
+  background: url("assets/pergamino/cuaderno.webp?v=1") center / 100% 100% no-repeat !important; filter: drop-shadow(0 14px 26px rgba(20, 8, 40, .4)); }
+/* hoja izquierda */
+html.escenas .ev-leyendas .ley-cuadro { position: absolute; left: 6.2%; top: 9.5%; width: 41%; height: 72%; display: grid; grid-template-rows: 1fr auto; gap: 1.2cqw; }
+html.escenas .ev-leyendas .ley-marco { min-height: 0; display: grid; place-items: center; padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; }
+html.escenas .ev-leyendas .ley-marco img { max-width: 100%; max-height: 100%; object-fit: contain; background: #fff; padding: .5cqw; border-radius: 2px; box-shadow: 0 .3cqw .9cqw rgba(106, 44, 85, .22); transform: rotate(-1deg); cursor: zoom-in; }
+html.escenas .ev-leyendas .ley-cuadro figcaption b { font: 700 1.55cqw "Cinzel", serif !important; color: #4a2556 !important; }
+html.escenas .ev-leyendas .ley-cuadro figcaption span { font: italic 600 1.35cqw/1.3 "Cormorant Garamond", Georgia, serif !important; color: #6a3a78 !important; min-height: 0 !important; }
+html.escenas .ev-leyendas .ley-cuadro .ley-ver { font-size: .9cqw !important; padding: .45cqw 1.1cqw !important; background: linear-gradient(135deg, #fbd3e6, #e3d4fb) !important; border: 1px solid #e6b6d0 !important; color: #6a2c55 !important; border-radius: 999px !important; }
+/* hoja derecha */
+html.escenas .ev-leyendas .ley-muro { position: absolute; left: 52.6%; top: 8.6%; width: 41.4%; height: 74%; display: flex; flex-direction: column; gap: 1cqw; min-height: 0; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+html.escenas .ev-leyendas .leyendas-filtros { flex: none; display: flex; justify-content: center; gap: .6cqw; margin: 0 !important; }
+html.escenas .ev-leyendas .leyendas-filtros button { padding: .35cqw 1.1cqw !important; font: 700 .95cqw var(--sans, sans-serif) !important; border-radius: 999px !important; border: 1px solid #e6c6dc !important; background: #fff !important; color: #7a4f84 !important; box-shadow: none !important; }
+html.escenas .ev-leyendas .leyendas-filtros button[aria-pressed="true"] { background: linear-gradient(135deg, #f6b9d6, #cdb6f2) !important; color: #4a2556 !important; border-color: transparent !important; }
+html.escenas .ev-leyendas .leyendas-grid { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d9a8c8 transparent; display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 1.6cqw 1.2cqw !important; padding: 1cqw .6cqw 1cqw !important; align-content: start; max-height: none !important; }
+html.escenas .ev-leyendas .obra { position: relative; padding: .35cqw .35cqw 0 !important; background: #fff !important; border: 0 !important; border-radius: 2px !important; box-shadow: 0 .2cqw .6cqw rgba(106, 44, 85, .2) !important; transform: rotate(var(--giro, -1.2deg)); transition: transform .2s, box-shadow .2s; }
+html.escenas .ev-leyendas .obra:nth-child(3n+2) { --giro: 1.1deg; } html.escenas .ev-leyendas .obra:nth-child(3n) { --giro: -.4deg; }
+html.escenas .ev-leyendas .obra:hover, html.escenas .ev-leyendas .obra.elegida { transform: rotate(0) scale(1.04); box-shadow: 0 0 0 .2cqw #f5a8cf, 0 .4cqw 1cqw rgba(106, 44, 85, .3) !important; }
+html.escenas .ev-leyendas .obra::before { content: ""; position: absolute; left: 50%; top: -.7cqw; width: 42%; height: 1.2cqw; transform: translateX(-50%) rotate(-3deg); z-index: 2; background: repeating-linear-gradient(45deg, rgba(245, 168, 207, .8) 0 .4cqw, rgba(255, 222, 238, .8) .4cqw .8cqw); }
+html.escenas .ev-leyendas .obra:nth-child(even)::before { background: repeating-linear-gradient(45deg, rgba(200, 180, 245, .8) 0 .4cqw, rgba(236, 228, 255, .8) .4cqw .8cqw); }
+html.escenas .ev-leyendas .obra img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+html.escenas .ev-leyendas .obra-nombre { display: block; padding: .3cqw 0 .35cqw; font: italic 700 .95cqw/1.15 "Cormorant Garamond", Georgia, serif !important; color: #4a2556 !important; text-align: center; background: none !important; }
+html.escenas .ev-leyendas .obra-escudo { display: none !important; }
+html.escenas .ev-leyendas .leyendas-hojas { display: none !important; }
+html.escenas .ev-leyendas .leyendas-aviso { margin: 6px auto 0 !important; max-width: 900px; font-size: .7rem !important; text-align: center; opacity: .85; }
+/* el cuaderno va en su propia capa (una regla anterior le quita el fondo a .ley-museo) */
+html.escenas .ev-leyendas .ley-museo::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: url("assets/pergamino/cuaderno.webp?v=1") center / 100% 100% no-repeat; }
+html.escenas .ev-leyendas .ley-cuadro, html.escenas .ev-leyendas .ley-muro { z-index: 1; }
+html.escenas .ev-leyendas .ley-cuadro figcaption { gap: .3cqw !important; }
+html.escenas .ev-leyendas .ley-cuadro figcaption { display: flex !important; flex-direction: column; align-items: center; }
+html.escenas .ev-leyendas .ley-cuadro figcaption b { display: block !important; visibility: visible !important; opacity: 1 !important; }
+html.escenas .ev-leyendas .ley-cuadro { grid-template-rows: minmax(0, 1fr) auto !important; }
+html.escenas .ev-leyendas .ley-marco { height: 100%; overflow: visible; }
+html.escenas .ev-leyendas .ley-marco img { max-height: calc(100% - 1cqw) !important; height: auto; width: auto; }
+html.escenas .ev-leyendas .ley-marco { position: relative !important; height: auto !important; min-height: 0 !important; overflow: visible !important; display: block !important; }
+html.escenas .ev-leyendas .ley-marco img { position: absolute !important; left: 50%; top: 50%; translate: -50% -50%; max-width: 96% !important; max-height: 96% !important; width: auto !important; height: auto !important; }
+/* la obra dibujada sobre la hoja (lienzo), con el lápiz que la recorre; la imagen queda oculta (sirve para el visor) */
+html.escenas .ev-leyendas .ley-marco > img { display: none !important; }
+html.escenas .ev-leyendas .ley-lienzo { position: absolute; left: 50%; top: 50%; translate: -50% -50%; cursor: zoom-in; }
+html.escenas .ev-leyendas .ley-lapiz { position: absolute; left: 50%; top: 50%; width: 3.4cqw; height: 3.4cqw; margin: -3.1cqw 0 0 -.3cqw; pointer-events: none; opacity: 0; transition: opacity .3s; filter: drop-shadow(0 .2cqw .3cqw rgba(74, 37, 86, .35)); z-index: 2; }
+html.escenas .ev-leyendas .ley-lapiz svg { width: 100%; height: 100%; display: block; }
+html.escenas .ev-leyendas .ley-lapiz { left: 0 !important; top: 0 !important; }
+html.escenas .ev-contacto .contactos { display: grid !important; grid-template-columns: repeat(6, minmax(0, 1fr)) !important; gap: 14px !important; max-width: 1180px; margin: 0 auto; }
+
+/* ---------------------------------------------------------------- contacto: seis medallones iguales en una fila pareja (ícono, nombre en una línea y dato) */
+html.escenas .ev-contacto .contactos { display: grid !important; grid-template-columns: repeat(6, minmax(0, 1fr)) !important; gap: 10px !important; max-width: 1240px; margin: 0 auto; align-items: start !important; }
+html.escenas .ev-contacto .contacto { display: grid !important; grid-template-rows: 112px 24px 20px; justify-items: center; align-items: center; gap: 4px; padding: 4px !important; background: none !important; border: 0 !important; box-shadow: none !important; text-decoration: none; transition: transform .2s; }
+html.escenas .ev-contacto .contacto:hover { transform: translateY(-4px); }
+html.escenas .ev-contacto .contacto-ico { width: 112px; height: 112px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(74, 37, 86, .25)); transition: filter .2s; }
+html.escenas .ev-contacto .contacto:hover .contacto-ico { filter: drop-shadow(0 0 14px rgba(245, 168, 207, .95)); }
+html.escenas .ev-contacto .contacto b { white-space: nowrap; font: 700 1rem var(--titulo, "Cinzel", serif) !important; color: #4a2556 !important; }
+html.escenas .ev-contacto .contacto small { white-space: nowrap; font: 600 .8rem var(--sans, sans-serif) !important; color: #6a3a78 !important; }
+html[data-tema="oscuro"].escenas .ev-contacto .contacto b { color: #fbe6f3 !important; }
+html[data-tema="oscuro"].escenas .ev-contacto .contacto small { color: #e6d3f2 !important; }
+/* dos filas de tres, medallones grandes e iguales */
+html.escenas .ev-contacto .contactos { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; max-width: 900px !important; row-gap: 18px !important; column-gap: 30px !important; }
+html.escenas .ev-contacto .contacto { grid-template-rows: 150px 26px 20px !important; }
+html.escenas .ev-contacto .contacto-ico { width: 150px !important; height: 150px !important; }
+
+/* ================================================================ Arcade: cada juego dentro de la pantalla de su máquina (vista de cerca y grande)
+   maquina-1 (749 × 1412) Bloques · maquina-2 (743 × 1229) Gemas · maquina-3 (1130 × 1061) Constelaciones
+   los puntos y el botón principal en el tablero de controles; las instrucciones en un pergamino al lado */
+html.escenas .ev-arcade .papel-app.app-juego, html.escenas .ev-arcade .papel-app.app-juego.activo { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; padding: 0 !important; filter: none !important; }
+html.escenas .ev-arcade .papel-app.app-juego::before, html.escenas .ev-arcade .papel-app.app-juego::after { display: none !important; }
+html.escenas .ev-arcade .sala-juegos.abierta ~ *, html.escenas .ev-arcade .arcade-portada { display: none !important; }
+html.escenas .maq-escena { display: flex; align-items: center; justify-content: center; gap: 28px; }
+html.escenas .maq-juego { --h: calc(100vh - 205px); position: relative; flex: none; height: var(--h); container-type: size; background: center / 100% 100% no-repeat; filter: drop-shadow(0 16px 26px rgba(20, 8, 40, .45)); }
+html.escenas .maq-1 { aspect-ratio: 749 / 1412; background-image: url("assets/pergamino/maquina-1.webp?v=1"); }
+html.escenas .maq-2 { aspect-ratio: 743 / 1229; background-image: url("assets/pergamino/maquina-2.webp?v=1"); }
+html.escenas .maq-3 { --h: calc(100vh - 215px); aspect-ratio: 1130 / 1061; background-image: url("assets/pergamino/maquina-3.webp?v=1"); }
+/* la pantalla: el juego ocupa todo el hueco */
+html.escenas .maq-pantalla { position: absolute; display: grid; place-items: center; overflow: hidden; background: #1c1230; border-radius: 1.2cqw; }
+html.escenas .maq-1 .maq-pantalla { left: 27.1%; top: 20.11%; width: 45.93%; height: 42.07%; }
+html.escenas .maq-2 .maq-pantalla { left: 17.9%; top: 26.12%; width: 64.33%; height: 34.34%; }
+html.escenas .maq-3 .maq-pantalla { left: 17.17%; top: 24.22%; width: 65.75%; height: 38.93%; }
+/* Bloques: el tablero alto llena la pantalla */
+html.escenas .maq-1 .tetris-frame { position: relative; height: 100%; width: auto; aspect-ratio: 1 / 2; margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; }
+html.escenas .maq-1 .tetris-frame canvas { width: 100% !important; height: 100% !important; display: block; border-radius: 0 !important; }
+html.escenas .maq-1 .tetris-crown { display: none !important; }
+/* Gemas: la grilla cuadrada */
+html.escenas .maq-2 .match-grid { position: static !important; translate: none !important; height: 96% !important; width: auto !important; aspect-ratio: 1; margin: 0 !important; padding: 1.2cqh !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; background: #1a1838 !important; }
+/* Constelaciones: el cielo llena la pantalla ancha */
+html.escenas .maq-3 .constellation-board { position: relative !important; width: 100% !important; height: 100% !important; aspect-ratio: auto !important; margin: 0 !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+/* el tablero de controles: puntos y botón en una fila */
+html.escenas .maq-tablero { position: absolute; display: flex; align-items: center; justify-content: center; gap: 2.4cqw; }
+html.escenas .maq-1 .maq-tablero { left: 7%; width: 86%; top: 63.4%; height: 6.4%; }
+html.escenas .maq-2 .maq-tablero { left: 5%; width: 90%; top: 68.4%; height: 7.2%; }
+html.escenas .maq-3 .maq-tablero { left: 6%; width: 88%; top: 65.2%; height: 8.2%; }
+html.escenas .maq-tablero .score-row { display: flex !important; flex-direction: column; align-items: center; gap: 0; margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
+html.escenas .maq-tablero .score-row span { font: 700 1.5cqh/1 var(--sans, sans-serif) !important; letter-spacing: .08em; text-transform: uppercase; color: #7a4f84 !important; }
+html.escenas .maq-tablero .score-row b { font: 700 2.4cqh/1.05 "Cinzel", serif !important; color: #4a2556 !important; }
+html.escenas .maq-3 .maq-tablero .score-row span { color: #e8d6f7 !important; } html.escenas .maq-3 .maq-tablero .score-row b { color: #fff3c9 !important; }
+html.escenas .maq-tablero .btn { padding: .6cqh 1.6cqh !important; font: 700 1.6cqh var(--sans, sans-serif) !important; border-radius: 999px !important; white-space: nowrap; background: linear-gradient(135deg, #f6b9d6, #cdb6f2) !important; color: #4a2556 !important; border: 1px solid #fff !important; box-shadow: 0 .3cqh 0 rgba(106, 44, 85, .3) !important; }
+/* el pergamino al lado con las instrucciones */
+html.escenas .juego-lado { flex: none; width: min(360px, 30vw); max-height: calc(100vh - 205px); box-sizing: border-box; padding: 64px 40px 58px; overflow: auto; scrollbar-width: thin;
+  background: url("assets/pergamino/pergamino.webp?v=2") center / 100% 100% no-repeat; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .35)); color: #4a2556; font-size: .82rem; }
+html.escenas .juego-lado .juego-acciones { display: flex !important; justify-content: center; margin: 0 0 8px !important; }
+html.escenas .juego-lado .juego-empezar, html.escenas .juego-lado .juego-volver { display: none !important; }
+html.escenas .juego-lado .juego-salon { font-size: .75rem !important; padding: 5px 12px !important; background: #fff6fb !important; color: #6a2c55 !important; border: 1px solid #e6c6dc !important; box-shadow: none !important; }
+html.escenas .juego-lado :is(.game-side, .gema-intro, .estrellas-intro, .gem-welcome, .gem-lessons, .atlas-heading, .star-lesson, .special-guide) { background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; margin: 0 0 8px !important; }
+html.escenas .juego-lado h3 { margin: 0 0 6px !important; font: 700 1.05rem "Cinzel", serif !important; color: #4a2556 !important; text-align: center; }
+html.escenas .juego-lado p, html.escenas .juego-lado li, html.escenas .juego-lado span, html.escenas .juego-lado label { font-size: .8rem !important; line-height: 1.4 !important; color: #4a3556 !important; }
+html.escenas .juego-lado .chip { display: block; text-align: center; background: none !important; border: 0 !important; padding: 0 !important; font: 700 .68rem var(--sans, sans-serif) !important; letter-spacing: .12em; color: #b0437a !important; }
+html.escenas .juego-lado .gem-lessons { display: flex !important; flex-wrap: wrap; gap: 4px; }
+html.escenas .juego-lado .gem-lessons button, html.escenas .juego-lado .btn { font-size: .72rem !important; padding: 4px 9px !important; }
+html.escenas .juego-lado .atlas-gallery { display: grid !important; grid-template-columns: repeat(5, 1fr) !important; gap: 4px !important; }
+html.escenas .juego-lado .atlas-gallery > * { font-size: .6rem !important; padding: 2px !important; min-height: 0 !important; }
+html.escenas .juego-lado .special-guide img { width: 26px; height: 26px; }
+/* al jugar, la máquina se agranda a toda la pantalla (sin el título del capítulo) */
+html.escenas .ev-arcade.jugando-arcade .section-head { display: none !important; }
+html.escenas .ev-arcade.jugando-arcade .maq-juego { --h: calc(100vh - 118px); }
+html.escenas .ev-arcade.jugando-arcade .maq-3 { --h: calc(100vh - 150px); }
+html.escenas .ev-arcade.jugando-arcade .juego-lado { max-height: calc(100vh - 118px); }
+/* la grilla de gemas llena la pantalla entera */
+html.escenas .maq-2 .match-grid { width: 100% !important; height: 100% !important; aspect-ratio: auto !important; grid-auto-rows: 1fr !important; align-content: stretch !important; box-sizing: border-box; }
+/* el tablero de la máquina de estrellas es claro: puntos en tinta oscura */
+html.escenas .maq-3 .maq-tablero .score-row span { color: #7a4f84 !important; } html.escenas .maq-3 .maq-tablero .score-row b { color: #2a1a52 !important; }
+/* el pergamino: el texto dentro del papel (márgenes medidos en el dibujo) */
+html.escenas .juego-lado { width: min(400px, 32vw); container-type: inline-size; padding: 17cqw 15cqw 15cqw !important; }
+html.escenas .juego-lado > * { max-width: 100%; }
+html.escenas .juego-lado .atlas-gallery { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)) !important; }
+html.escenas .juego-lado .atlas-gallery > * { aspect-ratio: 1; }
+html.escenas .juego-lado .gem-welcome { display: block !important; }
+html.escenas .juego-lado .gem-welcome > * { width: auto !important; }
+/* la pantalla mide su hueco: la grilla de gemas es un cuadrado que cabe entero */
+html.escenas .maq-pantalla { container-type: size; }
+html.escenas .maq-2 .match-grid { width: min(100cqw, 100cqh) !important; height: min(100cqw, 100cqh) !important; min-height: 0 !important; grid-template-rows: repeat(7, 1fr) !important; grid-auto-rows: auto !important; gap: 1.2cqh !important; padding: 2cqh !important; }
+html.escenas .maq-2 .match-grid > * { aspect-ratio: auto !important; min-height: 0 !important; height: auto !important; width: auto !important; }
+/* el pergamino: márgenes fijos dentro del papel */
+html.escenas .juego-lado { width: 380px !important; padding: 74px 58px 66px !important; container-type: normal !important; }
+html.escenas .juego-lado { height: min(640px, calc(100vh - 140px)) !important; max-height: none !important; overflow: visible !important; display: flex; flex-direction: column; padding: 70px 66px 74px !important; }
+html.escenas .juego-lado-texto { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d9a8c8 transparent; padding-right: 4px;
+  -webkit-mask: linear-gradient(180deg, #000 calc(100% - 18px), transparent); mask: linear-gradient(180deg, #000 calc(100% - 18px), transparent); }
+
+/* ---------------------------------------------------------------- máquinas más grandes: de cerca, se ven el techo, la pantalla y el tablero;
+   la base queda bajo el borde de la pantalla (como estar de pie frente a la máquina) */
+html.escenas .ev-arcade.jugando-arcade { overflow: hidden !important; }
+html.escenas .ev-arcade.jugando-arcade .maq-escena { align-items: flex-start; padding-top: 6px; }
+html.escenas .ev-arcade.jugando-arcade .maq-1 { --h: calc((100vh - 90px) / .72); }
+html.escenas .ev-arcade.jugando-arcade .maq-2 { --h: calc((100vh - 90px) / .78); }
+html.escenas .ev-arcade.jugando-arcade .maq-3 { --h: calc((100vh - 90px) / .76); }
+html.escenas .ev-arcade.jugando-arcade .maq-juego { max-width: 66vw; }
+html.escenas .ev-arcade.jugando-arcade .juego-lado { align-self: center; }
+/* las gemas: brillantes y grandes sobre el vidrio oscuro de la pantalla */
+html.escenas .maq-2 .gem { background: radial-gradient(circle at 50% 38%, rgba(255, 255, 255, .16), rgba(120, 90, 190, .1) 70%) !important; border: 0 !important; border-radius: 22% !important; box-shadow: inset 0 0 0 1px rgba(243, 212, 138, .28) !important; }
+html.escenas .maq-2 .gem .gema-arte, html.escenas .maq-2 .gem .special-art { width: 96%; height: 96%; filter: saturate(1.25) brightness(1.06) drop-shadow(0 0 4px var(--gem, #f5a8cf)); }
+html.escenas .maq-2 .gem:hover { background: rgba(255, 255, 255, .22) !important; }
+html.escenas .maq-2 .gem.selected { box-shadow: 0 0 0 2px #fff3c9, 0 0 14px #f5a8cf !important; background: rgba(255, 255, 255, .28) !important; }
+html.escenas .ev-arcade.jugando-arcade.desborda { overflow: hidden !important; }
+html.escenas .ev-arcade.jugando-arcade .maq-3 { --h: calc((100vh - 90px) / .84); }
+html.escenas .ev-arcade.jugando-arcade .maq-1 { --h: calc((100vh - 90px) / .74); }
+html.escenas .ev-arcade.jugando-arcade .maq-juego { max-width: none !important; }
+html.escenas .ev-arcade.jugando-arcade .maq-3 { --h: calc((100vh - 90px) / .9); }
+html.escenas .maq-1 .tetris-frame canvas { border: 0 !important; outline: 0 !important; box-shadow: none !important; }
