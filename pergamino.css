@@ -1222,3 +1222,7 @@ html.escenas .ev-arcade.jugando-arcade .maq-1 { --h: calc((100vh - 90px) / .74);
 html.escenas .ev-arcade.jugando-arcade .maq-juego { max-width: none !important; }
 html.escenas .ev-arcade.jugando-arcade .maq-3 { --h: calc((100vh - 90px) / .9); }
 html.escenas .maq-1 .tetris-frame canvas { border: 0 !important; outline: 0 !important; box-shadow: none !important; }
+
+/* ---------------------------------------------------------------- pantallas grandes: las escenas crecen con la pantalla (no quedan chicas al centro) */
+@media (min-width: 1900px) and (min-height: 1000px) { html.escenas:not(.escenas-pila) .ev-caja { zoom: 1.2; } }
+@media (min-width: 2300px) and (min-height: 1250px) { html.escenas:not(.escenas-pila) .ev-caja { zoom: 1.4; } }

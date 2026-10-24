@@ -14,11 +14,13 @@
   const raiz = document.documentElement;
   const apto = matchMedia('(pointer: fine)').matches && innerWidth >= 1000 && !matchMedia('(prefers-reduced-motion: reduce)').matches
     && !/[?&]normal\b/.test(location.search) && window.gsap;
-  if (!apto) return;
+  // en celular y tableta: las mismas escenas dibujadas, una debajo de otra, y se recorren bajando con el dedo («pila»)
+  const pila = !apto && !/[?&]normal\b/.test(location.search) && !!window.gsap;
+  if (!apto && !pila) return;
   const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const main = $('#site main'), site = $('#site'), reino = $('#reino');
   if (!main || !site) return;
-  raiz.classList.add('escenas');
+  raiz.classList.add('escenas'); if (pila) raiz.classList.add('escenas-pila');
   // los títulos van en una sola línea centrada: el salto de línea pasa a ser un espacio
   $$('.section-head h2 br').forEach(b => b.replaceWith(' '));
   // títulos cortos, como en kdelrio
@@ -77,7 +79,7 @@
   }));
   const rolTit = document.createElement('p'); rolTit.className = 'estudio-rol'; rolTit.textContent = 'Lo que hacemos';
   E.push({
-    id: 'estudio', ev: crear('ev-estudio', cabeza(est), div('estudio-dos estudio-tres', div('estudio-mundo-caja', mundo), marca, div('estudio-lista', rolTit, servicios))),
+    id: 'estudio', hada: 'Studios Conari', ev: crear('ev-estudio', cabeza(est), div('estudio-dos estudio-tres', div('estudio-mundo-caja', mundo), marca, div('estudio-lista', rolTit, servicios))),
     entrar(tl, ev) {
       sube(tl, $$('.section-head > div > *', ev));
       sube(tl, $$('.estudio-marca > *', ev), '-=.2', { stagger: .08 });
@@ -293,7 +295,7 @@
   // ---------------------------------------------------------- 9. datos: los cinco tableros de salud, en su marco de papel
   const dat = '#datos';
   E.push({
-    id: 'datos', ev: crear('ev-datos', cabeza(dat), papel('app-tableros activo', $('#tableros'))),
+    id: 'datos', hada: 'Datos de salud', ev: crear('ev-datos', cabeza(dat), papel('app-tableros activo', $('#tableros'))),
     entrar(tl, ev) {
       sube(tl, $$('.section-head > *', ev));
       crece(tl, $('.app-tableros', ev), '-=.2', { duration: .6 });
@@ -486,7 +488,9 @@
   const juegos = {
     bloques: papel('app-juego app-bloques jugando', div('maq-escena',
       maquina(1, $('#game-tetris .tetris-frame'), fila('#play-score'), fila('#play-lines'), fila('#play-level'), $('#play-start')),
-      ladoJuego($('#game-tetris .game-side'), $('#game-tetris .control-magico')))),
+      // el control táctil (mover, girar, bajar y soltar) va junto a la máquina: en el teléfono queda bajo la pantalla
+      $('#game-tetris .control-magico'),
+      ladoJuego($('#game-tetris .game-side')))),
     gemas: papel('app-juego app-gemas jugando', div('maq-escena',
       maquina(2, $('#match-grid'), fila('#match-score'), $('#match-reset')),
       ladoJuego($('#gema-intro'), $('#gema-lado')))),
@@ -519,6 +523,12 @@
     requestAnimationFrame(() => ajustar(E[actual]));
   };
   salon.addEventListener('click', e => { const m = e.target.closest('.maquina'); if (m) { maqTocada = m; abrirJuego(m.dataset.juego); } });
+  // en el teléfono el juego se abre a pantalla completa: un botón fijo arriba vuelve al salón
+  if (pila) {
+    const volver = document.createElement('button'); volver.type = 'button'; volver.className = 'btn arcade-volver-fijo'; volver.textContent = '← Volver al salón'; volver.hidden = true; document.body.append(volver);
+    volver.addEventListener('click', () => { $$('.colgar-app.jugando', sala).forEach(j => j.classList.remove('jugando')); abrirJuego(null); });
+    new MutationObserver(() => { volver.hidden = !sala.classList.contains('abierta'); document.body.style.overflow = volver.hidden ? '' : 'hidden'; }).observe(sala, { attributes: true, attributeFilter: ['class'] });
+  }
   sala.addEventListener('click', e => { if (e.target.closest('.juego-salon')) { e.target.closest('.colgar-app').classList.remove('jugando'); abrirJuego(null); } });
   E.push({
     id: 'arcade', hada: 'Arcade mágico', ev: crear('ev-arcade', cabeza(arc), salon, sala),
@@ -528,7 +538,7 @@
   // ---------------------------------------------------------- 14. contacto
   const pie = $('#site > footer');
   E.push({
-    id: 'contacto', ev: crear('ev-contacto', $('#contacto'), pie, $('.nido-escena')),   // como en kdelrio: las crías esperan debajo del pie
+    id: 'contacto', hada: 'Contacto', ev: crear('ev-contacto', $('#contacto'), pie, $('.nido-escena')),   // como en kdelrio: las crías esperan debajo del pie
     entrar(tl, ev) {
       sube(tl, $('.section-head > *, .section-head > div > *', ev));
       sube(tl, $('.contacto', ev), '-=.2', { stagger: .08 });
@@ -687,12 +697,14 @@
     lapiz.innerHTML = '<svg viewBox="0 0 64 64"><path d="M50 4l10 10-34 34-14 4 4-14z" fill="#f6a9cc" stroke="#6a2c55" stroke-width="2"/><path d="M42 12l10 10" stroke="#6a2c55" stroke-width="2"/><path d="M50 4l10 10 3-3a3 3 0 0 0 0-4l-6-6a3 3 0 0 0-4 0z" fill="#d9b56a" stroke="#6a2c55" stroke-width="2"/><path d="M16 38l10 10-14 4z" fill="#fbe3c8" stroke="#6a2c55" stroke-width="2"/><path d="M12 52l-2 2 4-1z" fill="#4a2556"/></svg>';
     $('.ley-marco', cuadro).append(lienzo, lapiz);
     lienzo.addEventListener('contextmenu', e => e.preventDefault());
-    let dibujo = 0;
+    let dibujo = 0, pendiente = null;
+    // si la escena estaba escondida al elegir la obra, se dibuja apenas el marco tiene tamaño
+    new ResizeObserver(() => { if (pendiente && $('.ley-marco', cuadro).clientWidth) dibujar(...pendiente); }).observe($('.ley-marco', cuadro));
     function dibujar(src, alt) {
       const yo = ++dibujo, img = new Image();
       img.onload = () => {
         if (yo !== dibujo) return;
-        const marco = $('.ley-marco', cuadro), W = marco.clientWidth, H = marco.clientHeight; if (!W || !H) return;
+        const marco = $('.ley-marco', cuadro), W = marco.clientWidth, H = marco.clientHeight; if (!W || !H) { pendiente = [src, alt]; return; } pendiente = null;
         const k = Math.min(W * .96 / img.width, H * .96 / img.height), w = Math.round(img.width * k), h = Math.round(img.height * k), dpr = Math.min(2, devicePixelRatio || 1);
         lienzo.width = w * dpr; lienzo.height = h * dpr; lienzo.style.width = w + 'px'; lienzo.style.height = h + 'px'; lienzo.setAttribute('aria-label', alt);
         // el dibujo sin el blanco: cuanto más claro el píxel, más transparente (las líneas y el color quedan sobre el papel)
@@ -782,7 +794,7 @@
   // ---------------------------------------------------------- ajuste a la pantalla: si no cabe, se reduce; si aún no cabe, scroll interno
   const barra = () => { const t = $('.topbar', site); return t ? Math.round(t.getBoundingClientRect().bottom) : 70; };
   function ajustar(e) {
-    if (!e) return;
+    if (!e || pila) return;
     capa.style.top = barra() + 'px';
     const caja = e.ev.firstElementChild;
     caja.style.zoom = ''; e.ev.classList.remove('desborda');
@@ -895,7 +907,7 @@
   const bloqueada = () => site.getAttribute('aria-hidden') === 'true' || site.classList.contains('pintando') || document.body.classList.contains('bloqueado') || $('dialog[open]');
   let acumulado = 0, ultimaRueda = 0, gestoUsado = false;
   addEventListener('wheel', e => {
-    if (bloqueada()) return;
+    if (pila || bloqueada()) return;
     if (e.target.closest('select') || (e.target.closest('canvas') && document.activeElement === e.target.closest('canvas'))) return;   // jugando con foco, la rueda no cambia de escena
     const ev = E[actual].ev, ahora = performance.now();
     if (ev.classList.contains('desborda')) {          // escena más alta que la pantalla: primero se recorre
@@ -912,7 +924,7 @@
     if (Math.abs(acumulado) > 45) { gestoUsado = true; avanzar(acumulado > 0 ? 1 : -1); acumulado = 0; }
   }, { passive: false });
   addEventListener('keydown', e => {
-    if (bloqueada() || e.target.closest('input, select, textarea, canvas, .calc-magica, .match-grid, .constellation-board')) return;
+    if (pila || bloqueada() || e.target.closest('input, select, textarea, canvas, .calc-magica, .match-grid, .constellation-board')) return;
     if (['ArrowDown', 'PageDown'].includes(e.key)) { e.preventDefault(); avanzar(1); }
     if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); avanzar(-1); }
     if (e.key === 'Home') { e.preventDefault(); irA(0); }
@@ -924,6 +936,7 @@
     const a = e.target.closest('a[href^="#"]'); if (!a || !site.contains(a)) return;
     const id = DESTINO[a.getAttribute('href').slice(1)]; if (!id) return;
     e.preventDefault(); $('#main-nav')?.classList.remove('open');
+    if (pila) { E[indiceDe(id)]?.ev.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     irA(indiceDe(id));
   }, true);
 
@@ -933,10 +946,69 @@
     if (site.getAttribute('aria-hidden') !== 'false') return;
     scrollTo(0, 0);
     const id = DESTINO[location.hash.slice(1)];
+    if (pila) { if (id) E[indiceDe(id)]?.ev.scrollIntoView({ block: 'start' }); return; }
     saltar(id ? indiceDe(id) : actual);
   }).observe(site, { attributes: true, attributeFilter: ['aria-hidden'] });
 
   // ---------------------------------------------------------- arranque
+  if (pila) {
+    // todas las escenas visibles, en orden, sin el índice de estrellas ni la pista de la rueda
+    E.forEach(e => { e.ev.classList.add('activa'); capa.append(e.ev); e.listo?.(e.ev); if (e.marcos) marcar(e, 0); });
+    indice.remove(); pistaRueda.remove();
+    // las escenas que son un solo dibujo ancho se ven completas; al tocar una de sus partes con información,
+    // la cámara la encuadra entera (la ventana crece para mostrarla grande) y se lee bajando dentro de ella.
+    // Las partes están medidas en el dibujo (porcentaje de ancho y alto): [nombre, x, y, ancho, alto]
+    const PARTES = {
+      '.app-tableros .tableros': ['el escritorio', [['Carpeta y temas', 4, 10, 42, 60], ['Monitor', 46, 13, 50, 52]]],
+      '.mural': ['el mural', [['Mi trayectoria', 19, 12, 30, 61], ['Lugares, campaña y planilla', 47, 14, 34, 58]]],
+      '.sala': ['la sala', [['Tele de cápsulas', 30, 14, 42, 41], ['Revistero', 8, 38, 20, 36], ['Planilla PAP', 71, 44, 25, 26]]],
+      '.ev-leyendas .ley-museo': ['el cuaderno', [['Dibujo elegido', 5, 7, 44, 78], ['Mis dibujos', 51, 6, 45, 80]]],
+    };
+    Object.entries(PARTES).forEach(([sel, [nombre, partes]]) => {
+      const lam = $(sel); if (!lam) return;
+      const marco = document.createElement('div'); marco.className = 'zoom-marco'; lam.before(marco); marco.append(lam);
+      const barra = document.createElement('div'); barra.className = 'zoom-barra';
+      const todo = document.createElement('button'); todo.type = 'button'; todo.className = 'zoom-todo'; todo.textContent = '⤢ Ver todo ' + nombre;
+      const botones = partes.map((pt, k) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'zoom-parte'; b.textContent = pt[0]; b.addEventListener('click', () => acercar(k)); return b; });
+      barra.append(...botones, todo); marco.after(barra);
+      let actualParte = -1;
+      function acercar(k) {
+        actualParte = k;
+        const W = marco.clientWidth, Hl = lam.offsetHeight, [, x, y, w, h] = partes[k], rx = x / 100 * W, ry = y / 100 * Hl, rw = w / 100 * W, rh = h / 100 * Hl;
+        let z = W / rw; const tope = innerHeight * .78; if (rh * z > tope) z = tope / rh;
+        const tx = (W - rw * z) / 2 - rx * z, ty = -ry * z;
+        marco.style.height = (rh * z).toFixed(0) + 'px';
+        lam.style.transition = 'transform .5s cubic-bezier(.2,.8,.2,1)'; lam.style.transform = `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) scale(${z.toFixed(3)})`;
+        marco.classList.add('acercado'); barra.classList.add('acercado');
+        botones.forEach((b, n) => b.classList.toggle('activo', n === k));
+        requestAnimationFrame(() => marco.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+      }
+      function verTodo() {
+        actualParte = -1; marco.style.height = ''; lam.style.transform = ''; marco.classList.remove('acercado'); barra.classList.remove('acercado');
+        botones.forEach(b => b.classList.remove('activo'));
+      }
+      todo.addEventListener('click', verTodo);
+      // de lejos, tocar el dibujo acerca la parte tocada (o la más cercana); ya acercado, los toques funcionan normal
+      marco.addEventListener('click', e => {
+        if (actualParte >= 0) return;
+        e.preventDefault(); e.stopPropagation();
+        const r = lam.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * 100, py = (e.clientY - r.top) / r.height * 100;
+        let k = partes.findIndex(([, x, y, w, h]) => px >= x && px <= x + w && py >= y && py <= y + h);
+        if (k < 0) k = partes.map(([, x, y, w, h], n) => [Math.hypot(px - x - w / 2, py - y - h / 2), n]).sort((a, b) => a[0] - b[0])[0][1];
+        acercar(k);
+      }, true);
+      addEventListener('resize', () => { if (actualParte >= 0) acercar(actualParte); });
+    });
+    // la tele: al darle play en el teléfono, la cápsula pasa a pantalla completa y se gira a lo ancho
+    const videoTele = $('.sala-tele video');
+    if (videoTele) videoTele.addEventListener('play', () => {
+      if (document.fullscreenElement || !videoTele.requestFullscreen) return;
+      videoTele.requestFullscreen().then(() => screen.orientation?.lock?.('landscape').catch(() => {})).catch(() => {});
+    });
+    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) screen.orientation?.unlock?.(); });
+    const ini = DESTINO[location.hash.slice(1)]; if (ini && ini !== 'inicio') requestAnimationFrame(() => E[indiceDe(ini)]?.ev.scrollIntoView({ block: 'start' }));
+    return;
+  }
   mostrar(E[0]);
   const inicial = DESTINO[location.hash.slice(1)];
   if (inicial && inicial !== 'inicio') saltar(indiceDe(inicial));
