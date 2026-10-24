@@ -775,3 +775,274 @@ html.escenas .app-tableros .tab-visor .tab-flecha { top: 20px !important; }
 html.escenas .app-tableros .tab-visor .tab-flecha.ant { left: 24px !important; }
 html.escenas .app-tableros .tab-visor .tab-flecha.sig { left: 54px !important; }
 html.escenas .app-tableros .tab-visor .tab-ampliar { top: 21px !important; right: 26px !important; }
+
+/* ================================================================ Trayectoria: el diario mural del CESFAM en su caballete, sobre el prado
+   (mural.webp, 1672 × 941). Hoja grande: la historia de matrona · fotos: dónde trabajó · afiche: campaña PAP ·
+   planilla con visto bueno: las capacidades que se suman. Todo en píxeles del dibujo, escalado con --k */
+html.escenas .ev.ev-trayectoria { padding: 0 !important; }
+html.escenas .ev-trayectoria .ev-caja { width: 100% !important; max-width: none !important; position: relative; }
+html.escenas .ev-trayectoria .section-head { position: absolute !important; left: 0; right: 0; top: 0; z-index: 6; margin: 0 !important; display: block !important; pointer-events: none; }
+html.escenas .ev-trayectoria .section-head > :not(div), html.escenas .ev-trayectoria .section-head h2 { display: none !important; }
+html.escenas .ev-trayectoria .section-head .cinta-nombre { width: min(240px, 36vw) !important; font-size: 1rem !important; margin: 0 0 0 calc(32.5% - min(120px, 18vw)) !important; }
+html.escenas .mural { --k: .84; position: relative; width: 100%; aspect-ratio: 1672 / 941; background: url("assets/pergamino/mural.webp?v=4") center / 100% 100% no-repeat; }
+html.escenas .mural-tablero { position: absolute; left: 0; top: 0; width: 1672px; height: 941px; transform-origin: 0 0; transform: scale(var(--k)); color: #4a2556; font-family: var(--sans, sans-serif); }
+html.escenas .mural-tablero > * { position: absolute; box-sizing: border-box; }
+/* la hoja grande, bajo sus chinches y sobre las flores de la esquina */
+html.escenas .mural-hoja { left: 378px; top: 170px; width: 386px; height: 336px; overflow: auto; scrollbar-width: thin; padding: 0 6px 18px 2px;
+  -webkit-mask: linear-gradient(180deg, #000 calc(100% - 22px), transparent); mask: linear-gradient(180deg, #000 calc(100% - 22px), transparent); }
+html.escenas .mural-chip { display: inline-block; margin: 0 0 6px; padding: 3px 10px; border-radius: 999px; background: #fbe3ee; color: #b2477f; font: 700 10.5px/1.3 var(--sans, sans-serif); letter-spacing: .08em; }
+html.escenas .mural-hoja h3 { margin: 0 0 8px; font: 700 21px/1.2 var(--titulo, "Cinzel", serif); color: #4a2556; }
+html.escenas .mural-hoja p { margin: 0 0 8px; font: 500 13.5px/1.5 var(--sans, sans-serif); color: #4a3556; }
+html.escenas .mural-hoja .mural-lema { font-style: italic; color: #8a4f7e; }
+/* el pie de cada foto, en la mitad de abajo de la tarjeta */
+html.escenas .mural-foto { top: 270px; height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; }
+html.escenas .mural-foto b { font: 700 13.5px/1.2 var(--sans, sans-serif); color: #4a2556; }
+html.escenas .mural-foto small { font: 600 11.5px/1.2 var(--sans, sans-serif); color: #8a6f96; }
+html.escenas .mural-foto-1 { left: 806px; width: 148px; } html.escenas .mural-foto-2 { left: 981px; width: 152px; } html.escenas .mural-foto-3 { left: 1156px; width: 160px; height: 76px; }
+/* el afiche de la campaña, entre el lazo y las flores */
+html.escenas .mural-afiche { left: 858px; top: 448px; width: 172px; height: 118px; display: flex; flex-direction: column; gap: 5px; }
+html.escenas .mural-afiche b { font: 700 18px/1.1 var(--titulo, "Cinzel", serif); color: #b2477f; }
+html.escenas .mural-afiche span { font: 600 11.5px/1.35 var(--sans, sans-serif); color: #4a3556; }
+html.escenas .mural-afiche small { font: 500 10.5px/1.3 var(--sans, sans-serif); color: #8a6f96; font-style: italic; }
+/* la planilla: el título en la fila de encabezado y cada capacidad en su fila, junto a su visto bueno */
+html.escenas .mural-planilla { left: 0; top: 0; width: 0; height: 0; }
+html.escenas .mural-planilla-titulo { position: absolute; left: 1086px; top: 409px; width: 222px; height: 27px; display: flex; align-items: center; justify-content: center; font: 700 12.5px/1 var(--sans, sans-serif); color: #4a2556; }
+html.escenas .mural-fila { position: absolute; left: 1124px; width: 184px; display: flex; align-items: center; padding: 0 8px; text-decoration: none; color: #4a2556; font: 700 13.5px/1 var(--sans, sans-serif); border-radius: 3px; transition: background .2s; }
+html.escenas .mural-fila:hover, html.escenas .mural-fila:focus-visible { background: rgba(245, 168, 207, .28); outline: none; }
+html.escenas .mural-fila-1 { top: 437px; height: 30px; } html.escenas .mural-fila-2 { top: 468px; height: 31px; } html.escenas .mural-fila-3 { top: 500px; height: 31px; }
+html.escenas .mural-fila-4 { top: 532px; height: 32px; } html.escenas .mural-fila-5 { top: 565px; height: 33px; } html.escenas .mural-fila-6 { top: 599px; height: 32px; color: #b2477f; }
+/* la cinta entre las flores de la esquina y la luna */
+html.escenas .ev-trayectoria .section-head .cinta-nombre { width: min(210px, 32vw) !important; margin: 0 0 0 calc(31.5% - min(105px, 16vw)) !important; }
+/* la hoja usa todo el papel: abajo a la izquierda el texto rodea las flores de la esquina */
+html.escenas .mural-hoja { height: 430px; }
+html.escenas .mural-hoja::before { content: ""; float: left; width: 0; height: 322px; }
+html.escenas .mural-esquina { float: left; clear: left; width: 196px; height: 120px; shape-outside: inset(0); }
+/* el texto del afiche empieza después de la cola del lazo */
+html.escenas .mural-afiche { left: 878px; width: 152px; top: 446px; height: 124px; }
+html.escenas .ev-trayectoria .section-head .cinta-nombre { box-sizing: border-box !important; width: 236px !important; padding: 0 44px 4px !important; margin: 0 0 0 calc(32% - 118px) !important; font-size: .95rem !important; }
+html.escenas .mural-hoja p { font-size: 13px; }
+/* la hoja con toda la trayectoria: un año y un paso por línea, entera sobre las flores (sin recorte ni texto que las rodee) */
+html.escenas .mural-hoja { top: 166px; height: 336px; overflow: hidden; -webkit-mask: none; mask: none; padding: 0 4px 0 2px; }
+html.escenas .mural-hoja::before { content: none; }
+html.escenas .mural-hoja h3 { font-size: 20px; margin: 0 0 6px; }
+html.escenas .mural-pasos { display: grid; gap: 3px; }
+html.escenas .mural-paso { display: grid; grid-template-columns: 56px 1fr; column-gap: 8px; align-items: baseline; }
+html.escenas .mural-paso b { grid-row: span 2; font: 700 12px/1.2 var(--titulo, "Cinzel", serif); color: #b2477f; }
+html.escenas .mural-paso span { font: 700 12px/1.2 var(--sans, sans-serif); color: #4a2556; }
+html.escenas .mural-paso small { font: 500 10.5px/1.2 var(--sans, sans-serif); color: #8a6f96; }
+html.escenas .mural-lema { position: absolute; left: 584px; top: 512px; width: 172px; margin: 0; font: italic 600 12.5px/1.4 var(--sans, sans-serif); color: #8a4f7e; }
+/* Studios Conari también lleva su visto bueno (dorado, a mano) */
+html.escenas .mural-fila-6::before { content: "✔"; position: absolute; left: -33px; top: 50%; transform: translateY(-55%) rotate(-6deg); font: 700 21px/1 var(--sans, sans-serif); color: #d9a63c; text-shadow: 0 0 6px rgba(255, 220, 140, .8); }
+/* el botón del afiche lleva a la planilla PAP de «Matrona hoy» */
+html.escenas .mural-ver-pap { align-self: flex-start; margin-top: 2px; padding: 4px 10px; border-radius: 999px; background: linear-gradient(135deg, #d27aa8, #a07cd4); color: #fff; font: 700 11px/1.2 var(--sans, sans-serif); text-decoration: none; box-shadow: 0 2px 6px rgba(106, 44, 85, .25); }
+html.escenas .mural-ver-pap:hover { filter: brightness(1.08); }
+html.escenas .mural-afiche { top: 440px; height: 140px; gap: 4px; }
+html.escenas .mural-hoja { top: 172px; height: 330px; }
+html.escenas .mural-hoja h3 { text-align: center; font-size: 19px; margin: 0 0 7px; }
+html.escenas .mural-pasos { gap: 4px; }
+html.escenas .mural-paso b { font-size: 12.5px; }
+html.escenas .mural-paso span { font-size: 12.5px; }
+html.escenas .mural-paso small { font-size: 11px; }
+html.escenas .mural-pasos { gap: 2px; }
+html.escenas .mural-hoja { height: 334px; }
+/* el visto bueno de Studios Conari ahora es parte del dibujo (el mismo trazo que los demás) */
+html.escenas .mural-fila-6::before { content: none !important; }
+/* cada trabajo: años, cargo, lugar y lo que hizo */
+html.escenas .mural-pasos { gap: 5px; }
+html.escenas .mural-paso b { grid-row: span 3; }
+html.escenas .mural-paso i { grid-column: 2; font: italic 500 10.5px/1.25 var(--sans, sans-serif); color: #6d5579; }
+html.escenas .mural-pasos { gap: 3px; }
+
+/* ================================================================ Matrona hoy: la sala de espera (sala.webp, 1672 × 941)
+   la tele con las cápsulas, el revistero con las páginas interactivas y la carpeta con la planilla PAP */
+html.escenas .ev.ev-matrona { padding: 0 !important; }
+html.escenas .ev-matrona .ev-caja { width: 100% !important; max-width: none !important; position: relative; }
+html.escenas .ev-matrona .section-head { position: absolute !important; left: 0; right: 0; top: 4px; z-index: 6; margin: 0 !important; display: block !important; pointer-events: none; }
+html.escenas .ev-matrona .section-head .cinta-nombre { box-sizing: border-box !important; width: 236px !important; padding: 0 44px 4px !important; margin: 0 0 0 calc(36% - 118px) !important; font-size: .95rem !important; }
+html.escenas .sala { --k: .84; position: relative; width: 100%; aspect-ratio: 1672 / 941; background: url("assets/pergamino/sala.webp?v=4") center / 100% 100% no-repeat; }
+html.escenas .sala-capa { position: absolute; left: 0; top: 0; width: 1672px; height: 941px; transform-origin: 0 0; transform: scale(var(--k)); font-family: var(--sans, sans-serif); }
+html.escenas .sala-capa > * { position: absolute; left: 0; top: 0; box-sizing: border-box; }
+/* la tele: el reproductor a la izquierda y la programación de cápsulas a la derecha, como el menú de un televisor */
+html.escenas .sala-tele { left: 545px; top: 176px; width: 614px; height: 308px; background: #241632; border-radius: 2px; overflow: hidden; }
+html.escenas .sala-tele .mh-videos { display: grid !important; grid-template-columns: 1fr 176px; gap: 8px; height: 100%; padding: 8px; box-sizing: border-box; margin: 0 !important; }
+html.escenas .sala-tele .mh-reproductor { display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 0; margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; }
+html.escenas .sala-tele .mh-reproductor video { width: 100%; aspect-ratio: 16 / 9; height: auto; max-height: 232px; border-radius: 6px; background: #000; display: block; }
+html.escenas .sala-tele .mh-reproductor h4 { margin: 2px 0 0; font: 700 13px/1.2 var(--sans, sans-serif); color: #ffe3f1; }
+html.escenas .sala-tele .mh-reproductor p { margin: 0; font: 500 11px/1.35 var(--sans, sans-serif); color: #d9c6e6; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+html.escenas .sala-tele .mh-capsulas { display: flex !important; flex-direction: column; gap: 5px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #8a5fa8 transparent; margin: 0 !important; padding: 0 2px 0 0 !important; max-height: none !important; grid-template-columns: none !important; }
+html.escenas .sala-tele .mh-capsula { display: grid !important; grid-template-columns: 62px 1fr; gap: 6px; align-items: center; padding: 3px !important; border-radius: 6px !important; background: rgba(255, 255, 255, .06) !important; border: 1px solid transparent !important; color: #f3e6ff !important; text-align: left; box-shadow: none !important; }
+html.escenas .sala-tele .mh-capsula.activo { background: rgba(245, 168, 207, .22) !important; border-color: #f5a8cf !important; }
+html.escenas .sala-tele .mh-capsula:hover { background: rgba(255, 255, 255, .12) !important; }
+html.escenas .sala-tele .mh-portada { position: relative; display: block; width: 62px; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; }
+html.escenas .sala-tele .mh-portada img { width: 100%; height: 100%; object-fit: cover; display: block; }
+html.escenas .sala-tele .mh-nueva { display: none !important; }
+html.escenas .sala-tele .mh-dur { position: absolute; right: 2px; bottom: 2px; padding: 0 3px; border-radius: 3px; background: rgba(0, 0, 0, .65); color: #fff; font: 700 8px/1.4 var(--sans, sans-serif); }
+html.escenas .sala-tele .mh-capsula b { font: 600 10.5px/1.2 var(--sans, sans-serif) !important; color: #f3e6ff !important; }
+/* los folletos del revistero: el nombre impreso en cada uno, con su inclinación */
+html.escenas .sala-folleto { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 4px 3px; transform-origin: 0 0; border: 0; border-radius: 3px; background: none; cursor: pointer; text-align: center; text-decoration: none; color: #4a2556; font: 700 9.5px/1.15 var(--sans, sans-serif); transition: background .2s, box-shadow .2s; }
+html.escenas .sala-folleto-ico { font-size: 19px; line-height: 1; }
+html.escenas .sala-folleto:hover, html.escenas .sala-folleto:focus-visible { background: rgba(255, 255, 255, .45); box-shadow: 0 0 0 2px rgba(245, 168, 207, .9), 0 0 14px rgba(245, 168, 207, .8); outline: none; }
+html.escenas .sala-folleto-1 { width: 57px; height: 67px; transform: matrix(1.0000,-0.0351,0.0896,1.0000,168,390); }
+html.escenas .sala-folleto-2 { width: 53px; height: 65px; transform: matrix(1.0000,0.0189,0.1077,1.0000,244,387); }
+html.escenas .sala-folleto-3 { width: 50px; height: 62px; transform: matrix(1.0000,-0.0200,0.1290,0.9839,317,388); }
+html.escenas .sala-folleto-4 { width: 59px; height: 66px; transform: matrix(1.0000,-0.0678,0.1061,1.0000,180,490); }
+html.escenas .sala-folleto-5 { width: 54px; height: 63px; transform: matrix(1.0000,-0.0556,0.1111,1.0000,260,485); }
+html.escenas .sala-folleto-6 { width: 53px; height: 62px; transform: matrix(1.0000,-0.0755,0.1290,0.9839,335,482); }
+html.escenas .sala-folleto-7 { width: 60px; height: 68px; transform: matrix(1.0000,-0.1000,0.1176,1.0000,199,592); }
+html.escenas .sala-folleto-8 { width: 56px; height: 65px; transform: matrix(1.0000,-0.0893,0.1231,1.0000,283,584); }
+html.escenas .sala-folleto-9 { width: 52px; height: 61px; transform: matrix(1.0000,-0.0962,0.1148,1.0000,362,578); }
+/* la carpeta abierta de la mesita: se toca y abre la planilla PAP */
+html.escenas .sala-carpeta { left: 1282px; top: 514px; width: 216px; height: 78px; border: 0; border-radius: 6px; background: none; cursor: pointer; transition: box-shadow .2s, background .2s; }
+html.escenas .sala-carpeta span { position: absolute; left: 50%; top: -30px; transform: translateX(-50%); white-space: nowrap; padding: 3px 10px; border-radius: 999px; background: #fff7fb; border: 1px solid #e9b8d2; color: #b2477f; font: 700 11px/1.3 var(--sans, sans-serif); box-shadow: 0 2px 6px rgba(106, 44, 85, .2); }
+html.escenas .sala-carpeta:hover, html.escenas .sala-carpeta:focus-visible { background: rgba(255, 255, 255, .3); box-shadow: 0 0 0 2px rgba(245, 168, 207, .9), 0 0 16px rgba(245, 168, 207, .8); outline: none; }
+/* el folleto grande que se abre */
+.sala-dialogo { width: min(1120px, 94vw); height: min(780px, 90vh); max-width: none; max-height: none; padding: 0; border: 0; border-radius: 18px; overflow: hidden;
+  background: #fffaf3; box-shadow: 0 0 0 3px #d9b56a, 0 0 0 9px #f6e6f0, 0 0 0 11px #d9b56a, 0 24px 60px rgba(20, 8, 40, .5); }
+.sala-dialogo::backdrop { background: rgba(26, 12, 40, .7); }
+.sala-dialogo-cuerpo { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 18px 22px; box-sizing: border-box; color: #4a2556; font-family: var(--sans, sans-serif); overflow: auto; }
+.sala-dialogo-barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-right: 40px; }
+.sala-dialogo-barra b { font: 700 1.2rem var(--titulo, "Cinzel", serif); color: #4a2556; }
+.sala-abrir { font: 700 .85rem var(--sans, sans-serif); color: #b2477f; text-decoration: none; white-space: nowrap; }
+.sala-dialogo-txt { margin: 0; font-size: .92rem; color: #5a4566; }
+.sala-dialogo-hacer { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .8rem; }
+.sala-dialogo-hacer span { font-weight: 700; color: #7a5f86; }
+.sala-dialogo-hacer em { font-style: normal; padding: 3px 10px; border-radius: 999px; background: #fbe3ee; color: #8a3a6a; }
+.sala-dialogo iframe { flex: 1; min-height: 0; width: 100%; border: 1px solid #ecd6e4; border-radius: 10px; background: #fff; }
+.sala-cerrar { position: absolute; top: 12px; right: 12px; z-index: 2; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(74, 42, 82, .85); color: #fff; font-size: 1rem; cursor: pointer; }
+.sala-dialogo.sala-planilla .mh-pap { display: grid !important; grid-template-columns: minmax(260px, 1fr) 1.6fr; gap: 18px; align-items: start; }
+.sala-dialogo.sala-planilla .mh-pap-imgs { display: grid; gap: 12px; }
+.sala-dialogo.sala-planilla .mh-pap-imgs img { width: 100%; border-radius: 8px; border: 1px solid #ecd6e4; }
+.sala-dialogo.sala-planilla .mh-pap-imgs figcaption { font-size: .8rem; color: #7a5f86; text-align: center; }
+/* el marco de la tele (y su flor de arriba) va delante del video: la pantalla llena el hueco sin dejar borde verde */
+html.escenas .sala-tele { left: 538px; top: 164px; width: 628px; height: 327px; }
+html.escenas .sala-tele .mh-videos { padding: 12px 12px 10px; }
+html.escenas .sala-capa::after { content: ""; position: absolute; left: 500px; top: 120px; width: 710px; height: 400px; z-index: 2; pointer-events: none;
+  background: url("assets/pergamino/sala-tele-frente.webp?v=4") 0 0 / 100% 100% no-repeat; }
+html.escenas .sala-tele { z-index: 1; }
+html.escenas .sala-folleto, html.escenas .sala-carpeta { z-index: 3; }
+/* la etiqueta de la carpeta aparece solo al pasar el mouse (no queda pegada en el aire) */
+html.escenas .sala-carpeta span { opacity: 0; transition: opacity .2s; }
+html.escenas .sala-carpeta:hover span, html.escenas .sala-carpeta:focus-visible span { opacity: 1; }
+/* la planilla: texto a la izquierda e imágenes grandes una bajo otra; el folleto se ajusta a su contenido */
+.sala-dialogo.sala-planilla { height: auto; max-height: 90vh; }
+.sala-dialogo.sala-planilla .mh-pap-imgs { grid-template-columns: 1fr !important; display: grid !important; }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure { margin: 0; }
+/* la cinta del capítulo arriba a la izquierda, en el cielo libre (no tapa el tablero ni lo achica) */
+html.escenas .ev-trayectoria .section-head .cinta-nombre { margin: 0 0 0 6px !important; }
+/* la frase final: cursiva elegante y en otro color, junto a las flores y la cinta de la esquina */
+html.escenas .mural-lema { left: 486px; top: 512px; width: 272px; font: italic 600 21px/1.18 "Cormorant Garamond", Georgia, serif; color: #b0437a; text-shadow: 0 1px 0 rgba(255, 255, 255, .8); letter-spacing: .01em; }
+html.escenas .ev-trayectoria .section-head > div { justify-items: start !important; }
+html.escenas .mural-lema { top: 500px; font-size: 19.5px; }
+/* folletos medidos por sus bordes sobre sala.webp v2: el nombre impreso sigue la forma de cada uno (ajuste a las cuatro esquinas) */
+html.escenas .sala-capa .sala-folleto-1 { width: 55px; height: 60px; transform: matrix(1.0000,-0.0320,0.0000,1.0073,172.0,392.4); }
+html.escenas .sala-capa .sala-folleto-2 { width: 53px; height: 58px; transform: matrix(1.0000,-0.0153,0.0000,1.0049,248.0,390.7); }
+html.escenas .sala-capa .sala-folleto-3 { width: 49px; height: 56px; transform: matrix(1.0000,-0.0477,-0.0000,0.9983,321.0,390.4); }
+html.escenas .sala-capa .sala-folleto-4 { width: 55px; height: 62px; transform: matrix(1.0000,-0.0786,0.0000,1.0016,185.0,491.9); }
+html.escenas .sala-capa .sala-folleto-5 { width: 52px; height: 59px; transform: matrix(1.0000,-0.0830,0.0000,0.9964,264.0,487.9); }
+html.escenas .sala-capa .sala-folleto-6 { width: 50px; height: 57px; transform: matrix(1.0000,-0.0744,-0.0000,0.9946,340.0,483.2); }
+html.escenas .sala-capa .sala-folleto-7 { width: 58px; height: 64px; transform: matrix(0.9914,-0.1151,-0.0000,1.0070,204.0,593.5); }
+html.escenas .sala-capa .sala-folleto-8 { width: 54px; height: 60px; transform: matrix(1.0000,-0.1146,0.0000,1.0056,288.0,586.5); }
+html.escenas .sala-capa .sala-folleto-9 { width: 49px; height: 57px; transform: matrix(1.0000,-0.1271,0.0000,1.0012,367.0,580.5); }
+html.escenas .sala-folleto { background: none !important; font-size: 9.5px; padding: 3px 2px; }
+html.escenas .sala-folleto:hover, html.escenas .sala-folleto:focus-visible { background: rgba(255, 255, 255, .35) !important; }
+
+/* ---------------------------------------------------------------- lo que se abre en la sala: nada de hoja crema
+   las páginas en la pantalla de una tableta mágica (tableta-sala.webp 1622 × 893) y la planilla PAP en la carpeta de anillos (carpeta-pap.webp 1649 × 916) */
+.sala-dialogo.sala-tableta, .sala-dialogo.sala-planilla { background: none; box-shadow: none; border-radius: 0; overflow: visible; height: auto; max-height: none; }
+.sala-dialogo.sala-tableta { width: min(1240px, 96vw, calc(92vh * 1622 / 893)); aspect-ratio: 1622 / 893; background: url("assets/pergamino/tableta-sala.webp?v=2") center / 100% 100% no-repeat; filter: drop-shadow(0 18px 40px rgba(20, 8, 40, .55)); }
+.sala-dialogo.sala-planilla { width: min(1240px, 96vw, calc(92vh * 1649 / 916)); aspect-ratio: 1649 / 916; background: url("assets/pergamino/carpeta-pap.webp?v=2") center / 100% 100% no-repeat; filter: drop-shadow(0 18px 40px rgba(20, 8, 40, .55)); }
+.sala-dialogo.sala-tableta .sala-dialogo-cuerpo, .sala-dialogo.sala-planilla .sala-dialogo-cuerpo { position: absolute; inset: 0; padding: 0; overflow: visible; height: auto; }
+/* la pantalla de la tableta */
+.sala-pantalla { position: absolute; left: 6.17%; top: 15.68%; right: 6.17%; bottom: 14.56%; display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; background: #fff; }
+.sala-pantalla .sala-dialogo-barra { flex: none; padding: 7px 12px; background: linear-gradient(90deg, #f6dcea, #e6dbff); border-bottom: 1px solid #e3c9dc; }
+.sala-pantalla .sala-dialogo-barra b { font-size: 1rem; }
+.sala-pantalla .sala-dialogo-hacer { flex: none; padding: 5px 12px; background: #fff7fb; border-bottom: 1px solid #f0dbe8; }
+.sala-pantalla iframe { flex: 1; border: 0; border-radius: 0; }
+.sala-dialogo.sala-tableta .sala-cerrar, .sala-dialogo.sala-planilla .sala-cerrar { top: 2%; right: 1.2%; }
+/* la carpeta: la explicación en la hoja izquierda, las imágenes en la derecha */
+.sala-dialogo.sala-planilla .mh-pap { display: block !important; position: absolute; inset: 0; }
+.sala-dialogo.sala-planilla .mh-pap-texto { position: absolute; left: 12.5%; top: 9%; width: 33%; height: 75%; overflow: auto; scrollbar-width: thin; color: #4a2556; font-size: clamp(.72rem, 1.05vw, .92rem); }
+.sala-dialogo.sala-planilla .mh-pap-texto h4 { margin: 0 0 .5em; font: 700 1.25em/1.2 var(--titulo, "Cinzel", serif); color: #b2477f; text-align: center; }
+.sala-dialogo.sala-planilla .mh-pap-texto p, .sala-dialogo.sala-planilla .mh-pap-texto li { line-height: 1.45; }
+.sala-dialogo.sala-planilla .mh-pap-texto .btn { display: inline-block; margin-top: .4em; }
+.sala-dialogo.sala-planilla .mh-pap-imgs { position: absolute; left: 54.6%; top: 8.5%; width: 32.8%; height: 76%; display: flex !important; flex-direction: column; gap: 3%; justify-content: center; }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure { margin: 0; cursor: zoom-in; }
+.sala-dialogo.sala-planilla .mh-pap-imgs img { width: 100%; border-radius: 4px; border: 1px solid #ecd6e4; box-shadow: 0 2px 6px rgba(106, 44, 85, .15); transform: rotate(-.6deg); }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure + figure img { transform: rotate(.7deg); }
+.sala-dialogo.sala-planilla .mh-pap-imgs figcaption { font: italic 600 .95rem "Cormorant Garamond", Georgia, serif; color: #8a4f7e; text-align: center; margin-top: 2px; }
+.sala-dialogo.sala-planilla .mh-pap-texto { background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 .4em 0 0 !important; border-radius: 0 !important; }
+.sala-dialogo.sala-planilla .mh-pap-texto ul { margin: .3em 0; padding-left: 1.1em; }
+.sala-dialogo.sala-planilla .mh-pap-texto li { margin: .25em 0; }
+.sala-dialogo.sala-planilla .mh-pap-texto .btn { padding: .45em 1em !important; font-size: .85em !important; min-height: 0 !important; }
+
+/* ---------------------------------------------------------------- la tele: la cápsula a pantalla completa, se reproduce ahí mismo
+   el título va arriba como en un televisor; flechas para pasar de cápsula y «☰ Cápsulas» abre la lista encima */
+html.escenas .sala-tele { background: #120a1a; }
+html.escenas .sala-tele .mh-videos { display: block !important; position: relative; padding: 0 !important; height: 100%; }
+html.escenas .sala-tele .mh-reproductor { position: absolute; inset: 0; display: block; }
+html.escenas .sala-tele .mh-reproductor video { width: 100%; height: 100%; max-height: none; aspect-ratio: auto; object-fit: contain; border-radius: 0; background: #120a1a; }
+html.escenas .sala-tele .mh-reproductor h4 { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); margin: 0; padding: 3px 12px; border-radius: 999px; background: rgba(36, 18, 52, .72); color: #ffe3f1; font-size: 12px; white-space: nowrap; pointer-events: none; z-index: 2; }
+html.escenas .sala-tele .mh-reproductor p { display: none; }
+html.escenas .sala-tele .mh-capsulas { position: absolute; inset: 0; z-index: 4; display: none !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px; padding: 36px 14px 12px !important; background: rgba(28, 14, 40, .94); overflow-y: auto; align-content: start; }
+html.escenas .sala-tele.lista-abierta .mh-capsulas { display: grid !important; }
+html.escenas .sala-tele .mh-capsulas .mh-capsula { grid-template-columns: 1fr !important; gap: 3px; padding: 4px !important; }
+html.escenas .sala-tele .mh-capsulas .mh-portada { width: 100%; }
+html.escenas .sala-tele .mh-capsulas .mh-capsula b { font-size: 11px !important; }
+html.escenas .sala-tele-flecha, html.escenas .sala-tele-menu { position: absolute; z-index: 5; border: 0; cursor: pointer; color: #fff; background: rgba(36, 18, 52, .62); transition: background .2s, opacity .2s; }
+html.escenas .sala-tele-flecha { top: 50%; transform: translateY(-50%); width: 30px; height: 46px; border-radius: 8px; font-size: 26px; line-height: 1; opacity: .75; }
+html.escenas .sala-tele-flecha.ant { left: 6px; } html.escenas .sala-tele-flecha.sig { right: 6px; }
+html.escenas .sala-tele-menu { right: 8px; top: 7px; padding: 4px 11px; border-radius: 999px; font: 700 11.5px/1.2 var(--sans, sans-serif); }
+html.escenas .sala-tele-flecha:hover, html.escenas .sala-tele-menu:hover { background: rgba(210, 122, 168, .85); opacity: 1; }
+html.escenas .sala-tele.lista-abierta .sala-tele-flecha { display: none; }
+/* folletos: el nombre cabe dentro de cada librito (ícono y una palabra corta, en letra chica que se ajusta) */
+html.escenas .sala-folleto { font-size: 8.5px !important; line-height: 1.05 !important; padding: 4px 3px !important; overflow: hidden; word-break: break-word; hyphens: auto; }
+html.escenas .sala-folleto-ico { font-size: 17px !important; }
+/* la carpeta: la explicación escrita con la letra del cuento */
+.sala-dialogo.sala-planilla .mh-pap-texto { font-family: "Cormorant Garamond", Georgia, serif !important; font-size: clamp(.92rem, 1.32vw, 1.12rem) !important; color: #4a2556 !important; }
+.sala-dialogo.sala-planilla .mh-pap-texto h4 { font-size: 1.15em !important; letter-spacing: .02em; }
+.sala-dialogo.sala-planilla .mh-pap-texto h4::after { content: "✦"; display: block; font-size: .7em; color: #c9963a; margin-top: .2em; }
+.sala-dialogo.sala-planilla .mh-pap-texto p { font-style: italic; margin: 0 0 .5em; }
+.sala-dialogo.sala-planilla .mh-pap-texto ul { list-style: none; padding-left: 0; }
+.sala-dialogo.sala-planilla .mh-pap-texto li { position: relative; padding-left: 1.3em; font-weight: 500; }
+.sala-dialogo.sala-planilla .mh-pap-texto li::before { content: "❀"; position: absolute; left: 0; top: 0; color: #e0679f; font-size: .95em; }
+.sala-dialogo.sala-planilla .mh-pap-texto li::marker { content: none; }
+.sala-dialogo.sala-planilla .mh-pap-texto .tab-nota { font-size: .9em; color: #8a6f96; }
+.sala-dialogo.sala-planilla .mh-pap-texto .btn { background: linear-gradient(135deg, #fbd3e6, #e3d4fb) !important; color: #6a2c55 !important; border: 1px solid #e6b6d0 !important; box-shadow: 0 2px 8px rgba(210, 122, 168, .25) !important; font-family: var(--sans, sans-serif) !important; font-weight: 700 !important; border-radius: 999px !important; }
+.sala-dialogo.sala-planilla .mh-pap-texto .btn:hover { filter: brightness(1.04); box-shadow: 0 0 0 2px rgba(245, 168, 207, .6), 0 3px 10px rgba(210, 122, 168, .35) !important; }
+/* nombres completos y claros: letra chica que se ajusta por palabras, sin cortar */
+html.escenas .sala-folleto { font-size: 7.6px !important; line-height: 1.1 !important; word-break: normal !important; overflow-wrap: normal !important; hyphens: manual !important; gap: 2px !important; }
+html.escenas .sala-folleto-ico { font-size: 15px !important; }
+
+/* ---------------------------------------------------------------- la carpeta: texto que se lee bien y las capturas pegadas en la hoja como fotos con cinta washi */
+.sala-dialogo.sala-planilla .mh-pap-texto { font-size: clamp(1rem, 1.45vw, 1.24rem) !important; font-weight: 600 !important; color: #3d1d4a !important; }
+.sala-dialogo.sala-planilla .mh-pap-texto h4 { font-size: 1.12em !important; color: #b0437a !important; }
+.sala-dialogo.sala-planilla .mh-pap-texto p { font-weight: 600; color: #6a3a78; }
+.sala-dialogo.sala-planilla .mh-pap-texto li { font-weight: 600; color: #3d1d4a; margin: .35em 0; }
+.sala-dialogo.sala-planilla .mh-pap-texto li::before { color: #d9559a; }
+.sala-dialogo.sala-planilla .mh-pap-texto .tab-nota { font-weight: 600; color: #7a5288; }
+.sala-dialogo.sala-planilla .mh-pap-imgs { gap: 7% !important; }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure { position: relative; padding: 2.2% 2.2% 0; background: #fff; border-radius: 3px; box-shadow: 0 3px 10px rgba(106, 44, 85, .22), 0 0 0 1px rgba(201, 150, 58, .25); transform: rotate(-1.2deg); }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure + figure { transform: rotate(1deg); }
+.sala-dialogo.sala-planilla .mh-pap-imgs img { transform: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; }
+.sala-dialogo.sala-planilla .mh-pap-imgs figcaption { padding: .25em 0 .35em; font-size: 1.02rem !important; font-weight: 700 !important; color: #8a3a6a !important; }
+/* cinta washi en dos esquinas de cada foto */
+.sala-dialogo.sala-planilla .mh-pap-imgs figure::before, .sala-dialogo.sala-planilla .mh-pap-imgs figure::after { content: ""; position: absolute; width: 18%; height: 11%; min-height: 14px;
+  background: repeating-linear-gradient(45deg, rgba(245, 168, 207, .78) 0 6px, rgba(255, 220, 236, .78) 6px 12px); box-shadow: 0 1px 2px rgba(106, 44, 85, .15); }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure::before { left: -4%; top: -5%; transform: rotate(-38deg); }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure::after { right: -4%; top: -5%; transform: rotate(36deg); }
+.sala-dialogo.sala-planilla .mh-pap-imgs figure + figure::before, .sala-dialogo.sala-planilla .mh-pap-imgs figure + figure::after { background: repeating-linear-gradient(45deg, rgba(200, 180, 245, .8) 0 6px, rgba(236, 228, 255, .8) 6px 12px); }
+.sala-dialogo.sala-planilla .mh-pap-texto ul li, .sala-dialogo.sala-planilla .mh-pap-texto .tab-obs li { color: #3d1d4a !important; font-weight: 700 !important; font-size: 1em !important; font-family: "Cormorant Garamond", Georgia, serif !important; line-height: 1.35 !important; }
+/* la lista en la letra redonda del cuento (Mali): se lee mucho más; la cursiva elegante queda en la introducción y la nota */
+.sala-dialogo.sala-planilla .mh-pap-texto ul li, .sala-dialogo.sala-planilla .mh-pap-texto .tab-obs li { font-family: "Mali", var(--sans, sans-serif) !important; font-weight: 600 !important; font-size: .86em !important; color: #3d1d4a !important; line-height: 1.4 !important; }
+/* margen derecho para no tocar los agujeros de los anillos */
+.sala-dialogo.sala-planilla .mh-pap-texto { left: 13.5% !important; width: 29% !important; padding-right: .3em !important; }
+/* el botón grande de play de la tele: se esconde mientras la cápsula se reproduce */
+html.escenas .sala-tele-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 3; width: 74px; height: 74px; border: 3px solid #f6d58a; border-radius: 50%; cursor: pointer; background: radial-gradient(circle at 35% 30%, #f7a8cf, #b46cc8); box-shadow: 0 0 0 4px rgba(255, 255, 255, .35), 0 0 22px rgba(245, 168, 207, .9); color: #fff; font-size: 28px; line-height: 1; padding-left: 6px; transition: transform .2s, opacity .2s; }
+html.escenas .sala-tele-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+html.escenas .sala-tele.reproduciendo .sala-tele-play, html.escenas .sala-tele.lista-abierta .sala-tele-play { opacity: 0; pointer-events: none; }
+/* mientras la página carga, la pantalla de la tableta muestra un aviso (no queda en blanco) */
+.sala-pantalla { background: linear-gradient(180deg, #fff7fb, #f3ebff) !important; }
+.sala-pantalla::after { content: "✦ Abriendo la página…"; position: absolute; left: 0; right: 0; top: 55%; text-align: center; font: italic 600 1.3rem "Cormorant Garamond", Georgia, serif; color: #b0437a; z-index: 0; animation: sala-latido 1.4s ease-in-out infinite; }
+.sala-pantalla iframe { position: relative; z-index: 1; background: transparent !important; opacity: 0; transition: opacity .35s; }
+.sala-pantalla iframe.cargada { opacity: 1; background: #fff !important; }
+@keyframes sala-latido { 50% { opacity: .45; } }

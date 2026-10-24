@@ -276,10 +276,13 @@
       const c = CAPSULAS[i];
       $$('.mh-capsula', lista).forEach((b, k) => b.classList.toggle('activo', k === i));
       video.poster = c.poster; vTit.textContent = c.e + ' ' + c.t; vTxt.textContent = c.txt;
-      if (reproducir) { video.src = c.video; video.play().catch(() => {}); }
-      else { video.removeAttribute('src'); video.load(); video.dataset.src = c.video; }
+      // la fuente va siempre puesta (con preload none no descarga nada hasta darle play); sin ella el botón de play no hacía nada
+      video.src = c.video;
+      if (reproducir) video.play().catch(() => {});
     }
+    /* antes: la fuente se ponía recién al dar play (no funcionaba: sin fuente el video no emite «play»)
     video.addEventListener('play', () => { if (!video.getAttribute('src') && video.dataset.src) { video.src = video.dataset.src; video.play().catch(() => {}); } });
+    */
     elegirCapsula(0, false);
 
     // páginas: la lista a la izquierda y la página en vivo a la derecha
@@ -332,7 +335,8 @@
       if (id === 'paginas') cargarPagina();
     }
     mostrar('videos');
-    window.MCEMatrona = { pausar: () => video.pause() };
+    // la versión por escenas arma la sala de espera con estas mismas piezas (las páginas van en el revistero)
+    window.MCEMatrona = { pausar: () => video.pause(), paginas: PAGINAS, sitio: SITIO };
   })();
 
   /* ======================================================================

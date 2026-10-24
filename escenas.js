@@ -281,6 +281,7 @@
 
   // ---------------------------------------------------------- 10-11. trayectoria
   const tra = '#trayectoria', explic = $$('.transition-explanation', $(tra));
+  /* antes: el camino de íconos en una franja y la tarjeta de matrona en su propia escena
   E.push({
     id: 'trayectoria', hada: 'Trayectoria', ev: crear('ev-trayectoria', cabeza(tra), de('.transition-path', tra), explic[0]),
     entrar(tl, ev) {
@@ -293,10 +294,144 @@
     id: 'salud', ev: crear('ev-salud', $('#salud-card')),
     entrar(tl, ev) { crece(tl, $('.health-card', ev), 0, { duration: .6 }); sube(tl, $$('.health-card > div > *', ev), '-=.3'); },
   });
+  */
+  // el diario mural del CESFAM: la historia de matrona en la hoja grande, los lugares donde trabajó en fotos clavadas,
+  // la campaña PAP en el afiche y, en la planilla con visto bueno, las capacidades que se suman (de Salud a Studios Conari)
+  function muralTrayectoria() {
+    const salud = $('#salud-card'), ps = $$('p', salud);
+    const el = (tag, clase, txt) => { const n = document.createElement(tag); if (clase) n.className = clase; if (txt != null) n.textContent = txt; return n; };
+    /* antes: la historia de matrona en dos párrafos (no cabía entera en la hoja)
+    const hoja = div('mural-hoja', el('span', 'mural-chip', salud.querySelector('.chip')?.textContent || ''), el('h3', null, 'La salud fue una base, no un capítulo perdido.'),
+      el('p', null, ps[0]?.textContent.trim().replace(/\s+/g, ' ')), el('p', null, ps[1]?.textContent.trim().replace(/\s+/g, ' ')));
+    */
+    // la hoja grande: la trayectoria laboral (dónde trabajó y qué hizo, del CV); lo que estudió está en Formación
+    const PASOS = [
+      ['2019–20', 'Matrona clínica y de atención primaria', 'Hospital Dr. José Luis Arraño, Andacollo', 'Lactancia, programa VIH, urgencias y cápsula Chile Crece Contigo'],
+      ['2019–21', 'Matrona clínica', 'Hospital San José de Coronel', 'Emergencias obstétricas, preparto, parto y puerperio'],
+      ['2021', 'Matrona', 'CESFAM O’Higgins', 'Planillas Excel de PAP y mamografía; condón femenino'],
+      ['2022–23', 'Matrona · Programa de Cáncer Cervicouterino', 'SS Metropolitano Sur Oriente', 'Campañas de PAP, seguimiento de positivos y derivaciones'],
+      ['2024', 'Atención en sala de ventas', 'Daily Fresh', ''],
+      ['2024', 'Educadora', 'Academia Aliwen', 'Matemáticas, Ciencias y Lenguaje'],
+      ['2026', 'Socia fundadora y administradora', 'Studios Conari SpA', 'Diseño editorial, ilustración, 3D y desarrollo web'],
+    ];
+    const hoja = div('mural-hoja', el('h3', null, 'Mi trayectoria'),
+      div('mural-pasos', PASOS.map(([a, t, d, q]) => div('mural-paso', el('b', null, a), el('span', null, t), el('small', null, d), q ? el('i', null, q) : null))));
+    const fotos = [['Hospital San José', 'Coronel · 2019–2021'], ['CESFAM O’Higgins', 'Atención primaria · 2021'], ['Hospital Dr. José Luis Arraño', 'Andacollo · 2019–2020']]
+      .map(([t, s], i) => div('mural-foto mural-foto-' + (i + 1), el('b', null, t), el('small', null, s)));
+    // la planilla PAP vive en «Matrona hoy»: el afiche de la campaña lleva directo a ella
+    const verPap = el('a', 'mural-ver-pap', 'Ver la planilla PAP →'); verPap.href = '#matrona-hoy';
+    verPap.addEventListener('click', () => setTimeout(() => window.MCESala?.planilla(), 950));
+    const afiche = div('mural-afiche', el('b', null, 'Campaña PAP'), el('span', null, 'Programa de Cáncer Cervicouterino · SS Metropolitano Sur Oriente · 2022–2023'),
+      el('small', null, 'Tomas de PAP, seguimiento de positivos y derivaciones'), verPap);
+    const filas = [...$$('.transition-path a', $(tra))].map((a, i) => {
+      const fin = a.classList.contains('transition-finale');
+      const f = el('a', 'mural-fila mural-fila-' + (i + 1)); f.href = a.getAttribute('href');
+      f.title = fin ? a.querySelector('span')?.textContent || '' : a.querySelector('small')?.textContent || '';
+      f.append(el('span', null, fin ? 'Studios Conari ✦' : a.querySelector('span')?.textContent || ''));
+      return f;
+    });
+    const planilla = div('mural-planilla', el('b', 'mural-planilla-titulo', 'Capacidades que se suman'), ...filas);
+    const lemaMural = el('p', 'mural-lema', explic[0]?.textContent || '');   // junto a las flores de la esquina de la hoja
+    const mural = div('mural', div('mural-tablero', hoja, lemaMural, ...fotos, afiche, planilla));
+    // el tablero se arma en píxeles del dibujo (1672 de ancho) y se escala con --k
+    new ResizeObserver(() => mural.style.setProperty('--k', (mural.clientWidth / 1672).toFixed(5))).observe(mural);
+    return mural;
+  }
+  E.push({
+    id: 'trayectoria', hada: 'Trayectoria', ev: crear('ev-trayectoria', cabeza(tra), muralTrayectoria()),
+    entrar(tl, ev) {
+      sube(tl, $$('.section-head > *', ev));
+      crece(tl, $('.mural-tablero', ev), '-=.2', { duration: .6 });
+      sube(tl, $$('.mural-foto, .mural-afiche, .mural-planilla', ev), '-=.3', { stagger: .08 });
+      lado(tl, $$('.mural-fila', ev), -1, '-=.2', { stagger: .06, duration: .35 });
+    },
+  });
   // la matrona hoy: cápsulas en video, páginas interactivas y planilla PAP
+  /* antes: todo en un panel de papel con pestañas
   E.push({
     id: 'matrona', ev: crear('ev-matrona', papel('app-matrona activo', $('#matrona-hoy'))),
     entrar(tl, ev) { crece(tl, $('.app-matrona', ev), 0, { duration: .6 }); sube(tl, $$('.mh-cabeza > *, .mh-tab', ev), '-=.3', { stagger: .06 }); },
+    salir() { window.MCEMatrona?.pausar(); },
+  });
+  */
+  // la sala de espera de la matrona (sala.webp, 1672 × 941): las cápsulas en la tele, las páginas interactivas en los
+  // folletos del revistero y la planilla PAP en la carpeta de la mesita. Cada página o la planilla se abre en un folleto grande
+  function salaEspera() {
+    const mh = $('#matrona-hoy'), M = window.MCEMatrona || {}, SITIO = M.sitio || 'https://manecist.github.io/Matrona/';
+    const el = (tag, clase, txt) => { const n = document.createElement(tag); if (clase) n.className = clase; if (txt != null) n.textContent = txt; return n; };
+    // la tele: la cápsula a pantalla completa (se reproduce ahí mismo); flechas para pasar de cápsula y la lista como menú del televisor
+    const videos = $('.mh-videos', mh), lista = $('.mh-capsulas', videos);
+    const tele = div('sala-tele', videos);
+    const pasar = d => { const bs = $$('.mh-capsula', lista), i = bs.findIndex(b => b.classList.contains('activo')); bs[(i + d + bs.length) % bs.length]?.click(); };
+    const flechaA = el('button', 'sala-tele-flecha ant', '‹'), flechaS = el('button', 'sala-tele-flecha sig', '›'), menuTele = el('button', 'sala-tele-menu', '☰ Cápsulas');
+    [flechaA, flechaS, menuTele].forEach(b => { b.type = 'button'; });
+    flechaA.setAttribute('aria-label', 'Cápsula anterior'); flechaS.setAttribute('aria-label', 'Cápsula siguiente');
+    flechaA.addEventListener('click', () => pasar(-1)); flechaS.addEventListener('click', () => pasar(1));
+    menuTele.addEventListener('click', () => tele.classList.toggle('lista-abierta'));
+    lista.addEventListener('click', e => { if (e.target.closest('.mh-capsula')) tele.classList.remove('lista-abierta'); });
+    tele.append(flechaA, flechaS, menuTele);
+    // un botón grande de play al centro (y tocar la pantalla pausa o sigue), como en un televisor
+    const video = $('video', videos), play = el('button', 'sala-tele-play'); play.type = 'button'; play.setAttribute('aria-label', 'Reproducir cápsula'); play.append(el('span', null, '▶'));
+    const alternar = () => { if (video.paused) video.play().catch(() => {}); else video.pause(); };
+    play.addEventListener('click', alternar);
+    video.addEventListener('click', e => { e.preventDefault(); alternar(); });
+    const estado = () => tele.classList.toggle('reproduciendo', !video.paused);
+    ['play', 'pause', 'ended'].forEach(t => video.addEventListener(t, estado));
+    tele.append(play);
+    // el folleto grande que se abre al tocar un folleto o la carpeta
+    const dlg = el('dialog', 'sala-dialogo'), dlgCuerpo = el('div', 'sala-dialogo-cuerpo'), cerrar = el('button', 'sala-cerrar', '✕');
+    // la tableta o la carpeta sale desde el objeto que se tocó (crece desde ahí) y al cerrar vuelve a él
+    let origen = null;
+    const desdeOrigen = () => {
+      if (!origen) return null; const o = origen.getBoundingClientRect(), d = dlg.getBoundingClientRect();
+      return `translate(${(o.left + o.width / 2 - (d.left + d.width / 2)).toFixed(0)}px, ${(o.top + o.height / 2 - (d.top + d.height / 2)).toFixed(0)}px) scale(${Math.max(.06, o.width / d.width).toFixed(3)})`;
+    };
+    const abrirDesde = desde => {
+      origen = desde || null; dlg.showModal();
+      const t = desdeOrigen(); if (t) dlg.animate([{ transform: t, opacity: .3 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    };
+    const cerrarHacia = () => {
+      const t = desdeOrigen(); if (!t || !dlg.open) { dlg.close(); return; }
+      dlg.animate([{ transform: 'none', opacity: 1 }, { transform: t, opacity: .2 }], { duration: 320, easing: 'cubic-bezier(.5,0,.8,.4)' }).onfinish = () => dlg.close();
+    };
+    cerrar.type = 'button'; cerrar.setAttribute('aria-label', 'Cerrar'); cerrar.addEventListener('click', cerrarHacia);
+    dlg.addEventListener('cancel', e => { e.preventDefault(); cerrarHacia(); });
+    dlg.append(cerrar, dlgCuerpo); dlg.addEventListener('click', e => { if (e.target === dlg) cerrarHacia(); });
+    const pap = $('.mh-pap', mh);
+    dlg.addEventListener('close', () => { if (pap && pap.parentNode === dlgCuerpo) mh.append(pap); dlgCuerpo.replaceChildren(); });
+    document.body.append(dlg);
+    const abrirPagina = (p, desde) => {
+      const marco = el('iframe'); marco.title = p.t; marco.addEventListener('load', () => marco.classList.add('cargada'), { once: true }); marco.src = SITIO + p.url;
+      const abrir = el('a', 'sala-abrir', 'Abrir en otra pestaña ↗'); abrir.href = SITIO + p.url; abrir.target = '_blank'; abrir.rel = 'noopener';
+      // la página se ve en la pantalla de una tableta mágica: arriba una barra de app con el nombre y qué se puede hacer
+      dlgCuerpo.replaceChildren(div('sala-pantalla', div('sala-dialogo-barra', el('b', null, p.e + ' ' + p.t), abrir),
+        div('sala-dialogo-hacer', el('span', null, 'Qué puedes hacer:'), ...(p.hacer || []).map(h => el('em', null, h))), marco));
+      dlg.classList.remove('sala-planilla'); dlg.classList.add('sala-tableta'); M.pausar?.(); abrirDesde(desde);
+    };
+    const abrirPlanilla = desde => {
+      if (pap) { pap.hidden = false; dlgCuerpo.replaceChildren(pap); }
+      dlg.classList.remove('sala-tableta'); dlg.classList.add('sala-planilla'); M.pausar?.(); abrirDesde(desde instanceof Element ? desde : carpeta);
+    };
+    window.MCESala = { planilla: abrirPlanilla };
+    const CORTO = ['Chile Crece Contigo', 'Anticoncep­tivos al toque', 'Torpedo profesional', 'Cáncer', 'ITS', 'Más matronas', 'Mi tesis'];
+    const folletos = (M.paginas || []).map((p, i) => {
+      const b = el('button', 'sala-folleto sala-folleto-' + (i + 1)); b.type = 'button'; b.title = p.t + ' · ' + p.txt;
+      b.append(el('span', 'sala-folleto-ico', p.e), el('span', null, CORTO[i] || p.t)); b.addEventListener('click', () => abrirPagina(p, b)); return b;
+    });
+    const fPap = el('button', 'sala-folleto sala-folleto-8'); fPap.type = 'button'; fPap.title = 'Planilla PAP';
+    fPap.append(el('span', 'sala-folleto-ico', '🧾'), el('span', null, 'Planilla PAP')); fPap.addEventListener('click', () => abrirPlanilla(fPap));
+    const fSitio = el('a', 'sala-folleto sala-folleto-9'); fSitio.href = SITIO; fSitio.target = '_blank'; fSitio.rel = 'noopener'; fSitio.title = 'Todo el portafolio de matrona';
+    fSitio.append(el('span', 'sala-folleto-ico', '🌸'), el('span', null, 'Todo el sitio'));
+    const carpeta = el('button', 'sala-carpeta'); carpeta.type = 'button'; carpeta.title = 'Planilla PAP'; carpeta.append(el('span', null, '🧾 Planilla PAP'));
+    carpeta.addEventListener('click', () => abrirPlanilla(carpeta));
+    const cinta = el('p', 'eyebrow cinta-nombre', 'Matrona hoy');
+    const sala = div('sala', div('sala-capa', tele, ...folletos, fPap, fSitio, carpeta));
+    new ResizeObserver(() => sala.style.setProperty('--k', (sala.clientWidth / 1672).toFixed(5))).observe(sala);
+    return [div('section-head', div(null, cinta)), sala];
+  }
+  E.push({
+    id: 'matrona', ev: crear('ev-matrona', salaEspera()),
+    entrar(tl, ev) { crece(tl, $('.sala', ev), 0, { duration: .6 }); sube(tl, $$('.sala-folleto, .sala-carpeta', ev), '-=.3', { stagger: .04 }); },
     salir() { window.MCEMatrona?.pausar(); },
   });
 
@@ -350,6 +485,11 @@
       tl.from(pie, { opacity: 0, duration: .5 }, '-=.2');
     },
   });
+
+  // el orden de lectura: primero quién es y de dónde viene (perfil y trayectoria), después lo que hace;
+  // «Matrona hoy» queda junto a Datos (las dos son su trabajo actual en salud)
+  const ORDEN = ['inicio', 'estudio', 'equipo', 'trayectoria', 'desarrollo', 'diseno', 'leyendas', 'historia', 'datos', 'matrona', 'formacion', 'arcade', 'contacto'];
+  E.sort((a, b) => (ORDEN.indexOf(a.id) + 1 || 99) - (ORDEN.indexOf(b.id) + 1 || 99));
 
   // los marcos de un paso a otro se cambian con un fundido y un leve deslizamiento
   function marcar(e, i) {
@@ -521,7 +661,7 @@
 
   // ---------------------------------------------------------- índice lateral: una estrella por escena
   const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'Mi perfil', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos de salud', trayectoria: 'Trayectoria', salud: 'Matrona', matrona: 'Matrona hoy', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
-  const SECCION = ['inicio', 'estudio', 'desarrollo', 'diseno', 'datos', 'trayectoria', 'formacion', 'arcade', 'contacto'];
+  const SECCION = ['inicio', 'estudio', 'trayectoria', 'desarrollo', 'diseno', 'datos', 'formacion', 'arcade', 'contacto'];
   const indice = document.createElement('nav'); indice.className = 'escenas-indice'; indice.setAttribute('aria-label', 'Escenas');
   E.forEach((e, i) => {
     const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', NOMBRE[e.id]); b.dataset.nombre = NOMBRE[e.id];
@@ -541,8 +681,8 @@
     caja.style.zoom = ''; e.ev.classList.remove('desborda');
     const disp = e.ev.clientHeight - 70, alto = caja.scrollHeight;   // margen para la pista de la rueda
     // la tienda no se achica: se recorre con la rueda (sus objetos necesitan su tamaño real para usarse)
-    // el escritorio de Datos va a todo el ancho y no se achica: si no cabe, se recorre hacia abajo
-    if (e.id === 'datos') { if (alto > e.ev.clientHeight + 2) e.ev.classList.add('desborda'); return; }
+    // el escritorio de Datos y el diario mural de Trayectoria van a todo el ancho y no se achican: si no cabe, se recorre hacia abajo
+    if (['datos', 'trayectoria', 'matrona'].includes(e.id)) { if (alto > e.ev.clientHeight + 2) e.ev.classList.add('desborda'); return; }
     if (alto > disp) {
       const k = Math.max(.62, disp / alto); caja.style.zoom = k.toFixed(3);
       if (caja.scrollHeight * k > disp + 2) e.ev.classList.add('desborda');
@@ -670,7 +810,7 @@
     if (e.key === 'Home') { e.preventDefault(); irA(0); }
     if (e.key === 'End') { e.preventDefault(); irA(E.length - 1); }
   });
-  const DESTINO = { inicio: 'inicio', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'diseno', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'salud', 'matrona-hoy': 'matrona', formacion: 'formacion', arcade: 'arcade', contacto: 'contacto' };
+  const DESTINO = { inicio: 'inicio', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'diseno', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'trayectoria', 'matrona-hoy': 'matrona', formacion: 'formacion', arcade: 'arcade', contacto: 'contacto' };
   const indiceDe = id => E.findIndex(e => e.id === id);
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]'); if (!a || !site.contains(a)) return;
