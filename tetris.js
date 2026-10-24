@@ -3,6 +3,9 @@
 'use strict';
 const SHAPES=[[[1,1,1,1]],[[1,1],[1,1]],[[0,1,0],[1,1,1]],[[0,1,1],[1,1,0]],[[1,1,0],[0,1,1]],[[1,0,0],[1,1,1]],[[0,0,1],[1,1,1]]];
 const COLORS=['#f5a8cf','#ba93f0','#91dcff','#e2ba53','#ff83b8','#9ac6ff','#f1c593'];
+// los bloques dibujados en el estilo de la autora (si una imagen aún no carga, se usa el dibujo por código)
+const BLOQUES=COLORS.map((_,i)=>{const im=new Image();im.src='assets/juegos/bloque-'+(i+1)+'.webp';return im;});
+const bloqueListo=v=>{const im=BLOQUES[v-1];return im&&im.complete&&im.naturalWidth?im:null;};
 class Tetris{
  constructor(canvas,{demo=false,onChange=()=>{}}={}){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.demo=demo;this.onChange=onChange;this.timer=null;this.lastClear=0;this.lockDelay=1500;this.lockTimer=null;this.lockDue=0;this.lockRemaining=0;this.reset(demo)}
  reset(demo=this.demo){clearTimeout(this.timer);this.clearLock();this.lockResets=0;this.demo=demo;this.board=Array.from({length:20},()=>Array(10).fill(0));this.score=0;this.lines=0;this.over=false;this.paused=false;this.running=true;this.bag=[];if(this.demo)this.seedDemo();this.spawn();this.draw();this.emit()}
@@ -33,6 +36,7 @@ class Tetris{
   const ficha=(x,y,v,ghost)=>{const px=x*s,py=y*s,col=COLORS[v-1],r=s*.22;
    c.beginPath();c.roundRect?c.roundRect(px+2,py+2,s-4,s-4,r):c.rect(px+2,py+2,s-4,s-4);
    if(ghost){c.setLineDash([3,3]);c.strokeStyle='rgba(122,63,104,.45)';c.lineWidth=1.5;c.stroke();c.setLineDash([]);return;}
+   const arte=bloqueListo(v);if(arte){c.drawImage(arte,px+1,py+1,s-2,s-2);return;}
    c.fillStyle=col;c.fill();c.lineWidth=2;c.strokeStyle='#6b3a5e';c.stroke();
    c.fillStyle='rgba(255,255,255,.65)';c.beginPath();c.ellipse(px+s*.34,py+s*.3,s*.16,s*.09,-.5,0,7);c.fill();
    c.fillStyle='rgba(107,58,94,.55)';const m=v%3;c.beginPath();
@@ -45,6 +49,7 @@ class Tetris{
  draw(){const c=this.ctx,w=this.canvas.width,h=this.canvas.height,s=w/10;c.clearRect(0,0,w,h);if(!this.demo&&this.canvas.closest&&this.canvas.closest('.colgante-app'))return this.dibujarPapel(c,w,h,s);const bg=c.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#141a40');bg.addColorStop(.5,'#25163f');bg.addColorStop(1,'#091b36');c.fillStyle=this.demo?'#b5bea0':bg;c.fillRect(0,0,w,h);if(!this.demo){if(!this.cielo){this.cielo=Array.from({length:46},()=>[Math.random()*w,Math.random()*h,Math.random()*1.2+.3,Math.random()]);}const t=performance.now()/900;this.cielo.forEach(([x,y,r,f])=>{c.globalAlpha=.25+.55*Math.abs(Math.sin(t+f*6));c.fillStyle=f>.7?'#ffd9ea':'#fff';c.beginPath();c.arc(x,y,r,0,7);c.fill();});c.globalAlpha=1;const au=c.createRadialGradient(w*.5,h*1.05,10,w*.5,h,h*.8);au.addColorStop(0,'rgba(245,168,207,.22)');au.addColorStop(1,'rgba(245,168,207,0)');c.fillStyle=au;c.fillRect(0,0,w,h);}
   c.strokeStyle=this.demo?'rgba(66,42,64,.10)':'rgba(255,255,255,.035)';for(let x=1;x<10;x++){c.beginPath();c.moveTo(x*s,0);c.lineTo(x*s,h);c.stroke()}for(let y=1;y<20;y++){c.beginPath();c.moveTo(0,y*s);c.lineTo(w,y*s);c.stroke()}
   const block=(x,y,v,ghost=false)=>{const px=x*s,py=y*s;if(this.demo){c.fillStyle=ghost?'rgba(255,255,255,.05)':'#414b36'}else{c.fillStyle=ghost?'rgba(255,255,255,.07)':COLORS[v-1]};if(!ghost&&!this.demo){c.shadowColor=COLORS[v-1];c.shadowBlur=5;}if(this.demo||ghost){c.fillRect(px+1,py+1,s-2,s-2);c.shadowBlur=0;c.strokeStyle=this.demo?'rgba(255,255,255,.14)':'rgba(255,215,240,.45)';c.setLineDash(ghost?[3,3]:[]);c.strokeRect(px+3,py+3,s-6,s-6);c.setLineDash([]);return;}
+  c.shadowBlur=0;const arte=bloqueListo(v);if(arte){c.save();c.shadowColor=COLORS[v-1];c.shadowBlur=6;c.drawImage(arte,px+1,py+1,s-2,s-2);c.restore();return;}
   const col=COLORS[v-1],g=c.createLinearGradient(px,py,px+s,py+s);g.addColorStop(0,'#fff');g.addColorStop(.18,col);g.addColorStop(1,'rgba(40,20,70,.9)');
   c.beginPath();c.roundRect?c.roundRect(px+1,py+1,s-2,s-2,5):c.rect(px+1,py+1,s-2,s-2);c.fillStyle=g;c.fill();c.shadowBlur=0;
   c.fillStyle=col;c.beginPath();c.moveTo(px+s*.5,py+s*.18);c.lineTo(px+s*.82,py+s*.5);c.lineTo(px+s*.5,py+s*.82);c.lineTo(px+s*.18,py+s*.5);c.closePath();c.fill();

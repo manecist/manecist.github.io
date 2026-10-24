@@ -22,7 +22,8 @@
     const REPO = 'https://github.com/manecist/Analisis-de-datos-dashboards';
     const CORTO = { anticonceptivos: 'Anticonceptivos', its: 'ITS', embarazo: 'Embarazo y matronas', ajuar: 'Ajuar del recién nacido', cancer: 'Cáncer' };
     const T = window.TABLEROS;
-    let t = 0, pag = 0, vista = 'pbi', sub = 'hallazgos', kpiSel = 0;
+    const TV = window.TABLEROS_VIVOS;
+    let t = 0, pag = 0, vista = TV ? 'vivo' : 'pbi', sub = 'hallazgos', kpiSel = 0;
 
     // temas
     const temas = el('div', 'tab-temas'); temas.setAttribute('role', 'tablist'); temas.setAttribute('aria-label', 'Elige un tablero');
@@ -46,16 +47,20 @@
     const pagNombre = el('p', 'tab-pag-nombre');
     const vistas = el('div', 'tab-vistas'); vistas.setAttribute('aria-label', 'Programa');
     const bPbi = boton('activo', 'Power BI'), bTab = boton('', 'Tableau');
-    vistas.append(bPbi, bTab);
-    bPbi.addEventListener('click', () => { vista = 'pbi'; pintarPagina(); });
-    bTab.addEventListener('click', () => { vista = 'tableau'; pintarPagina(); });
+    // «En vivo»: el tablero rehecho en la web (filtros y gráficos que responden); Power BI y Tableau quedan como capturas
+    const bVivo = boton('', 'En vivo');
+    if (TV) vistas.append(bVivo); vistas.append(bPbi, bTab);
+    bVivo.addEventListener('click', () => { vista = 'vivo'; pag = 0; pintarTira(); pintarPagina(); });
+    bPbi.addEventListener('click', () => { const v = vista; vista = 'pbi'; if (v === 'vivo') { pag = 0; pintarTira(); } pintarPagina(); });
+    bTab.addEventListener('click', () => { const v = vista; vista = 'tableau'; if (v === 'vivo') { pag = 0; pintarTira(); } pintarPagina(); });
     barra.append(pagNombre, vistas);
     const marco = el('figure', 'tab-marco');
     const img = el('img'); img.alt = ''; img.decoding = 'async'; img.draggable = false;
     const ant = boton('tab-flecha ant', '‹', { ariaLabel: 'Página anterior' }), sig = boton('tab-flecha sig', '›', { ariaLabel: 'Página siguiente' });
     const ampliar = boton('tab-ampliar', '⤢ Ampliar');
     const pie = el('figcaption', 'tab-pie');
-    marco.append(img, ant, sig, ampliar, pie);
+    const vivo = el('div', 'tv-pagina'); vivo.hidden = true;
+    marco.append(img, vivo, ant, sig, ampliar, pie);
     const tira = el('div', 'tab-tira'); tira.setAttribute('aria-label', 'Páginas del tablero');
     visor.append(barra, marco, tira);
     ant.addEventListener('click', () => irPagina(pag - 1)); sig.addEventListener('click', () => irPagina(pag + 1));
@@ -63,24 +68,34 @@
     // vista ampliada
     const zoom = el('dialog', 'tab-zoom'); zoom.setAttribute('aria-label', 'Página del tablero ampliada');
     const zImg = el('img'); zImg.alt = ''; zImg.draggable = false;
+    const zVivo = el('div', 'tv-pagina tv-grande'); zVivo.hidden = true;
     const zPie = el('p', 'tab-zoom-pie');
     const zCerrar = boton('tab-zoom-cerrar', '✕', { ariaLabel: 'Cerrar' });
     const zAnt = boton('tab-flecha ant', '‹', { ariaLabel: 'Página anterior' }), zSig = boton('tab-flecha sig', '›', { ariaLabel: 'Página siguiente' });
-    zoom.append(zImg, zAnt, zSig, zPie, zCerrar);
+    zoom.append(zImg, zVivo, zAnt, zSig, zPie, zCerrar);
     document.body.append(zoom);
     const abrirZoom = () => { pintarZoom(); if (!zoom.open) zoom.showModal(); };
     img.addEventListener('click', abrirZoom); ampliar.addEventListener('click', abrirZoom);
     zCerrar.addEventListener('click', () => zoom.close());
+    zoom.addEventListener('close', () => TV && TV.ocultar());
     zoom.addEventListener('click', e => { if (e.target === zoom) zoom.close(); });
     zAnt.addEventListener('click', () => { irPagina(pag - 1); pintarZoom(); }); zSig.addEventListener('click', () => { irPagina(pag + 1); pintarZoom(); });
+    // en vivo, el clic en la página es para usar los filtros: solo «Ampliar» abre la vista grande
     zoom.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') { irPagina(pag - 1); pintarZoom(); } if (e.key === 'ArrowRight') { irPagina(pag + 1); pintarZoom(); } });
     [img, zImg].forEach(n => n.addEventListener('contextmenu', e => e.preventDefault()));
 
     const cuerpo = el('div', 'tab-cuerpo'); cuerpo.append(info, visor);
     raiz.append(temas, cuerpo);
+    // en la versión por escenas la carpeta, el monitor y los separadores se dibujan a la medida del escritorio (1672 px de ancho)
+    // y se escalan con --k: así siguen la perspectiva exacta del dibujo
+    const medir = () => raiz.style.setProperty('--k', (raiz.clientWidth / 1672).toFixed(5));
+    new ResizeObserver(medir).observe(raiz); medir();
 
     const src = (d, p, tipo) => `assets/datos/${d.id}/${p.img}${tipo === 'mini' ? '-mini' : tipo === 'tableau' ? '-tableau' : ''}.webp`;
     const actual = () => T[t], pagina = () => actual().paginas[pag];
+    const vivas = () => (TV && TV.temas[actual().id]) || [];
+    const enVivo = () => vista === 'vivo' && vivas().length > 0;
+    const nPaginas = () => enVivo() ? vivas().length : actual().paginas.length;
     const tieneTableau = () => !!pagina().tableau;
 
     function elegir(i) {
@@ -97,8 +112,17 @@
         b.addEventListener('click', () => { sub = id; pintarSub(); });
         subs.append(b);
       });
-      // tira de páginas
-      tira.replaceChildren();
+      pintarTira();
+      pintarSub(); pintarPagina();
+    }
+
+    // tira de páginas: miniaturas de las capturas, o los nombres de las páginas en vivo
+    function pintarTira() {
+      const d = actual(); tira.replaceChildren(); tira.classList.toggle('tv-tira', enVivo());
+      if (enVivo()) {
+        vivas().forEach((p, k) => { const b = boton('tab-mini tv-mini'); b.title = p.t; b.append(el('span', null, p.e + ' ' + p.t)); b.addEventListener('click', () => irPagina(k)); tira.append(b); });
+        return;
+      }
       d.paginas.forEach((p, k) => {
         const b = boton('tab-mini'); b.title = p.titulo; b.setAttribute('aria-label', 'Página ' + (k + 1) + ': ' + p.titulo);
         const m = el('img'); m.src = src(d, p, 'mini'); m.alt = ''; m.loading = 'lazy'; m.draggable = false;
@@ -106,7 +130,6 @@
         b.addEventListener('click', () => irPagina(k));
         tira.append(b);
       });
-      pintarSub(); pintarPagina();
     }
 
     function pintarSub() {
@@ -152,9 +175,26 @@
       }
     }
 
-    function irPagina(k) { const n = actual().paginas.length; pag = (k + n) % n; pintarPagina(); }
+    function irPagina(k) { const n = nPaginas(); pag = (k + n) % n; pintarPagina(); }
     function pintarPagina() {
-      const d = actual(), p = pagina();
+      const d = actual();
+      bVivo.classList.toggle('activo', vista === 'vivo');
+      marco.classList.toggle('tv-marco-vivo', enVivo()); img.hidden = enVivo(); vivo.hidden = !enVivo();
+      if (enVivo()) {
+        bPbi.classList.remove('activo'); bTab.classList.remove('activo'); bTab.disabled = false;
+        const v = vivas()[pag];
+        // el nombre de la página es un menú: se salta directo a cualquier página
+        const menu = el('select', 'tv-paginas'); menu.setAttribute('aria-label', 'Página del tablero');
+        vivas().forEach((x, k) => { const o = el('option', null, `${k + 1}. ${x.e} ${x.t}`); o.value = k; menu.append(o); });
+        menu.value = pag; menu.addEventListener('change', () => irPagina(+menu.value));
+        pagNombre.replaceChildren(el('span', null, `En vivo · ${pag + 1} de ${vivas().length}`), menu);
+        pie.textContent = v.texto;
+        $$('.tab-mini', tira).forEach((b, k) => b.classList.toggle('activo', k === pag));
+        const m = tira.children[pag]; if (m) tira.scrollTo({ left: m.offsetLeft - tira.clientWidth / 2 + m.clientWidth / 2, behavior: 'smooth' });
+        pintarVivo(vivo, v);
+        return;
+      }
+      const p = pagina();
       if (vista === 'tableau' && !tieneTableau()) vista = 'pbi';
       bPbi.classList.toggle('activo', vista === 'pbi'); bTab.classList.toggle('activo', vista === 'tableau'); bTab.disabled = !tieneTableau();
       pagNombre.replaceChildren(el('span', null, `Página ${pag + 1} de ${d.paginas.length}`), el('b', null, p.emoji + ' ' + p.titulo));
@@ -165,7 +205,15 @@
       // precarga la página siguiente
       const s = d.paginas[(pag + 1) % d.paginas.length]; new Image().src = src(d, s, vista === 'tableau' && s.tableau ? 'tableau' : 'grande');
     }
-    function pintarZoom() { zImg.src = img.src; zImg.alt = img.alt; zPie.textContent = `${actual().titulo} · ${pagina().titulo} (${vista === 'tableau' ? 'Tableau' : 'Power BI'}) · ${pag + 1}/${actual().paginas.length}`; }
+    // dibuja una página en vivo (los datos se cargan la primera vez)
+    function pintarVivo(caja, v) {
+      TV.ocultar(); caja.replaceChildren(el('p', 'tv-cargando', 'Abriendo el tablero…'));
+      TV.listo().then(() => { caja.replaceChildren(); v.pintar(caja); }).catch(() => caja.replaceChildren(el('p', 'tv-cargando', 'No se pudieron cargar los datos. Revisa la conexión.')));
+    }
+    function pintarZoom() {
+      zImg.hidden = enVivo(); zVivo.hidden = !enVivo();
+      if (enVivo()) { const v = vivas()[pag]; pintarVivo(zVivo, v); zPie.textContent = `${actual().titulo} · ${v.t} (en vivo) · ${pag + 1}/${vivas().length}`; return; }
+      zImg.src = img.src; zImg.alt = img.alt; zPie.textContent = `${actual().titulo} · ${pagina().titulo} (${vista === 'tableau' ? 'Tableau' : 'Power BI'}) · ${pag + 1}/${actual().paginas.length}`; }
 
     elegir(0);
   })();

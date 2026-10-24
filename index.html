@@ -25,8 +25,10 @@
   <link rel="stylesheet" href="libro.css?v=20261020b">
   <link rel="stylesheet" href="tema-claro.css?v=20261016e">
   <link rel="stylesheet" href="intro.css?v=20260929f">
-  <link rel="stylesheet" href="salud.css?v=20261016b">
-  <link rel="stylesheet" href="escenas.css?v=20261020a">
+  <link rel="stylesheet" href="salud.css?v=20261028a">
+  <link rel="stylesheet" href="escenas.css?v=20261023a">
+  <link rel="stylesheet" href="pergamino.css?v=20261028n">
+  <!-- <link rel="stylesheet" href="pagina-cuento.css?v=20261023f"> estilo de vidrio en prueba, desactivado -->
   <link rel="icon" href="assets/emblema-estrella.png">
   <script>
     // modo día o noche: lo elegido antes o, si no, la preferencia del sistema
@@ -38,18 +40,19 @@
     addEventListener('load', () => { if (!window.MCEIntroActiva) document.documentElement.classList.remove('con-intro'); });
   </script>
   <script src="constellations.js?v=20260927b" defer></script>
-  <script src="tetris.js?v=20261008a" defer></script>
-  <script src="app.js?v=20261016a" defer></script>
+  <script src="tetris.js?v=20261023a" defer></script>
+  <script src="app.js?v=20261027a" defer></script>
   <script src="magia.js?v=20261002a" defer></script>
   <script src="fondo-acuarela.js?v=20261023b" defer></script>
   <script src="secciones.js?v=20261017c" defer></script>
-  <script src="datos-salud.js?v=20261017a" defer></script>
-  <script src="salud.js?v=20261016a" defer></script>
+  <script src="datos-salud.js?v=20261028b" defer></script>
+  <script src="tableros-vivos.js?v=20261028c" defer></script>
+  <script src="salud.js?v=20261028b" defer></script>
   <script src="libro.js?v=20261017a" defer></script>
   <script src="cuento.js?v=20261020i" defer></script>
   <script src="vendor/gsap.min.js" defer></script>
   <script src="vendor/MotionPathPlugin.min.js" defer></script>
-  <script src="escenas.js?v=20261108l" defer></script>
+  <script src="escenas.js?v=20261028a" defer></script>
   <script src="intro-trazos.js?v=20260929c" defer></script>
   <script src="intro.js?v=20261002a" defer></script>
 </head>
@@ -191,10 +194,26 @@
     <article><img src="assets/icon-company.webp" alt="" loading="lazy"><div><h3>Videojuegos y experiencias</h3><p>Conceptualización, narrativa, diseño, documentación, producción y recursos para experiencias interactivas.</p></div></article>
     <article><img src="assets/icon-code.webp" alt="" loading="lazy"><div><h3>Software y web</h3><p>Aplicaciones, sitios, interfaces y soluciones digitales con frontend, backend y bases de datos.</p></div></article>
     <article><img src="assets/icon-design.webp" alt="" loading="lazy"><div><h3>Diseño y producción visual</h3><p>Identidad visual, ilustración, diseño editorial, personajes, recursos gráficos y material de presentación.</p></div></article>
-    <article><img src="assets/emblema-conari-magico.webp" alt="" loading="lazy"><div><h3>Propiedad intelectual</h3><p>Conceptos, mundos, personajes, documentación y material para proyectos originales y postulaciones.</p></div></article>
+    <article><img src="assets/pergamino/icon-propiedad.webp" alt="" loading="lazy"><div><h3>Propiedad intelectual</h3><p>Conceptos, mundos, personajes, documentación y material para proyectos originales y postulaciones.</p></div></article>
   </div>
 
   <div class="service-more"><article><h3>Documentación y propuestas</h3><p>Dossiers, presentaciones, estructura de proyectos y material para convocatorias.</p></article><article><h3>Modelado y animación 3D</h3><p>Recursos desarrollados desde el área 3D del equipo, integrados a las necesidades de cada proyecto.</p></article></div>
+  <div class="studio-team perfil-pro-caja">
+    <article class="perfil-pro" aria-labelledby="perfil-pro-nombre">
+      <figure class="perfil-pro-retrato"><img class="perfil-pro-ari" src="assets/personajes/ari-hero.webp" alt="Ari, dibujo de María Inés" loading="lazy"><img class="perfil-pro-ari perfil-pro-asesina" src="assets/personajes/ari-asesina.webp" alt="Ari transformada en la asesina" loading="lazy"><img class="perfil-pro-arco" src="assets/pergamino/arco.webp" alt="" loading="lazy"></figure>
+      <div class="perfil-pro-texto">
+        <p class="eyebrow gold">MI ROL EN STUDIOS CONARI</p>
+        <h3 id="perfil-pro-nombre">María Inés Cisterna Escobar</h3>
+        <p class="perfil-pro-cargo">Fundadora y administradora · Dirección creativa · Desarrolladora Full Stack Java · Matrona</p>
+        <p>Fundé Studios Conari SpA y dirijo su línea creativa: creo las historias y los mundos del estudio y llevo su producción editorial y visual, desde la idea y el diseño hasta la entrega final.</p>
+        <p>Desarrollo aplicaciones y sitios web en Java, gestiono los proyectos y trabajo la identidad visual y el marketing. Mi formación como matrona me dio rigor documental, análisis de datos y trazabilidad, y hoy aplico esa mirada a cada proyecto.</p>
+        <ul class="perfil-pro-areas" aria-label="Áreas">
+          <li>Dirección creativa</li><li>Narrativa e ilustración</li><li>Java Full Stack</li><li>Datos</li><li>Gestión de proyectos</li><li>Salud</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+  <!-- versión anterior: el equipo de tres perfiles (se reemplazó por el perfil profesional de María Inés)
   <div class="studio-team">
     <div>
       <p class="eyebrow gold">CÓMO TRABAJAMOS</p>
@@ -206,6 +225,7 @@
     </div>
     <div class="team-path" aria-label="Equipo y aportes complementarios"><article class="role-node"><img src="assets/equipo-maria.webp" alt="Libro de historias, pluma, tableta y marketing creativo" loading="lazy"><strong>María Inés</strong><span>Dirección creativa · Full Stack Java · salud</span><p>Matrona titulada, desarrolladora Full Stack Java certificada y socia fundadora de Studios Conari. Creo historias y dirijo su producción editorial y visual, conectando narrativa, ilustración y diseño para dar identidad a nuestros mundos.</p><p>Desarrollo aplicaciones y sitios web, trabajo el marketing y participo en recursos 3D. Mi experiencia en salud aporta rigor documental, análisis de datos y trazabilidad: integro esa mirada en cada proyecto, desde la idea y el diseño hasta la entrega final.</p><small class="role-skills">Narrativa · diseño editorial · Java · datos · salud</small></article><article class="role-node"><img src="assets/equipo-kevin.webp" alt="Programación, gráficos de datos, bloc de notas y micrófono" loading="lazy"><strong>Kevin Alexis</strong><span>Dirección técnica · videojuegos y datos</span><p>Ingeniero en Informática y socio fundador de Studios Conari. Lidera la programación de nuestros videojuegos en Godot: arquitectura, mecánicas, sistemas e integración 3D, desde el prototipo hasta una versión jugable.</p><p>Especialista en análisis de datos y Business Intelligence, con experiencia liderando TI. Construye modelos, procesos ETL y tableros en Power BI, SAP y SQL para convertir datos en decisiones. También aporta narrativa, pintura y doblaje en inglés.</p><small class="role-skills">Videojuegos · programación · datos · dirección técnica</small></article><article class="role-node"><img src="assets/equipo-elias.webp" alt="Modelado 3D, malla de un dragón, rigging y tableta gráfica" loading="lazy"><strong>Elías Alejandro</strong><span>Animación y arte 3D · rigging · efectos</span><p>Animador y artista 3D, con formación en Animación Digital en Duoc UC y experiencia freelance y en productora. En Studios Conari crea objetos, entornos y personajes, y les da movimiento y expresión mediante animación y rigging.</p><p>Trabaja modelado en Maya, efectos FX y VFX, iluminación, cámaras y sincronización labial. Combina ilustración y tableta gráfica con el trabajo 3D, aporta ideas a las historias y colabora en la integración visual de nuestros mundos.</p><small class="role-skills">Modelado · animación · rigging · FX / VFX · iluminación</small></article><p class="team-outcome">Tres miradas, una creación compartida. Las ideas se conversan y se construyen en equipo.</p></div>
   </div>
+  -->
 </section>
 
 <section id="desarrollo" class="section wrap">
@@ -296,7 +316,7 @@ double total = subtotal - ahorro;</code></pre>
         <div class="stack-cloud"><span>Java</span><span>Spring Boot</span><span>Spring Security</span><span>MySQL</span><span>Thymeleaf</span></div>
       </div>
 <div class="m7-gallery" id="m7-galeria"><div class="m7-controls" aria-label="Capturas del proyecto M7"><button type="button" data-m7="0" aria-pressed="true">Inicio</button><button type="button" data-m7="1" aria-pressed="false">Catálogo</button><button type="button" data-m7="2" aria-pressed="false">Carrito</button><button type="button" data-m7="3" aria-pressed="false">Gestión</button></div><figure><a id="m7-full" href="assets/m7-inicio.webp" target="_blank" rel="noopener" aria-label="Abrir captura de M7 en tamaño completo"><img id="m7-preview" src="assets/m7-inicio.webp" alt="Captura real del inicio de Magical Alliance, proyecto M7" loading="lazy"></a><figcaption id="m7-caption">Inicio · identidad visual y navegación de Magical Alliance.</figcaption></figure><p class="small-note">Capturas reales del repositorio. Selecciona una vista y pulsa la imagen para ampliarla.</p><div class="m7-flow"><article><b>01 · Explorar</b><p>Catálogo, categorías y filtros para encontrar productos.</p></article><article><b>02 · Comprar</b><p>Cantidades, carrito y pedidos conectados al historial.</p></article><article><b>03 · Administrar</b><p>Productos, usuarios y stock organizados por roles.</p></article></div></div>
-      <p class="botonera"><a class="btn primary" href="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/" target="_blank" rel="noopener">Abrir la vitrina interactiva ↗</a> <a class="btn ghost" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Ver repositorio M7 ↗</a></p>
+      <p class="botonera"><a class="btn primary" href="https://manecist.github.io/Ecommerce-Portafolio-Final-M7/" target="_blank" rel="noopener">Abrir la vitrina interactiva ↗</a> <a class="btn ghost" href="https://github.com/manecist/Ecommerce-Portafolio-Final-M7" target="_blank" rel="noopener">Ver repositorio M7 ↗</a> <a class="btn ghost" href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ver repositorio de la caja Java M4 ↗</a></p>
     </div>
   </div>
 
@@ -426,10 +446,10 @@ double total = subtotal - ahorro;</code></pre>
   </div>
 
   <div class="credential-gallery">
-    <article><img src="assets/icon-code.webp" alt="" loading="lazy"><div><span>FULL STACK JAVA</span><h3>480 horas</h3><p>SENCE · Talento Digital · Sustantiva SpA</p><code>840655be-6245-4c15-a9f4-6fc4542a71b1</code><a href="https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1" target="_blank" rel="noopener">Verificar credencial ↗</a></div></article>
-    <article><img src="assets/icon-data.webp" alt="" loading="lazy"><div><span>ANÁLISIS DE DATOS</span><h3>Google Data Analytics</h3><p>Certificado profesional en curso, con cinco cursos aprobados durante 2026.</p></div></article>
-    <article><img src="assets/icon-design.webp" alt="" loading="lazy"><div><span>TECNOLOGÍA Y DISEÑO</span><h3>Web, datos y producción digital</h3><p>Java, Spring Boot, MySQL, SQL, HTML, CSS, JavaScript, Git/GitHub, diseño web y herramientas creativas.</p></div></article>
-    <article><img src="assets/icon-health.webp" alt="" loading="lazy"><div><span>FORMACIÓN PROFESIONAL</span><h3>Matrona</h3><p>Matrona titulada, licenciada en Obstetricia y Matronería y bachiller en Salud Sexual y Reproductiva.</p></div></article>
+    <article><img src="assets/pergamino/cred-java.webp" alt="" loading="lazy"><div><span>FULL STACK JAVA</span><h3>480 horas</h3><p>SENCE · Talento Digital · Sustantiva SpA</p><code>840655be-6245-4c15-a9f4-6fc4542a71b1</code><a href="https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1" target="_blank" rel="noopener">Verificar credencial ↗</a></div></article>
+    <article><img src="assets/pergamino/cred-datos.webp" alt="" loading="lazy"><div><span>ANÁLISIS DE DATOS</span><h3>Google Data Analytics</h3><p>Certificado profesional en curso: ocho cursos de Google aprobados en Coursera durante 2026.</p></div></article>
+    <article><img src="assets/pergamino/cred-web.webp" alt="" loading="lazy"><div><span>TECNOLOGÍA Y DISEÑO</span><h3>Web, datos y producción digital</h3><p>Java, Spring Boot, MySQL, SQL, HTML, CSS, JavaScript, Git/GitHub, diseño web y herramientas creativas.</p></div></article>
+    <article><img src="assets/pergamino/cred-matrona.webp" alt="" loading="lazy"><div><span>FORMACIÓN PROFESIONAL</span><h3>Matrona</h3><p>Matrona titulada, licenciada en Obstetricia y Matronería y bachiller en Salud Sexual y Reproductiva.</p></div></article>
   </div>
 
   <div class="cv-cta">
@@ -472,12 +492,12 @@ double total = subtotal - ahorro;</code></pre>
 
   <div class="game-panel" id="game-match">
     <div id="gema-intro" class="gema-intro"><div class="gem-welcome"><div><span class="chip">MAGIA PARA JUGAR</span><h3>Cohetes, bombas y bolas disco</h3><p>Empiezas con uno de cada poder. Intercámbialo con una gema vecina para ver su efecto, o aprende a crear los tuyos.</p></div><div id="gem-inventory" aria-label="Poderes disponibles en el tablero"></div></div>
-    <div class="gem-lessons"><span>Retos guiados</span><button type="button" data-gem-lesson="rocket"><img src="assets/gema-rocket.svg" alt="">Crear cohete · 4</button><button type="button" data-gem-lesson="bomb"><img src="assets/gema-bomb.svg" alt="">Crear bomba · 5</button><button type="button" data-gem-lesson="disco"><img src="assets/gema-disco.svg" alt="">Crear bola disco · 6</button><button type="button" data-gem-lesson="bomb-l"><img src="assets/gema-bomb.svg" alt="">Bomba en L · 3 + 3</button><button type="button" data-gem-lesson="bomb-t"><img src="assets/gema-bomb.svg" alt="">Bomba en T · 3 + 3</button><small>Cada reto prepara un tablero nuevo y reinicia los puntos.</small></div>
+    <div class="gem-lessons"><span>Retos guiados</span><button type="button" data-gem-lesson="rocket"><img src="assets/juegos/poder-cohete.webp" alt="">Crear cohete · 4</button><button type="button" data-gem-lesson="bomb"><img src="assets/juegos/poder-bomba.webp" alt="">Crear bomba · 5</button><button type="button" data-gem-lesson="disco"><img src="assets/juegos/poder-disco.webp" alt="">Crear bola disco · 6</button><button type="button" data-gem-lesson="bomb-l"><img src="assets/juegos/poder-bomba.webp" alt="">Bomba en L · 3 + 3</button><button type="button" data-gem-lesson="bomb-t"><img src="assets/juegos/poder-bomba.webp" alt="">Bomba en T · 3 + 3</button><small>Cada reto prepara un tablero nuevo y reinicia los puntos.</small></div>
     <p id="gem-lesson-hint" class="gem-lesson-hint" hidden role="status"></p>
     <div id="gem-power-message" class="gem-power-message" role="status">Tres poderes te esperan en el tablero.</div></div>
     <div class="match-layout">
       <div id="match-grid" class="match-grid" aria-label="Tablero de gemas"></div>
-      <aside class="game-side" id="gema-lado"><h3>Jardín de Gemas</h3><p>Selecciona dos piezas vecinas. Une 3 para puntuar. Con 4 creas un cohete; con 5, una bomba; con 6 o más, una bola disco. Las uniones horizontales y verticales cuentan también cuando se cruzan en L o T: 3 + 3 comparten una gema y forman una bomba de 5. Intercambia un especial con cualquier vecino para activarlo.</p><div class="special-guide" id="gema-guia"><p><img src="assets/gema-rocket.svg" alt=""> <b>4 · Cohete</b><span>Limpia una fila o columna, según la combinación.</span></p><p><img src="assets/gema-bomb.svg" alt=""> <b>5 · Bomba</b><span>Rompe un área de hasta 5 × 5 casillas.</span></p><p><img src="assets/gema-disco.svg" alt=""> <b>6+ · Bola disco</b><span>Elimina todas las gemas del símbolo vecino.</span></p></div><div class="score-row"><span>Puntos</span><b id="match-score">0000</b></div><button id="match-reset" class="btn primary">Nueva partida</button><div id="match-message" class="match-message" role="status">✦ Crea tu primera combinación ✦</div></aside>
+      <aside class="game-side" id="gema-lado"><h3>Jardín de Gemas</h3><p>Selecciona dos piezas vecinas. Une 3 para puntuar. Con 4 creas un cohete; con 5, una bomba; con 6 o más, una bola disco. Las uniones horizontales y verticales cuentan también cuando se cruzan en L o T: 3 + 3 comparten una gema y forman una bomba de 5. Intercambia un especial con cualquier vecino para activarlo.</p><div class="special-guide" id="gema-guia"><p><img src="assets/juegos/poder-cohete.webp" alt=""> <b>4 · Cohete</b><span>Limpia una fila o columna, según la combinación.</span></p><p><img src="assets/juegos/poder-bomba.webp" alt=""> <b>5 · Bomba</b><span>Rompe un área de hasta 5 × 5 casillas.</span></p><p><img src="assets/juegos/poder-disco.webp" alt=""> <b>6+ · Bola disco</b><span>Elimina todas las gemas del símbolo vecino.</span></p></div><div class="score-row"><span>Puntos</span><b id="match-score">0000</b></div><button id="match-reset" class="btn primary">Nueva partida</button><div id="match-message" class="match-message" role="status">✦ Crea tu primera combinación ✦</div></aside>
     </div>
   </div>
 
@@ -778,7 +798,7 @@ double total = subtotal - ahorro;</code></pre>
     </ol>
     <ol class="cv-lista" data-cv-panel="form" hidden>
       <li><time>2025 – 2026</time><b>Full Stack Java · 480 h</b><span>SENCE / Talento Digital · credencial verificable.</span></li>
-      <li><time>2026</time><b>Análisis de Datos de Google</b><span>Coursera · en curso, cinco cursos aprobados.</span></li>
+      <li><time>2026</time><b>Análisis de Datos de Google</b><span>Coursera · en curso, ocho cursos aprobados.</span></li>
       <li><time>2026</time><b>Power BI + IA</b><span>DAXUS LATAM.</span></li>
       <li><time>2024</time><b>Diplomados digitales</b><span>Diseño y Programación Web, Marketing Digital, Marca Personal y más (AIEP / UPLA / SENCE).</span></li>
       <li><time>2022</time><b>Calidad y seguridad en salud</b><span>Diplomado IAAS, acreditación en salud, climaterio y más.</span></li>

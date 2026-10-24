@@ -57,6 +57,8 @@ new IntersectionObserver(entries=>{if(!entries[0].isIntersecting&&play.running&&
 
 /* Match-3: 4 cohete, 5 bomba, 6+ bola disco. */
 const gems=[['✦','#f6cf63','Estrella'],['◆','#bd92ef','Cristal'],['●','#8fe0ff','Perla'],['♥','#ff94c3','Corazón'],['☾','#ded1ff','Luna']];
+// piezas dibujadas en el estilo de la autora (antes eran símbolos de texto y SVG simples)
+const GEMA_ARTE=['estrella','cristal','perla','corazon','luna'].map(n=>'assets/juegos/gema-'+n+'.webp'),PODER_ARTE={rocket:'assets/juegos/poder-cohete.webp',bomb:'assets/juegos/poder-bomba.webp',disco:'assets/juegos/poder-disco.webp'};
 const N=7;let mg=[],mSel=null,mScore=0,mBusy=false,mEpoch=0;
 const randomGem=()=>({color:Math.floor(Math.random()*gems.length),special:null});
 const adjacent=(a,b)=>Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1])===1;
@@ -70,7 +72,7 @@ const specialName={rocket:'cohete',bomb:'bomba',disco:'bola disco'};
 function renderMatch(burst=new Set()){
  const grid=$('#match-grid');grid.replaceChildren();
  mg.forEach((row,r)=>row.forEach((item,c)=>{const b=document.createElement('button');b.type='button';b.className='gem'+(item.special?' special '+item.special:'')+(mSel&&mSel[0]===r&&mSel[1]===c?' selected':'')+(burst.has(`${r},${c}`)?' burst':'');b.style.setProperty('--gem',gems[item.color][1]);
- if(item.special){const img=document.createElement('img');img.src='assets/gema-'+item.special+'.svg';img.alt='';img.className='special-art';if(item.special==='rocket'&&item.axis==='column')img.style.transform='rotate(-90deg)';b.append(img);}else b.textContent=gems[item.color][0];
+ if(item.special){const img=document.createElement('img');img.src=PODER_ARTE[item.special]||('assets/gema-'+item.special+'.svg');img.alt='';img.className='special-art';if(item.special==='rocket'&&item.axis==='column')img.style.transform='rotate(-90deg)';b.append(img);}else{const g=document.createElement('img');g.src=GEMA_ARTE[item.color];g.alt='';g.className='gema-arte';g.draggable=false;b.append(g);}
  b.disabled=mBusy;b.setAttribute('aria-pressed',String(!!mSel&&mSel[0]===r&&mSel[1]===c));b.setAttribute('aria-label',`${gems[item.color][2]}${item.special?', '+specialName[item.special]+(item.special==='rocket'?', limpia '+(item.axis==='column'?'columna':'fila'):''):''}, fila ${r+1}, columna ${c+1}`);b.onclick=()=>pickGem(r,c);b.onkeydown=e=>{const dir={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]}[e.key];if(dir){e.preventDefault();const nr=(r+dir[0]+N)%N,nc=(c+dir[1]+N)%N;grid.children[nr*N+nc].focus();}};grid.append(b)}));$('#match-score').textContent=String(mScore).padStart(4,'0');window.updateGemTools?.();
 }
 function pauseGem(){return new Promise(resolve=>setTimeout(resolve,reduceMotion?0:320));}
@@ -141,7 +143,7 @@ const powerLabels={rocket:'Cohete',bomb:'Bomba',disco:'Bola disco'};
 window.resetGemLesson=function(){window.gemHint=null;window.gemRoundEvents=[];$('#gem-lesson-hint').hidden=true;$('#gem-power-message').textContent='Tres poderes te esperan en el tablero.';$$('[data-gem-lesson]').forEach(b=>b.setAttribute('aria-pressed','false'));};
 window.updateGemTools=function(){
  const counts={rocket:0,bomb:0,disco:0};mg.flat().forEach(x=>{if(x.special)counts[x.special]++;});
- const inv=$('#gem-inventory');inv.replaceChildren();Object.entries(counts).forEach(([type,count])=>{const badge=document.createElement('span'),img=document.createElement('img');img.src='assets/gema-'+type+'.svg';img.alt='';badge.append(img,document.createTextNode(powerLabels[type]+': '+count));inv.append(badge);});
+ const inv=$('#gem-inventory');inv.replaceChildren();Object.entries(counts).forEach(([type,count])=>{const badge=document.createElement('span'),img=document.createElement('img');img.src=PODER_ARTE[type]||('assets/gema-'+type+'.svg');img.alt='';badge.append(img,document.createTextNode(powerLabels[type]+': '+count));inv.append(badge);});
  if(mScore>0&&window.gemHint){window.gemHint=null;$('#gem-lesson-hint').textContent='¡Combinación creada! Busca el poder en el tablero e intercámbialo con una gema vecina para activarlo.';}
  if(window.gemHint){window.gemHint.forEach(([r,c],i)=>{const b=$('#match-grid').children[r*N+c];b.classList.add('lesson-gem');b.dataset.hint=i+1;b.setAttribute('aria-label',b.getAttribute('aria-label')+', paso '+(i+1)+' del reto');});}
 };
@@ -182,10 +184,10 @@ window.clearPrintedReceipt=function(){const out=$('#printer-output');out.hidden=
 $$('[data-discount]').forEach(b=>b.addEventListener('click',()=>{$('#m4-discount').value=b.dataset.discount;$('#m4-discount').dispatchEvent(new Event('input',{bubbles:true}));}));
 $('#m4-confirm').addEventListener('click',()=>{
  if(!$('#m4-confirm').disabled)return;
- const x=window.lastM4Totals,paper=$('#printed-receipt');paper.replaceChildren();paper.append(node('div','✦ STUDIOS CONARI ✦','paper-brand'),node('h4','Boleta de tu compra'),node('p','DEMOSTRACIÓN · SIN VALIDEZ TRIBUTARIA','paper-note'));
+ const x=window.lastM4Totals,paper=$('#printed-receipt');paper.replaceChildren();paper.append(node('div','✦ MAGICAL ALLIANCE ✦','paper-brand'),node('h4','Boleta de tu compra'),node('p','DEMOSTRACIÓN · SIN VALIDEZ TRIBUTARIA','paper-note'));
  const items=node('div',undefined,'paper-items');m4Cart.forEach(item=>{const row=node('div',undefined,'paper-item');row.append(node('span',item.name+' × '+item.qty),node('b',clp(item.price*item.qty)));items.append(row);});paper.append(items);
  [['Subtotal',x.subtotal],['Descuento '+x.disc.toLocaleString('es-CL')+'%',-x.save],['TOTAL',x.total],['Pagaste',x.paid],['Tu vuelto',x.paid-x.total]].forEach(([label,n])=>{const line=node('div',undefined,'paper-total'+(label==='TOTAL'?' grand-total':''));line.append(node('span',label),node('b',n<0?'−'+clp(-n):clp(n)));paper.append(line);});
- paper.append(node('p','Gracias por crear un poquito de magia.','paper-thanks'));
+ paper.append(node('p','Gracias por comprar en Magical Alliance.','paper-thanks'));
  const out=$('#printer-output');out.hidden=false;out.style.height='0px';out.classList.remove('printing');void out.offsetHeight;out.style.height=(paper.scrollHeight+20)+'px';out.classList.add('printing');
  $('.cash-register').classList.add('drawer-open');$('.cash-drawer').setAttribute('aria-hidden','false');$('#drawer-change').textContent='Tu vuelto: '+clp(x.paid-x.total);
  $('#m4-message').textContent='Boleta impresa · cajón abierto · vuelto '+clp(x.paid-x.total)+'. Compra de demostración, sin cobro real.';

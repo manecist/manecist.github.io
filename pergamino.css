@@ -1,0 +1,777 @@
+/* ==========================================================================
+   Concepto «pergamino y cintas» (elegido por la autora): el título va en una cinta
+   de tela dibujada, el texto en un pergamino y los servicios son medallas con sus
+   íconos mágicos unidas por una línea de estrellas, como una constelación.
+   Todo va sobre el reino, sin cajas ni láminas.
+   ========================================================================== */
+:root { --pg-tinta: #3b2546; --pg-tinta2: #5a3f68; --pg-rosa: #c2437f; }
+
+/* ---------------------------------------------------------------- la cinta del título */
+html.escenas .ev-estudio .section-head { display: block; margin: 0 auto 6px; text-align: center; }
+html.escenas .ev-estudio .section-head > div {
+  display: inline-grid; place-items: center; min-width: min(760px, 92vw); aspect-ratio: 1400 / 368; padding: 0 16% 2.6%; align-content: center;
+  background: url("assets/pergamino/cinta.webp?v=2") center / 100% 100% no-repeat; filter: drop-shadow(0 8px 14px rgba(20, 8, 40, .35));
+}
+html.escenas .ev-estudio .section-head .eyebrow { margin: 0; font: 700 .72rem/1 var(--sans, sans-serif); letter-spacing: .2em; color: var(--pg-rosa); }
+html.escenas .ev-estudio .section-head h2 { margin: 4px 0 0; font: 700 clamp(1.6rem, 2.6vw, 2.3rem)/1.05 var(--titulo, "Cinzel", serif); color: var(--pg-tinta); text-shadow: 0 1px 0 #fff; }
+html.escenas .ev-estudio .section-head > p { display: none; }
+
+/* ---------------------------------------------------------------- dos columnas: pergamino y constelación */
+html.escenas .ev-estudio .estudio-dos { display: grid; grid-template-columns: minmax(300px, 400px) 1fr; gap: 28px; align-items: center; }
+
+/* el pergamino con la marca */
+html.escenas .ev-estudio .estudio-marca {
+  position: relative; aspect-ratio: 800 / 1211; max-height: 66vh; margin: 0 auto; padding: 25% 18% 20%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px;
+  background: url("assets/pergamino/pergamino.webp?v=2") center / contain no-repeat; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .4));
+}
+html.escenas .ev-estudio .estudio-marca .studio-wordmark { width: 72%; max-height: none; margin: 0; }
+html.escenas .ev-estudio .estudio-marca .logo-noche { display: none !important; }
+html.escenas .ev-estudio .estudio-marca .logo-dia { display: block !important; }
+html.escenas .ev-estudio .estudio-lema { margin: 0; font: 700 1.05rem/1.25 var(--titulo, "Cinzel", serif); color: var(--pg-tinta) !important; }
+html.escenas .ev-estudio .estudio-marca > p:not(.estudio-lema) { margin: 0; font: 500 .8rem/1.45 var(--sans, sans-serif); color: var(--pg-tinta2) !important; }
+html.escenas .ev-estudio .estudio-marca .studio-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+html.escenas .ev-estudio .estudio-marca .btn { padding: 9px 16px; font-size: .8rem; }
+html.escenas .ev-estudio .estudio-marca .btn.ghost { color: var(--pg-tinta); background: rgba(255, 255, 255, .6); border: 1px solid rgba(201, 150, 58, .6); }
+
+/* la constelación de servicios */
+html.escenas .ev-estudio .estudio-rol { display: none; }
+html.escenas .ev-estudio .estudio-servicios { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px 18px; padding: 10px 0; }
+html.escenas .ev-estudio .estudio-servicio { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 0; background: none !important; border: 0 !important; }
+html.escenas .ev-estudio .estudio-servicio img { width: clamp(96px, 9vw, 132px); height: auto; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 0 12px rgba(255, 200, 235, .65)) drop-shadow(0 6px 10px rgba(20, 8, 40, .35)); transition: transform .3s; }
+html.escenas .ev-estudio .estudio-servicio:hover img { transform: translateY(-4px) scale(1.05); }
+html.escenas .ev-estudio .estudio-servicio h3 {
+  margin: 0; padding: 4px 12px; border-radius: 999px; font: 700 .82rem/1.2 var(--titulo, "Cinzel", serif); color: var(--pg-tinta);
+  background: linear-gradient(180deg, #fff6fb, #f7e3f0); border: 1px solid rgba(201, 150, 58, .6); box-shadow: 0 3px 8px rgba(20, 8, 40, .25);
+}
+html.escenas .ev-estudio .estudio-servicio p { max-width: 230px; margin: 0; font: 500 .74rem/1.4 var(--sans, sans-serif); color: #fff; text-shadow: 0 1px 3px rgba(20, 8, 40, .95), 0 0 10px rgba(20, 8, 40, .8); }
+html[data-tema="claro"].escenas .ev-estudio .estudio-servicio p { color: var(--pg-tinta); text-shadow: 0 0 6px #fff, 0 0 12px #fff, 0 0 3px #fff; }
+/* la línea de estrellas que une las medallas */
+html.escenas .ev-estudio .estudio-servicios::before {
+  content: ""; position: absolute; left: 12%; right: 12%; top: calc(10px + clamp(96px, 9vw, 132px) / 2); height: calc(100% - clamp(96px, 9vw, 132px) - 70px + clamp(96px, 9vw, 132px) / 2);
+  border-top: 2px dotted rgba(243, 212, 138, .85); border-bottom: 2px dotted rgba(243, 212, 138, .85); pointer-events: none; filter: drop-shadow(0 0 4px rgba(243, 212, 138, .9));
+}
+html.escenas .ev-estudio .estudio-servicio::after { content: "✦"; position: absolute; top: calc(clamp(96px, 9vw, 132px) / 2 - 10px); right: -16px; font-size: 16px; color: #f3d48a; text-shadow: 0 0 8px #f3d48a; }
+html.escenas .ev-estudio .estudio-servicio:nth-child(3n)::after { display: none; }
+/* en la cinta va solo el nombre, centrado y con la letra integrada a la tela (tinta ciruela con filo dorado claro) */
+html.escenas .ev-estudio .section-head .eyebrow { display: none; }
+html.escenas .ev-estudio .section-head > div { padding: 0 18% 1.6%; }
+html.escenas .ev-estudio .section-head h2 {
+  margin: 0; font: 700 clamp(1.9rem, 3vw, 2.7rem)/1 var(--titulo, "Cinzel", serif); letter-spacing: .06em; color: #5a2a5e;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .9), 0 -1px 0 rgba(201, 150, 58, .35), 0 0 10px rgba(255, 240, 248, .9);
+}
+
+/* ---------------------------------------------------------------- la cinta en todos los capítulos: el nombre en la tela y el lema debajo */
+html.escenas .ev .section-head:has(.cinta-nombre) { display: block; margin: 0 auto 14px; text-align: center; }
+html.escenas .ev .section-head:has(.cinta-nombre) > div { display: grid; justify-items: center; gap: 4px; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+html.escenas .ev .section-head .cinta-nombre {
+  display: grid; place-items: center; width: min(620px, 80vw); aspect-ratio: 1400 / 368; margin: 0; padding: 0 18% 1.6%;
+  background: url("assets/pergamino/cinta.webp?v=2") center / 100% 100% no-repeat; filter: drop-shadow(0 8px 14px rgba(20, 8, 40, .35));
+  font: 700 clamp(1.4rem, 2.2vw, 2rem)/1 var(--titulo, "Cinzel", serif); letter-spacing: .06em; text-transform: none; color: #5a2a5e;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .9), 0 0 10px rgba(255, 240, 248, .9);
+}
+/* el lema: letra de cuento sobre el reino, con resplandor para leerse de día y de noche */
+html.escenas .ev .section-head:has(.cinta-nombre) h2 {
+  margin: 2px 0 0; font: italic 600 clamp(1.15rem, 1.7vw, 1.55rem)/1.25 var(--serif, Georgia, serif); letter-spacing: .01em; text-transform: none; color: #fff7fc;
+  text-shadow: 0 1px 3px rgba(20, 8, 40, .95), 0 0 14px rgba(20, 8, 40, .85), 0 0 26px rgba(245, 168, 207, .45); background: none; -webkit-text-fill-color: currentColor;
+}
+html[data-tema="claro"].escenas .ev .section-head:has(.cinta-nombre) h2 { color: #4a2556; text-shadow: 0 0 6px #fff, 0 0 14px #fff, 0 0 3px #fff, 0 0 24px rgba(255, 255, 255, .9); }
+html.escenas .ev .section-head:has(.cinta-nombre) h2 br { display: none; }
+html.escenas .ev .section-head:has(.cinta-nombre) > p { display: none; }
+
+/* ---------------------------------------------------------------- piezas de los juegos dibujadas */
+.gem .gema-arte, .gem .special-art { width: 88%; height: 88%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(40, 20, 70, .35)); }
+.gem { background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, .5), rgba(214, 190, 245, .25) 70%) !important; box-shadow: inset 0 0 0 1px rgba(243, 212, 138, .45) !important; font-size: 0; }
+.gem.selected { background: radial-gradient(circle, rgba(255, 236, 248, .95), rgba(245, 168, 207, .6)) !important; box-shadow: 0 0 0 2px #f3d48a, 0 0 14px rgba(245, 168, 207, .9) !important; }
+.gem-lessons img, #gem-inventory img { width: 26px; height: 26px; object-fit: contain; }
+
+/* (versión anterior: pergamino ancho alrededor de cada panel; la autora lo descartó porque se veía como imagen pegada) */
+
+/* ---------------------------------------------------------------- mismo lenguaje que Studios Conari en todos los capítulos:
+   sin marcos grandes; las aplicaciones y los íconos flotan sobre el reino y el texto va sobre un pergamino chico */
+html.escenas .ev :is(.studio-team, .design-story, .health-card, .credential-gallery article, .cv-cta, .transition-path a, .contacto, #leyendas, .ley-museo) { background: none !important; border: 0 !important; box-shadow: none !important; }
+html.escenas .ev .transition-path a img, html.escenas .ev .credential-gallery img, html.escenas .ev .health-card img { background: transparent !important; border: 0 !important; filter: drop-shadow(0 0 12px rgba(255, 200, 235, .6)) drop-shadow(0 6px 10px rgba(20, 8, 40, .35)); }
+/* los textos sobre el reino: letra clara con resplandor oscuro de noche, tinta con halo blanco de día */
+html.escenas .ev:not(.ev-inicio):not(.ev-estudio) :is(.design-story, .health-card, .credential-gallery, .transition-path, .cv-cta, .contacto, .transition-explanation) :is(h3, h4, p, small, strong, b, span, figcaption, li):not(.btn):not(.chip) {
+  color: #fff7fc !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .95), 0 0 12px rgba(20, 8, 40, .85);
+}
+html[data-tema="claro"].escenas .ev:not(.ev-inicio):not(.ev-estudio) :is(.design-story, .health-card, .credential-gallery, .transition-path, .cv-cta, .contacto, .transition-explanation) :is(h3, h4, p, small, strong, b, span, figcaption, li):not(.btn):not(.chip) {
+  color: #3b2546 !important; text-shadow: 0 0 5px #fff, 0 0 12px #fff, 0 0 3px #fff;
+}
+
+/* ---------------------------------------------------------------- mi perfil: mi dibujo dentro del arco del castillo y el texto en el pergamino */
+html.escenas .ev-equipo .studio-team { background: none !important; border: 0 !important; padding: 0 !important; }
+html.escenas .perfil-pro { display: grid; grid-template-columns: minmax(240px, 330px) minmax(320px, 520px); gap: 34px; align-items: center; justify-content: center; margin: 0 auto; }
+html.escenas .perfil-pro-retrato { position: relative; margin: 0; aspect-ratio: 700 / 1028; max-height: 74vh; }
+html.escenas .perfil-pro-retrato .perfil-pro-arco { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .45)); }
+html.escenas .perfil-pro-retrato .perfil-pro-ari { position: absolute; left: 18%; right: 18%; bottom: 7%; height: 80%; width: 64%; object-fit: contain; object-position: 50% 100%; filter: drop-shadow(0 0 16px rgba(255, 220, 240, .7)); }
+html.escenas .perfil-pro-texto {
+  aspect-ratio: 800 / 1210; max-height: 74vh; padding: 25% 15% 19%; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+  background: url("assets/pergamino/pergamino.webp?v=2") center / contain no-repeat; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .4)); text-align: center;
+}
+html.escenas .perfil-pro-texto .eyebrow { margin: 0; font-size: .62rem; color: #b2477f !important; }
+html.escenas .perfil-pro-texto h3 { margin: 0; font: 700 clamp(1.05rem, 1.5vw, 1.35rem)/1.2 var(--titulo, "Cinzel", serif); color: #4a2556 !important; }
+html.escenas .perfil-pro-cargo { margin: 0 0 4px; font: 600 .72rem/1.35 var(--sans, sans-serif); color: #b2477f !important; }
+html.escenas .perfil-pro-texto > p:not(.eyebrow):not(.perfil-pro-cargo) { margin: 2px 0; font: 500 .74rem/1.45 var(--sans, sans-serif); color: #4a3556 !important; }
+html.escenas .perfil-pro-areas { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin: 6px 0 0; padding: 0; list-style: none; }
+html.escenas .perfil-pro-areas li { padding: 3px 8px; border-radius: 999px; font: 600 .62rem/1 var(--sans, sans-serif); color: #4a2556; background: rgba(255, 255, 255, .6); border: 1px solid rgba(201, 150, 58, .55); }
+/* sin recuadros con borde brillante: el texto y los íconos flotan, como en Studios Conari */
+html.escenas .ev :is(.design-story, .health-card, .credential-gallery article, .cv-cta, .transition-path a, .contacto, .leyendas, .role-node)::before { display: none !important; }
+html.escenas .ev :is(.design-story, .health-card, .credential-gallery article, .cv-cta, .transition-path a, .contacto, .leyendas, .journey-step) { background: none !important; box-shadow: none !important; border: 0 !important; }
+html.escenas .ev .credential-gallery article > :first-child { background: none !important; }
+html.escenas .ev .credential-gallery img { width: clamp(96px, 9vw, 130px); height: auto; margin: 0 auto; display: block; }
+html.escenas .ev .credential-gallery article { text-align: center; }
+html.escenas .ev .health-card img, html.escenas .ev .design-story > img, html.escenas .ev .design-story figure img { background: none !important; }
+/* las etiquetas pequeñas de cada tarjeta, como cinta de la sección de servicios */
+html.escenas .ev .credential-gallery article :is(h3, strong):first-of-type, html.escenas .ev .credential-gallery article :is(h3, strong):first-of-type * { display: inline-block; padding: 4px 12px; border-radius: 999px; color: #3b2546 !important; text-shadow: none !important; background: linear-gradient(180deg, #fff6fb, #f7e3f0); border: 1px solid rgba(201, 150, 58, .6); box-shadow: 0 3px 8px rgba(20, 8, 40, .25); }
+html.escenas.escenas .ev .credential-gallery article h3, html.escenas.escenas .ev .credential-gallery article h3 * { color: #3b2546 !important; text-shadow: none !important; }
+/* la etiqueta (h3) de cada credencial va en cinta clara con tinta ciruela; mayor especificidad que el texto claro de noche */
+html.escenas.escenas .ev.ev.ev-formacion:not(.ev-inicio):not(.ev-estudio) .credential-gallery article h3 { display: inline-block; color: #3b2546 !important; text-shadow: none !important; }
+html.escenas .ev-formacion .credential-gallery article span { display: block; margin-bottom: 4px; }
+
+/* ---------------------------------------------------------------- la barra superior: sin franja; los enlaces flotan sobre el cielo */
+.site .topbar, html[data-tema="claro"] .site .topbar, html:not([data-tema="claro"]) .site .topbar {
+  width: 100%; max-width: none; margin: 0; border: 0 !important; border-radius: 0; box-shadow: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  background: linear-gradient(180deg, rgba(14, 8, 36, .62), rgba(14, 8, 36, .28) 60%, transparent) !important; padding-bottom: 16px;
+}
+html[data-tema="claro"] .site .topbar { background: linear-gradient(180deg, rgba(255, 246, 252, .78), rgba(255, 246, 252, .35) 60%, transparent) !important; }
+/* hilo dorado de filigrana bajo los enlaces, con una estrella al centro */
+.site .topbar::after { content: ""; position: absolute; left: 6%; right: 6%; bottom: 8px; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(243, 212, 138, .85) 20%, rgba(245, 168, 207, .9) 50%, rgba(243, 212, 138, .85) 80%, transparent); filter: drop-shadow(0 0 4px rgba(243, 212, 138, .8)); }
+.site .topbar::before { content: "✦"; position: absolute; left: 50%; bottom: 0; translate: -50% 0; font-size: 12px; color: #f3d48a; text-shadow: 0 0 8px #f3d48a; pointer-events: none; }
+.site .topbar #main-nav a, html[data-tema="claro"] .site .topbar #main-nav a {
+  font-family: var(--titulo, "Cinzel", serif); font-weight: 700; letter-spacing: .05em; background: none !important; box-shadow: none !important; border-radius: 0;
+  color: #fff4fb; text-shadow: 0 1px 3px rgba(20, 8, 40, .9), 0 0 10px rgba(20, 8, 40, .6); }
+html[data-tema="claro"] .site .topbar #main-nav a { color: #4a2556; text-shadow: 0 0 6px #fff, 0 0 12px #fff; }
+.site .topbar #main-nav a.activo, html.escenas .topbar nav a.activo { color: #ffc4e1 !important; position: relative; }
+html[data-tema="claro"] .site .topbar #main-nav a.activo { color: #c2437f !important; }
+.site .topbar #main-nav a.activo::after { content: "✦"; position: absolute; left: 50%; bottom: -12px; translate: -50% 0; font-size: 10px; color: #f3d48a; text-shadow: 0 0 6px #f3d48a; }
+.site .topbar .brand small { color: #fff4fb; text-shadow: 0 1px 3px rgba(20, 8, 40, .9); font-family: var(--titulo, "Cinzel", serif); }
+html[data-tema="claro"] .site .topbar .brand small { color: #4a2556; text-shadow: 0 0 6px #fff; }
+.site .topbar :is(.tema-boton, .abrir-cuento, .mini-cta) { border: 1px solid rgba(243, 212, 138, .7) !important; background: rgba(255, 240, 248, .14) !important; color: #fff4fb !important; backdrop-filter: blur(6px); }
+html[data-tema="claro"] .site .topbar :is(.tema-boton, .abrir-cuento, .mini-cta) { background: rgba(255, 255, 255, .55) !important; color: #4a2556 !important; }
+
+/* ---------------------------------------------------------------- el pergamino del perfil llega cerrado y se desenrolla */
+@keyframes pergamino-abre { 0% { clip-path: inset(46% 0 46% 0); transform: scaleY(.25); } 60% { clip-path: inset(0 0 0 0); transform: scaleY(1.03); } 100% { clip-path: inset(0 0 0 0); transform: scaleY(1); } }
+@keyframes pergamino-texto { 0%, 55% { opacity: 0; } 100% { opacity: 1; } }
+html.escenas .ev-equipo.activa .perfil-pro-texto { animation: pergamino-abre 1.3s cubic-bezier(.3, .8, .3, 1) both .35s; transform-origin: 50% 50%; }
+html.escenas .ev-equipo.activa .perfil-pro-texto > * { animation: pergamino-texto 1.6s ease both .35s; }
+@media (prefers-reduced-motion: reduce) { html.escenas .ev-equipo.activa .perfil-pro-texto, html.escenas .ev-equipo.activa .perfil-pro-texto > * { animation: none; } }
+.site .topbar #main-nav { flex-wrap: nowrap; gap: 4px 18px; }
+.site .topbar #main-nav a, .site .topbar .brand small { white-space: nowrap !important; }
+.site .topbar #main-nav a { font-size: .82rem; padding: 6px 2px; }
+
+/* ---------------------------------------------------------------- credenciales al lado del perfil */
+html.escenas .perfil-pro { grid-template-columns: minmax(220px, 300px) minmax(300px, 470px) minmax(180px, 240px); gap: 26px; }
+.perfil-credenciales { display: grid; gap: 12px; justify-items: center; }
+.perfil-medalla { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 10px; width: 100%; }
+.perfil-medalla img { width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255, 200, 235, .65)) drop-shadow(0 4px 8px rgba(20, 8, 40, .35)); }
+.perfil-medalla b { display: block; font: 700 .82rem/1.2 var(--titulo, "Cinzel", serif); color: #fff7fc; text-shadow: 0 1px 3px rgba(20, 8, 40, .95), 0 0 10px rgba(20, 8, 40, .8); }
+.perfil-medalla small { display: block; font: 600 .62rem/1.2 var(--sans, sans-serif); letter-spacing: .08em; color: #ffc4e1; text-shadow: 0 1px 3px rgba(20, 8, 40, .95); }
+html[data-tema="claro"] .perfil-medalla b { color: #3b2546; text-shadow: 0 0 6px #fff, 0 0 12px #fff; }
+html[data-tema="claro"] .perfil-medalla small { color: #b2477f; text-shadow: 0 0 6px #fff; }
+/* el CV: una cinta pequeña con la misma tela del título */
+.perfil-cv { display: grid; place-items: center; width: 100%; aspect-ratio: 1400 / 368; margin-top: 6px; text-decoration: none;
+  background: url("assets/pergamino/cinta.webp?v=2") center / 100% 100% no-repeat; filter: drop-shadow(0 6px 10px rgba(20, 8, 40, .35)); transition: transform .25s; }
+.perfil-cv span { padding: 0 14% 3%; font: 700 .78rem/1 var(--titulo, "Cinzel", serif); color: #5a2a5e; white-space: nowrap; }
+.perfil-cv:hover { transform: translateY(-3px) scale(1.03); }
+.perfil-medalla { grid-template-areas: "ico tipo" "ico nombre"; grid-template-rows: auto auto; row-gap: 2px; align-content: center; }
+.perfil-medalla img { grid-area: ico; } .perfil-medalla small { grid-area: tipo; align-self: end; } .perfil-medalla b { grid-area: nombre; align-self: start; }
+/* íconos de credenciales más grandes */
+.perfil-medalla { grid-template-columns: 92px 1fr; gap: 12px; }
+.perfil-medalla img { width: 92px; height: 92px; }
+.perfil-credenciales { gap: 6px; }
+html.escenas .ev .credential-gallery img { width: clamp(130px, 12vw, 175px) !important; }
+
+/* ---------------------------------------------------------------- pergamino más ancho y animación con el hada */
+html.escenas .perfil-pro { grid-template-columns: minmax(220px, 290px) minmax(340px, 540px) minmax(200px, 260px); }
+html.escenas .perfil-pro-texto { aspect-ratio: auto; height: min(74vh, 720px); background-size: 100% 100%; padding: 22% 13% 16%; }
+/* cerrado: solo se ven los rollos juntos; al tocarlo el hada, se desenrolla */
+html.escenas .ev-equipo .perfil-pro-texto { clip-path: inset(44% 0 44% 0 round 20px); transition: clip-path 1.2s cubic-bezier(.3, .8, .3, 1); }
+html.escenas .ev-equipo .perfil-pro-texto > * { opacity: 0; transition: opacity .6s .7s; }
+html.escenas .ev-equipo .perfil-pro-texto.abierto { clip-path: inset(0 0 0 0 round 0); }
+html.escenas .ev-equipo .perfil-pro-texto.abierto > * { opacity: 1; }
+html.escenas .ev-equipo.activa .perfil-pro-texto, html.escenas .ev-equipo.activa .perfil-pro-texto > * { animation: none !important; }
+.perfil-hada { position: absolute; left: 0; top: 0; z-index: 5; height: 150px; width: auto; pointer-events: none; filter: drop-shadow(0 0 14px rgba(255, 231, 244, .9)) drop-shadow(0 0 24px rgba(145, 220, 255, .55)); }
+@media (prefers-reduced-motion: reduce) { html.escenas .ev-equipo .perfil-pro-texto { clip-path: none; transition: none; } html.escenas .ev-equipo .perfil-pro-texto > * { opacity: 1; transition: none; } }
+html.escenas .perfil-pro-texto { padding: 23% 19% 17% !important; }
+html.escenas .perfil-pro-texto > p:not(.eyebrow):not(.perfil-pro-cargo) { font-size: .78rem !important; }
+/* cerrado = enrollado: el pergamino entero comprimido en altura (se ven los rollos dorados juntos) */
+/* el desenrollado (clip-path) lo anima escenas.js */
+
+/* ---------------------------------------------------------------- Desarrollo: la calculadora y el cuaderno solos sobre el reino */
+html.escenas .papel-app.app-calc, html.escenas .papel-app.app-calc.activo { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; filter: none !important; padding: 0 !important; }
+html.escenas .papel-app.app-calc::before, html.escenas .papel-app.app-calc::after { display: none !important; }
+html.escenas .papel-app.app-calc :is(#calc-zona, #calc-java) { filter: drop-shadow(0 12px 18px rgba(20, 8, 40, .45)) drop-shadow(0 0 16px rgba(245, 168, 207, .35)); }
+html.escenas .papel-app.app-calc .app-nota { margin: 0 auto 14px; text-align: center; font: italic 600 1.05rem/1.3 var(--serif, Georgia, serif); color: #fff7fc !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .95), 0 0 12px rgba(20, 8, 40, .85); }
+html[data-tema="claro"].escenas .papel-app.app-calc .app-nota { color: #4a2556 !important; text-shadow: 0 0 6px #fff, 0 0 14px #fff; }
+/* el rollito cerrado, centrado sobre el pergamino */
+.perfil-rollito { position: absolute; max-width: none; pointer-events: none; z-index: 3; filter: drop-shadow(0 10px 16px rgba(20, 8, 40, .45)); }
+/* en el pergamino de Studios Conari va la ilustración del mundo (el nombre ya está en la cinta) */
+html.escenas .ev-estudio .estudio-mundo { width: 64%; height: auto; margin: -6% auto 2px; filter: drop-shadow(0 4px 8px rgba(40, 20, 70, .3)); }
+html.escenas .ev-estudio .estudio-marca { padding: 22% 16% 19%; }
+html.escenas .ev-estudio .estudio-marca > p:not(.estudio-lema) { font-size: .74rem; }
+html.escenas .ev-estudio .estudio-marca .studio-actions { margin-bottom: 2px; }
+/* el perfil: el texto termina dentro del papel, sobre el rollo inferior */
+html.escenas .perfil-pro-texto { padding: 22% 17% 24% !important; justify-content: center; }
+html.escenas .perfil-pro-texto > p:not(.eyebrow):not(.perfil-pro-cargo) { font-size: .74rem !important; line-height: 1.4 !important; margin: 1px 0 !important; }
+html.escenas .perfil-pro-areas { margin-top: 4px !important; }
+html.escenas .perfil-pro-texto .eyebrow { margin-top: 6px !important; }
+html.escenas .ev-estudio .estudio-marca { padding: 20% 16% 23%; }
+html.escenas .ev-estudio .estudio-mundo { width: 56%; }
+
+/* ---------------------------------------------------------------- pergaminos: el ancho original y un poco más largos (estirados solo en alto) */
+html.escenas .perfil-pro { grid-template-columns: minmax(220px, 290px) minmax(300px, 400px) minmax(200px, 260px) !important; }
+html.escenas .perfil-pro-texto { width: clamp(300px, 27vw, 400px) !important; height: auto !important; aspect-ratio: 800 / 1400 !important; max-height: 80vh !important; margin: 0 auto;
+  background-size: 100% 100% !important; padding: 25% 16% 22% !important; }
+html.escenas .perfil-pro-texto h3 { font-size: clamp(1rem, 1.4vw, 1.25rem) !important; }
+/* Studios Conari: la ilustración del mundo grande y protagonista; el pergamino un poco más largo */
+html.escenas .ev-estudio .estudio-marca { aspect-ratio: 800 / 1420 !important; max-height: 78vh !important; background-size: 100% 100% !important; padding: 15% 13% 21% !important; gap: 4px !important; }
+html.escenas .ev-estudio .estudio-mundo { width: 96% !important; margin: 0 auto !important; filter: drop-shadow(0 6px 12px rgba(40, 20, 70, .35)); }
+html.escenas .ev-estudio .estudio-lema { font-size: .92rem !important; }
+html.escenas .ev-estudio .estudio-marca > p:not(.estudio-lema) { font-size: .7rem !important; line-height: 1.4 !important; }
+html.escenas .ev-estudio .estudio-marca .btn { padding: 7px 14px !important; font-size: .74rem !important; }
+html.escenas .ev-estudio .estudio-marca { padding: 15% 18% 21% !important; }
+html.escenas .ev-estudio .estudio-mundo { width: 118% !important; max-width: none; margin: 0 -9% !important; }
+html.escenas .ev-estudio .estudio-lema { font-size: .8rem !important; }
+html.escenas .ev-estudio .estudio-marca > p:not(.estudio-lema) { font-size: .66rem !important; }
+/* la transformación: la asesina en el mismo lugar que Ari, oculta hasta el destello */
+html.escenas .perfil-pro-retrato .perfil-pro-asesina { opacity: 0; }
+.perfil-destello { position: absolute; left: 50%; top: 52%; width: 90%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; opacity: 0; scale: .6; pointer-events: none; z-index: 2;
+  background: radial-gradient(circle, #fff 0%, rgba(255, 214, 236, .95) 25%, rgba(245, 143, 192, .7) 50%, rgba(201, 178, 255, 0) 72%); mix-blend-mode: screen; }
+
+/* ---------------------------------------------------------------- Studios Conari: la ilustración del mundo grande e imponente, sola sobre el reino */
+html.escenas .ev-estudio .estudio-dos.estudio-tres { grid-template-columns: minmax(300px, 1.15fr) minmax(250px, 300px) minmax(480px, 1.5fr) !important; gap: 18px !important; align-items: center; }
+html.escenas .ev-estudio .estudio-mundo-caja { display: grid; place-items: center; }
+html.escenas .ev-estudio .estudio-mundo { width: 100% !important; max-width: 470px; max-height: 70vh; object-fit: contain; margin: 0 !important;
+  filter: drop-shadow(0 0 22px rgba(255, 210, 240, .55)) drop-shadow(0 14px 22px rgba(20, 8, 40, .5)) !important; animation: mundo-flota 6s ease-in-out infinite; }
+@keyframes mundo-flota { 50% { translate: 0 -8px; } }
+@media (prefers-reduced-motion: reduce) { html.escenas .ev-estudio .estudio-mundo { animation: none; } }
+/* el pergamino de la marca como antes, un poco más largo */
+html.escenas .ev-estudio .estudio-marca { aspect-ratio: 800 / 1300 !important; max-height: 68vh !important; padding: 25% 15% 20% !important; gap: 6px !important; }
+html.escenas .ev-estudio .estudio-lema { font-size: .9rem !important; }
+html.escenas .ev-estudio .estudio-marca > p:not(.estudio-lema) { font-size: .72rem !important; }
+html.escenas .ev-estudio .estudio-servicios { gap: 18px 10px !important; }
+html.escenas .ev-estudio .estudio-servicio img { width: clamp(84px, 7.5vw, 116px) !important; }
+/* perfil: más corto, apenas más largo que el original */
+html.escenas .perfil-pro-texto { aspect-ratio: 800 / 1290 !important; padding: 24% 16% 20% !important; }
+html.escenas .ev-estudio .estudio-marca { padding: 26% 19% 21% !important; }
+html.escenas .ev-estudio .estudio-lema { font-size: .82rem !important; }
+html.escenas .ev-estudio .estudio-marca > p:not(.estudio-lema) { font-size: .68rem !important; line-height: 1.42 !important; }
+/* líneas de constelación: cada una une el centro de un ícono con el del siguiente (misma fila), según el tamaño del ícono */
+html.escenas .ev-estudio .estudio-servicios { --ico: clamp(84px, 7.5vw, 116px); --sep: 10px; column-gap: var(--sep) !important; }
+html.escenas .ev-estudio .estudio-servicios::before { display: none !important; }
+html.escenas .ev-estudio .estudio-servicio img { width: var(--ico) !important; position: relative; z-index: 1; }
+html.escenas .ev-estudio .estudio-servicio:not(:nth-child(3n))::before {
+  content: ""; position: absolute; z-index: 0; top: calc(var(--ico) / 2); left: calc(50% + var(--ico) / 2 - 4px); width: calc(100% + var(--sep) - var(--ico) + 8px);
+  border-top: 2px dotted rgba(243, 212, 138, .9); filter: drop-shadow(0 0 4px rgba(243, 212, 138, .9)); pointer-events: none; }
+html.escenas .ev-estudio .estudio-servicio::after { top: calc(var(--ico) / 2 - 9px) !important; right: auto !important; left: calc(100% + var(--sep) / 2 - 7px) !important; }
+
+/* ---------------------------------------------------------------- Desarrollo: cada aplicación en su objeto del cuento, sin panel claro detrás */
+html.escenas .papel-app:is(.app-vitrina, .app-banco, .app-caja), html.escenas .papel-app.activo:is(.app-vitrina, .app-banco, .app-caja) {
+  background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; filter: none !important; padding: 0 !important; }
+html.escenas .papel-app:is(.app-vitrina, .app-banco, .app-caja)::before, html.escenas .papel-app:is(.app-vitrina, .app-banco, .app-caja)::after { display: none !important; }
+html.escenas .papel-app:is(.app-vitrina, .app-banco, .app-caja) .app-nota { margin: 0 auto 10px; text-align: center; font: italic 600 1rem/1.3 var(--serif, Georgia, serif); color: #fff7fc !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .95), 0 0 12px rgba(20, 8, 40, .85); }
+html[data-tema="claro"].escenas .papel-app:is(.app-vitrina, .app-banco, .app-caja) .app-nota { color: #4a2556 !important; text-shadow: 0 0 6px #fff, 0 0 14px #fff; }
+html.escenas .papel-app:is(.app-vitrina, .app-banco, .app-caja) .app-nota a { color: #ffc4e1 !important; }
+
+/* Magical Alliance dentro del espejo mágico (el vidrio es la página en vivo) */
+html.escenas .app-vitrina .vitrina-viva { position: relative; width: min(100%, 1040px); margin: 0 auto; aspect-ratio: 1646 / 912; height: auto !important; padding: 10.75% 6.4% 8.6% 6.35%; background: none !important; border: 0 !important; box-shadow: none !important; }
+html.escenas .app-vitrina .vitrina-viva iframe { width: 100% !important; height: 100% !important; border: 0; border-radius: 10px; background: #fff; }
+html.escenas .app-vitrina .vitrina-viva::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: url("assets/pergamino/espejo.webp") center / 100% 100% no-repeat; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .45)); }
+
+/* Banco de Evaluaciones en la pizarra mágica */
+html.escenas .app-banco #banco-card { position: relative; width: min(100%, 1040px); margin: 0 auto; aspect-ratio: 1623 / 891; padding: 8.2% 6.3% 7.7% 6.2% !important; background: none !important; border: 0 !important; box-shadow: none !important; overflow: visible; }
+html.escenas .app-banco #banco-card > * { position: relative; z-index: 1; }
+html.escenas .app-banco #banco-card::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; display: block !important;
+  background: linear-gradient(#fffaf3, #fbefe3) 6.2% 14.8% / 87.7% 71.4% no-repeat, url("assets/pergamino/pizarra.webp") center / 100% 100% no-repeat; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .45)); border: 0 !important; mask: none !important; -webkit-mask: none !important; }
+html.escenas .app-banco #banco-card::after { display: none !important; }
+
+/* Tienda Java · M4: el formulario en una libreta, el recibo en una boleta y la caja sola */
+html.escenas .app-caja .app-doble > div { background: none !important; border: 0 !important; box-shadow: none !important; }
+html.escenas .app-caja .app-doble > div:nth-child(1) { background: url("assets/pergamino/libreta.webp") center / 100% 100% no-repeat !important; padding: 38% 18% 12% 10% !important; filter: drop-shadow(0 10px 16px rgba(20, 8, 40, .4)); }
+html.escenas .app-caja .app-doble > div:nth-child(2) { background: url("assets/pergamino/recibo.webp") center / 100% 100% no-repeat !important; padding: 26% 12% 12% !important; filter: drop-shadow(0 10px 16px rgba(20, 8, 40, .4)); }
+html.escenas .app-caja .app-doble > div:nth-child(3) { filter: drop-shadow(0 12px 18px rgba(20, 8, 40, .45)); }
+html.escenas .app-caja .app-doble > div :is(.paso-caja, h3, h4, label, small, p, span):not(.btn) { color: #3b2546 !important; text-shadow: none !important; }
+html.escenas .app-caja .app-doble > div:nth-child(3) .paso-caja { color: #fff7fc !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .95) !important; }
+html.escenas .app-banco #banco-card { overflow: auto !important; scrollbar-width: thin; height: auto !important; max-height: none !important; }
+html.escenas .app-banco #banco-card > * { max-width: 100%; }
+html.escenas .app-banco #banco-card { font-size: .86em; }
+/* la pizarra como marco elástico (9 partes): se adapta al alto del contenido sin deformar la luna ni las esquinas */
+html.escenas .app-banco #banco-card {
+  aspect-ratio: auto !important; overflow: visible !important; width: min(100%, 1000px) !important; padding: 14px 18px 12px !important; font-size: .82em;
+  border-style: solid !important; border-width: 82px 62px 76px 61px !important; border-color: transparent !important;
+  border-image: url("assets/pergamino/pizarra.webp") 132 100 123 99 / 82px 62px 76px 61px / 0 stretch !important;
+  background: linear-gradient(#fffaf3, #fbefe3) padding-box !important; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .45)); }
+html.escenas .app-banco #banco-card::before { display: none !important; }
+
+/* ---------------------------------------------------------------- la tienda Magical Alliance: todo en un solo puesto grande (como la maqueta aprobada)
+   repisas que se tocan · la caja registradora grande sobre el mesón · la pantalla de la vitrina con el catálogo y tu pedido
+   (o la tienda en vivo M7) · la boleta cae desde la caja sobre el mantel */
+html.escenas .papel-app.app-tienda, html.escenas .papel-app.app-tienda.activo { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; filter: none !important; padding: 0 !important; }
+html.escenas .papel-app.app-tienda::before, html.escenas .papel-app.app-tienda::after { display: none !important; }
+html.escenas .app-tienda .app-nota, html.escenas .ev-desarrollo.tienda-activa .app-tienda .botonera { display: none !important; }
+/* con la tienda abierta, el título se compacta para dejar el puesto grande */
+html.escenas .ev-desarrollo.tienda-activa .section-head h2 { display: none !important; }
+html.escenas .ev-desarrollo.tienda-activa .section-head .cinta-nombre { width: min(340px, 60vw) !important; font-size: 1.1rem !important; }
+html.escenas .ev-desarrollo.tienda-activa .section-head { margin-bottom: 2px !important; }
+html.escenas .ev-desarrollo.tienda-activa .papel-pestanas { margin-bottom: 6px !important; }
+
+.tienda-puesto { position: relative; width: min(100%, 1300px, calc((100vh - 230px) * 1660 / 921)); aspect-ratio: 1660 / 921; margin: 0 auto; }
+.tienda-arte { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; filter: drop-shadow(0 14px 22px rgba(20, 8, 40, .5)); }
+.tienda-etiqueta { position: absolute; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 12px; transition: box-shadow .25s, background .25s; }
+.tienda-etiqueta:hover, .tienda-etiqueta:focus-visible { background: rgba(255, 240, 250, .18); box-shadow: 0 0 0 2px rgba(243, 212, 138, .9), 0 0 18px rgba(245, 168, 207, .8); outline: none; }
+
+/* la pantalla de la vitrina */
+.tienda-vidrio { position: absolute; left: 61.7%; width: 35.2%; top: 36.9%; height: 38.9%; border-radius: 6px; overflow: hidden; background: linear-gradient(180deg, #fff9fd, #f4e9fb); display: flex; flex-direction: column; font-family: 'Mali', sans-serif; }
+.vitrina-pestanas { display: flex; gap: 4px; padding: 4px; background: #f3e1f0; border-bottom: 1px solid #e3c8df; }
+.vitrina-pestanas button { flex: 1; border: 1px solid rgba(201, 150, 58, .5); border-radius: 999px; padding: 3px 6px; font: 700 .66rem/1 'Mali', sans-serif; color: #5a2a5e; background: #fff8fd; cursor: pointer; }
+.vitrina-pestanas button.activo { color: #fff; background: linear-gradient(135deg, #d27aa8, #a07cd4); border-color: transparent; }
+.vitrina-caja, .vitrina-web { flex: 1; min-height: 0; }
+.tienda-vidrio[data-vista="caja"] .vitrina-web, .tienda-vidrio[data-vista="web"] .vitrina-caja { display: none; }
+.vitrina-web iframe { width: 140%; height: 140%; border: 0; transform: scale(.714); transform-origin: 0 0; }
+.vitrina-caja { display: grid; grid-template-columns: 1.5fr 1fr; gap: 6px; padding: 5px 6px; overflow: hidden; }
+.vitrina-col { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.vitrina-caja .caja-paso { margin: 0 0 4px !important; font: 700 .7rem/1 var(--titulo, "Cinzel", serif) !important; color: #5a2a5e !important; text-shadow: none !important; }
+.vitrina-caja .caja-paso span { width: 15px; height: 15px; font-size: .58rem; }
+/* catálogo: categorías y tarjetas */
+.catalogo-chips { display: flex; gap: 3px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; flex: none; }
+.catalogo-chips button { flex: none; border: 1px solid #e6cfe2; border-radius: 999px; padding: 2px 7px; font: 700 .58rem/1.2 'Mali', sans-serif; color: #7a4f84; background: #fff; cursor: pointer; }
+.catalogo-chips button.activo { color: #fff; background: #c98bb8; border-color: #c98bb8; }
+.catalogo-grilla { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; align-content: start; }
+.catalogo-item { position: relative; display: grid; gap: 1px; text-align: left; padding: 5px 18px 5px 6px; border: 1px solid #edd9ea; border-radius: 9px; background: #fff; cursor: pointer; box-shadow: 0 2px 0 #ead3e6; transition: transform .15s; }
+.catalogo-item:hover { transform: translateY(-1px); border-color: #d9a6c8; }
+.catalogo-item b { font: 700 .6rem/1.15 'Mali', sans-serif; color: #4a2556; }
+.catalogo-item span { font: 600 .58rem/1 'Mali', sans-serif; color: #b2477f; }
+.catalogo-item i { position: absolute; right: 4px; top: 50%; translate: 0 -50%; font-style: normal; font-size: .7rem; color: #c98bb8; }
+.catalogo-item.sumado { animation: sumado .5s; }
+@keyframes sumado { 40% { background: #ffe1f0; transform: scale(1.04); } }
+/* tu pedido */
+.vitrina-caja .tienda-boleta { display: block !important; position: static !important; width: auto !important; padding: 0 !important; margin: 0 !important; background: none !important; filter: none !important; zoom: 1 !important; flex: 1; min-height: 0; overflow: auto; scrollbar-width: thin; }
+.vitrina-caja .tienda-boleta::before { content: none !important; }
+.vitrina-caja #m4-recibo { background: #fffdf4 !important; border: 0 !important; border-top: 3px solid #d9a6c8 !important; padding: 4px 6px !important; font: 500 .6rem/1.3 'Mali', sans-serif !important; box-shadow: none !important; }
+.vitrina-caja .receipt-head { display: none; }
+.vitrina-caja .receipt-items { min-height: 0 !important; max-height: none !important; overflow: visible !important; }
+.vitrina-caja .receipt-items p { font-size: .58rem !important; margin: 2px 0 !important; }
+.vitrina-caja .receipt-items button { font-size: .52rem !important; padding: 1px 5px !important; }
+.vitrina-caja .receipt-total { font-size: .6rem !important; }
+.vitrina-caja .receipt-total.total { font-size: .72rem !important; }
+.vitrina-caja .pay-row { font-size: .58rem !important; }
+.vitrina-caja .pay-row input { min-height: 18px !important; font-size: .6rem !important; padding: 1px 4px !important; }
+.vitrina-caja * { text-shadow: none; }
+
+/* la caja registradora grande sobre el mesón, entre las repisas */
+.tienda-caja { position: absolute; left: 36%; width: 25%; bottom: 22.4%; z-index: 3; }
+.tienda-caja #caja { width: 100% !important; }
+.tienda-caja #caja .register-window, .tienda-caja .register-message, .tienda-caja .register-clear { display: none !important; }
+.tienda-caja .register-confirm { position: absolute !important; top: auto !important; bottom: -14% !important; left: 6% !important; width: 88% !important; font-size: .74rem !important; padding: 7px !important; z-index: 5; }
+.tienda-caja .receipt-printer, .tienda-caja .printer-slot { pointer-events: none; }
+.tienda-caja .register-keypad { z-index: 5; }
+.tienda-caja .printer-output { position: absolute !important; left: 50% !important; right: auto !important; width: 240px !important; margin-left: -120px !important; top: 100% !important; bottom: auto !important; pointer-events: auto; z-index: 12; transform: none !important; scrollbar-width: thin; }
+.tienda-caja .printer-output .printed-receipt { background: url("assets/pergamino/boleta-linda.webp") center top / 100% 100% no-repeat !important; border: 0 !important; padding: 58px 20px 30px !important; font-size: .66rem !important; max-height: none !important; overflow: visible !important; rotate: 0deg !important; box-shadow: none !important; filter: drop-shadow(0 10px 18px rgba(20, 8, 40, .45)); }
+.caja-pago { position: absolute; left: 18.5%; width: 63%; top: 37.5%; text-align: center; font: 700 .64rem/1 'Mali', sans-serif; color: #8a4f86; z-index: 4; }
+.tienda-caja #caja:has(#printer-output:not([hidden])) .register-confirm { visibility: hidden; }
+.caja-pago { top: 36% !important; font-size: .56rem !important; }
+.vitrina-caja .catalogo-grilla { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+
+/* ---------------------------------------------------------------- tienda: Magical Alliance en vivo en la vitrina, se compra en las repisas y se paga en la caja */
+html.escenas .ev-desarrollo.tienda-activa .papel-pestanas { margin-bottom: 2px !important; }
+.tienda-puesto { width: min(100%, 1360px, calc((100vh - 205px) * 1660 / 921)) !important; }
+.tienda-oculto { display: none !important; }
+.tienda-vidrio { background: #fff !important; }
+.tienda-vidrio .vitrina-web { display: block !important; height: 100%; }
+/* la caja en su proporción: sobre el mesón, a la derecha de las repisas centrales */
+.tienda-caja { left: 41% !important; width: 17% !important; bottom: 22.4% !important; }
+.tienda-caja .register-confirm { font-size: .66rem !important; bottom: -15% !important; }
+/* cada producto de la repisa brilla suave para invitar a tocarlo */
+.tienda-etiqueta::after { content: "✦"; position: absolute; right: 2px; top: 0; font-size: 11px; color: #f3d48a; text-shadow: 0 0 6px #f3d48a; opacity: .85; animation: etiqueta-brilla 2.4s ease-in-out infinite; }
+@keyframes etiqueta-brilla { 50% { opacity: .25; } }
+/* la boleta impresa como antes: papel limpio que sale por la ranura */
+.tienda-caja .printer-output { width: 92% !important; left: 4% !important; margin-left: 0 !important; }
+.tienda-caja .printer-output .printed-receipt { background: #fffdf6 !important; padding: 12px 12px 14px !important; border: 0 !important; border-top: 4px solid #e7b9d4 !important; font: 500 .66rem/1.4 'Mali', sans-serif !important; filter: none !important; box-shadow: 0 8px 16px rgba(20, 8, 40, .35) !important;
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - 8px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 12px 8px repeat-x; }
+.tienda-caja .printer-output { width: 220px !important; left: 50% !important; margin-left: -110px !important; }
+.tienda-caja .printed-receipt :is(h3, h4, strong, .receipt-title, [class*="titulo"]) { color: #7a2f5f !important; }
+
+/* ---------------------------------------------------------------- tienda: el puesto lo más grande posible (sin la cinta del título; las pestañas bastan) */
+html.escenas .ev-desarrollo.tienda-activa .section-head { display: none !important; }
+.tienda-puesto { width: min(100%, 1420px, calc((100vh - 150px) * 1660 / 921)) !important; }
+.tienda-etiqueta::after { content: none !important; }
+/* la caja: todo se mide con su propio ancho, así los números calzan en el dibujo a cualquier tamaño */
+.tienda-caja #caja { container-type: inline-size; }
+.tienda-caja .register-marquee { left: 18% !important; top: 20% !important; width: 64% !important; height: 17% !important; padding: 0 4% !important; display: grid !important; place-items: center end !important; }
+.tienda-caja .register-marquee span { display: none !important; }
+.tienda-caja .register-marquee output { font-size: 11cqw !important; line-height: 1 !important; }
+.caja-pago { left: 18% !important; width: 64% !important; top: 31.5% !important; text-align: left !important; padding-left: 5% !important; font-size: 3.6cqw !important; }
+.tienda-caja .register-keypad { left: 24% !important; top: 45% !important; width: 52% !important; display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 2.2cqw 3cqw !important; }
+.tienda-caja .register-keypad button { height: 6.4cqw !important; min-height: 0 !important; font-size: 3.8cqw !important; border-radius: 2.4cqw !important; padding: 0 !important; border-width: .5cqw !important; }
+/* la boleta sale de la ranura: nace en la ranura del dibujo y baja por delante */
+.tienda-caja .receipt-printer { left: 21% !important; width: 58% !important; top: 83.5% !important; z-index: 6 !important; }
+.tienda-caja .printer-output { left: 4% !important; right: 4% !important; width: auto !important; margin-left: 0 !important; top: 45% !important; }
+.tienda-caja .printed-receipt { border-top: 0 !important; }
+.tienda-caja { left: 40% !important; width: 20% !important; }
+.tienda-caja .register-keypad { gap: 2cqw 3cqw !important; top: 44% !important; }
+.tienda-caja .register-keypad button { height: 7.2cqw !important; font-size: 4.6cqw !important; }
+.tienda-caja .printer-output { left: -6% !important; right: -6% !important; }
+.tienda-caja .printed-receipt { padding: 8px 9px 12px !important; font-size: .56rem !important; line-height: 1.35 !important; }
+.tienda-caja .printed-receipt h4 { font-size: .8rem !important; margin: 2px 0 !important; }
+.tienda-caja .printed-receipt .paper-brand, .tienda-caja .printed-receipt .paper-note { font-size: .5rem !important; letter-spacing: .02em !important; }
+/* cómo comprar: una línea corta bajo el puesto, y cada producto se ilumina al pasar el mouse */
+.tienda-pista { position: absolute; left: 0; right: 0; bottom: -4.5%; margin: 0; text-align: center; font: italic 600 .92rem/1.2 var(--serif, Georgia, serif); color: #fff7fc; text-shadow: 0 1px 3px rgba(20, 8, 40, .95), 0 0 12px rgba(20, 8, 40, .85); pointer-events: none; }
+html[data-tema="claro"] .tienda-pista { color: #4a2556; text-shadow: 0 0 6px #fff, 0 0 14px #fff; }
+.tienda-etiqueta:hover, .tienda-etiqueta:focus-visible { background: radial-gradient(ellipse, rgba(255, 236, 248, .35), transparent 70%) !important; box-shadow: 0 0 0 2px rgba(243, 212, 138, .95), 0 0 22px rgba(245, 168, 207, .9) !important; }
+/* los enlaces a la tienda y a los repositorios, en cintas bajo el puesto */
+html.escenas .ev-desarrollo.tienda-activa .app-tienda .botonera { display: flex !important; justify-content: center !important; flex-wrap: wrap; gap: 10px !important; margin: 34px auto 0 !important; }
+html.escenas .app-tienda .botonera .btn { padding: 8px 16px !important; font-size: .78rem !important; }
+.tienda-puesto { width: min(100%, 1420px, calc((100vh - 200px) * 1660 / 921)) !important; }
+
+/* los botones de enlace siguen el mismo diseño que las pestañas de arriba (píldora de vidrio con borde dorado; el principal, rosado-lila) */
+html.escenas .ev .botonera .btn { font: 700 .82rem var(--sans) !important; padding: 9px 18px !important; border-radius: 999px !important; border: 1px solid var(--e-linea) !important; background: var(--e-panel) !important; color: var(--e-suave) !important; box-shadow: none !important; text-transform: none !important; letter-spacing: 0 !important; transition: border-color .2s, color .2s; }
+html.escenas .ev .botonera .btn:hover { color: var(--e-texto) !important; border-color: var(--e-oro) !important; }
+html.escenas .ev .botonera .btn.primary { color: #1c1233 !important; background: linear-gradient(135deg, #f5a8cf, #ba93f0) !important; border-color: transparent !important; }
+
+/* ---------------------------------------------------------------- Banco de Evaluaciones: un libro de hechizos abierto
+   página izquierda: qué es y los 5 pasos · página derecha: el demo en vivo, como el hechizo funcionando */
+html.escenas .ev-desarrollo.banco-activo .section-head { display: none !important; }
+html.escenas .papel-app.app-banco, html.escenas .papel-app.app-banco.activo { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; filter: none !important; padding: 0 !important; }
+html.escenas .app-banco #banco-card {
+  position: relative !important; display: block !important; width: min(100%, 1400px, calc((100vh - 170px) * 1653 / 911)) !important; aspect-ratio: 1653 / 911 !important; margin: 0 auto !important; max-height: none !important;
+  padding: 0 !important; border: 0 !important; border-image: none !important; background: url("assets/pergamino/libro.webp?v=2") center / 100% 100% no-repeat !important;
+  filter: drop-shadow(0 16px 26px rgba(20, 8, 40, .5)) !important; overflow: visible !important; font-size: 1em !important; container-type: inline-size; }
+html.escenas .app-banco #banco-card::before, html.escenas .app-banco #banco-card::after { display: none !important; }
+html.escenas .app-banco .banco-texto { position: absolute !important; left: 15.5%; width: 32%; top: 6%; height: 63%; overflow: auto; scrollbar-width: thin; padding: 0 1.2cqw 0 .6cqw; background: none !important; border: 0 !important; color: #3b2546; }
+html.escenas .app-banco .banco-vivo { position: absolute !important; left: 52%; width: 36%; top: 6%; height: 63%; display: flex; flex-direction: column; gap: .6cqw; background: none !important; border: 0 !important; }
+html.escenas .app-banco .banco-texto .chip { display: none; }
+html.escenas .app-banco .banco-texto h3 { margin: 0 0 .5cqw; font: 700 2cqw/1.1 var(--titulo, "Cinzel", serif) !important; color: #4a2556 !important; text-align: center; text-shadow: none !important; }
+html.escenas .app-banco .banco-texto h3::after { content: "✦"; display: block; font-size: 1cqw; color: #c9963a; margin-top: .3cqw; }
+html.escenas .app-banco .banco-texto p { margin: 0 0 .6cqw; font: 500 .82cqw/1.45 var(--sans, sans-serif) !important; color: #4a3556 !important; text-shadow: none !important; }
+html.escenas .app-banco .banco-texto b { color: #4a2556 !important; }
+html.escenas .app-banco .banco-flujo { margin: .4cqw 0 .6cqw; padding: 0; list-style: none; display: grid; gap: .45cqw; counter-reset: paso; }
+html.escenas .app-banco .banco-flujo li { counter-increment: paso; display: grid; grid-template-columns: 1.7cqw 1fr; column-gap: .6cqw; align-items: start; padding: .35cqw .5cqw; border-radius: .6cqw; background: rgba(255, 240, 248, .7); border: 1px solid rgba(201, 150, 58, .35); }
+html.escenas .app-banco .banco-flujo li::before { content: counter(paso); grid-row: span 2; display: grid; place-items: center; width: 1.7cqw; height: 1.7cqw; border-radius: 50%; font: 700 .85cqw/1 var(--titulo, "Cinzel", serif); color: #fff; background: linear-gradient(135deg, #d27aa8, #a07cd4); }
+html.escenas .app-banco .banco-flujo b { font: 700 .86cqw/1.2 var(--sans, sans-serif); color: #4a2556; }
+html.escenas .app-banco .banco-flujo span { font: 500 .74cqw/1.35 var(--sans, sans-serif); color: #5a4566; }
+html.escenas .app-banco .banco-moodle { font-size: .74cqw !important; padding: .4cqw .6cqw; border-left: 2px solid #c9963a; background: rgba(255, 250, 235, .7); }
+html.escenas .app-banco .stack-cloud { display: flex; flex-wrap: wrap; gap: .35cqw; margin: .3cqw 0; }
+html.escenas .app-banco .stack-cloud span { padding: .2cqw .6cqw; border-radius: 999px; font: 600 .7cqw/1.2 var(--sans, sans-serif); color: #5a2a5e; background: #fff; border: 1px solid #e6cfe2; }
+html.escenas .app-banco .small-note { font-size: .66cqw !important; font-style: italic; opacity: .85; }
+/* la página derecha: el demo en vivo dentro de un marco de luz */
+html.escenas .app-banco .banco-vivo .vitrina-viva { flex: 1; min-height: 0; aspect-ratio: auto !important; height: auto !important; padding: 0 !important; border-radius: .8cqw; overflow: hidden; background: #fff !important;
+  box-shadow: 0 0 0 2px rgba(201, 150, 58, .55), 0 0 1.6cqw rgba(245, 168, 207, .7) !important; border: 0 !important; }
+html.escenas .app-banco .banco-vivo .vitrina-viva::after { display: none !important; }
+html.escenas .app-banco .banco-vivo iframe { width: 150% !important; height: 150% !important; border: 0; transform: scale(.6667); transform-origin: 0 0; }
+html.escenas .app-banco .banco-vivo .botonera { display: flex; justify-content: center; flex-wrap: wrap; gap: .6cqw; margin: 0; }
+html.escenas .app-banco .banco-vivo .botonera .btn { padding: .45cqw 1cqw !important; font-size: .78cqw !important; }
+html.escenas .app-banco .banco-texto { top: 5% !important; height: 67% !important; }
+html.escenas .app-banco .banco-flujo { gap: .35cqw !important; }
+html.escenas .app-banco .banco-flujo li { padding: .25cqw .5cqw !important; }
+html.escenas .app-banco .banco-texto p { margin-bottom: .45cqw !important; }
+
+/* libro simétrico: medidas de sus páginas */
+html.escenas .app-banco #banco-card { aspect-ratio: 1529 / 892 !important; width: min(100%, 1400px, calc((100vh - 170px) * 1529 / 892)) !important; background-image: url("assets/pergamino/libro.webp?v=3") !important; }
+html.escenas .app-banco .banco-texto { left: 13.5% !important; width: 33% !important; top: 7% !important; height: 62% !important; }
+html.escenas .app-banco .banco-vivo { left: 53.5% !important; width: 33% !important; top: 7% !important; height: 62% !important; }
+
+/* ---------------------------------------------------------------- Banco de Evaluaciones en un libro de clases (en el estilo de la autora)
+   hoja izquierda: el resumen y los 5 pasos sobre las líneas · hoja derecha: el demo en vivo, dentro de la hoja, bajo su encabezado */
+html.escenas .app-banco #banco-card { aspect-ratio: 1627 / 907 !important; width: min(100%, 1500px, calc((100vh - 140px) * 1627 / 907)) !important; background-image: url("assets/pergamino/libro-clases.webp?v=1") !important; }
+html.escenas .ev-desarrollo.banco-activo .papel-pestanas { margin-bottom: 2px !important; }
+html.escenas .app-banco .banco-texto { left: 11.6% !important; width: 36.6% !important; top: 7.2% !important; height: 76% !important; padding: 0 .6cqw 0 0 !important; }
+html.escenas .app-banco .banco-vivo { left: 55.8% !important; width: 37.4% !important; top: 7.2% !important; height: 76% !important; gap: .5cqw !important; }
+/* el título va escrito en la franja rosada del encabezado de la hoja */
+html.escenas .app-banco .banco-texto h3 { height: 6.4cqw; display: grid; place-items: center; margin: 0 0 .8cqw !important; font-size: 1.9cqw !important; }
+html.escenas .app-banco .banco-texto h3::after { display: none; }
+html.escenas .app-banco .banco-vivo::before { content: "✦ El hechizo en vivo ✦"; display: grid; place-items: center; height: 4.4cqw; flex: none; font: 700 1.3cqw/1 var(--titulo, "Cinzel", serif); color: #4a2556; }
+/* el demo se integra a la hoja: sin marco que sobresalga, solo un fino filete dorado */
+html.escenas .app-banco .banco-vivo .vitrina-viva { border-radius: .5cqw !important; box-shadow: 0 0 0 1px rgba(201, 150, 58, .55) !important; }
+html.escenas .app-banco .banco-vivo iframe { width: 160% !important; height: 160% !important; transform: scale(.625) !important; }
+html.escenas .app-banco .banco-texto p { font-size: .86cqw !important; line-height: 1.5 !important; }
+html.escenas .app-banco .banco-flujo b { font-size: .9cqw !important; }
+html.escenas .app-banco .banco-flujo span { font-size: .78cqw !important; }
+html.escenas .app-banco .banco-vivo { width: 35.6% !important; height: 74% !important; }
+
+/* ---------------------------------------------------------------- libro de clases más largo (alto como los del colegio), con las esquinas, el lápiz y la regla sin deformar
+   (marco en nueve partes); los títulos van centrados dentro de las franjas rosadas del encabezado */
+html.escenas .papel-app.app-banco { container-type: inline-size; width: min(100%, 1320px, calc((100vh - 140px) * 1627 / 1150)) !important; margin: 0 auto !important; }
+html.escenas .papel-app.app-banco #banco-card.banco-card {
+  width: 100% !important; aspect-ratio: 1627 / 1150 !important; background: none !important; overflow: visible !important;
+  border-style: solid !important; border-color: transparent !important; border-width: 8.6cqw 14.14cqw 11.99cqw 12.91cqw !important;
+  border-image: url("assets/pergamino/libro-clases.webp?v=1") 140 230 195 210 fill / 8.6cqw 14.14cqw 11.99cqw 12.91cqw / 0 stretch !important; }
+/* hoja izquierda: el título centrado en su franja, el texto sobre las líneas */
+html.escenas .papel-app.app-banco .banco-texto { left: -4.43cqw !important; width: 38.4cqw !important; top: -4.05cqw !important; height: 57.4cqw !important; padding: 0 1cqw 0 2.9cqw !important; overflow: visible !important; }
+html.escenas .papel-app.app-banco .banco-texto h3 { height: 2.46cqw !important; margin: 0 0 2.2cqw -2.9cqw !important; width: 34.24cqw !important; padding: 0 !important; display: grid !important; place-items: center !important; font-size: 1.65cqw !important; line-height: 1 !important; }
+html.escenas .papel-app.app-banco .banco-texto p { font-size: .95cqw !important; line-height: 1.55 !important; margin-bottom: .9cqw !important; }
+html.escenas .papel-app.app-banco .banco-flujo { gap: .7cqw !important; margin: .8cqw 0 1cqw !important; }
+html.escenas .papel-app.app-banco .banco-flujo li { padding: .5cqw .7cqw !important; }
+html.escenas .papel-app.app-banco .banco-flujo b { font-size: 1cqw !important; }
+html.escenas .papel-app.app-banco .banco-flujo span { font-size: .86cqw !important; }
+html.escenas .papel-app.app-banco .banco-moodle { font-size: .86cqw !important; }
+html.escenas .papel-app.app-banco .stack-cloud span { font-size: .8cqw !important; }
+html.escenas .papel-app.app-banco .small-note { font-size: .78cqw !important; }
+/* hoja derecha: «Demo en vivo» centrado en su franja; el demo dentro de la hoja */
+html.escenas .papel-app.app-banco .banco-vivo::before { content: none !important; display: none !important; }
+html.escenas .papel-app.app-banco #banco-card.banco-card::before { content: "Demo en vivo" !important; display: grid !important; place-items: center; position: absolute !important; inset: auto !important; left: 40.07cqw !important; top: -4.48cqw !important; width: 38.48cqw !important; height: 3.07cqw !important;
+  padding: 0 !important; background: none !important; border: 0 !important; -webkit-mask: none !important; mask: none !important; font: 700 1.65cqw/1 var(--titulo, "Cinzel", serif) !important; color: #4a2556 !important; z-index: 2; pointer-events: none; }
+html.escenas .papel-app.app-banco .banco-vivo { left: 43.5cqw !important; width: 34.5cqw !important; top: .4cqw !important; height: 51.5cqw !important; gap: .9cqw !important; }
+html.escenas .papel-app.app-banco .banco-vivo .botonera .btn { font-size: .9cqw !important; padding: .55cqw 1.2cqw !important; }
+html.escenas .papel-app.app-banco #banco-card.banco-card { container-type: normal !important; }
+html.escenas .papel-app.app-banco .banco-vivo .botonera { flex-wrap: nowrap !important; gap: .6cqw !important; } html.escenas .papel-app.app-banco .banco-vivo .botonera .btn { font-size: .78cqw !important; padding: .5cqw .9cqw !important; white-space: nowrap; }
+
+/* ---------------------------------------------------------------- Datos de salud: el escritorio de la matrona
+   los temas son separadores de colores · el análisis va en la carpeta clínica · los tableros se ven en el monitor
+   · todo apoyado sobre el escritorio (con el doppler fetal y el tensiómetro) */
+html.escenas .ev-datos .section-head h2 { display: none !important; }
+html.escenas .ev-datos .section-head .cinta-nombre { width: min(360px, 60vw) !important; font-size: 1.15rem !important; }
+html.escenas .ev-datos .section-head { margin-bottom: 4px !important; }
+html.escenas .papel-app.app-tableros, html.escenas .papel-app.app-tableros.activo { background: none !important; border: 0 !important; border-image: none !important; box-shadow: none !important; filter: none !important; padding: 0 !important; }
+html.escenas .papel-app.app-tableros::before, html.escenas .papel-app.app-tableros::after { display: none !important; }
+html.escenas .app-tableros .tableros {
+  position: relative !important; container-type: inline-size; width: min(100%, 1400px, calc((100vh - 230px) * 100 / 60)) !important; aspect-ratio: 100 / 60; margin: 0 auto !important;
+  padding: 0 !important; border: 0 !important; box-shadow: none !important;
+  background: url("assets/pergamino/escritorio.webp") 0 37.5cqw / 100cqw auto no-repeat !important; filter: drop-shadow(0 16px 24px rgba(20, 8, 40, .45)); }
+html.escenas .app-tableros .tab-cuerpo { display: contents !important; }
+
+/* los temas: separadores de colores que asoman a la izquierda de la carpeta */
+html.escenas .app-tableros .tab-temas { position: absolute !important; left: 0; top: 9cqw; width: 9cqw; display: flex !important; flex-direction: column; gap: .7cqw; margin: 0 !important; padding: 0 !important; z-index: 2; background: none !important; border: 0 !important; }
+html.escenas .app-tableros .tab-tema { width: 100%; justify-content: flex-start; text-align: left; padding: .7cqw .6cqw .7cqw .9cqw !important; border-radius: 1.2cqw 0 0 1.2cqw !important; font: 700 .95cqw/1.15 var(--sans, sans-serif) !important;
+  color: #4a2556 !important; border: 1px solid rgba(201, 150, 58, .5) !important; border-right: 0 !important; box-shadow: -2px 3px 0 rgba(20, 8, 40, .18) !important; white-space: normal !important; gap: .4cqw; }
+html.escenas .app-tableros .tab-tema:nth-child(1) { background: #fde0ec !important; } html.escenas .app-tableros .tab-tema:nth-child(2) { background: #e6dbff !important; }
+html.escenas .app-tableros .tab-tema:nth-child(3) { background: #fff1c7 !important; } html.escenas .app-tableros .tab-tema:nth-child(4) { background: #ece2ff !important; }
+html.escenas .app-tableros .tab-tema:nth-child(5) { background: #fde7c9 !important; }
+html.escenas .app-tableros .tab-tema.activo, html.escenas .app-tableros .tab-tema[aria-selected="true"] { transform: translateX(-.8cqw); box-shadow: -3px 4px 0 rgba(20, 8, 40, .22), 0 0 1cqw rgba(245, 168, 207, .7) !important; color: #2e1638 !important; }
+
+/* la carpeta clínica con el análisis */
+html.escenas .app-tableros .tab-info { position: absolute !important; left: 8.4cqw; top: 4.8cqw; width: 30cqw; height: 42.2cqw; box-sizing: border-box; display: flex !important; flex-direction: column; overflow: hidden;
+  padding: 6cqw 2.6cqw 2.4cqw 2.6cqw !important; background: url("assets/pergamino/carpeta.webp") center / 100% 100% no-repeat !important; border: 0 !important; box-shadow: none !important; z-index: 1; }
+html.escenas .app-tableros .tab-titulo { margin: 0 0 .5cqw !important; font: 700 1.55cqw/1.15 var(--titulo, "Cinzel", serif) !important; color: #4a2556 !important; text-align: center; }
+html.escenas .app-tableros .tab-pregunta { margin: 0 0 .6cqw !important; font: 500 .82cqw/1.45 var(--sans, sans-serif) !important; color: #5a4566 !important; }
+html.escenas .app-tableros .tab-subs { display: flex !important; gap: .4cqw; margin: 0 0 .6cqw !important; flex-wrap: wrap; }
+html.escenas .app-tableros .tab-sub { padding: .25cqw .8cqw !important; font: 700 .78cqw/1.2 var(--sans, sans-serif) !important; border-radius: 999px !important; border: 1px solid #e6cfe2 !important; background: #fff !important; color: #7a4f84 !important; }
+html.escenas .app-tableros .tab-sub.activo, html.escenas .app-tableros .tab-sub[aria-selected="true"] { background: #f7d6e7 !important; color: #4a2556 !important; }
+html.escenas .app-tableros .tab-panel { flex: 1; min-height: 0; overflow: auto !important; scrollbar-width: thin; padding: 0 .4cqw 0 0 !important; background: none !important; border: 0 !important; }
+html.escenas .app-tableros .tab-panel :is(p, li, blockquote, span, b) { font-size: .8cqw !important; line-height: 1.45 !important; color: #4a3556 !important; }
+html.escenas .app-tableros .tab-etiqueta { font: 700 .78cqw/1.2 var(--sans, sans-serif) !important; letter-spacing: .1em; color: #b2477f !important; margin: .6cqw 0 .3cqw !important; }
+html.escenas .app-tableros .tab-kpi { font-size: .78cqw !important; }
+
+/* el monitor con los tableros (marco en nueve partes: el pie no se deforma) */
+html.escenas .app-tableros .tab-visor { position: absolute !important; left: 40.5cqw; top: .65cqw; width: 56cqw; height: 46.35cqw; box-sizing: border-box; display: flex !important; flex-direction: column; gap: .4cqw; overflow: hidden;
+  padding: .5cqw .6cqw !important; border-style: solid !important; border-color: transparent !important; border-width: 4.23cqw 2.7cqw 10.12cqw 2.7cqw !important;
+  border-image: url("assets/pergamino/monitor.webp") 102 65 244 65 / 4.23cqw 2.7cqw 10.12cqw 2.7cqw / 0 stretch !important;
+  background: linear-gradient(180deg, #fffaff, #f6eefc) padding-box !important; box-shadow: none !important; border-radius: 0 !important; }
+html.escenas .app-tableros .tab-barra { flex: none; display: flex !important; align-items: center; justify-content: space-between; gap: .6cqw; font-size: .8cqw !important; margin: 0 !important; }
+html.escenas .app-tableros .tab-barra * { font-size: .8cqw !important; }
+html.escenas .app-tableros .tab-vistas button { padding: .2cqw .7cqw !important; font-size: .75cqw !important; }
+html.escenas .app-tableros .tab-marco { flex: 1; min-height: 0; margin: 0 !important; display: flex !important; flex-direction: column; border: 0 !important; box-shadow: none !important; background: none !important; padding: 0 !important; }
+html.escenas .app-tableros .tab-marco img { flex: 1; min-height: 0; width: 100% !important; height: 100% !important; object-fit: contain !important; border-radius: .4cqw; }
+html.escenas .app-tableros .tab-pie { font-size: .72cqw !important; margin: .2cqw 0 0 !important; }
+html.escenas .app-tableros .tab-tira { flex: none; gap: .4cqw !important; margin: 0 !important; }
+html.escenas .app-tableros .tab-mini { width: 6.4cqw !important; min-width: 0 !important; padding: .2cqw !important; }
+html.escenas .app-tableros .tab-mini span { font-size: .6cqw !important; }
+html.escenas .app-tableros .tab-ampliar { font-size: .7cqw !important; padding: .2cqw .6cqw !important; }
+/* ---- intentos anteriores del escritorio por capas (reemplazados por la escena completa de abajo)
+(* el escritorio como capa propia (las unidades cqw de un fondo no se miden con el propio elemento) *)
+html.escenas .app-tableros .tableros { background: none !important; }
+html.escenas .app-tableros .tableros::before { content: "" !important; display: block !important; position: absolute !important; left: 0; top: 37.5cqw; width: 100cqw; height: 22.5cqw; z-index: 0; pointer-events: none;
+  background: url("assets/pergamino/escritorio.webp") center top / 100% auto no-repeat !important; border: 0 !important; -webkit-mask: none !important; mask: none !important; }
+html.escenas .ev-datos .section-head .cinta-nombre { white-space: nowrap !important; width: min(420px, 60vw) !important; }
+html.escenas .app-tableros .tableros::before { z-index: 3 !important; }
+html.escenas .app-tableros .tab-visor, html.escenas .app-tableros .tab-info { z-index: 1 !important; }
+html.escenas .app-tableros .tab-temas { z-index: 2 !important; left: -.5cqw !important; width: 9.6cqw !important; }
+html.escenas .app-tableros .tab-tema { font-size: .82cqw !important; padding: .6cqw .5cqw .6cqw .8cqw !important; }
+html.escenas .app-tableros .tab-info { padding: 7cqw 3.4cqw 3cqw 3cqw !important; }
+html.escenas .app-tableros .tab-titulo { font-size: 1.4cqw !important; }
+html.escenas .app-tableros .tab-info { padding-bottom: 9cqw !important; }
+
+(* ---------------------------------------------------------------- escritorio v3: monitor y carpeta apoyados en la cubierta (no flotan) *)
+html.escenas .app-tableros .tableros::before { top: 33cqw !important; height: 27cqw !important; background-image: url("assets/pergamino/escritorio.webp?v=3") !important; }
+html.escenas .app-tableros .tab-visor { left: 42cqw !important; width: 52cqw !important; top: 3.7cqw !important; height: 43.3cqw !important;
+  border-width: 3.93cqw 2.5cqw 9.4cqw 2.5cqw !important; border-image: url("assets/pergamino/monitor.webp") 102 65 244 65 / 3.93cqw 2.5cqw 9.4cqw 2.5cqw / 0 stretch !important; }
+html.escenas .app-tableros .tab-info { left: 9.6cqw !important; width: 29cqw !important; top: 7cqw !important; height: 40.7cqw !important; padding: 6.4cqw 3.2cqw 7cqw 3cqw !important; }
+html.escenas .app-tableros .tab-temas { top: 11cqw !important; }
+(* el título del tema centrado en la hoja, bajo el clip *)
+html.escenas .app-tableros .tab-titulo { text-align: center !important; font-size: 1.3cqw !important; margin: 0 auto .6cqw !important; padding: 0 1cqw !important; }
+html.escenas .app-tableros .tab-pregunta { text-align: left; }
+(* la carpeta apoyada en el atril del escritorio (delante de él) y los separadores asomando por su borde derecho *)
+html.escenas .app-tableros .tab-info { left: .5cqw !important; top: 4.3cqw !important; z-index: 4 !important; }
+html.escenas .app-tableros .tab-temas { left: 29cqw !important; width: 11.5cqw !important; top: 10cqw !important; z-index: 3 !important; }
+html.escenas .app-tableros .tab-tema { border-radius: 0 1.2cqw 1.2cqw 0 !important; border: 1px solid rgba(201, 150, 58, .5) !important; border-left: 0 !important; padding: .6cqw .6cqw .6cqw 1.2cqw !important; box-shadow: 2px 3px 0 rgba(20, 8, 40, .18) !important; }
+html.escenas .app-tableros .tab-tema.activo, html.escenas .app-tableros .tab-tema[aria-selected="true"] { transform: translateX(.8cqw) !important; }
+html.escenas .app-tableros .tab-info { padding-bottom: 3.2cqw !important; }
+
+(* ---------------------------------------------------------------- escritorio en primer plano (como la maqueta): cubierta profunda, carpeta y monitor grandes apoyados en ella *)
+html.escenas .app-tableros .tableros { aspect-ratio: 100 / 66 !important; width: min(100%, 1400px, calc((100vh - 220px) * 100 / 66)) !important; filter: drop-shadow(0 12px 20px rgba(20, 8, 40, .4)) !important; overflow: hidden; }
+html.escenas .app-tableros .tableros::before { top: 16cqw !important; height: 52cqw !important; background-image: url("assets/pergamino/escritorio.webp?v=4") !important; background-size: 100% 100% !important; }
+html.escenas .app-tableros .tab-info { left: 20cqw !important; width: 26.3cqw !important; top: 4cqw !important; height: 37cqw !important; padding: 5.8cqw 2.8cqw 2.6cqw 2.6cqw !important; z-index: 2 !important; }
+html.escenas .app-tableros .tab-temas { left: 10.5cqw !important; width: 11cqw !important; top: 8cqw !important; z-index: 1 !important; }
+html.escenas .app-tableros .tab-tema { border-radius: 1.2cqw 0 0 1.2cqw !important; border: 1px solid rgba(201, 150, 58, .5) !important; border-right: 0 !important; padding: .7cqw .6cqw .7cqw .9cqw !important; box-shadow: -2px 3px 0 rgba(20, 8, 40, .18) !important; }
+html.escenas .app-tableros .tab-tema.activo, html.escenas .app-tableros .tab-tema[aria-selected="true"] { transform: translateX(-.8cqw) !important; }
+html.escenas .app-tableros .tab-visor { left: 48cqw !important; width: 50cqw !important; top: 2.2cqw !important; height: 38.8cqw !important;
+  border-width: 3.78cqw 2.41cqw 9.04cqw 2.41cqw !important; border-image: url("assets/pergamino/monitor.webp") 102 65 244 65 / 3.78cqw 2.41cqw 9.04cqw 2.41cqw / 0 stretch !important; }
+html.escenas .ev-datos .section-head h2 { display: block !important; margin-top: 2px !important; }
+(* capas: cubierta detrás de la carpeta y el monitor; los objetos del escritorio delante *)
+html.escenas .app-tableros .tableros::before { z-index: 0 !important; top: 26cqw !important; height: 42cqw !important; }
+html.escenas .app-tableros .tableros::after { content: "" !important; display: block !important; position: absolute !important; left: 0; top: 26cqw; width: 100cqw; height: 42cqw; z-index: 5; pointer-events: none;
+  background: url("assets/pergamino/escritorio-objetos.webp?v=1") center top / 100% 100% no-repeat !important; border: 0 !important; -webkit-mask: none !important; mask: none !important; inset: auto !important; }
+html.escenas .app-tableros .tableros::after { left: 0 !important; top: 26cqw !important; }
+html.escenas .app-tableros .tab-info { top: 5cqw !important; z-index: 3 !important; }
+html.escenas .app-tableros .tab-visor { top: 3.2cqw !important; z-index: 3 !important; }
+html.escenas .app-tableros .tab-temas { z-index: 2 !important; }
+---- */
+
+/* ---------------------------------------------------------------- escena completa del escritorio (un solo dibujo: carpeta en su atril,
+   separadores detrás, monitor apoyado en su pie y los objetos de la matrona). El contenido va sobre la hoja, la pantalla y los separadores */
+html.escenas .ev-datos .section-head h2 { display: block !important; margin-top: 2px !important; }
+html.escenas .ev-datos .section-head .cinta-nombre { white-space: nowrap !important; width: min(420px, 60vw) !important; }
+html.escenas .app-tableros .tableros { aspect-ratio: 1672 / 941 !important; width: min(100%, 1400px, calc((100vh - 200px) * 1672 / 941)) !important; overflow: visible !important;
+  background: none !important; filter: drop-shadow(0 12px 20px rgba(20, 8, 40, .4)) !important; }
+html.escenas .app-tableros .tableros::before { content: "" !important; display: block !important; position: absolute !important; inset: 0 !important; width: auto !important; height: auto !important; z-index: 0 !important; pointer-events: none;
+  background: url("assets/pergamino/escena-datos.webp?v=1") center / 100% 100% no-repeat !important; border: 0 !important; -webkit-mask: none !important; mask: none !important; }
+html.escenas .app-tableros .tableros::after { display: none !important; }
+/* los temas: el texto va sobre cada separador dibujado (no hay pestañas sueltas encima) */
+html.escenas .app-tableros .tab-temas { left: 5.6cqw !important; top: 0 !important; width: 8.6cqw !important; height: 100% !important; display: block !important; z-index: 2 !important; }
+html.escenas .app-tableros .tab-tema { position: absolute !important; left: 0; width: 100% !important; height: 3.5cqw; display: flex !important; align-items: center; justify-content: center !important; text-align: center !important;
+  padding: 0 .4cqw !important; margin: 0 !important; background: none !important; border: 0 !important; border-radius: .8cqw !important; box-shadow: none !important; transform: none !important;
+  font: 700 .82cqw/1.1 var(--sans, sans-serif) !important; color: #6a4a78 !important; white-space: normal !important; cursor: pointer; transition: color .2s, text-shadow .2s; }
+html.escenas .app-tableros .tab-tema:nth-child(1) { top: 7.5cqw; } html.escenas .app-tableros .tab-tema:nth-child(2) { top: 11.3cqw; }
+html.escenas .app-tableros .tab-tema:nth-child(3) { top: 14.95cqw; } html.escenas .app-tableros .tab-tema:nth-child(4) { top: 18.85cqw; }
+html.escenas .app-tableros .tab-tema:nth-child(5) { top: 22.95cqw; }
+html.escenas .app-tableros .tab-tema .tab-tema-ico { display: none !important; }
+html.escenas .app-tableros .tab-tema:hover { color: #3a1d48 !important; }
+html.escenas .app-tableros .tab-tema.activo, html.escenas .app-tableros .tab-tema[aria-selected="true"] { color: #3a1d48 !important; transform: none !important; box-shadow: none !important;
+  text-shadow: 0 0 .5cqw #fff, 0 0 1cqw rgba(245, 168, 207, .9) !important; }
+html.escenas .app-tableros .tab-tema.activo::before, html.escenas .app-tableros .tab-tema[aria-selected="true"]::before { content: "✦"; position: absolute; left: -.2cqw; font-size: .8cqw; color: #c9963a; }
+/* el análisis escrito en la hoja de la carpeta, bajo el clip */
+html.escenas .app-tableros .tab-info { left: 17.6cqw !important; top: 9.2cqw !important; width: 24.4cqw !important; height: 27.6cqw !important; padding: 0 .4cqw !important; background: none !important; z-index: 2 !important; }
+html.escenas .app-tableros .tab-titulo { font-size: 1.3cqw !important; margin: 0 0 .5cqw !important; padding: 0 !important; text-align: center !important; }
+/* los tableros dentro de la pantalla dibujada */
+html.escenas .app-tableros .tab-visor { left: 46.8cqw !important; top: 9.6cqw !important; width: 47cqw !important; height: 25.6cqw !important; border: 0 !important; border-image: none !important;
+  padding: .5cqw .6cqw !important; border-radius: .3cqw !important; background: linear-gradient(180deg, #fffaff, #f6eefc) !important; z-index: 2 !important; }
+/* el texto sigue la inclinación de la hoja · el escritorio se desvanece en los cortes (sin borde recto) */
+html.escenas .app-tableros .tab-info { left: 17.4cqw !important; top: 9.4cqw !important; width: 23.4cqw !important; height: 26cqw !important; transform: rotate(-5.4deg); transform-origin: 50% 50%; }
+html.escenas .app-tableros .tableros::before {
+  -webkit-mask: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent), linear-gradient(180deg, #000 88%, transparent) !important; -webkit-mask-composite: source-in !important;
+  mask: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent), linear-gradient(180deg, #000 88%, transparent) !important; mask-composite: intersect !important; }
+/* el tablero en vivo dentro de la pantalla: su letra se mide con el escritorio */
+html.escenas .app-tableros .tab-marco.tv-marco-vivo .tv-pagina { aspect-ratio: auto !important; font-size: .74cqw !important; padding: .6cqw 2.6cqw !important; border-radius: .4cqw; }
+html.escenas .app-tableros .tv-tira .tv-mini { width: auto !important; padding: .25cqw .6cqw !important; }
+html.escenas .app-tableros .tv-tira .tv-mini span { font-size: .62cqw !important; }
+
+/* ---------------------------------------------------------------- escritorio a todo el ancho de la pantalla, sin bordes borrados:
+   empieza bajo la barra, la cinta del capítulo flota sobre el espacio libre de arriba y, si no cabe, se recorre hacia abajo */
+html.escenas .ev.ev-datos { padding: 0 !important; }
+html.escenas .ev-datos .ev-caja { width: 100% !important; max-width: none !important; position: relative; }
+html.escenas .ev-datos .section-head { position: absolute !important; left: 0; right: 0; top: 0; z-index: 6; margin: 0 !important; pointer-events: none; }
+html.escenas .ev-datos .section-head h2 { display: none !important; }
+html.escenas .ev-datos .section-head .cinta-nombre { width: min(340px, 50vw) !important; margin: 0 auto !important; }
+html.escenas .papel-app.app-tableros { width: 100% !important; max-width: none !important; margin: 0 !important; }
+html.escenas .app-tableros .tableros { width: 100% !important; filter: none !important; }
+html.escenas .app-tableros .tableros::before { -webkit-mask: none !important; mask: none !important; }
+/* en la pantalla solo el tablero: sin la leyenda de la página (va en el globo del nombre) */
+html.escenas .app-tableros .tab-marco.tv-marco-vivo .tab-pie { display: none !important; }
+/* la cinta sobre el hueco libre encima del monitor (no tapa el clip de la carpeta) */
+html.escenas .ev-datos .section-head .cinta-nombre { position: relative; left: 3.5%; }
+/* en la pantalla el gráfico se ajusta al alto disponible (no se corta): las listas largas se recorren dentro */
+html.escenas .app-tableros .tab-marco.tv-marco-vivo .tv-pagina { overflow: hidden !important; }
+html.escenas .app-tableros .tv-pagina .tv-lienzo { flex: 1 1 0; min-height: 0; overflow: auto; scrollbar-width: thin; }
+html.escenas .app-tableros .tv-pagina .tv-lienzo > .tv-svg:only-child, html.escenas .app-tableros .tv-pagina .tv-lienzo > .tv-svg:first-child:nth-last-child(2) { flex: 1 1 0; min-height: 0; height: 100%; max-height: none; }
+html.escenas .ev-datos .section-head { display: block !important; }
+html.escenas .ev-datos .section-head > :not(div) { display: none !important; }
+html.escenas .ev-datos .section-head > div { width: 100% !important; text-align: center; }
+html.escenas .ev-datos .section-head .cinta-nombre { left: 0 !important; margin: 0 0 0 calc(54% - min(170px, 25vw)) !important; }
+html.escenas .ev-datos .section-head .cinta-nombre { width: min(260px, 40vw) !important; font-size: 1rem !important; margin: 0 0 0 calc(56% - min(130px, 20vw)) !important; }
+
+/* ---------------------------------------------------------------- geometría exacta del dibujo (medida sobre escena-datos.webp, 1672 px = 100cqw):
+   la pantalla está girada 2,6° · la hoja de la carpeta −6,5° · los separadores −4,3°, cada uno con su alto */
+html.escenas .app-tableros .tab-visor { left: 47.69cqw !important; top: 10.94cqw !important; width: 45.2cqw !important; height: 21.9cqw !important;
+  transform: rotate(2.6deg) !important; transform-origin: 50% 50% !important; border-radius: .2cqw !important; padding: .45cqw .6cqw !important; }
+html.escenas .app-tableros .tab-info { left: 17.56cqw !important; top: 8.36cqw !important; width: 24.8cqw !important; height: 27.93cqw !important;
+  padding: 3.3cqw 1.7cqw 4.6cqw 1.7cqw !important; box-sizing: border-box !important; transform: rotate(-6.5deg) !important; transform-origin: 50% 50% !important; }
+html.escenas .app-tableros .tab-temas { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none; }
+html.escenas .app-tableros .tab-tema { pointer-events: auto; transform: rotate(-4.3deg) !important; transform-origin: 50% 50% !important; padding: 0 .3cqw !important; }
+html.escenas .app-tableros .tab-tema:nth-child(1) { left: 5.68cqw !important; top: 8.66cqw !important; width: 7.89cqw !important; height: 2.63cqw !important; }
+html.escenas .app-tableros .tab-tema:nth-child(2) { left: 6.15cqw !important; top: 11.62cqw !important; width: 7.78cqw !important; height: 3.23cqw !important; }
+html.escenas .app-tableros .tab-tema:nth-child(3) { left: 6.47cqw !important; top: 15.28cqw !important; width: 7.89cqw !important; height: 3.23cqw !important; }
+html.escenas .app-tableros .tab-tema:nth-child(4) { left: 7.00cqw !important; top: 19.03cqw !important; width: 7.78cqw !important; height: 3.47cqw !important; }
+html.escenas .app-tableros .tab-tema:nth-child(5) { left: 7.51cqw !important; top: 23.07cqw !important; width: 7.78cqw !important; height: 3.59cqw !important; }
+html.escenas .app-tableros .tab-tema.activo, html.escenas .app-tableros .tab-tema[aria-selected="true"] { transform: rotate(-4.3deg) !important; }
+/* los gráficos de muchas filas no se aprietan: se leen a su tamaño y se recorren dentro de la pantalla */
+html.escenas .app-tableros .tv-pagina .tv-lienzo > .tv-svg.tv-alto { flex: none !important; height: auto !important; }
+
+/* ================================================================ perspectiva exacta del dibujo
+   cada pieza se arma en píxeles del dibujo (escena-datos.webp mide 1672 × 941) y se lleva a su forma con una matriz:
+   la hoja de la carpeta se inclina hacia atrás en su atril (perspectiva), la pantalla está girada y cada separador tiene su ángulo.
+   --k (lo pone salud.js) = ancho real del escritorio ÷ 1672 */
+html.escenas .app-tableros .tableros { --k: .84; }
+html.escenas .app-tableros .tab-info, html.escenas .app-tableros .tab-visor, html.escenas .app-tableros .tab-tema {
+  left: 0 !important; top: 0 !important; transform-origin: 0 0 !important; box-sizing: border-box !important; }
+/* la hoja: el texto queda bajo el clip y sobre las flores de abajo, con la misma perspectiva del papel */
+html.escenas .app-tableros .tab-info { width: 371px !important; height: 391px !important; padding: 0 4px !important;
+  transform: scale(var(--k)) matrix3d(0.92742,-0.124547,0,-9.96403e-05,0.0899147,0.94812,0,-7.51106e-05,0,0,1,0,292.869,210.895,0,1) !important; }
+html.escenas .app-tableros .tab-info .tab-titulo { font-size: 22px !important; margin: 0 0 8px !important; }
+html.escenas .app-tableros .tab-info .tab-pregunta { font-size: 12.5px !important; line-height: 1.45 !important; margin: 0 0 10px !important; }
+html.escenas .app-tableros .tab-info .tab-subs { gap: 6px !important; margin: 0 0 8px !important; }
+html.escenas .app-tableros .tab-info .tab-sub { font-size: 11.5px !important; padding: 4px 11px !important; }
+html.escenas .app-tableros .tab-info .tab-panel :is(p, li, blockquote, span, b, dt, dd, h4) { font-size: 12.5px !important; }
+html.escenas .app-tableros .tab-info .tab-etiqueta { font-size: 11.5px !important; margin: 10px 0 4px !important; }
+html.escenas .app-tableros .tab-info .tab-kpi { font-size: 11.5px !important; }
+html.escenas .app-tableros .tab-info .tab-archivos .btn { font-size: 11.5px !important; padding: 5px 10px !important; }
+/* el final del texto se apaga suave al llegar a las flores (se sigue leyendo con la rueda) */
+html.escenas .app-tableros .tab-info .tab-panel { -webkit-mask: linear-gradient(180deg, #000 calc(100% - 22px), transparent); mask: linear-gradient(180deg, #000 calc(100% - 22px), transparent); padding-bottom: 18px !important; }
+/* los separadores: el nombre impreso sobre cada pestaña, con su ángulo; sin brillos ni recuadros encima */
+html.escenas .app-tableros .tab-tema { font: 700 12.5px/1.15 var(--sans, sans-serif) !important; color: rgba(74, 37, 86, .78) !important; text-shadow: none !important; background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 4px !important; }
+html.escenas .app-tableros .tab-tema::before { content: none !important; }
+html.escenas .app-tableros .tab-tema:hover { color: #3a1d48 !important; }
+html.escenas .app-tableros .tab-tema.activo, html.escenas .app-tableros .tab-tema[aria-selected="true"] { color: #3a1d48 !important; text-shadow: none !important; font-weight: 800 !important; }
+html.escenas .app-tableros .tab-tema.activo span:last-child::before { content: "✦ "; color: #c9963a; }
+html.escenas .app-tableros .tab-tema:focus-visible { outline: 2px dashed rgba(201, 150, 58, .8); outline-offset: 1px; }
+html.escenas .app-tableros .tab-tema:nth-child(1) { width: 119px !important; height: 39px !important; transform: scale(var(--k)) matrix(1.00013,-0.08198,-0.09549,0.98703,103.01,153.58) !important; }
+html.escenas .app-tableros .tab-tema:nth-child(2) { width: 118px !important; height: 47px !important; transform: scale(var(--k)) matrix(0.99427,-0.08268,-0.09460,0.99689,110.80,203.90) !important; }
+html.escenas .app-tableros .tab-tema:nth-child(3) { width: 120px !important; height: 47px !important; transform: scale(var(--k)) matrix(0.99090,-0.10110,-0.06387,0.99932,116.13,265.77) !important; }
+html.escenas .app-tableros .tab-tema:nth-child(4) { width: 118px !important; height: 52px !important; transform: scale(var(--k)) matrix(0.99336,-0.11136,-0.07162,1.00481,124.91,328.55) !important; }
+html.escenas .app-tableros .tab-tema:nth-child(5) { width: 118px !important; height: 55px !important; transform: scale(var(--k)) matrix(0.98939,-0.12081,-0.09258,0.99007,133.65,396.85) !important; }
+/* la pantalla: un solo panel ordenado. Arriba la barra (flechas, menú de páginas, vistas y ampliar); abajo el tablero */
+html.escenas .app-tableros .tab-visor { width: 756px !important; height: 367px !important; padding: 0 !important; gap: 0 !important; border-radius: 3px !important; overflow: hidden !important;
+  transform: scale(var(--k)) matrix3d(0.998807,0.043332,0,1.5285e-07,-0.0539178,0.99689,0,-3.52556e-06,0,0,1,0,806.93,166.358,0,1) !important; }
+html.escenas .app-tableros .tab-visor .tab-barra { position: relative; height: 34px; flex: none; padding: 0 92px 0 70px !important; border-bottom: 1px solid #efdcea; background: #fff; }
+html.escenas .app-tableros .tab-visor .tab-barra * { font-size: 12px !important; }
+html.escenas .app-tableros .tab-visor .tab-pag-nombre { display: flex !important; align-items: center; gap: 8px; }
+html.escenas .app-tableros .tab-visor .tab-pag-nombre span { font-size: 10px !important; white-space: nowrap; }
+html.escenas .app-tableros .tab-visor .tv-paginas { max-width: 300px; padding: 3px 6px; border-radius: 8px; border: 1px solid #e3c9dc; background: #fff; color: #4a2556; font: 700 12px var(--sans, sans-serif); }
+html.escenas .app-tableros .tab-visor .tab-vistas button { padding: 3px 10px !important; font-size: 11px !important; }
+html.escenas .app-tableros .tab-visor .tab-flecha { position: absolute !important; top: 5px !important; width: 26px !important; height: 24px !important; border-radius: 7px !important; font-size: 17px !important; line-height: 1 !important; padding: 0 !important; opacity: 1 !important; box-shadow: none !important; border: 1px solid #e3c9dc !important; background: #fff !important; z-index: 2; }
+html.escenas .app-tableros .tab-visor .tab-flecha.ant { left: 8px !important; }
+html.escenas .app-tableros .tab-visor .tab-flecha.sig { left: 38px !important; right: auto !important; }
+html.escenas .app-tableros .tab-visor .tab-ampliar { position: absolute !important; top: 6px !important; right: 8px !important; font-size: 11px !important; padding: 4px 10px !important; z-index: 2; }
+html.escenas .app-tableros .tab-visor .tab-marco { position: static !important; flex: 1; min-height: 0; }
+html.escenas .app-tableros .tab-visor .tab-marco img { border-radius: 0 !important; }
+html.escenas .app-tableros .tab-visor .tab-marco.tv-marco-vivo .tv-pagina { font-size: 13px !important; padding: 10px 16px !important; border-radius: 0 !important; gap: 8px; }
+html.escenas .app-tableros .tab-visor .tab-marco:not(.tv-marco-vivo) .tab-pie { font-size: 11px !important; padding: 4px 10px; }
+html.escenas .app-tableros .tab-visor .tab-tira { padding: 4px 8px !important; gap: 6px !important; }
+html.escenas .app-tableros .tab-visor .tab-mini { width: 84px !important; }
+html.escenas .app-tableros .tab-visor .tab-mini span { font-size: 9.5px !important; }
+html.escenas .app-tableros .tab-visor .tv-tira { display: none !important; }
+html.escenas .app-tableros .tab-temas .tab-tema:is(:nth-child(1), :nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5)) { left: 0 !important; top: 0 !important; background: none !important; font-style: normal !important; position: absolute !important; }
+/* la etiqueta impresa solo gira con su pestaña (sin inclinarse como cursiva) */
+html.escenas .app-tableros .tab-temas .tab-tema:nth-child(1) { transform: scale(var(--k)) matrix(.99665,-.08178,.08178,.99665,103.01,153.58) !important; }
+html.escenas .app-tableros .tab-temas .tab-tema:nth-child(2) { transform: scale(var(--k)) matrix(.99658,-.08277,.08277,.99658,110.80,203.90) !important; }
+html.escenas .app-tableros .tab-temas .tab-tema:nth-child(3) { transform: scale(var(--k)) matrix(.99485,-.10150,.10150,.99485,116.13,265.77) !important; }
+html.escenas .app-tableros .tab-temas .tab-tema:nth-child(4) { transform: scale(var(--k)) matrix(.99378,-.11141,.11141,.99378,124.91,328.55) !important; }
+html.escenas .app-tableros .tab-temas .tab-tema:nth-child(5) { transform: scale(var(--k)) matrix(.99269,-.12101,.12101,.99269,133.65,396.85) !important; }
+html.escenas .app-tableros .tab-tema.activo span:last-child::before { content: none !important; }
+html.escenas .app-tableros .tab-tema.activo span:last-child { text-decoration: underline 2px #c9963a; text-underline-offset: 3px; }
+
+/* ---------------------------------------------------------------- bordes medidos por su tramo central (las flores tapan las esquinas):
+   la hoja baja 2,5° arriba y 5,6° abajo (se inclina hacia atrás en el atril); la pantalla baja 1,6° arriba y 3,3° abajo.
+   Encima va el mismo dibujo con la hoja y la pantalla transparentes: el clip, el marco y las flores quedan delante del contenido */
+html.escenas .app-tableros .tab-info { width: 375px !important; height: 427px !important; padding: 14px 6px 0 !important;
+  transform: scale(var(--k)) matrix3d(1.05537,-0.0302738,0,0.00010961,0.0881842,0.963218,0,-8.03573e-05,0,0,1,0,291.601,180.278,0,1) !important; }
+html.escenas .app-tableros .tab-visor { width: 778px !important; height: 406px !important; padding: 15px 16px 16px !important; background: #fdf6fb !important;
+  transform: scale(var(--k)) matrix3d(0.88023,0.0140624,0,-7.36286e-05,-0.0624815,0.960123,0,-1.61679e-05,0,0,1,0,798.312,155.632,0,1) !important; }
+html.escenas .app-tableros .tab-visor > * { border-radius: 6px; }
+html.escenas .app-tableros .tableros::after { content: "" !important; display: block !important; position: absolute !important; inset: 0 !important; width: auto !important; height: auto !important; z-index: 3 !important; pointer-events: none !important;
+  background: url("assets/pergamino/escena-datos-frente.webp?v=1") center / 100% 100% no-repeat !important; border: 0 !important; -webkit-mask: none !important; mask: none !important; }
+html.escenas .app-tableros .tab-temas { z-index: 4 !important; }
+html.escenas .app-tableros .tab-info, html.escenas .app-tableros .tab-visor { z-index: 2 !important; }
+html.escenas .app-tableros .tab-visor .tab-flecha { top: 20px !important; }
+html.escenas .app-tableros .tab-visor .tab-flecha.ant { left: 24px !important; }
+html.escenas .app-tableros .tab-visor .tab-flecha.sig { left: 54px !important; }
+html.escenas .app-tableros .tab-visor .tab-ampliar { top: 21px !important; right: 26px !important; }

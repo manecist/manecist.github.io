@@ -22,7 +22,10 @@
   // los títulos van en una sola línea centrada: el salto de línea pasa a ser un espacio
   $$('.section-head h2 br').forEach(b => b.replaceWith(' '));
   // títulos cortos, como en kdelrio
-  const tEst = $('#estudio .section-head h2'); if (tEst) tEst.textContent = 'Studios Conari SpA';
+  const tEst = $('#estudio .section-head h2'); if (tEst) tEst.textContent = 'Studios Conari';
+  // en la cinta de cada capítulo va su nombre corto (sin el número), y el lema queda debajo
+  const NOMBRES_CINTA = { desarrollo: 'Desarrollo', diseno: 'Diseño', datos: 'Datos de salud', trayectoria: 'Trayectoria', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
+  Object.entries(NOMBRES_CINTA).forEach(([id, t]) => { const e = $('#' + id + ' .section-head .eyebrow'); if (e) { e.dataset.original = e.textContent; e.textContent = t; e.classList.add('cinta-nombre'); } });
 
   // ---------------------------------------------------------- piezas
   const velo = document.createElement('div'); velo.className = 'escenas-velo'; main.append(velo);   // oscurece el reino detrás del contenido
@@ -62,8 +65,9 @@
   // la marca (logo, lema, descripción y botones) a la izquierda, sin tarjeta; a la derecha la lista de lo que hace el estudio
   const card = de('.studio-brand-card', est), cuerpo = card && card.querySelector(':scope > div');
   const lema = document.createElement('p'); lema.className = 'estudio-lema'; lema.textContent = 'Donde nacen mundos y leyendas eternas';
-  const marca = div('estudio-marca', ...$$('.studio-wordmark', card), lema, cuerpo && cuerpo.querySelector(':scope > p:not(.official-slogan)'), cuerpo && cuerpo.querySelector('.studio-actions'));
-  const ICONOS = { 'Documentación y propuestas': 'assets/icon-document.webp', 'Modelado y animación 3D': 'assets/emblema-conari-magico.webp' };
+  const mundo = document.createElement('img'); mundo.className = 'estudio-mundo'; mundo.src = 'assets/mundo-conari-sol-luna.webp'; mundo.alt = 'Un libro abre el mundo de Conari: dragón, sakura, castillo y Andes';
+  const marca = div('estudio-marca', lema, cuerpo && cuerpo.querySelector(':scope > p:not(.official-slogan)'), cuerpo && cuerpo.querySelector('.studio-actions'));
+  const ICONOS = { 'Documentación y propuestas': 'assets/icon-document.webp', 'Modelado y animación 3D': 'assets/pergamino/icon-3d.webp' };
   const servicios = div('estudio-servicios', [...$$('.service-gallery article, .service-more article', $(est))].map(a => {
     const t = a.querySelector('h3')?.textContent || '', ico = a.querySelector('img')?.getAttribute('src') || ICONOS[t] || 'assets/icon-company.webp';
     const fila = document.createElement('div'); fila.className = 'estudio-servicio';
@@ -73,7 +77,7 @@
   }));
   const rolTit = document.createElement('p'); rolTit.className = 'estudio-rol'; rolTit.textContent = 'Lo que hacemos';
   E.push({
-    id: 'estudio', ev: crear('ev-estudio', cabeza(est), div('estudio-dos', marca, div('estudio-lista', rolTit, servicios))),
+    id: 'estudio', ev: crear('ev-estudio', cabeza(est), div('estudio-dos estudio-tres', div('estudio-mundo-caja', mundo), marca, div('estudio-lista', rolTit, servicios))),
     entrar(tl, ev) {
       sube(tl, $$('.section-head > div > *', ev));
       sube(tl, $$('.estudio-marca > *', ev), '-=.2', { stagger: .08 });
@@ -81,12 +85,66 @@
       lado(tl, $$('.estudio-servicio', ev), 1, '<.1', { stagger: .08, duration: .5 });
     },
   });
+  // junto al perfil: las credenciales como medallas pequeñas y la cinta para descargar el CV
+  const credPerfil = div('perfil-credenciales', ...[...$$('#formacion .credential-gallery article')].map(a => {
+    const m = document.createElement('div'); m.className = 'perfil-medalla';
+    m.innerHTML = '<img alt=""><b></b><small></small>';
+    m.querySelector('img').src = a.querySelector('img')?.getAttribute('src') || '';
+    m.querySelector('b').textContent = a.querySelector('h3')?.textContent || '';
+    m.querySelector('small').textContent = a.querySelector('span')?.textContent || '';
+    return m;
+  }));
+  const cv = document.createElement('a'); cv.className = 'perfil-cv'; cv.href = 'assets/cv-maria-cisterna.pdf'; cv.target = '_blank'; cv.rel = 'noopener'; cv.download = '';
+  cv.innerHTML = '<span>✦ Descargar mi CV ✦</span>';
+  credPerfil.append(cv);
+  const perfilPro = $('#estudio .perfil-pro'); if (perfilPro) perfilPro.append(credPerfil);
   E.push({
     id: 'equipo', ev: crear('ev-equipo', de('.studio-team', est)),
     entrar(tl, ev) {
-      sube(tl, $$('.studio-team > div:first-child > *', ev));
-      sube(tl, $$('.role-node', ev), '-=.2', { stagger: .15 });
-      tl.from($('.team-outcome', ev), { opacity: 0, duration: .5 });
+      // el perfil profesional: primero el retrato, luego el texto línea por línea
+      // el pergamino llega cerrado; el hada vuela, lo toca con su varita y se desenrolla; después aparecen las credenciales
+      const perg = $('.perfil-pro-texto', ev), medallas = $$('.perfil-medalla, .perfil-cv', ev);
+      // el rollito cerrado se pone sobre el pergamino (una sola vez)
+      let rollo = $('.perfil-rollito', ev);
+      if (!rollo) { rollo = document.createElement('img'); rollo.className = 'perfil-rollito'; rollo.src = 'assets/pergamino/rollito.webp'; rollo.alt = ''; perg.parentElement.style.position = 'relative'; perg.after(rollo); }
+      perg.classList.remove('abierto'); gsap.set(medallas, { opacity: 0 });
+      // el rollito empieza arriba, sobre el rollo superior; al desenrollarse baja y el papel aparece detrás de él
+      const w = perg.offsetWidth * 1.08, h = w * 351 / 900, top0 = perg.offsetTop - h * .18, top1 = perg.offsetTop + perg.offsetHeight - h * .82;
+      Object.assign(rollo.style, { width: w + 'px', left: (perg.offsetLeft + perg.offsetWidth / 2 - w / 2) + 'px', top: top0 + 'px' });
+      const corte = y => Math.max(0, 100 - (y - perg.offsetTop + h * .5) / perg.offsetHeight * 100);
+      // mientras está enrollado, el pergamino no se ve; aparece detrás del rollito a medida que baja
+      gsap.set(perg, { clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 }); gsap.set(rollo, { opacity: 1, y: 0 });
+      sube(tl, $$('.perfil-pro-retrato', ev));
+      tl.from(rollo, { opacity: 0, y: -20, duration: .5 }, '<.1');
+      const hada = document.createElement('img'); hada.src = 'assets/hada-cometa.webp'; hada.alt = ''; hada.className = 'perfil-hada'; ev.append(hada);
+      if (!$('.perfil-destello', ev)) { const d = document.createElement('span'); d.className = 'perfil-destello'; $('.perfil-pro-retrato', ev).append(d); }
+      const r = perg.getBoundingClientRect(), base = ev.getBoundingClientRect();
+      const x = r.left - base.left + r.width * .6, y = r.top - base.top - 30;
+      const paso = { y: top0 };
+      tl.fromTo(hada, { x: base.width + 60, y: -80, rotate: -12, opacity: 0 }, { x, y, rotate: 0, opacity: 1, duration: 1.2, ease: 'power2.out' })
+        .call(() => { if (window.Magia) Magia.chispas(r.left + r.width / 2, r.top + 10, { n: 40, vel: 4 }); })
+        .set(perg, { opacity: 1 }, '+=.1')
+        .to(paso, { y: top1, duration: 1.4, ease: 'power2.inOut', onUpdate() { rollo.style.top = paso.y + 'px'; perg.style.clipPath = 'inset(0% 0% ' + corte(paso.y).toFixed(2) + '% 0%)'; } }, '<')
+        .to(rollo, { opacity: 0, duration: .3 })
+        .set(perg, { clipPath: 'inset(0% 0% 0% 0%)' }, '<')
+        .call(() => perg.classList.add('abierto'))
+        // la primera vez, el hada también toca a Ari y ella se transforma en la asesina (luz rosada y chispas)
+        .add(() => {
+          const humana = $('.perfil-pro-ari:not(.perfil-pro-asesina)', ev), asesina = $('.perfil-pro-asesina', ev); if (!humana || !asesina) return;
+          let vista = false; try { vista = !!sessionStorage.getItem('mce-transformada'); } catch (e) { /* sin almacenamiento */ }
+          if (vista) { gsap.set(humana, { opacity: 0 }); gsap.set(asesina, { opacity: 1 }); return; }
+          const rr = humana.getBoundingClientRect(), destello = $('.perfil-destello', ev);
+          gsap.timeline()
+            .to(hada, { x: rr.left - base.left + rr.width * .55, y: rr.top - base.top + rr.height * .12, duration: .8, ease: 'power2.inOut' })
+            .call(() => { if (window.Magia) Magia.chispas(rr.left + rr.width / 2, rr.top + rr.height / 2, { n: 70, vel: 6, colores: ['#ff8fc0', '#ffd9ea', '#f3d48a', '#fff'] }); })
+            .to(destello, { opacity: 1, scale: 1.15, duration: .45, ease: 'power2.out' })
+            .set(humana, { opacity: 0 }).set(asesina, { opacity: 1 })
+            .to(destello, { opacity: 0, scale: 1.4, duration: .7, ease: 'power1.out' })
+            .to(hada, { x: base.width + 80, y: -120, opacity: 0, duration: .9, ease: 'power1.in' }, '<')
+            .call(() => { hada.remove(); try { sessionStorage.setItem('mce-transformada', '1'); } catch (e) { /* sin almacenamiento */ } });
+        })
+        .to({}, { duration: 2.3 })
+        .to(medallas, { opacity: 1, x: 0, duration: .5, stagger: .12 }, '-=.7');
     },
   });
 
@@ -94,20 +152,92 @@
   const dev = '#desarrollo';
   const vitrina = document.createElement('iframe'); vitrina.title = 'Magical Alliance, la tienda en vivo'; vitrina.loading = 'lazy'; vitrina.allow = 'clipboard-write';
   vitrina.dataset.src = 'https://manecist.github.io/Ecommerce-Portafolio-Final-M7/#/inicio';
+  const puestoArte = () => { const i = document.createElement('img'); i.className = 'tienda-arte'; i.src = 'assets/pergamino/puesto.webp'; i.alt = 'Puesto de la tienda Magical Alliance'; i.draggable = false; return i; };
+  // las etiquetas de la repisa agregan ese producto al carrito (posición en % del dibujo del puesto)
+  const ETIQUETAS = [   // cada cosa de las repisas es un producto del catálogo M4 (posición en % del dibujo del puesto)
+    { id: 59, x: 6.5, y: 39, w: 8.5, h: 27, n: 'Vestido Princes' }, { id: 56, x: 15.5, y: 39, w: 9, h: 27, n: 'Vestido Magical' },
+    { id: 65, x: 26.5, y: 36, w: 8, h: 9, n: 'Zap Magic' }, { id: 13, x: 35, y: 37, w: 5, h: 8, n: 'Cosmetiqueros 01' },
+    { id: 25, x: 26.5, y: 49, w: 14, h: 9, n: 'Bases Col' }, { id: 31, x: 28, y: 62, w: 6, h: 11, n: 'Sombra Ojos' },
+    { id: 14, x: 35, y: 63, w: 7, h: 10, n: 'Cosmetiqueros 02' }, { id: 1, x: 18, y: 68, w: 10, h: 8, n: 'Anillo Magic' },
+    { id: 10, x: 41.5, y: 35, w: 7, h: 12, n: 'Cartera Magic' }, { id: 9, x: 49, y: 35, w: 7, h: 12, n: 'Cartera Sailor' }];
+  const etiqueta = t => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'tienda-etiqueta'; b.setAttribute('aria-label', 'Agregar ' + t.n + ' al carrito'); b.title = 'Agregar ' + t.n;
+    b.style.cssText = `left:${t.x}%;top:${t.y}%;width:${t.w}%;height:${t.h}%`;
+    b.addEventListener('click', () => {
+      const sel = $('#m4-product'), op = sel && sel.querySelector(`option[data-product-id="${t.id}"]`); if (!op) return;
+      sel.value = op.value; op.selected = true; $('#m4-qty').value = 1; $('#m4-add')?.click();
+      const r = b.getBoundingClientRect(); if (window.Magia) Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 24, vel: 3 });
+    });
+    return b;
+  };
+  // el letrero y la boleta se sacan de la caja ANTES de mover la caja al mesón
+  const tiendaPuesto = () => { const letrero = div('tienda-letrero', pasoCaja(1, 'Elige tus productos'), $('#m4-picker')), boleta = div('tienda-boleta', $('#m4-recibo'));
+    // la libreta con los 68 productos se abre desde una cinta (el puesto queda grande); se cierra con la ✕
+    const abrir = document.createElement('button'); abrir.type = 'button'; abrir.className = 'tienda-abre-libreta'; abrir.textContent = '✦ Ver los 68 productos';
+    const cerrar = document.createElement('button'); cerrar.type = 'button'; cerrar.className = 'tienda-cierra-libreta'; cerrar.setAttribute('aria-label', 'Cerrar la libreta'); cerrar.textContent = '✕';
+    letrero.prepend(cerrar); abrir.addEventListener('click', () => letrero.classList.toggle('abierta')); cerrar.addEventListener('click', () => letrero.classList.remove('abierta'));
+    $('#m4-add')?.addEventListener('click', () => letrero.classList.remove('abierta'));
+    // con la boleta de vista previa oculta, una pequeña línea bajo la pantalla de la caja muestra lo que se paga con el teclado
+    const pago = $('#m4-paid'), linea = document.createElement('output'); linea.className = 'caja-pago'; linea.setAttribute('aria-live', 'polite');
+    const ver = () => { const v = Number(String($('#m4-paid')?.value || '').replace(/\D/g, '')) || 0; linea.textContent = v ? 'Pagas $' + v.toLocaleString('es-CL') : 'Paga con el teclado'; };
+    $('#caja .register-marquee')?.after(linea); ver(); setInterval(ver, 300);
+    // todo en un solo puesto, como la maqueta aprobada: repisas que se tocan, la caja registradora sobre el mesón y la vitrina,
+    // que muestra la tienda en vivo (M7) o la caja M4 para elegir y revisar el pedido; la boleta sale de la caja sobre el mantel
+    const pestanaVitrina = (t, cual) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; b.dataset.vista = cual; return b; };
+    const selector = div('vitrina-pestanas', pestanaVitrina('✦ Elegir y pagar', 'caja'), pestanaVitrina('Tienda en vivo · M7', 'web'));
+    // el catálogo: los 68 productos de la caja M4 como tarjetas por categoría; tocar una tarjeta la agrega al pedido
+    const sel = letrero.querySelector('#m4-product'), chips = div('catalogo-chips'), grilla = div('catalogo-grilla');
+    const grupos = sel ? [...sel.querySelectorAll('optgroup')] : [];
+    const verGrupo = g => {
+      chips.querySelectorAll('button').forEach(b => b.classList.toggle('activo', b.textContent === g.label));
+      grilla.replaceChildren(...[...g.querySelectorAll('option')].map(op => {
+        const [nombre, precio] = op.textContent.split(' · '); const t = document.createElement('button'); t.type = 'button'; t.className = 'catalogo-item';
+        t.innerHTML = '<b></b><span></span><i>＋</i>'; t.querySelector('b').textContent = nombre; t.querySelector('span').textContent = precio || '';
+        t.addEventListener('click', () => { sel.value = op.value; op.selected = true; $('#m4-qty').value = 1; $('#m4-add')?.click(); t.classList.remove('sumado'); void t.offsetWidth; t.classList.add('sumado'); });
+        return t;
+      }));
+    };
+    grupos.forEach(g => { const b = document.createElement('button'); b.type = 'button'; b.textContent = g.label; b.addEventListener('click', () => verGrupo(g)); chips.append(b); });
+    if (grupos.length) verGrupo(grupos.find(g => g.label === 'Vestidos') || grupos[0]);
+    const vistaCaja = div('vitrina-caja', div('vitrina-col catalogo', pasoCaja(1, 'Elige tus productos'), chips, grilla), div('vitrina-col pedido', pasoCaja(2, 'Tu pedido'), boleta), letrero);
+    letrero.hidden = true;   // la libreta con el desplegable queda de respaldo; el catálogo la reemplaza
+    // la vitrina muestra siempre la tienda Magical Alliance en vivo (M7); el catálogo y el pedido de la caja M4 van en la tableta del mesón
+    const vidrio = div('tienda-vidrio', div('vitrina-web', vitrina));
+    const tableta = div('tienda-tableta', div('tableta-pantalla', vistaCaja));
+    const mostrarVista = v => { vidrio.dataset.vista = v; selector.querySelectorAll('button').forEach(b => b.classList.toggle('activo', b.dataset.vista === v));
+      if (v === 'web' && vitrina.dataset.src) { vitrina.src = vitrina.dataset.src; vitrina.removeAttribute('data-src'); } };
+    selector.addEventListener('click', e => { const b = e.target.closest('button'); if (b) mostrarVista(b.dataset.vista); });
+    vidrio.dataset.vista = 'web'; if (vitrina.dataset.src) { vitrina.src = vitrina.dataset.src; vitrina.removeAttribute('data-src'); }
+    // se compra tocando los productos de las repisas; la caja muestra el total, se paga con su teclado y bota la boleta
+    const oculto = div('tienda-oculto', vistaCaja); oculto.hidden = true;
+    const pista = document.createElement('p'); pista.className = 'tienda-pista'; pista.textContent = 'Toca un producto de las repisas para llevarlo a la caja · paga con el teclado y cobra';
+    const escena = div('tienda-puesto', puestoArte(), vidrio, ...ETIQUETAS.map(etiqueta), oculto, div('tienda-caja', $('#caja')), pista);
+    letrero.classList.add('abierta');
+    // la boleta impresa cae desde la ranura de la caja sobre el mantel (alto limitado a la pantalla)
+    const ubicar = () => { const out = $('#printer-output'); if (!out || out.hidden || !escena.isConnected) return;
+      const libre = innerHeight - out.getBoundingClientRect().top - 12; out.style.maxHeight = Math.max(140, libre) + 'px'; out.style.overflow = 'auto'; };
+    new MutationObserver(() => requestAnimationFrame(ubicar)).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['hidden'] });
+    return escena; };
+    /* versión anterior (caja dentro del puesto)
+    return puesto; */
   const marcosDev = [
     papel('app-calc', nota('Mi primer conjuro en Java fue una calculadora. Pulsa las teclas: al lado se escribe el mismo cálculo en Java.'), div('app-doble', $('#calc-zona'), $('#calc-java'))),
-    papel('app-caja app-tres', nota('Los 68 productos y precios vienen de mi proyecto Java <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.'),
-      div('app-doble', div('', pasoCaja(1, 'Elige productos y descuento'), $('#m4-picker')), div('', pasoCaja(2, 'Revisa el recibo y paga'), $('#m4-recibo')), div('', pasoCaja(3, 'Cobra en la caja'), $('#caja')))),
-    papel('app-vitrina', nota('<b>Magical Alliance</b>, mi proyecto final Full Stack Java, aquí mismo: recórrela como clienta o como administradora, llena el carrito y mira cómo cambia el stock.'), div('vitrina-viva', vitrina), $('#dev-m7 .botonera')),
+    // la tienda Magical Alliance en un solo puesto: repisas (etiquetas que se pueden tocar), caja registradora en el mesón,
+    // la boleta y la tienda web en vivo en la vitrina
+    papel('app-tienda app-caja', nota('<b>Magical Alliance</b>: elige en la repisa (o en el letrero), paga en la caja y recibe tu boleta. En la vitrina está la tienda Full Stack Java en vivo. Los 68 productos vienen de <a href="https://github.com/manecist/Ecommerce-Backend-M4" target="_blank" rel="noopener">Ecommerce-Backend-M4 ↗</a>.'),
+      tiendaPuesto(),
+      $('#dev-m7 .botonera')),
+    /* versión anterior: la caja y la vitrina en pasos separados
+    papel('app-caja app-tres', ...), papel('app-vitrina', ...), */
     papel('app-banco', $('#banco-card')),
   ];
-  const botonesDev = pestanas(['Calculadora Java', 'Tienda Java · M4', 'Magical Alliance · M7', 'Banco de Evaluaciones']);
+  const botonesDev = pestanas(['Calculadora Java', 'Tienda Magical Alliance', 'Banco de Evaluaciones']);
   E.push({
     id: 'desarrollo', hada: 'Desarrollo', ev: crear('ev-desarrollo', cabeza(dev), botonesDev, div('papel-marcos', marcosDev)),
     pasos: marcosDev.length, marcos: marcosDev, botones: [...botonesDev.children],
     alMostrar(i) {   // la tienda y el banco en vivo cargan recién al verlos
-      if (i === 2 && vitrina.dataset.src) { vitrina.src = vitrina.dataset.src; vitrina.removeAttribute('data-src'); }
-      if (i === 3) window.MCEBanco?.cargar();
+      this.ev.classList.toggle('tienda-activa', i === 1); this.ev.classList.toggle('banco-activo', i === 2);   // con la tienda, el título se compacta para que el puesto se vea grande
+      if (i === 2) window.MCEBanco?.cargar();
     },
     entrar(tl, ev) { sube(tl, $$('.section-head > *', ev)); sube(tl, this.botones, '-=.2', { duration: .35, stagger: .06 }); this.paso(tl, 0, 1, true); },
     paso(tl, i, dir, primero) { cambiarMarco(tl, this, i, dir, primero); },
@@ -310,7 +440,22 @@
       }
     } });
   }
+  // una sola pasada: el hada cruza con su estela, la estela cubre la pantalla, se cambia la sección y la luz se disuelve
+  // mostrando el capítulo nuevo con su propio título (sin cartel aparte ni segunda pasada)
   function hechizo(texto, alCubrir, alFin) {
+    lienzo.width = W(); lienzo.height = innerHeight; ctx.clearRect(0, 0, lienzo.width, lienzo.height); pintarNiebla();
+    magia.style.visibility = 'visible'; nombreHada.textContent = ''; gsap.set(lienzo, { opacity: 1 });
+    const velo = { a: 0 };
+    const tl = gsap.timeline({ onComplete: () => { magia.style.visibility = 'hidden'; ctx.clearRect(0, 0, lienzo.width, lienzo.height); gsap.set(lienzo, { opacity: 1 }); alFin && alFin(); } });
+    tl.add(pasada(false, 1.25))
+      .to(velo, { a: 1, duration: .2, onUpdate() { ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = velo.a; ctx.drawImage(niebla, 0, 0); ctx.globalAlpha = 1; } }, '-=.2')
+      .call(() => alCubrir && alCubrir())
+      .to(lienzo, { opacity: 0, duration: .55, ease: 'power1.out' })
+      .call(() => { if (window.Magia) Magia.chispas(40, innerHeight - 40, { n: 30, vel: 5, colores: TONOS }); }, null, '<');
+    return tl;
+  }
+  /* versión anterior: dos pasadas con el nombre de la sección en la niebla (≈6 s)
+  function hechizoDoble(texto, alCubrir, alFin) {
     lienzo.width = W(); lienzo.height = innerHeight; ctx.clearRect(0, 0, lienzo.width, lienzo.height); pintarNiebla();
     magia.style.visibility = 'visible'; nombreHada.textContent = texto || '';
     gsap.set(nombreHada, { opacity: 0, scale: .92 }); gsap.set(lienzo, { opacity: 1 });
@@ -328,7 +473,7 @@
       .to(lienzo, { opacity: 0, duration: .35 }, '-=.35')   // lo que quede de niebla se desvanece
       .call(() => { if (window.Magia) Magia.chispas(40, innerHeight - 40, { n: 40, vel: 5, colores: TONOS }); });
     return tl;
-  }
+  } */
 
   // ---------------------------------------------------------- leyendas: como en un museo, la obra elegida completa en su marco y al lado el muro de cuadritos
   const rejilla = $('#leyendas-grid');
@@ -357,7 +502,7 @@
   }
 
   // ---------------------------------------------------------- destellos en los bordes: aparecen aquí y allá, alternados, sobre los cuadros de la escena
-  const CUADROS = '.studio-brand-card, .service-gallery article, .service-more article, .role-node, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .contacto, .papel-app.activo';
+  const CUADROS = '.studio-brand-card, .service-gallery article, .service-more article, .role-node, .perfil-pro, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .contacto, .papel-app.activo';
   const capaBrillos = div('brillos-borde'); capaBrillos.setAttribute('aria-hidden', 'true'); document.body.append(capaBrillos);
   const TONOS_BORDE = ['#fff6d8', '#f3d48a', '#f5a8cf', '#d9c4ff', '#bfe9ff'];
   setInterval(() => {
@@ -375,7 +520,7 @@
   }, 180);
 
   // ---------------------------------------------------------- índice lateral: una estrella por escena
-  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'El equipo', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos de salud', trayectoria: 'Trayectoria', salud: 'Matrona', matrona: 'Matrona hoy', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
+  const NOMBRE = { inicio: 'Inicio', estudio: 'Studios Conari', equipo: 'Mi perfil', desarrollo: 'Desarrollo', diseno: 'Diseño e ilustración', leyendas: 'Leyendas dibujadas', historia: 'Por qué dibuja', datos: 'Datos de salud', trayectoria: 'Trayectoria', salud: 'Matrona', matrona: 'Matrona hoy', formacion: 'Formación', arcade: 'Arcade mágico', contacto: 'Contacto' };
   const SECCION = ['inicio', 'estudio', 'desarrollo', 'diseno', 'datos', 'trayectoria', 'formacion', 'arcade', 'contacto'];
   const indice = document.createElement('nav'); indice.className = 'escenas-indice'; indice.setAttribute('aria-label', 'Escenas');
   E.forEach((e, i) => {
@@ -395,6 +540,9 @@
     const caja = e.ev.firstElementChild;
     caja.style.zoom = ''; e.ev.classList.remove('desborda');
     const disp = e.ev.clientHeight - 70, alto = caja.scrollHeight;   // margen para la pista de la rueda
+    // la tienda no se achica: se recorre con la rueda (sus objetos necesitan su tamaño real para usarse)
+    // el escritorio de Datos va a todo el ancho y no se achica: si no cabe, se recorre hacia abajo
+    if (e.id === 'datos') { if (alto > e.ev.clientHeight + 2) e.ev.classList.add('desborda'); return; }
     if (alto > disp) {
       const k = Math.max(.62, disp / alto); caja.style.zoom = k.toFixed(3);
       if (caja.scrollHeight * k > disp + 2) e.ev.classList.add('desborda');
@@ -406,7 +554,7 @@
     if (ajustando) return;
     requestAnimationFrame(() => { ajustando = true; ajustar(E[actual]); requestAnimationFrame(() => { ajustando = false; }); });
   });
-  ['.papel-marcos', '.tab-panel', '.tab-tira', '.mh-capsulas', '.mh-paginas-lista', '#leyendas-grid', '.creative-journey', '#arcade-zona', '#m7-galeria', '#printer-output'].forEach(s => { const n = $(s); if (n) ro.observe(n); });
+  ['.papel-marcos', '.tab-panel', '.tab-tira', '.mh-capsulas', '.mh-paginas-lista', '#leyendas-grid', '.creative-journey', '#arcade-zona', '#m7-galeria'].forEach(s => { const n = $(s); if (n) ro.observe(n); });
   $$('img', capa).forEach(img => {                 // las imágenes diferidas cambian el alto al cargar
     img.loading = 'eager';
     if (!img.complete) img.addEventListener('load', () => { if (img.closest('.ev.activa')) requestAnimationFrame(() => ajustar(E[actual])); }, { once: true });

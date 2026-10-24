@@ -166,3 +166,68 @@ html.escenas .ev .mh-cabeza p, html.escenas .ev .tab-pregunta { color: #6e5577; 
 .mh-pap-imgs { grid-template-columns: 1fr 1fr; }
 .mh-pap-imgs img { max-height: 300px; object-fit: contain; background: #fff; }
 .mh-pap { grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); }
+
+/* ---------------------------------------------------------------- tableros en vivo (tableros-vivos.js): rehechos en la web, sin Power BI */
+.tv-pagina { --tv-tinta: #4a2556; --tv-suave: #7a5f86; display: flex; flex-direction: column; gap: .7em; min-height: 0; padding: .8em 2.6em; overflow: auto; scrollbar-width: thin; color: var(--tv-tinta); font-family: var(--sans, sans-serif); background: linear-gradient(180deg, #fffaff, #f8f0fc); }
+.tv-pagina[hidden] { display: none !important; }
+.tv-cargando { margin: auto; color: var(--tv-suave); font-style: italic; }
+.tv-kpis { display: flex; gap: .6em; flex-wrap: wrap; }
+.tv-kpi { --c: #e0679f; flex: 1 1 9em; display: grid; gap: .1em; padding: .45em .7em; border-radius: .7em; background: #fff; border: 1px solid #efdcea; border-left: .3em solid var(--c); }
+.tv-kpi b { font: 700 1.35em/1.1 var(--titulo, "Cinzel", serif); color: var(--c); }
+.tv-kpi span { font-size: .78em; line-height: 1.25; color: var(--tv-suave); }
+.tv-controles { display: flex; flex-wrap: wrap; gap: .5em .9em; align-items: center; }
+.tv-chips { display: inline-flex; flex-wrap: wrap; gap: .3em; padding: .2em; border-radius: 1em; background: #f4e6f0; }
+.tv-chips button { border: 0; padding: .35em .8em; border-radius: 999px; background: transparent; color: var(--tv-suave); font: 700 .82em/1.15 var(--sans, sans-serif); cursor: pointer; }
+.tv-chips button:hover { color: var(--tv-tinta); }
+.tv-chips button.activo { background: #fff; color: #c2477f; box-shadow: 0 1px 4px rgba(106, 44, 85, .18); }
+.tv-chips-chicas button { font-size: .74em; padding: .3em .65em; }
+.tv-select { display: inline-flex; align-items: center; gap: .5em; font: 700 .82em var(--sans, sans-serif); color: var(--tv-suave); }
+.tv-select select { max-width: 26em; padding: .35em .6em; border-radius: .6em; border: 1px solid #e3c9dc; background: #fff; color: var(--tv-tinta); font: 600 1em var(--sans, sans-serif); }
+.tv-desliza { display: grid; gap: .2em; min-width: 14em; font-size: .82em; color: var(--tv-suave); }
+.tv-desliza b { color: #c2477f; }
+.tv-desliza input { accent-color: #d27aa8; width: 100%; }
+.tv-lienzo { display: flex; flex-direction: column; gap: .6em; min-height: 0; }
+.tv-svg { width: 100%; height: auto; max-height: 30em; overflow: visible; font-family: var(--sans, sans-serif); }
+.tv-svg .tv-eje { font-size: 12px; fill: #6d5579; }
+.tv-svg .tv-valor { font-size: 12px; font-weight: 700; fill: #4a2556; }
+.tv-svg .tv-chico { font-size: 11px; }
+.tv-svg .tv-tenue { fill: #a08aab; font-weight: 500; font-style: italic; }
+.tv-svg .tv-guia { stroke: #eadbe6; stroke-width: 1; }
+.tv-svg .tv-marca { cursor: pointer; }
+.tv-svg .tv-marca:hover rect, .tv-svg .tv-marca:hover circle { filter: brightness(1.08) drop-shadow(0 0 3px rgba(224, 103, 159, .6)); }
+.tv-leyenda { display: flex; flex-wrap: wrap; gap: .3em 1em; font-size: .78em; color: var(--tv-suave); }
+.tv-leyenda span::before { content: ""; display: inline-block; width: .8em; height: .8em; margin-right: .35em; border-radius: .25em; background: var(--c); vertical-align: -.05em; }
+.tv-nota { margin: 0; font-size: .76em; font-style: italic; color: var(--tv-suave); }
+.tv-globo { position: fixed; z-index: 2147483000; max-width: 300px; padding: 8px 11px; border-radius: 10px; background: rgba(58, 24, 70, .95); color: #fff; font: 500 12.5px/1.4 var(--sans, sans-serif); pointer-events: none; box-shadow: 0 6px 18px rgba(20, 8, 40, .35); }
+.tv-globo[hidden] { display: none; }
+.tv-globo b { color: #ffd6ea; }
+.tv-oms { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5em, 1fr)); gap: .45em; }
+.tv-oms-celda { --c: #eee; display: grid; justify-items: center; gap: .15em; padding: .6em .4em; border-radius: .7em; background: color-mix(in srgb, var(--c) 45%, #fff); border: 2px solid var(--c); text-align: center; cursor: pointer; }
+.tv-oms-celda b { font: 700 1.5em/1 var(--titulo, "Cinzel", serif); color: var(--tv-tinta); }
+.tv-oms-celda span { font-size: .8em; font-weight: 600; }
+.tv-lista { display: grid; gap: .35em; }
+.tv-lista-2 { grid-template-columns: 1fr 1fr; }
+.tv-fila { --c: #e0679f; display: grid; grid-template-columns: minmax(8em, auto) 1fr; gap: .2em .8em; align-items: center; padding: .4em .7em; border-radius: .6em; background: #fff; border-left: .35em solid var(--c); font-size: .86em; cursor: default; }
+.tv-fila b { color: var(--tv-tinta); }
+.tv-fila span { color: var(--tv-suave); }
+.tv-ficha { padding: .7em .9em; border-radius: .8em; background: #fff; border: 1px solid #efdcea; }
+.tv-ficha h5 { margin: 0 0 .4em; font: 700 1.05em var(--titulo, "Cinzel", serif); color: #b2477f; }
+.tv-ficha dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: .3em .8em; font-size: .84em; }
+.tv-ficha dt { font-weight: 700; color: var(--tv-tinta); }
+.tv-ficha dd { margin: 0; color: #5a4566; }
+.tv-pasos { display: flex; flex-wrap: wrap; gap: .35em; }
+.tv-pasos button { display: inline-flex; align-items: center; gap: .4em; padding: .35em .7em .35em .35em; border-radius: 999px; border: 1px solid #e6cfe2; background: #fff; color: var(--tv-suave); font: 600 .8em var(--sans, sans-serif); cursor: pointer; }
+.tv-pasos button b { display: grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: linear-gradient(135deg, #d27aa8, #a07cd4); color: #fff; }
+.tv-pasos button.activo { border-color: #d27aa8; color: var(--tv-tinta); box-shadow: 0 0 0 2px rgba(210, 122, 168, .25); }
+.tv-sim { display: grid; gap: .5em; }
+.tv-sim-fila { --c: #e0679f; display: grid; grid-template-columns: 1fr auto; grid-template-areas: "t v" "b b" "s s"; gap: .2em .8em; padding: .55em .8em; border-radius: .7em; background: #fff; border: 1px solid #efdcea; }
+.tv-sim-fila span { grid-area: t; font-weight: 700; font-size: .88em; }
+.tv-sim-fila b { grid-area: v; font: 700 1.4em/1 var(--titulo, "Cinzel", serif); color: var(--c); }
+.tv-sim-fila i { grid-area: b; display: block; height: .5em; border-radius: 999px; background: var(--c); transition: width .25s; min-width: 2px; }
+.tv-sim-fila small { grid-area: s; font-size: .74em; color: var(--tv-suave); }
+.tv-tira .tv-mini { width: auto !important; padding: .3em .7em !important; border: 1px solid #e6cfe2 !important; border-radius: 999px !important; background: #fff; }
+.tv-tira .tv-mini span { white-space: nowrap; }
+.tv-tira .tv-mini.activo { background: #fdf0f7; border-color: #d27aa8 !important; }
+.tab-marco.tv-marco-vivo { display: flex; flex-direction: column; }
+.tab-marco.tv-marco-vivo .tv-pagina { flex: 1; aspect-ratio: 16 / 9; font-size: 14px; }
+.tab-zoom .tv-grande { height: calc(96vh - 44px); font-size: 16px; padding: 1.2em 3.4em; }
