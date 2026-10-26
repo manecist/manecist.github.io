@@ -112,7 +112,7 @@ window.FondoAcuarela = (() => {
   const tmp = lienzo(W, H);
   const cargar = src => new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => mal(new Error(src)); i.src = src; });
   // el lineart de las figuras es común a los dos modos; el paisaje trae el suyo (sol o luna)
-  const VER = '?v=2';                            // fondo redibujado: dragón azul/blanco, techos fucsia y personajes corregidos
+  const VER = '?v=3';                            // fondo redibujado: dragón azul/blanco, techos fucsia y personajes corregidos
   const ruta = (tema, c, e) => `assets/fondo/reino/${e === 'lineart' && c.figura ? 'comun' : tema}/${c.id}-${e}.webp${VER}`;
   async function preparar(tema = 'noche') {
     if (!juegos[tema]) juegos[tema] = cargarJuego(tema);
