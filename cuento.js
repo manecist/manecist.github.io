@@ -691,14 +691,10 @@
         // { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-paseo-anda', camina: [0, 1], cicloMs: 1800, x: 60, alto: 17.5, delante: true, entra: true, ruta: [[0, 8], [1, 60]], ms: 3150, junto: true },
         // { ms: 1350 },
         // caminata con avance real (Wan): los pies pisan el suelo, no resbalan; dos tramos encadenados desde el borde del libro
-        // en la caminata de video (Wan) la cara de Ari se deformaba en los cuadros de perfil: ahora entran con su dibujo limpio,
-        // con el vaivén de cada paso, hasta donde se dan vuelta
-        /* antes:
+        // (se probó reemplazarla por el dibujo fijo deslizándose: se veía arrastrado; vuelve la caminata real)
         { nombre: 'pareja-r1', actor: 'assets/cuento/tienda/pareja-paseo-real-1', x: 22.35, alto: 17.98, delante: true, entra: true, de: 0, a: 1, ms: 3000, pausa: 0 },
         { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-paseo-real-2', x: 49.22, alto: 17.98, delante: true, reemplaza: 'pareja-r1', sigue: true, de: 0, a: 1, ms: 3000, junto: true },
         { ms: 1150 },
-        */
-        { nombre: 'pareja-c', img: 'assets/cuento/tienda/pareja-paseo-quieta.webp', desde: -10, x: 62.65, alto: 17.5, delante: true, entra: true, ruta: [[0, -10, 0], [0.125, -0.92, 1.1], [0.25, 8.16, 0], [0.375, 17.24, 1.1], [0.5, 26.33, 0], [0.625, 35.41, 1.1], [0.75, 44.49, 0], [0.875, 53.57, 1.1], [1, 62.65, 0]], ms: 5200, pausa: 0 },
         // { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-paseo-quieta.webp', x: 58, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
         // { nombre: 'pareja', clase: 'saluda', ms: 1200 },
         // …y Rancek llega corriendo con la respuesta que no alcanzó a darles en la tienda
