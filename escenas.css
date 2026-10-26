@@ -399,3 +399,5 @@ html.escenas-flujo .ev:not(.ev-trayectoria):not(.ev-datos) { padding-top: 10px !
 html.escenas-flujo .ev-contacto .contacto { grid-template-rows: 150px auto auto !important; }
 html.escenas-flujo .ev-contacto .contacto-ico { width: 150px !important; height: 150px !important; }
 html.escenas-flujo .ev-contacto .nido-escena { scale: .85; margin-top: 0 !important; }
+/* scroll continuo: las secciones de texto crecen lo que necesiten (centradas), sin achicarse */
+html.escenas-flujo .ev:not(.ev-trayectoria):not(.ev-datos):not(.ev-matrona) { align-items: center; padding-top: 28px !important; padding-bottom: 36px !important; }

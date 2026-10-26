@@ -1073,6 +1073,8 @@
     const alto = innerHeight - barra(), caja = e.ev.firstElementChild;
     // jugando en el Arcade: el juego ocupa toda la pantalla (la máquina se ve de cerca), sin achicarse
     if (e.ev.classList.contains('jugando-arcade')) { e.ev.style.height = ''; caja.style.transform = ''; e.escala = 1; return; }
+    // solo los dibujos completos (mural, escritorio, sala) se achican para verse enteros; lo demás va en su tamaño real (la letra no se achica)
+    if (!['trayectoria', 'datos', 'matrona'].includes(e.id)) { e.ev.style.height = ''; e.ev.style.minHeight = alto + 'px'; caja.style.transform = ''; e.escala = 1; return; }
     e.ev.style.height = alto + 'px';
     const cs = getComputedStyle(e.ev), dispH = alto - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom),
       dispW = e.ev.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);

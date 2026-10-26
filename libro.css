@@ -2243,3 +2243,5 @@ html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{right:auto;lef
 .teatro-app .colgante-app > .app-maquina{max-height:none;overflow:hidden}
 /* X · los contactos en el cartel: en dos líneas compactas, sin un ícono suelto sobre cada correo */
 .teatro-lado .colgante :is(a,.btn){font-size:.8rem}
+/* los carteles colgantes, más anchos y menos largos */
+.teatro-lado{width:min(26vw,400px)}
