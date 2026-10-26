@@ -2227,3 +2227,17 @@ html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{right:auto;lef
 /* «▶ Jugar» bien visible bajo la explicación; jugando, cambia a «Reiniciar» */
 .colgante-app .app-maquina .juego-lado .juego-acciones{order:2;position:static!important;margin:10px 0 0!important}
 .colgante-app .app-maquina .juego-lado .juego-empezar{display:inline-block!important;font:700 1.05rem 'Mali',sans-serif!important;padding:10px 26px!important;border-radius:18px!important;background:linear-gradient(135deg,#f6b9d6,#cdb6f2)!important;color:#4a2556!important;border:3px solid #fff!important;box-shadow:0 4px 0 #c98bb8!important}
+/* VIII · el pergamino del caballete: el texto centrado dentro del papel, bajo el rollo de arriba (antes el título quedaba encima del rollo) */
+.pergamino-hechizo .perg-texto{left:18%;right:18%;top:17%;height:40%;gap:2.4cqw;overflow:hidden}
+.pergamino-hechizo .perg-texto b{font-size:7cqw}
+.pergamino-hechizo .perg-texto span{font-size:5.2cqw}
+/* las aplicaciones colgantes: el contenido nunca se monta sobre el marco de cintas */
+.teatro-app .colgante-app > .colgar-app{padding-left:max(var(--marco-izq,0px),36px);padding-right:36px}
+.teatro-app .colgante-app .tableros{padding-left:14px}
+/* el contenido de todas las aplicaciones colgantes queda dentro del marco de cintas (medido en el dibujo: ~6,5 % por lado, ~7 % arriba y abajo) */
+.teatro-app .colgante-app{padding:clamp(34px,5.4%,64px) clamp(40px,6.4%,78px) clamp(36px,5.6%,66px)!important}
+.teatro-app .colgante-app > .colgar-app{padding-left:0;padding-right:0;overflow:auto;scrollbar-width:thin;max-height:calc(76vh - 110px)}
+.teatro-app .colgante-app .tableros{padding-left:0}
+/* las máquinas del salón de juegos: sin el marco crema (el pergamino ya es su papel); flotan sobre el cielo */
+.teatro-app .colgante-app:has(> .app-maquina){background:none!important;box-shadow:none!important;padding:0!important}
+.teatro-app .colgante-app > .app-maquina{max-height:none;overflow:hidden}
