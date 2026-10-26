@@ -384,7 +384,7 @@
     const lemaMural = el('p', 'mural-lema', explic[0]?.textContent || '');   // junto a las flores de la esquina de la hoja
     const mural = div('mural', div('mural-tablero', hoja, lemaMural, ...fotos, afiche, planilla));
     // el tablero se arma en píxeles del dibujo (1672 de ancho) y se escala con --k
-    new ResizeObserver(() => mural.style.setProperty('--k', (mural.clientWidth / 1672).toFixed(5))).observe(mural);
+    new ResizeObserver(() => mural.style.setProperty('--k', (mural.clientWidth / (parseFloat(getComputedStyle(mural).getPropertyValue('--ancho-visible')) || 1672)).toFixed(5))).observe(mural);   // --ancho-visible: si el dibujo se recorta (CSS), se escala por lo que se ve
     return mural;
   }
   E.push({
@@ -466,18 +466,23 @@
     const CORTO = ['Chile Crece Contigo', 'Anticoncep­tivos al toque', 'Torpedo profesional', 'Cáncer', 'ITS', 'Más matronas', 'Mi tesis'];
     const folletos = (M.paginas || []).map((p, i) => {
       const b = el('button', 'sala-folleto sala-folleto-' + (i + 1)); b.type = 'button'; b.title = p.t + ' · ' + p.txt;
+      b.dataset.nombre = (CORTO[i] || p.t).replace('­', '');
       b.append(el('span', 'sala-folleto-ico', p.e), el('span', null, CORTO[i] || p.t)); b.addEventListener('click', () => abrirPagina(p, b)); return b;
     });
-    const fPap = el('button', 'sala-folleto sala-folleto-8'); fPap.type = 'button'; fPap.title = 'Planilla PAP';
+    const fPap = el('button', 'sala-folleto sala-folleto-8'); fPap.type = 'button'; fPap.title = 'Planilla PAP'; fPap.dataset.nombre = 'Planilla PAP';
     fPap.append(el('span', 'sala-folleto-ico', '🧾'), el('span', null, 'Planilla PAP')); fPap.addEventListener('click', () => abrirPlanilla(fPap));
-    const fSitio = el('a', 'sala-folleto sala-folleto-9'); fSitio.href = SITIO; fSitio.target = '_blank'; fSitio.rel = 'noopener'; fSitio.title = 'Todo el portafolio de matrona';
+    const fSitio = el('a', 'sala-folleto sala-folleto-9'); fSitio.href = SITIO; fSitio.target = '_blank'; fSitio.rel = 'noopener'; fSitio.title = 'Todo el portafolio de matrona'; fSitio.dataset.nombre = 'Todo el sitio';
     fSitio.append(el('span', 'sala-folleto-ico', '🌸'), el('span', null, 'Todo el sitio'));
     const carpeta = el('button', 'sala-carpeta'); carpeta.type = 'button'; carpeta.title = 'Planilla PAP'; carpeta.append(el('span', null, '🧾 Planilla PAP'));
     carpeta.addEventListener('click', () => abrirPlanilla(carpeta));
-    const cinta = el('p', 'eyebrow cinta-nombre', 'Matrona hoy');
-    const sala = div('sala', div('sala-capa', tele, ...folletos, fPap, fSitio, carpeta));
+    // el sillón rosado lleva el título bordado: al tocarlo brilla y cuenta qué hay en la sala
+    const sillon = el('button', 'sala-sillon'); sillon.type = 'button'; sillon.setAttribute('aria-label', 'Matrona hoy: qué hay en esta sala');
+    const sillonPista = el('span', 'sala-sillon-pista', 'Cápsulas en la tele · páginas en los folletos · planilla PAP en la mesita');
+    sillon.append(el('span', 'sala-sillon-titulo', 'Matrona hoy'), sillonPista);
+    sillon.addEventListener('click', () => { sillon.classList.remove('brilla'); void sillon.offsetWidth; sillon.classList.add('brilla'); });
+    const sala = div('sala', div('sala-capa', tele, ...folletos, fPap, fSitio, carpeta, sillon));
     new ResizeObserver(() => sala.style.setProperty('--k', (sala.clientWidth / 1672).toFixed(5))).observe(sala);
-    return [div('section-head', div(null, cinta)), sala];
+    return [div('section-head', div(null)), sala];   // el título va en el sillón
   }
   E.push({
     id: 'matrona', ev: crear('ev-matrona', salaEspera()),
@@ -785,6 +790,12 @@
     };
     tabCamino.addEventListener('click', () => verMuro('camino'));
     tabPapel.addEventListener('click', () => verMuro('papel'));
+    // la primera vez que se ve el cuaderno, el lápiz dibuja el line art (así se ve la magia sin tener que buscarla)
+    const alVer = new IntersectionObserver(ents => {
+      if (!ents.some(x => x.isIntersecting) || vistaMuro !== 'camino') return; alVer.disconnect();
+      setTimeout(() => etapas[1].click(), 700);
+    }, { threshold: .55 });
+    alVer.observe(museo);
     filtros?.addEventListener('click', e => { if (e.target.closest('button') && vistaMuro !== 'dibujos') setTimeout(() => verMuro('dibujos')); });
 
     // la hoja izquierda: una foto pegada o un dibujo que se dibuja solo
@@ -824,24 +835,51 @@
         const ctx = lienzo.getContext('2d'), mascara = mk(), mctx = mascara.getContext('2d');
         const final = () => { ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, lienzo.width, lienzo.height); ctx.drawImage(color, 0, 0); lapiz.style.opacity = 0; };
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) { final(); return; }
-        const pasadas = [{ capa: lineas, ms: 1400, ancho: .08 }, { capa: color, ms: 1200, ancho: .12 }];
-        let n = 0, t0 = performance.now(), hechoLineas = false, prev = null;
-        const zig = (u, filas) => { const f = Math.min(filas - 1, Math.floor(u * filas)), v = u * filas - f; return [f % 2 ? 1 - v : v, (f + .5) / filas]; };
+        // 1) el lápiz recorre las líneas de verdad: los puntos de tinta se ordenan siguiendo cada trazo (el vecino más cercano) y
+        //    la línea aparece justo donde pasa la punta; 2) después el color se posa sobre el lineart, suave, de arriba hacia abajo
+        const paso0 = Math.max(3, Math.round(lienzo.width / 170)), cols = Math.ceil(lienzo.width / paso0), filas = Math.ceil(lienzo.height / paso0);
+        const tinta = new Uint8Array(cols * filas);
+        for (let fy = 0; fy < filas; fy++) for (let fx = 0; fx < cols; fx++) {
+          const px = Math.min(lienzo.width - 1, fx * paso0 + (paso0 >> 1)), py = Math.min(lienzo.height - 1, fy * paso0 + (paso0 >> 1));
+          if (q[(py * lienzo.width + px) * 4 + 3] > 90) tinta[fy * cols + fx] = 1;
+        }
+        const orden = [], libre = tinta.slice(); let scan = 0, cx0 = -1, cy0 = -1;
+        const vecino = (x0, y0) => { for (let r = 1; r <= 3; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue; const x = x0 + dx, y = y0 + dy; if (x >= 0 && y >= 0 && x < cols && y < filas && libre[y * cols + x]) return y * cols + x; } return -1; };
+        for (;;) {
+          let i = cx0 >= 0 ? vecino(cx0, cy0) : -1;
+          if (i < 0) { while (scan < libre.length && !libre[scan]) scan++; if (scan >= libre.length) break; i = scan; }
+          libre[i] = 0; orden.push(i); cx0 = i % cols; cy0 = (i / cols) | 0;
+        }
+        const T_LINEAS = Math.min(3800, 2200 + orden.length * .3), T_COLOR = 1200;
+        let hechos = 0, t0 = performance.now(), fase = 0;
+        mctx.fillStyle = '#000';
+        const pinta = () => {
+          ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, lienzo.width, lienzo.height);
+          const tmp = mk(), tx = tmp.getContext('2d'); tx.drawImage(mascara, 0, 0); tx.globalCompositeOperation = 'source-in'; tx.drawImage(lineas, 0, 0); ctx.drawImage(tmp, 0, 0);
+        };
         const paso = ahora => {
           if (yo !== dibujo) return;
-          const ps = pasadas[n], u = Math.min(1, (ahora - t0) / ps.ms), [x, y] = zig(u, Math.round(1 / ps.ancho)), X = x * lienzo.width, Y = y * lienzo.height;
-          mctx.lineCap = 'round'; mctx.lineWidth = lienzo.height * ps.ancho * 1.8; mctx.strokeStyle = '#000';
-          if (prev) { mctx.beginPath(); mctx.moveTo(prev[0], prev[1]); mctx.lineTo(X, Y); mctx.stroke(); } prev = [X, Y];
+          if (fase === 0) {
+            const u = Math.min(1, (ahora - t0) / T_LINEAS), meta = Math.round(orden.length * u);
+            for (; hechos < meta; hechos++) { const i = orden[hechos]; mctx.beginPath(); mctx.arc((i % cols + .5) * paso0, (((i / cols) | 0) + .5) * paso0, paso0 * 1.5, 0, 6.2832); mctx.fill(); }
+            pinta();
+            const ult = orden[Math.max(0, hechos - 1)] ?? 0;
+            lapiz.style.opacity = 1; lapiz.style.transform = `translate(${(lienzo.offsetLeft + (ult % cols + .5) * paso0 / lienzo.width * w).toFixed(1)}px, ${(lienzo.offsetTop + (((ult / cols) | 0) + .5) * paso0 / lienzo.height * h).toFixed(1)}px)`;
+            if (u < 1) { requestAnimationFrame(paso); return; }
+            fase = 1; t0 = ahora; lapiz.style.opacity = 0; ctx.drawImage(lineas, 0, 0);
+            requestAnimationFrame(paso); return;
+          }
+          const u = Math.min(1, (ahora - t0) / T_COLOR);
           ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, lienzo.width, lienzo.height);
-          if (hechoLineas) ctx.drawImage(lineas, 0, 0);
-          const tmp = mk(), tx = tmp.getContext('2d'); tx.drawImage(mascara, 0, 0); tx.globalCompositeOperation = 'source-in'; tx.drawImage(ps.capa, 0, 0); ctx.drawImage(tmp, 0, 0);
-          lapiz.style.opacity = 1; lapiz.style.transform = `translate(${(lienzo.offsetLeft + x * w).toFixed(1)}px, ${(lienzo.offsetTop + y * h).toFixed(1)}px)`;
+          ctx.drawImage(lineas, 0, 0);
+          const tmp = mk(), tx = tmp.getContext('2d'), g = tx.createLinearGradient(0, 0, 0, lienzo.height), borde = u * 1.4;
+          g.addColorStop(0, '#000'); g.addColorStop(Math.max(0, Math.min(1, borde - .4)), '#000'); g.addColorStop(Math.max(0, Math.min(1, borde)), 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+          tx.fillStyle = g; tx.fillRect(0, 0, tmp.width, tmp.height); tx.globalCompositeOperation = 'source-in'; tx.drawImage(color, 0, 0); ctx.drawImage(tmp, 0, 0);
           if (u < 1) { requestAnimationFrame(paso); return; }
-          if (n === 0) { hechoLineas = true; n = 1; t0 = performance.now(); mctx.clearRect(0, 0, mascara.width, mascara.height); prev = null; requestAnimationFrame(paso); return; }
           final();   // al terminar queda el dibujo completo, igual al original
         };
         requestAnimationFrame(paso);
-        setTimeout(() => { if (yo === dibujo) { dibujo++; final(); } }, 4200);   // aunque la pestaña quede en segundo plano, siempre termina completo
+        setTimeout(() => { if (yo === dibujo) { dibujo++; final(); } }, T_LINEAS + T_COLOR + 1500);   // aunque la pestaña quede en segundo plano, siempre termina completo
       };
       img.src = src;
     }

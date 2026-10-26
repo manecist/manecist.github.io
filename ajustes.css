@@ -87,7 +87,7 @@ html.escenas.escenas-flujo .ev.ev.ev .section-head .cinta-nombre { box-sizing: b
 html.escenas.escenas-flujo .ev.ev.ev .section-head:has(.cinta-nombre) { position: relative !important; top: auto !important; left: auto !important; right: auto !important; width: 100% !important; max-width: none !important; display: flex !important; flex-direction: column; align-items: center !important; margin: 0 auto 10px !important; }
 html.escenas.escenas-flujo .ev.ev.ev .section-head:has(.cinta-nombre) > div { width: 100% !important; display: flex !important; flex-direction: column; align-items: center !important; }
 /* Trayectoria: su cinta sigue en el hueco sobre el tablero, con las mismas proporciones */
-html.escenas.escenas-flujo .ev.ev.ev.ev-trayectoria .section-head .cinta-nombre { position: absolute !important; right: auto !important; bottom: auto !important; height: auto !important; max-width: none !important; min-width: 0 !important; padding: 0 0 .3em !important; left: 25% !important; top: .3% !important; width: 15% !important; font-size: clamp(1rem, 1.25vw, 1.6rem) !important; }
+html.escenas.escenas-flujo .ev.ev.ev.ev-trayectoria .section-head .cinta-nombre { position: absolute !important; right: auto !important; bottom: auto !important; height: auto !important; max-width: none !important; min-width: 0 !important; padding: 0 0 .3em !important; left: calc(50% - 520px) !important; top: 0 !important; width: 330px !important; font-size: 1.55rem !important; }
 html.escenas.escenas-flujo .ev.ev.ev.ev-trayectoria .section-head:has(.cinta-nombre) { position: absolute !important; inset: 0 0 auto 0 !important; margin: 0 !important; }
 
 /* los dibujos grandes nunca se agrandan más que su tamaño real (1672 px): así no se pixelan */
@@ -175,3 +175,108 @@ html.escenas .ev.ev-arcade .app-gemas .juego-lado #gema-lado > h3 { display: non
 html.escenas .ev.ev-arcade .app-gemas .juego-lado #gem-inventory { flex-wrap: wrap !important; }
 /* el dragón se puede tocar: sube al inicio */
 .dragoncito.visible { pointer-events: auto !important; cursor: pointer; }
+
+/* Matrona hoy: el título va bordado en el sillón rosado (sala.webp 1672×941, frente del cojín ≈ x 340–1365, y 772–846); tocarlo hace brillar y da la pista */
+html.escenas .sala-capa .sala-sillon { left: 360px; top: 760px; width: 980px; height: 92px; z-index: 4; padding: 0; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; align-content: center; gap: 0; }
+html.escenas .sala-capa .sala-sillon-titulo { font: italic 700 62px/1 "Cormorant Garamond", Georgia, serif; letter-spacing: .02em; color: #8c3f74; text-shadow: 0 1px 0 #ffe9f4, 0 2px 0 rgba(255,255,255,.7), 0 0 14px rgba(255,214,236,.9); transition: transform .3s; }
+html.escenas .sala-capa .sala-sillon:hover .sala-sillon-titulo, html.escenas .sala-capa .sala-sillon:focus-visible .sala-sillon-titulo { transform: scale(1.04); }
+html.escenas .sala-capa .sala-sillon-pista { position: absolute; left: 50%; bottom: 100%; transform: translate(-50%, 6px); white-space: nowrap; font: 700 26px/1.2 "Cormorant Garamond", Georgia, serif; color: #5b2d55; background: #fff7fb; border: 2px solid #e9c6dc; border-radius: 999px; padding: 8px 22px; box-shadow: 0 6px 18px rgba(120,60,110,.22); opacity: 0; pointer-events: none; transition: opacity .35s, transform .35s; }
+html.escenas .sala-capa .sala-sillon.brilla .sala-sillon-pista { opacity: 1; transform: translate(-50%, -8px); animation: sillon-pista 4.2s forwards; }
+html.escenas .sala-capa .sala-sillon.brilla .sala-sillon-titulo { animation: sillon-brillo 1.1s ease-out; }
+@keyframes sillon-brillo { 0% { text-shadow: 0 0 0 #fff, 0 0 14px rgba(255,214,236,.9); } 40% { text-shadow: 0 0 18px #fff, 0 0 38px #ffd6ec, 0 0 60px #f7b6da; transform: scale(1.06); } 100% { transform: scale(1); } }
+@keyframes sillon-pista { 0%, 85% { opacity: 1; } 100% { opacity: 0; } }
+/* con el título en el sillón, la cinta de arriba sobra */
+html.escenas.escenas-flujo .ev.ev.ev-matrona .section-head, html.escenas .ev.ev.ev-matrona .section-head { display: none !important; }
+
+/* Diseño («Mi trazo»): el cuaderno entero en pantalla (la cinta se apoya sobre su borde de arriba) y letra que se lee */
+html.escenas.escenas-flujo .ev.ev.ev.ev-leyendas .section-head:has(.cinta-nombre) { margin-bottom: -78px !important; position: relative !important; z-index: 3 !important; pointer-events: none; }
+html.escenas.escenas-flujo .ev.ev.ev.ev-leyendas .section-head .cinta-nombre { pointer-events: auto; }
+html.escenas.escenas-flujo .ev.ev.ev-leyendas .section-head h2 { display: none !important; }
+html.escenas.escenas-flujo .ev.ev.ev-leyendas .ley-museo { width: min(100%, 1672px, calc((100vh - 171px) * 1575 / 905)) !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-pestanas { flex-wrap: wrap !important; justify-content: center !important; gap: .5cqw .55cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-pestanas > button, html.escenas .ev.ev.ev.ev-leyendas .ley-pestanas .leyendas-filtros button { font-size: 1.3cqw !important; padding: .45cqw 1.15cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-camino { gap: .6cqw !important; justify-content: flex-start; padding-top: 0 !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-camino h4 { font-size: 1.8cqw !important; white-space: nowrap; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-camino > p { font-size: 1.4cqw !important; line-height: 1.35 !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-etapas { gap: .6cqw !important; margin-top: .2cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-etapa { grid-template-columns: 3.4cqw 1fr !important; grid-template-rows: auto auto !important; row-gap: 0; padding: .5cqw 1.1cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-etapa-num { width: 3.4cqw !important; height: 3.4cqw !important; font-size: 1.35cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-etapa b { font-size: 1.7cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-etapa small { display: block !important; font-size: 1.3cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-cuadro figcaption b { font-size: 2.1cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-cuadro figcaption span { font-size: 1.55cqw !important; line-height: 1.35 !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-cuadro .ley-ver { font-size: 1.3cqw !important; }
+html.escenas .ev.ev.ev.ev-leyendas .ley-lapiz { width: 4.6cqw !important; height: 4.6cqw !important; margin: -3.75cqw 0 0 -.85cqw !important; transition: opacity .3s !important; }
+
+/* Studios Conari: los servicios se leen (letra más grande y un velo suave detrás, para que no se pierda sobre el fondo) */
+html.escenas .ev.ev.ev-estudio .estudio-servicios { --ico: 96px; row-gap: 14px !important; }
+html.escenas .ev.ev.ev-estudio .estudio-servicio { gap: 4px !important; }
+html.escenas .ev.ev.ev-estudio .estudio-servicio h3 { font-size: 1.05rem !important; }
+html.escenas .ev.ev.ev-estudio .estudio-servicio p { font-size: 1.02rem !important; line-height: 1.38 !important; max-width: 100% !important; background: rgba(28, 12, 48, .58); border-radius: 14px; padding: 6px 10px; box-shadow: 0 0 0 1px rgba(255, 214, 236, .18); }
+html[data-tema="claro"].escenas .ev.ev.ev-estudio .estudio-servicio p { background: rgba(255, 248, 252, .82); }
+
+/* Trayectoria en pantalla de escritorio: el tablero se recorta a lo que importa (sin el pasto de los lados ni las patas), así crece
+   y su letra se lee; el texto del tablero va más grande */
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural { --ancho-visible: 1280; width: min(100%, calc((100vh - 85px) * 1280 / 770)) !important; aspect-ratio: 1280 / 770 !important; margin-inline: auto !important; background-size: calc(100% * 1672 / 1280) calc(100% * 941 / 770) !important; background-position: calc(100% * 200 / 392) 0 !important;
+  -webkit-mask-image: linear-gradient(to bottom, #000 93%, transparent 100%) !important; mask-image: linear-gradient(to bottom, #000 93%, transparent 100%) !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-tablero { transform: translateX(calc(-200px * var(--k))) scale(var(--k)) !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-hoja { left: 392px !important; top: 178px !important; width: 380px !important; height: 380px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-hoja h3 { display: none !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-pasos { gap: 7px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-paso { grid-template-columns: 82px 1fr !important; column-gap: 8px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-paso b { font-size: 16.5px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-paso span { font-size: 17px !important; line-height: 1.15 !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-paso small { font-size: 15px !important; line-height: 1.15 !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-lema { left: 578px !important; top: 562px !important; width: 200px !important; font-size: 17px !important; line-height: 1.12 !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-foto b { font-size: 17px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-foto small { font-size: 15px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-afiche { left: 846px !important; top: 522px !important; width: 176px !important; height: 108px !important; gap: 5px !important; justify-content: flex-start !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-afiche b { position: absolute !important; left: 66px; top: -118px; width: 108px; font-size: 16px !important; letter-spacing: 0 !important; line-height: 1.05 !important; text-align: center; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-afiche small { display: none !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-afiche b { font-size: 21px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-afiche span { font-size: 14.5px !important; line-height: 1.25 !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-afiche small { font-size: 14px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-afiche :is(a, button) { font-size: 14.5px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-planilla-titulo { font-size: 15.5px !important; }
+html.escenas.escenas-flujo .ev.ev-trayectoria .mural-planilla :is(span, a, button) { font-size: 16px !important; }
+
+/* Datos: en el monitor del escritorio se ve la portada de la página (título y tres cifras grandes); el gráfico completo se abre con «Ampliar» */
+html.escenas .ev.ev-datos .tab-visor .tab-barra { height: auto !important; gap: 10px !important; align-items: center !important; }
+html.escenas .ev.ev-datos .tab-visor .tab-pag-nombre { font-size: 20px !important; display: flex !important; flex-direction: column !important; gap: 2px !important; }
+html.escenas .ev.ev-datos .tab-visor .tab-pag-nombre > span { font-size: 17px !important; }
+html.escenas .ev.ev-datos .tab-visor .tab-pag-nombre select { font-size: 22px !important; padding: 4px 8px !important; max-width: 440px; }
+html.escenas .ev.ev-datos .tab-visor .tab-vistas button { font-size: 20px !important; padding: 6px 14px !important; }
+html.escenas .ev.ev-datos .tab-marco .tv-pagina .tv-controles, html.escenas .ev.ev-datos .tab-marco .tv-pagina .tv-lienzo { display: none !important; }
+html.escenas .ev.ev-datos .tab-marco .tv-pagina { display: flex !important; flex-direction: column !important; justify-content: center !important; gap: 18px !important; padding: 10px 18px !important; }
+html.escenas .ev.ev-datos .tab-marco .tv-pagina[hidden] { display: none !important; }
+html.escenas .ev.ev-datos .tab-marco .tv-kpis { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 14px !important; height: auto !important; }
+html.escenas .ev.ev-datos .tab-marco .tv-kpi { padding: 12px !important; gap: 6px !important; display: flex !important; flex-direction: column !important; justify-content: center !important; }
+html.escenas .ev.ev-datos .tab-marco .tv-kpi b { font-size: 40px !important; line-height: 1.05 !important; }
+html.escenas .ev.ev-datos .tab-marco .tv-kpi span { font-size: 21px !important; line-height: 1.2 !important; white-space: normal !important; }
+html.escenas .ev.ev-datos .tab-marco .tab-ampliar { position: absolute !important; left: 50% !important; right: auto !important; top: auto !important; bottom: 16px !important; transform: translateX(-50%) !important; font-size: 22px !important; padding: 9px 26px !important; }
+
+/* Inicio: pergamino más ancho (menos renglones) para que el perfil completo quepa en la primera pantalla */
+@media (min-width: 1500px) {
+  html.escenas .ev.ev.ev-equipo .perfil-pro { grid-template-columns: 264px 600px 290px !important; column-gap: 40px !important; }
+  html.escenas .ev.ev.ev-equipo .perfil-pro-texto { width: 600px !important; max-width: 600px !important; padding: 138px 104px 104px !important; }
+}
+
+/* Matrona hoy: los folletos del revistero son chicos en el dibujo; llevan solo su ícono grande y el nombre aparece grande al pasar o tocar */
+html.escenas .sala-capa .sala-folleto > span:not(.sala-folleto-ico) { display: none !important; }
+html.escenas .sala-capa .sala-folleto .sala-folleto-ico { font-size: 30px !important; line-height: 1 !important; }
+html.escenas .sala-capa .sala-folleto { display: grid !important; place-items: center !important; overflow: visible !important; }
+html.escenas .sala-capa .sala-folleto::after { content: attr(data-nombre); position: absolute; left: 50%; bottom: calc(100% + 10px); transform: translateX(-50%) scale(.9); white-space: nowrap; font: 700 26px/1.2 "Cormorant Garamond", Georgia, serif; color: #5b2d55; background: #fff7fb; border: 2px solid #e9c6dc; border-radius: 999px; padding: 6px 18px; box-shadow: 0 6px 18px rgba(120, 60, 110, .25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 9; }
+html.escenas .sala-capa .sala-folleto:is(:hover, :focus-visible)::after { opacity: 1; transform: translateX(-50%) scale(1); }
+html.escenas .sala-capa .sala-folleto:is(:hover, :focus-visible) { z-index: 8 !important; }
+html.escenas .sala-capa .sala-sillon { top: 776px !important; height: 80px !important; }
+
+/* Cuento: el diálogo de los carteles se lee (en escritorio) */
+@media (min-width: 1200px) and (min-height: 700px) {
+  html .colgante .vida-cartel .vida-texto { font-size: 1.22rem !important; font-weight: 600 !important; line-height: 1.38 !important; }
+  html .colgante .vida-cartel .vida-edad { font-size: .92rem !important; }
+  html .colgante .vida-controles button { font-size: 1rem !important; }
+}
+@media (min-width: 1500px) {
+  html.escenas .ev.ev.ev-estudio .estudio-dos.estudio-tres { grid-template-columns: minmax(0, 1fr) 430px minmax(0, 760px) !important; }
+  html.escenas .ev.ev.ev-estudio .estudio-marca { width: 430px !important; padding-left: 74px !important; padding-right: 74px !important; }
+}

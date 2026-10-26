@@ -844,13 +844,13 @@
     // IX · practicando sus hechizos: en la torre, el libro de hechizos de la matrona (tableros), sus cápsulas y el banco
     hechizos: { carpeta: 'cap9/', hitos: [
       { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'La torre de los hechizos', texto: 'Después de sus medallas, Ari siguió practicando cada día.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 22, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
+        { nombre: 'ari', img: 'assets/cuento/etapas/ari-hoy.webp', pj: true, x: 22, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         { texto: { titulo: 'Ari:', texto: '«Lo que aprendí de datos… ¡lo voy a usar en lo que conozco de cerca!»' }, nombre: 'ari', clase: 'vive saluda', ms: 1800 },
         { nombre: 'perg', img: 'pergamino.webp', x: 62, alto: 19, clase: 'pergamino-hechizo', fx: { tipo: 'destello', x: 62, ancho: 14, y: 12 }, ms: 1200 },
         { pergTitulo: 'Mis nuevos hechizos', perg: 'Datos de salud que se entienden, cápsulas para las familias y herramientas para enseñar.', evento: 'hechizo-pergamino', ms: 2400 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'El libro de hechizos de la matrona', texto: 'Cinco tableros con datos de salud de Chile. Cada gema guarda lo que descubrió.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 87, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
+        { nombre: 'ari', img: 'assets/cuento/etapas/ari-hoy.webp', pj: true, x: 87, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         { nombre: 'perg', img: 'pergamino.webp', x: 72, alto: 24, clase: 'pergamino-hechizo', ms: 600, pausa: 200 },
         { nombre: 'g-anticonceptivos', img: 'assets/cuento/hechizos/gema-anticonceptivos.webp', x: 10, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Anticonceptivos', ms: 300, pausa: 120 },
         { nombre: 'g-its', img: 'assets/cuento/hechizos/gema-its.webp', x: 22, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'ITS', ms: 300, pausa: 120 },
@@ -865,7 +865,7 @@
         { texto: { titulo: '', texto: 'Toca una gema para abrir sus tableros.' }, ms: 900 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'Ocho cápsulas nuevas', texto: 'Animadas y narradas por ella, con la información vigente en Chile.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 16, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
+        { nombre: 'ari', img: 'assets/cuento/etapas/ari-hoy.webp', pj: true, x: 16, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         // la cápsula aparece cerrada, se abre y de adentro van saliendo las cápsulas de video
         { nombre: 'capsula', img: 'assets/cuento/hechizos/capsula.webp', x: 60, alto: 9, fila: 'atras', efecto: 'flota', ms: 1100, pausa: 400 },
         { nombre: 'capsula-ab', img: 'assets/cuento/hechizos/capsula-abierta.webp', x: 60, alto: 10.1, fila: 'atras', reemplaza: 'capsula', sigue: true, fx: { tipo: 'destello', x: 60, ancho: 18, y: 10, ms: 1200 }, ms: 700, pausa: 200 },
@@ -876,12 +876,12 @@
         { texto: { titulo: 'Ari:', texto: '«Leche materna, Shantala, sueño seguro, el PAP… ¡para ver en la sala de espera o en la casa!»' }, nombre: 'ari', efecto: 'brilla', ms: 1800 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'El Banco de Evaluaciones', texto: 'Un banco de preguntas para docentes, probado con un Moodle real.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 20, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
+        { nombre: 'ari', img: 'assets/cuento/etapas/ari-hoy.webp', pj: true, x: 20, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         { nombre: 'banco', img: 'assets/cuento/hechizos/banco.webp', x: 62, alto: 12, fila: 'medio', clase: 'cuadro', abre: 'banco', fx: { tipo: 'destello', x: 62, ancho: 16, y: 10 }, ms: 900 },
         { texto: { titulo: 'Ari:', texto: '«La inteligencia artificial ayuda, pero la respuesta correcta siempre la confirma una persona.»' }, nombre: 'ari', efecto: 'salto', ms: 1800 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: '', texto: '', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 50, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
+        { nombre: 'ari', img: 'assets/cuento/etapas/ari-hoy.webp', pj: true, x: 50, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         { texto: { titulo: 'Ari:', texto: '«Cada hechizo que aprendo lo uso para ayudar a alguien.»' }, nombre: 'ari', efecto: 'brilla', fx: { tipo: 'destello', x: 50, ancho: 14, y: 14 }, ms: 1800 },
         { texto: { titulo: '', texto: 'Y sin que nadie lo notara, algo más grande empezaba a nacer…' }, ms: 2200 }
       ] }
