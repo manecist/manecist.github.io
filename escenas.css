@@ -401,3 +401,17 @@ html.escenas-flujo .ev-contacto .contacto-ico { width: 150px !important; height:
 html.escenas-flujo .ev-contacto .nido-escena { scale: .85; margin-top: 0 !important; }
 /* scroll continuo: las secciones de texto crecen lo que necesiten (centradas), sin achicarse */
 html.escenas-flujo .ev:not(.ev-trayectoria):not(.ev-datos):not(.ev-matrona) { align-items: center; padding-top: 28px !important; padding-bottom: 36px !important; }
+
+/* ---------------------------------------------------------------- perfil, medido para pantallas de ~1280 × 580 (16" con escala 150 %):
+   el pergamino crece con su texto (no tiene alto fijo), es más ancho y la letra es más grande; nada se monta sobre la luna ni se sale del papel */
+html.escenas-flujo .ev-equipo { padding: 26px 96px 34px 56px !important; }
+html.escenas-flujo .ev-equipo .perfil-pro { grid-template-columns: minmax(200px, 260px) 450px minmax(200px, 250px) !important; gap: 26px !important; align-items: center; }
+html.escenas-flujo .ev-equipo .perfil-pro-retrato { max-height: none; }
+html.escenas-flujo .ev-equipo .perfil-pro-texto { width: 450px !important; height: auto !important; aspect-ratio: auto !important; max-height: none !important; min-height: 640px; padding: 122px 96px 100px !important; }   /* el papel se estira solo en alto, como antes */
+html.escenas-flujo .ev-equipo .perfil-pro-texto .eyebrow { font-size: .78rem !important; }
+html.escenas-flujo .ev-equipo .perfil-pro-texto h3 { font-size: 1.55rem !important; }
+html.escenas-flujo .ev-equipo .perfil-pro-cargo { font-size: .9rem !important; }
+html.escenas-flujo .ev-equipo .perfil-pro-texto > p:not(.eyebrow):not(.perfil-pro-cargo) { font-size: .98rem !important; line-height: 1.5 !important; }
+html.escenas-flujo .ev-equipo .perfil-pro-areas li { font-size: .8rem !important; padding: 5px 10px !important; }
+/* el dragoncito: en pantallas medianas, más chico y pegado al borde, para no tapar las medallas */
+@media (max-width: 1500px) { .dragoncito { scale: .72; transform-origin: 100% 50%; } }
