@@ -538,8 +538,10 @@
   let cuadroMaq = 0;
   setInterval(() => { if (E[actual]?.id !== 'arcade' || salon.hidden) return; cuadroMaq = (cuadroMaq + 1) % 37; $$('.maquina-spr', salon).forEach((m, k) => { const c = (cuadroMaq + k * 9) % 37; m.style.backgroundPosition = (c % 8) / 7 * 100 + '% ' + Math.floor(c / 8) / 4 * 100 + '%'; }); }, 85);
   const sala = div('papel-marcos sala-juegos', Object.values(juegos));
+  // el cuento usa estas mismas máquinas (las pide prestadas enteras): cada escena de máquina tiene su nombre
+  Object.entries(juegos).forEach(([k, j]) => { const m = j.querySelector('.maq-escena'); if (m) m.id = 'maq-escena-' + k; });
   const devolverPiezas = () => piezas.forEach(p => {
-    if (!p.vuelve.isConnected || p.el.closest('.ranura')) return;
+    if (!p.vuelve.isConnected || p.el.closest('.ranura') || p.el.closest('.maq-escena')) return;   // las piezas de las máquinas se quedan en ellas (el cuento pide la máquina entera)
     if (!p.aqui) { p.aqui = document.createComment('pieza-clasica'); p.el.before(p.aqui); }   // su lugar en la versión clásica
     p.vuelve.after(p.el);
   });

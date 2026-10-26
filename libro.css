@@ -2203,3 +2203,27 @@ html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{right:auto;lef
 /* «vive» también fuera de las escenas suaves: la figura respira y, al hablar, gesticula un poco */
 .hito-actor.vive.hito-fija > img:first-child{transform-origin:50% 100%;animation:vive2 3.2s ease-in-out infinite}
 .hito-actor.vive.hito-fija.saluda > img:first-child{animation:habla 1s ease-in-out,vive2 3.2s ease-in-out 1s infinite}
+/* VI · el salón de los juegos: cada juego se abre en su propia máquina arcade (las mismas de la versión clásica),
+   grande, con el juego en la pantalla de la máquina y la explicación en el pergamino del lado */
+.colgante-app .app-maquina{padding:6px 10px 10px}
+.colgante-app .app-maquina > .ranura{display:block}
+.colgante-app .app-maquina .maq-escena{display:flex;align-items:center;justify-content:center;gap:clamp(14px,2.4vw,34px)}
+.colgante-app .app-maquina .maq-juego{--h:min(66vh,600px)!important;margin:0!important;max-width:none!important}
+.colgante-app .app-maquina .maq-3{--h:min(52vh,470px)!important}
+.colgante-app .app-maquina .juego-lado{height:min(66vh,600px)!important;width:min(360px,30vw)!important;align-self:center}
+.colgante-app .app-maquina .juego-salon{display:none!important}
+@media (max-width:860px) and (orientation:portrait){
+  .colgante-app .app-maquina .maq-escena{flex-direction:column}
+  .colgante-app .app-maquina .maq-juego{--h:min(58vh,520px)!important}
+  .colgante-app .app-maquina .maq-3{--h:min(40vh,360px)!important}
+  .colgante-app .app-maquina .juego-lado{width:min(88vw,380px)!important;height:auto!important}
+}
+/* la máquina vista de cerca: se ven el techo, la pantalla y el tablero; la base queda fuera (la pantalla del juego queda grande) */
+.teatro-app .colgante-app > .app-maquina,.colgante-app .app-maquina{overflow:hidden!important;border-radius:14px}
+.colgante-app .app-maquina .maq-1{--h:calc(min(60vh,560px) / .6)!important;margin:calc(min(60vh,560px) / .6 * -.115) 0 calc(min(60vh,560px) / .6 * -.27)!important}
+.colgante-app .app-maquina .maq-2{--h:calc(min(60vh,560px) / .6)!important;margin:calc(min(60vh,560px) / .6 * -.175) 0 calc(min(60vh,560px) / .6 * -.225)!important}
+.colgante-app .app-maquina .maq-3{--h:calc(min(60vh,560px) / .78)!important;margin:calc(min(60vh,560px) / .78 * -.13) 0 calc(min(60vh,560px) / .78 * -.09)!important}
+.colgante-app .app-maquina .juego-lado{height:min(60vh,560px)!important}
+/* «▶ Jugar» bien visible bajo la explicación; jugando, cambia a «Reiniciar» */
+.colgante-app .app-maquina .juego-lado .juego-acciones{order:2;position:static!important;margin:10px 0 0!important}
+.colgante-app .app-maquina .juego-lado .juego-empezar{display:inline-block!important;font:700 1.05rem 'Mali',sans-serif!important;padding:10px 26px!important;border-radius:18px!important;background:linear-gradient(135deg,#f6b9d6,#cdb6f2)!important;color:#4a2556!important;border:3px solid #fff!important;box-shadow:0 4px 0 #c98bb8!important}

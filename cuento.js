@@ -1316,6 +1316,7 @@
     const app = (empezar || volver || cielo)?.closest('.colgar-app'); if (!app) return;
     app.classList.toggle('jugando', !volver);
     if (empezar && app.classList.contains('app-bloques')) { document.getElementById('play-start')?.click(); setTimeout(() => document.getElementById('play-tetris')?.focus(), 60); }
+    if (empezar && app.classList.contains('app-maquina')) { empezar.textContent = '↻ Reiniciar'; if (!app.classList.contains('app-bloques')) (document.getElementById('match-reset') && app.classList.contains('app-gemas') ? document.getElementById('match-reset') : app.classList.contains('app-estrellas') ? document.getElementById('star-reset') : null)?.click(); }
   });
 
   // IV · noches de código: escenas que se suceden
