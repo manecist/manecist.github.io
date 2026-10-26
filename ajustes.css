@@ -78,3 +78,68 @@ html.escenas.escenas-flujo .ev.ev-equipo .perfil-pro-texto { width: 28rem !impor
 html.escenas.escenas-flujo .ev.ev-equipo .perfil-medalla img { width: 6.5rem !important; height: 6.5rem !important; }
 html.escenas.escenas-flujo .ev.ev-estudio .estudio-dos.estudio-tres { grid-template-columns: minmax(17.5rem, 1fr) 22.5rem minmax(30rem, 1.5fr) !important; }
 html.escenas.escenas-flujo .ev.ev-estudio .estudio-marca { padding: 7.75rem 3.6rem 6rem !important; }
+
+/* ---------------------------------------------------------------- cintas de título: el nombre centrado en la franja rosada
+   (medida en el dibujo de 1400 × 367: la franja va de x 15 % a 85 % y su centro vertical está al 43,6 %) */
+html.escenas.escenas-flujo .ev.ev.ev .section-head .cinta-nombre { box-sizing: border-box !important; display: grid !important; place-items: center !important; aspect-ratio: 1400 / 367 !important;
+  width: clamp(380px, 30vw, 600px) !important; height: auto !important; padding: 0 0 .32em !important; margin: 0 auto !important; white-space: nowrap !important;
+  font-size: clamp(1.5rem, 2vw, 2.6rem) !important; line-height: 1 !important; text-align: center !important; letter-spacing: .05em !important; }
+html.escenas.escenas-flujo .ev.ev.ev .section-head:has(.cinta-nombre) { position: relative !important; top: auto !important; left: auto !important; right: auto !important; width: 100% !important; max-width: none !important; display: flex !important; flex-direction: column; align-items: center !important; margin: 0 auto 10px !important; }
+html.escenas.escenas-flujo .ev.ev.ev .section-head:has(.cinta-nombre) > div { width: 100% !important; display: flex !important; flex-direction: column; align-items: center !important; }
+/* Trayectoria: su cinta sigue en el hueco sobre el tablero, con las mismas proporciones */
+html.escenas.escenas-flujo .ev.ev.ev.ev-trayectoria .section-head .cinta-nombre { position: absolute !important; right: auto !important; bottom: auto !important; height: auto !important; max-width: none !important; min-width: 0 !important; padding: 0 0 .3em !important; left: 25% !important; top: .3% !important; width: 15% !important; font-size: clamp(1rem, 1.25vw, 1.6rem) !important; }
+html.escenas.escenas-flujo .ev.ev.ev.ev-trayectoria .section-head:has(.cinta-nombre) { position: absolute !important; inset: 0 0 auto 0 !important; margin: 0 !important; }
+
+/* los dibujos grandes nunca se agrandan más que su tamaño real (1672 px): así no se pixelan */
+html.escenas.escenas-flujo .ev.ev-trayectoria .ev-caja, html.escenas.escenas-flujo .ev.ev-datos .ev-caja, html.escenas.escenas-flujo .ev.ev-matrona .ev-caja { max-width: 1672px !important; margin-inline: auto !important; }
+/* Trayectoria: el pasto del pie se desvanece suave (sin corte recto abajo ni a los lados) */
+html.escenas .ev.ev-trayectoria .mural { -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 99%), linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom, #000 78%, transparent 99%), linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); mask-composite: intersect; }
+/* Desarrollo: la calculadora protagonista (más grande que el cuaderno) */
+html.escenas.escenas-flujo .ev.ev-desarrollo .papel-app.app-calc { max-width: 1240px !important; }
+html.escenas.escenas-flujo .ev.ev-desarrollo .app-calc .app-doble { grid-template-columns: minmax(380px, 470px) minmax(560px, 680px) !important; justify-content: center !important; gap: 40px !important; }
+
+/* Tienda Magical Alliance: el puesto grande (no se achica por el alto de la pantalla) */
+html.escenas .ev.ev-desarrollo .tienda-puesto { width: min(100%, 1560px) !important; }
+/* la pantalla de la caja: total y lo pagado, grandes y legibles, dentro del visor del dibujo */
+html.escenas .ev.ev-desarrollo .tienda-caja .register-marquee output { font-size: 13cqw !important; }
+html.escenas .ev.ev-desarrollo .tienda-caja .caja-pago { top: 34% !important; font-size: 6.2cqw !important; font-weight: 800 !important; color: #6a2c55 !important; background: rgba(255, 246, 251, .92); border-radius: 1.5cqw; padding: .6cqw 0 !important; width: 60% !important; left: 20% !important; text-align: center !important; }
+html.escenas .ev.ev-desarrollo .tienda-caja .register-keypad button { font-size: 5.4cqw !important; }
+/* la boleta pegada en la vitrina: completa (productos, total, pago, medio de pago y vuelto) sin barra */
+html.escenas .ev.ev-desarrollo .tienda-boleta-vista { top: 18% !important; bottom: 3% !important; }
+html.escenas .ev.ev-desarrollo .tienda-boleta-hoja { overflow: visible !important; padding: 18px 22px 16px !important; font-size: .92rem !important; }
+html.escenas .ev.ev-desarrollo .tienda-boleta-hoja h4 { font-size: 1.2rem !important; }
+html.escenas .ev.ev-desarrollo .tienda-boleta-hoja .paper-note { margin-bottom: 4px !important; }
+html.escenas .ev.ev-desarrollo .tienda-boleta-hoja .paper-thanks { margin-top: 4px !important; }
+html.escenas .ev.ev-desarrollo .tienda-puesto { width: min(100%, 1560px, calc((100vh - 150px) * 1660 / 921)) !important; }
+html.escenas.escenas-flujo .ev.ev.ev.ev-desarrollo.tienda-activa .section-head { display: none !important; }
+
+/* Banco de Evaluaciones: la explicación resumida (solo los 5 pasos, sin el detalle) y con letra grande, dentro de la hoja */
+html.escenas .ev.ev-desarrollo .app-banco .banco-texto > p:not(.banco-moodle):not(.small-note) { font-size: 1.08rem !important; line-height: 1.5 !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-flujo span { display: none !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-flujo li { padding: 8px 12px !important; min-height: 0 !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-flujo b { font-size: 1.12rem !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-flujo li::before { font-size: .95rem !important; width: 1.7em !important; height: 1.7em !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-moodle { font-size: 1rem !important; line-height: 1.45 !important; }
+html.escenas .ev.ev-desarrollo .app-banco .stack-cloud span { font-size: .9rem !important; padding: 4px 10px !important; }
+html.escenas .ev.ev-desarrollo .app-banco .small-note { display: none !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-vivo .botonera .btn { font-size: .95rem !important; padding: 9px 16px !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-flujo { gap: 5px !important; margin: 6px 0 !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-flujo li { padding: 5px 10px !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-texto > p:not(.banco-moodle):not(.small-note) { font-size: 1rem !important; margin: 0 0 4px !important; }
+html.escenas .ev.ev-desarrollo .app-banco .banco-moodle { font-size: .95rem !important; margin: 4px 0 !important; }
+html.escenas .ev.ev-desarrollo .app-banco .stack-cloud { margin: 4px 0 0 !important; gap: 4px !important; }
+
+/* Datos: la hoja más acotada (las 3 observaciones principales) y el texto lejos de las flores del borde del portapapeles */
+html.escenas .ev.ev-datos .tab-panel .tab-obs li:nth-child(n+4) { display: none !important; }
+html.escenas .ev.ev-datos .tab-panel { padding-right: 34px !important; scrollbar-width: none !important; }
+html.escenas .ev.ev-datos .tab-panel::-webkit-scrollbar { display: none; }
+/* indicadores: el valor, cómo se calcula y por qué importa (lo demás está en el tablero); simulador y archivos, en corto */
+html.escenas .ev.ev-datos .tab-kpi-detalle dl > :is(dt, dd):nth-of-type(n+3):not(:nth-of-type(3)) { display: none !important; }
+html.escenas .ev.ev-datos .tab-kpi-detalle dl > dt:nth-of-type(2), html.escenas .ev.ev-datos .tab-kpi-detalle dl > dd:nth-of-type(2) { display: none !important; }
+html.escenas .ev.ev-datos .tab-panel .tab-aviso, html.escenas .ev.ev-datos .tab-panel .tab-nota { display: none !important; }
+html.escenas .ev.ev-datos .tab-panel .tab-obs li:nth-child(n+3) { display: none !important; }
+html.escenas .ev.ev-datos .tab-panel:has(.tab-dentro > .btn.primary) .tab-obs li:nth-child(n+2) { display: none !important; }
+
+/* separación entre secciones (antes quedaban pegadas) y sin el aviso de derechos bajo el cuaderno (ya está en el pie de página) */
+html.escenas.escenas-flujo .escenas-capa > .ev + .ev { margin-top: 70px !important; }
+html.escenas .ev.ev-leyendas .leyendas-aviso { display: none !important; }
