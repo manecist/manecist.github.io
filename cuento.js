@@ -435,11 +435,11 @@
         { aLaVez: true, nombre: 'ari', actor: 'cafe-ari-habla', x: 40, alto: 18.96, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 500, junto: true, sigue: true },
         // los tres conversan por turnos: quien habla gesticula y da un saltito; los otros escuchan (Coen con las manos en los bolsillos)
         /* antes: Coen y Ari hablaban en bucle a la vez y solo se notaba a Rancek moverse
-        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 31, alto: 18.89, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 1400, ms: 500, junto: true, sigue: true }, */
-        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 31, alto: 18.89, pj: true, delante: true, de: 2, a: 2, bucle: [2, 3], cicloMs: 3200, ms: 500, junto: true, sigue: true },
+        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 28.5, alto: 18.89, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 1400, ms: 500, junto: true, sigue: true }, */
+        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 28.5, alto: 18.89, pj: true, delante: true, de: 2, a: 2, bucle: [2, 3], cicloMs: 3200, ms: 500, junto: true, sigue: true },
         { nombre: 'rancek', actor: 'cafe-rancek-mira', x: 50.5, alto: 19.38, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 1200 },
         // (los pasos «junto» no arrancan su bucle: cada animación se enciende con un paso corto propio, antes de su cartel)
-        { nombre: 'coen', bucle: [2, 3], cicloMs: 3200, ms: 10, sigue: true, pausa: 0 },   // Coen escucha
+        { nombre: 'coen', bucle: [2, 3], cicloMs: 3200, ms: 10, sigue: true, pausa: 0 },   // Coen escucha mirando a Ari, con las manos en los bolsillos (cuadros 24–30)
         { nombre: 'ari', bucle: [0, 1], cicloMs: 2600, ms: 10, sigue: true, pausa: 0 },     // Ari habla
         { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: estas son nuestras ilustraciones. Creamos un estudio: queremos hacer un videojuego, soluciones digitales, diseño… ¡de todo! ✧»' }, nombre: 'ari', clase: 'saluda', sigue: true, ms: 3400 },
         { nombre: 'ari', de: 0, a: 0, ms: 10, sigue: true, pausa: 0 },                        // Ari termina y escucha
@@ -466,7 +466,7 @@
         { texto: { titulo: '', texto: '¡Pam! Se le resbaló de las manos…' }, nombre: 'par', actor: 'cafe-par-cae', x: 41.67, alto: 18.96, pj: true, delante: true, reemplaza: ['ari-o', 'rancek-p'], sigue: true, de: 0, a: 1, ms: 2500, junto: true },
         { ms: 1150 },   // justo cuando el libro se escapa…
         { nombre: 'coen', de: 0, a: 0, ms: 10, pausa: 0 },
-        { nombre: 'coen-s', actor: 'cafe-coen-sorpresa', x: 31, alto: 18.89, pj: true, delante: true, reemplaza: 'coen', sigue: true, de: 0, a: 1, ms: 1200, pausa: 0 },   // …Coen también se sorprende
+        { nombre: 'coen-s', actor: 'cafe-coen-sorpresa', x: 28.5, alto: 18.89, pj: true, delante: true, reemplaza: 'coen', sigue: true, de: 0, a: 1, ms: 1200, pausa: 0 },   // …Coen también se sorprende
         { ms: 550 },
         // { texto: { titulo: '', texto: 'Las hojas comenzaron a pasar solas… el libro se abrió de par en par y brotó un humo mágico.' }, fx: [{ tipo: 'destello', x: 46, ancho: 16, y: 2, ms: 1400 }], ms: 2200 },
         { fx: [{ tipo: 'destello', x: 46, ancho: 16, y: 2, ms: 1400 }], ms: 900 },   // sin texto: la película muestra lo que pasa
