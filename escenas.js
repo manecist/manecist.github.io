@@ -1079,7 +1079,9 @@
     const cs = getComputedStyle(e.ev), dispH = alto - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom),
       dispW = e.ev.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const h = Math.max(1, caja.scrollHeight), w = Math.max(1, caja.scrollWidth);
-    const k = Math.min(1, dispH / h, dispW / w), y = Math.max(0, (dispH - h * k) / 2);
+    // nunca bajo 0,9: la letra de lo importante se tiene que leer (si no cabe entero, la sección es un poco más alta y se baja con la rueda)
+    const k = Math.max(.9, Math.min(1, dispH / h, dispW / w)), y = Math.max(0, (dispH - h * k) / 2);
+    if (h * k > dispH) e.ev.style.height = (h * k + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)) + 'px';
     caja.style.transformOrigin = '50% 0';
     caja.style.transform = 'translateY(' + y.toFixed(1) + 'px)' + (k < .995 ? ' scale(' + k.toFixed(4) + ')' : '');
     e.escala = k;

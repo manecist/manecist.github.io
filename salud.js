@@ -138,7 +138,7 @@
       $$('.tab-sub', subs).forEach(b => { const on = b.dataset.sub === sub; b.classList.toggle('activo', on); b.setAttribute('aria-selected', String(on)); });
       panel.replaceChildren();
       if (sub === 'hallazgos' || sub === 'investigue') {
-        panel.append(el('p', 'tab-etiqueta', 'Qué investigué'), el('p', 'tab-texto', pregunta.textContent), el('p', 'tab-texto', d.investigue));
+        panel.append(el('p', 'tab-etiqueta', 'Qué investigué'), el('p', 'tab-texto', d.investigue));   // (sin repetir «qué muestra»: la hoja se lee en letra grande)
       } else if (sub === 'observe') {
         panel.append(el('p', 'tab-etiqueta', 'Lo que observé'));
         const ul = el('ul', 'tab-obs'); d.observe.forEach(o => ul.append(el('li', null, o))); panel.append(ul);
@@ -177,7 +177,7 @@
       }
       // lo elegido se lee completo en la hoja, sin barra: si no cabe, la letra se achica lo justo
       const dentro = el('div', 'tab-dentro'); dentro.append(...panel.childNodes); panel.append(dentro);
-      const caber = () => { let z = 1; dentro.style.zoom = ''; while (panel.clientHeight && panel.scrollHeight > panel.clientHeight + 1 && z > .58) { z -= .03; dentro.style.zoom = z.toFixed(2); } };
+      const caber = () => { let z = 1; dentro.style.zoom = ''; while (panel.clientHeight && panel.scrollHeight > panel.clientHeight + 1 && z > .82) { z -= .03; dentro.style.zoom = z.toFixed(2); } };
       caber(); setTimeout(caber, 300);
     }
 
