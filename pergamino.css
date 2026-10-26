@@ -287,12 +287,12 @@ html.escenas .app-banco #banco-card::before { content: ""; position: absolute; i
 html.escenas .app-banco #banco-card::after { display: none !important; }
 
 /* Tienda Java · M4: el formulario en una libreta, el recibo en una boleta y la caja sola */
-html.escenas .app-caja .app-doble > div { background: none !important; border: 0 !important; box-shadow: none !important; }
-html.escenas .app-caja .app-doble > div:nth-child(1) { background: url("assets/pergamino/libreta.webp") center / 100% 100% no-repeat !important; padding: 38% 18% 12% 10% !important; filter: drop-shadow(0 10px 16px rgba(20, 8, 40, .4)); }
-html.escenas .app-caja .app-doble > div:nth-child(2) { background: url("assets/pergamino/recibo.webp") center / 100% 100% no-repeat !important; padding: 26% 12% 12% !important; filter: drop-shadow(0 10px 16px rgba(20, 8, 40, .4)); }
-html.escenas .app-caja .app-doble > div:nth-child(3) { filter: drop-shadow(0 12px 18px rgba(20, 8, 40, .45)); }
-html.escenas .app-caja .app-doble > div :is(.paso-caja, h3, h4, label, small, p, span):not(.btn) { color: #3b2546 !important; text-shadow: none !important; }
-html.escenas .app-caja .app-doble > div:nth-child(3) .paso-caja { color: #fff7fc !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .95) !important; }
+html.escenas .ev .app-caja .app-doble > div { background: none !important; border: 0 !important; box-shadow: none !important; }
+html.escenas .ev .app-caja .app-doble > div:nth-child(1) { background: url("assets/pergamino/libreta.webp") center / 100% 100% no-repeat !important; padding: 38% 18% 12% 10% !important; filter: drop-shadow(0 10px 16px rgba(20, 8, 40, .4)); }
+html.escenas .ev .app-caja .app-doble > div:nth-child(2) { background: url("assets/pergamino/recibo.webp") center / 100% 100% no-repeat !important; padding: 26% 12% 12% !important; filter: drop-shadow(0 10px 16px rgba(20, 8, 40, .4)); }
+html.escenas .ev .app-caja .app-doble > div:nth-child(3) { filter: drop-shadow(0 12px 18px rgba(20, 8, 40, .45)); }
+html.escenas .ev .app-caja .app-doble > div :is(.paso-caja, h3, h4, label, small, p, span):not(.btn) { color: #3b2546 !important; text-shadow: none !important; }
+html.escenas .ev .app-caja .app-doble > div:nth-child(3) .paso-caja { color: #fff7fc !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .95) !important; }
 html.escenas .app-banco #banco-card { overflow: auto !important; scrollbar-width: thin; height: auto !important; max-height: none !important; }
 html.escenas .app-banco #banco-card > * { max-width: 100%; }
 html.escenas .app-banco #banco-card { font-size: .86em; }

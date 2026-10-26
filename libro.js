@@ -547,6 +547,7 @@
     $('#nombre-principal')?.focus({ preventScroll: true });
   }
   function aLibro(pagina) {
+    window.dispatchEvent(new Event('mce-a-libro'));   // la versión clásica devuelve las piezas que el cuento va a pedir prestadas
     escena.classList.remove('oculta'); escena.setAttribute('aria-hidden', 'false');
     document.body.classList.add('bloqueado');
     site.setAttribute('aria-hidden', 'true');

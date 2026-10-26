@@ -17,10 +17,13 @@
   // en celular y tableta: las mismas escenas dibujadas, una debajo de otra, y se recorren bajando con el dedo («pila»)
   const pila = !apto && !/[?&]normal\b/.test(location.search) && !!window.gsap;
   if (!apto && !pila) return;
+  // en el computador las escenas también van una debajo de otra (scroll continuo), cada una del alto de la pantalla
+  // y achicada lo justo para verse completa («flujo»); ya no se cambia de escena con la rueda ni pasa el hada
+  const flujo = apto;
   const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const main = $('#site main'), site = $('#site'), reino = $('#reino');
   if (!main || !site) return;
-  raiz.classList.add('escenas'); if (pila) raiz.classList.add('escenas-pila');
+  raiz.classList.add('escenas'); if (pila) raiz.classList.add('escenas-pila'); if (flujo) raiz.classList.add('escenas-flujo');
   // los títulos van en una sola línea centrada: el salto de línea pasa a ser un espacio
   $$('.section-head h2 br').forEach(b => b.replaceWith(' '));
   // títulos cortos, como en kdelrio
@@ -235,7 +238,25 @@
     // se compra tocando los productos de las repisas; la caja muestra el total, se paga con su teclado y bota la boleta
     const oculto = div('tienda-oculto', vistaCaja); oculto.hidden = true;
     const pista = document.createElement('p'); pista.className = 'tienda-pista'; pista.textContent = 'Toca un producto de las repisas para llevarlo a la caja · paga con el teclado y cobra';
-    const escena = div('tienda-puesto', puestoArte(), vidrio, ...ETIQUETAS.map(etiqueta), oculto, div('tienda-caja', $('#caja')), pista);
+    // cómo comprar, en tres pasos cortos bajo el puesto
+    pista.innerHTML = '<span>1</span> Toca un producto de las repisas <span>2</span> Escribe en el teclado de la caja con cuánto pagas <span>3</span> Pulsa «Cobrar e imprimir boleta»';
+    // la boleta impresa se lee completa y ancha, pegada en el vidrio de la vitrina (la ranura de la caja es muy angosta):
+    // productos, total, con cuánto se pagó, el medio de pago y el vuelto. «Nueva compra» deja la caja lista otra vez
+    const boletaVista = div('tienda-boleta-vista'); boletaVista.hidden = true;
+    const nueva = document.createElement('button'); nueva.type = 'button'; nueva.className = 'tienda-boleta-nueva'; nueva.textContent = '✦ Nueva compra';
+    nueva.addEventListener('click', () => { boletaVista.hidden = true; window.clearPrintedReceipt?.(); $('#m4-clear')?.click(); });
+    const copiarBoleta = () => {
+      const out = $('#printer-output'), papel = $('#printed-receipt');
+      if (!out || out.hidden || !papel || !papel.childElementCount || !escena.contains(out)) { boletaVista.hidden = true; return; }
+      const hoja = papel.cloneNode(true); hoja.removeAttribute('id'); hoja.className = 'tienda-boleta-hoja';
+      const pago = hoja.querySelectorAll('.paper-total');   // después de «Pagaste» se indica el medio de pago
+      const pagaste = [...pago].find(l => /Pagaste/.test(l.textContent));
+      if (pagaste) { const m = document.createElement('div'); m.className = 'paper-total paper-medio'; m.innerHTML = '<span>Medio de pago</span><b>Efectivo (teclado de la caja)</b>'; pagaste.after(m); }
+      boletaVista.replaceChildren(hoja, nueva); boletaVista.hidden = false;
+      if (window.Magia) { const r = boletaVista.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + 30, { n: 26, vel: 3 }); }
+    };
+    new MutationObserver(() => requestAnimationFrame(copiarBoleta)).observe($('#printer-output') || document.body, { attributes: true, attributeFilter: ['hidden'] });
+    const escena = div('tienda-puesto', puestoArte(), vidrio, ...ETIQUETAS.map(etiqueta), oculto, div('tienda-caja', $('#caja')), boletaVista, pista);
     letrero.classList.add('abierta');
     // la boleta impresa cae desde la ranura de la caja sobre el mantel (alto limitado a la pantalla)
     const ubicar = () => { const out = $('#printer-output'); if (!out || out.hidden || !escena.isConnected) return;
@@ -244,6 +265,11 @@
     return escena; };
     /* versión anterior (caja dentro del puesto)
     return puesto; */
+  // en la hoja derecha del cuaderno, cómo se usa (solo en la versión clásica; en el cuento la explica el narrador)
+  const guiaCalc = document.createElement('ol'); guiaCalc.className = 'calc-guia';
+  ['Pulsa las teclas de la calculadora o usa tu teclado (números, + − × ÷, Enter).', 'En la hoja izquierda se escribe el mismo cálculo en Java, línea por línea.', 'Descarga la app para probarla en tu computador.']
+    .forEach(t => { const li = document.createElement('li'); li.textContent = t; guiaCalc.append(li); });
+  $('#calc-java .botonera')?.before(guiaCalc);
   const marcosDev = [
     papel('app-calc', nota('Mi primer conjuro en Java fue una calculadora. Pulsa las teclas: al lado se escribe el mismo cálculo en Java.'), div('app-doble', $('#calc-zona'), $('#calc-java'))),
     // la tienda Magical Alliance en un solo puesto: repisas (etiquetas que se pueden tocar), caja registradora en el mesón,
@@ -270,7 +296,7 @@
   // ---------------------------------------------------------- 6-8. diseño e ilustración
   const dis = '#diseno';
   E.push({
-    id: 'diseno', hada: 'Diseño e ilustración', ev: crear('ev-diseno', cabeza(dis), de('.art-context', dis), de('.art-controls', dis), de('.art-compare', dis), de('.art-credit', dis)),
+    id: 'diseno', hada: 'Diseño e ilustración', ev: crear('ev-diseno', de('.art-context', dis), de('.art-controls', dis), de('.art-compare', dis), de('.art-credit', dis)),
     entrar(tl, ev) {
       sube(tl, $$('.section-head > *', ev));
       sube(tl, [$('.art-context', ev), ...$$('.art-controls .btn', ev)], '-=.2', { stagger: .06 });
@@ -280,7 +306,7 @@
     },
   });
   E.push({
-    id: 'leyendas', ev: crear('ev-leyendas', $('#leyendas')),
+    id: 'leyendas', hada: 'Diseño', ev: crear('ev-leyendas', cabeza(dis)),   // el cuaderno «Mi trazo» se arma más abajo
     entrar(tl, ev) { sube(tl, $$('.leyendas-cabeza > *', ev)); crece(tl, $('.ley-cuadro', ev), '-=.2'); crece(tl, $$('.leyendas-grid > *', ev).slice(0, 18), '-=.3', { stagger: .03 }); tl.from($('.leyendas-aviso', ev), { opacity: 0, duration: .4 }, '-=.2'); },
   });
   E.push({
@@ -482,14 +508,18 @@
   */
   // cada juego se juega dentro de la pantalla de su propia máquina (vista de cerca, grande); los puntos y el botón principal
   // van en el tablero de controles de la máquina y las instrucciones en un pergamino al lado
-  const maquina = (n, pantalla, ...tablero) => div('maq-juego maq-' + n, div('maq-pantalla', pantalla), div('maq-tablero', ...tablero));
-  const ladoJuego = (...hijos) => div('juego-lado', acciones(), div('juego-lado-texto', ...hijos));   // el texto se recorre dentro del papel
+  // las piezas de cada juego se sacan de su panel para ponerlas en la máquina, pero el cuento usa los mismos paneles:
+  // cada pieza recuerda su lugar original y vuelve a él mientras se lee el cuento (y regresa a la máquina al volver)
+  const piezas = [];
+  const pieza = el => { if (el) { const vuelve = document.createComment('pieza'); el.before(vuelve); piezas.push({ el, vuelve }); } return el; };
+  const maquina = (n, pantalla, ...tablero) => div('maq-juego maq-' + n, div('maq-pantalla', pieza(pantalla)), div('maq-tablero', ...tablero.map(pieza)));
+  const ladoJuego = (...hijos) => div('juego-lado', acciones(), div('juego-lado-texto', ...hijos.map(pieza)));   // el texto se recorre dentro del papel
   const fila = sel => $(sel)?.closest('.score-row');
   const juegos = {
     bloques: papel('app-juego app-bloques jugando', div('maq-escena',
       maquina(1, $('#game-tetris .tetris-frame'), fila('#play-score'), fila('#play-lines'), fila('#play-level'), $('#play-start')),
       // el control táctil (mover, girar, bajar y soltar) va junto a la máquina: en el teléfono queda bajo la pantalla
-      $('#game-tetris .control-magico'),
+      pieza($('#game-tetris .control-magico')),
       ladoJuego($('#game-tetris .game-side')))),
     gemas: papel('app-juego app-gemas jugando', div('maq-escena',
       maquina(2, $('#match-grid'), fila('#match-score'), $('#match-reset')),
@@ -508,10 +538,18 @@
   let cuadroMaq = 0;
   setInterval(() => { if (E[actual]?.id !== 'arcade' || salon.hidden) return; cuadroMaq = (cuadroMaq + 1) % 37; $$('.maquina-spr', salon).forEach((m, k) => { const c = (cuadroMaq + k * 9) % 37; m.style.backgroundPosition = (c % 8) / 7 * 100 + '% ' + Math.floor(c / 8) / 4 * 100 + '%'; }); }, 85);
   const sala = div('papel-marcos sala-juegos', Object.values(juegos));
+  const devolverPiezas = () => piezas.forEach(p => {
+    if (!p.vuelve.isConnected || p.el.closest('.ranura')) return;
+    if (!p.aqui) { p.aqui = document.createComment('pieza-clasica'); p.el.before(p.aqui); }   // su lugar en la versión clásica
+    p.vuelve.after(p.el);
+  });
+  addEventListener('mce-a-libro', devolverPiezas);
+  const tomarPiezas = () => piezas.forEach(p => { if (p.aqui && p.aqui.isConnected) p.aqui.after(p.el); });
   let maqTocada = null;   // la máquina del salón que se eligió: el juego crece desde ella
   const abrirJuego = id => {
     const desde = maqTocada?.getBoundingClientRect(); maqTocada = null;
     salon.hidden = !!id; sala.classList.toggle('abierta', !!id); E.find(e => e.id === 'arcade')?.ev.classList.toggle('jugando-arcade', !!id);
+    if (flujo) { raiz.classList.toggle('arcade-pantalla', !!id); const ea = E.find(e => e.id === 'arcade'); if (ea) encajar(ea); }
     if (id && desde) requestAnimationFrame(() => {
       const m = $('.app-juego.activo .maq-juego', sala); if (!m) return; const r = m.getBoundingClientRect();
       gsap.fromTo(m, { x: desde.left + desde.width / 2 - (r.left + r.width / 2), y: desde.top + desde.height / 2 - (r.top + r.height / 2), scale: desde.height / r.height, transformOrigin: '50% 50%' },
@@ -523,6 +561,7 @@
     requestAnimationFrame(() => ajustar(E[actual]));
   };
   salon.addEventListener('click', e => { const m = e.target.closest('.maquina'); if (m) { maqTocada = m; abrirJuego(m.dataset.juego); } });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && sala.classList.contains('abierta') && !$('dialog[open]')) { $$('.colgar-app.jugando', sala).forEach(j => j.classList.remove('jugando')); abrirJuego(null); } });
   // en el teléfono el juego se abre a pantalla completa: un botón fijo arriba vuelve al salón
   if (pila) {
     const volver = document.createElement('button'); volver.type = 'button'; volver.className = 'btn arcade-volver-fijo'; volver.textContent = '← Volver al salón'; volver.hidden = true; document.body.append(volver);
@@ -548,8 +587,12 @@
 
   // el orden de lectura: primero quién es y de dónde viene (perfil y trayectoria), después lo que hace;
   // «Matrona hoy» queda junto a Datos (las dos son su trabajo actual en salud)
-  const ORDEN = ['inicio', 'estudio', 'equipo', 'trayectoria', 'desarrollo', 'diseno', 'leyendas', 'historia', 'datos', 'matrona', 'arcade', 'contacto'];
-  E.sort((a, b) => (ORDEN.indexOf(a.id) + 1 || 99) - (ORDEN.indexOf(b.id) + 1 || 99));
+  // la portada con burbujas repetía lo mismo que el perfil: se quita y la página empieza en el perfil profesional
+  /* antes: const ORDEN = ['inicio', 'estudio', 'equipo', 'trayectoria', 'desarrollo', 'diseno', 'leyendas', 'historia', 'datos', 'matrona', 'arcade', 'contacto']; */
+  const ORDEN = ['equipo', 'estudio', 'trayectoria', 'desarrollo', 'leyendas', 'datos', 'matrona', 'arcade', 'contacto'];
+  // «Del papel a lo digital» (historia) y «Por qué dibujo» (diseno) se cuentan ahora dentro del cuaderno Mi trazo
+  for (let k = E.length - 1; k >= 0; k--) if (!ORDEN.includes(E[k].id)) { E[k].ev.remove(); E.splice(k, 1); }
+  E.sort((a, b) => ORDEN.indexOf(a.id) - ORDEN.indexOf(b.id));
 
   // los marcos de un paso a otro se cambian con un fundido y un leve deslizamiento
   function marcar(e, i) {
@@ -565,7 +608,7 @@
       .call(() => { marcar(e, i); ajustar(e); })
       .fromTo(nuevo, { opacity: 0, x: dir * 40 }, { opacity: 1, x: 0, duration: .45, ease: 'power2.out' });
   }
-  E.filter(e => e.botones).forEach(e => e.botones.forEach((b, k) => b.addEventListener('click', () => { if (E[actual] === e) irPaso(k); })));
+  E.filter(e => e.botones).forEach(e => e.botones.forEach((b, k) => b.addEventListener('click', () => { if (flujo) { actual = E.indexOf(e); paso = k; marcar(e, k); encajar(e); return; } if (E[actual] === e) irPaso(k); })));
 
   // ---------------------------------------------------------- el hada que tapa todo con su estela y pinta la sección siguiente
   // 1. vuela de la esquina superior derecha a la inferior izquierda; de la estrella de su varita nace una estela
@@ -675,97 +718,165 @@
     return tl;
   } */
 
-  // ---------------------------------------------------------- leyendas: como en un museo, la obra elegida completa en su marco y al lado el muro de cuadritos
+  // ---------------------------------------------------------- Diseño: «Mi trazo», el cuaderno de bocetos de Ari
+  // Cuenta su camino del papel a lo digital con sus propias obras: en la hoja derecha se elige (Mi camino, Papel o sus dibujos
+  // por tipo) y en la hoja izquierda aparece la obra; los dibujos se dibujan solos con un lápiz y terminan nítidos y completos.
+  // La galería de leyendas la usa también el cuento: sus filtros y su muro de cuadritos se toman prestados (piezas) y vuelven a su lugar.
+  /* antes: el cuaderno se armaba dentro de #leyendas (le cambiaba títulos y estructura) y el cuento mostraba la galería desarmada */
   const rejilla = $('#leyendas-grid');
-  if (rejilla) {
+  const evLey = E.find(e => e.id === 'leyendas')?.ev;
+  if (rejilla && evLey) {
+    const el = (tag, clase, txt) => { const n = document.createElement(tag); if (clase) n.className = clase; if (txt != null) n.textContent = txt; return n; };
     const cuadro = document.createElement('figure'); cuadro.className = 'ley-cuadro';
-    cuadro.innerHTML = '<div class="ley-marco"><img alt="" draggable="false"></div><figcaption><b></b><span></span><button type="button" class="btn ghost ley-ver">⤢ Ver en grande</button></figcaption>';
-    const cImg = $('img', cuadro), cTit = $('b', cuadro), cTxt = $('figcaption span', cuadro);
-    const muro = div('ley-muro'); rejilla.before(div('ley-museo', cuadro, muro)); muro.append(rejilla);
-    // «Mi trazo»: el cuaderno de bocetos de Ari. La obra elegida en la hoja izquierda; los filtros y los dibujitos en la derecha
-    const leyendasCab = $('#leyendas .leyendas-cabeza');
-    if (leyendasCab) {
-      const chip = $('.chip', leyendasCab), h3 = $('h3', leyendasCab), filtros = $('.leyendas-filtros', leyendasCab);
-      if (chip) chip.textContent = 'MI TRAZO · CUADERNO DE BOCETOS';
-      if (h3) h3.textContent = 'Así dibujo: leyendas, procesos y regalos';
-      if (filtros) muro.prepend(filtros);
-    }
-    let elegida = null;
-    // la obra se dibuja sobre la hoja: sin el fondo blanco, primero las líneas y luego el color, con un lápiz que recorre la hoja
+    cuadro.innerHTML = '<div class="ley-marco"><img class="ley-foto" alt="" draggable="false"></div><figcaption><b></b><span></span><button type="button" class="btn ghost ley-ver">⤢ Ver en grande</button></figcaption>';
+    const cFoto = $('.ley-foto', cuadro), cTit = $('b', cuadro), cTxt = $('figcaption span', cuadro), marco = $('.ley-marco', cuadro);
+    const muro = div('ley-muro');
+    const museo = div('ley-museo', cuadro, muro);
+    evLey.firstElementChild.append(museo, el('p', 'leyendas-aviso', $('#leyendas .leyendas-aviso')?.textContent || ''));
+
+    // las pestañas propias del cuaderno y, al lado, los filtros de la galería (Todas, Leyendas, Proceso, Regalos)
+    const filtros = $('#leyendas .leyendas-filtros');
+    const tabCamino = el('button', null, 'Mi camino'), tabPapel = el('button', null, 'Papel');
+    [tabCamino, tabPapel].forEach(b => { b.type = 'button'; b.setAttribute('aria-pressed', 'false'); });
+    const pestanasCuaderno = div('ley-pestanas', tabCamino, tabPapel, pieza(filtros));
+
+    // Mi camino: por qué dibuja y sus cuatro etapas (lo que antes era la escena «Dibujo porque…»)
+    const ETAPAS = [
+      ['01', 'Papel y pintura', 'Observar y dar forma', 'Mi punto de partida fue el trazo a mano, el color y la emoción: pintar por gusto, sin una formación formal.', 'assets/galeria/papel-luna-sakura.webp', 'foto'],
+      ['02', 'Line art y color', 'Llevar la idea a la pantalla', 'Pasé al dibujo digital probando líneas, paletas y vestuario para construir un lenguaje propio.', 'assets/galeria/digital-lineart.webp', 'dibujo'],
+      ['03', 'Personajes e historias', 'Crear una identidad', 'Relaciono expresiones, narrativa gráfica y estilo para que cada personaje comunique.', 'assets/galeria/expressions.webp', 'dibujo'],
+      ['04', 'Exploración 3D', 'Ampliar las posibilidades', 'Hoy sumo Blender, la preparación de recursos y la impresión 3D en PLA, y sigo aprendiendo.', 'assets/emblema-conari-magico.webp', 'foto'],
+    ];
+    const camino = div('ley-camino',
+      el('h4', null, 'Dibujo porque me gusta transformar ideas en imágenes'),
+      el('p', null, 'Me inspiran el anime, la fantasía, la magia y las leyendas de Chile y los Andes. Aprendo experimentando, redibujando y pintando.'),
+      el('ol', 'ley-etapas'));
+    const etapas = ETAPAS.map(([n, t, s, txt, src, modo]) => {
+      const b = el('button', 'ley-etapa'); b.type = 'button';
+      b.append(el('span', 'ley-etapa-num', n), el('b', null, t), el('small', null, s));
+      b.addEventListener('click', () => { etapas.forEach(o => o.classList.toggle('elegida', o === b)); mostrar(src, t, txt, modo); });
+      const li = el('li'); li.append(b); $('.ley-etapas', camino).append(li); return b;
+    });
+
+    // Papel: fotos de sus obras tradicionales (no se «dibujan»: son fotos pegadas en la hoja)
+    const PAPEL = [
+      ['assets/galeria/papel-luna-sakura.webp', 'Transición de soledad a alegría', 'Pintura a mano: un lobo bajo la luna junto a un cerezo en flor.'],
+      ['assets/galeria/papel-amerikano.webp', 'Amerikano', 'Dibujo a mano con personajes de armadura y alas.'],
+      ['assets/galeria/arte-panorama-kevin.jpeg', 'Panorama', 'Lámina panorámica dibujada y pintada a mano.'],
+    ];
+    const papelGrid = div('ley-papel', PAPEL.map(([src, t, txt]) => {
+      const b = el('button', 'obra ley-foto-mini'); b.type = 'button';
+      const im = el('img'); im.src = src; im.alt = t; im.draggable = false; b.append(im, el('span', 'obra-nombre', t));
+      b.addEventListener('click', () => { $$('.ley-foto-mini', papelGrid).forEach(o => o.classList.toggle('elegida', o === b)); mostrar(src, t, txt, 'foto'); });
+      return b;
+    }));
+    muro.append(pestanasCuaderno, camino, papelGrid, pieza(rejilla));
+
+    let vistaMuro = '';
+    const verMuro = v => {
+      vistaMuro = v; muro.dataset.vista = v;
+      tabCamino.setAttribute('aria-pressed', String(v === 'camino')); tabPapel.setAttribute('aria-pressed', String(v === 'papel'));
+      if (v !== 'dibujos') $$('button', filtros).forEach(b => b.setAttribute('aria-pressed', 'false'));
+      if (v === 'camino') etapas[0].click();
+      if (v === 'papel') $('.ley-foto-mini', papelGrid)?.click();
+      if (v === 'dibujos') destacar(rejilla.firstElementChild);
+    };
+    tabCamino.addEventListener('click', () => verMuro('camino'));
+    tabPapel.addEventListener('click', () => verMuro('papel'));
+    filtros?.addEventListener('click', e => { if (e.target.closest('button') && vistaMuro !== 'dibujos') setTimeout(() => verMuro('dibujos')); });
+
+    // la hoja izquierda: una foto pegada o un dibujo que se dibuja solo
     const lienzo = document.createElement('canvas'); lienzo.className = 'ley-lienzo'; lienzo.setAttribute('role', 'img');
     const lapiz = document.createElement('span'); lapiz.className = 'ley-lapiz'; lapiz.setAttribute('aria-hidden', 'true');
     lapiz.innerHTML = '<svg viewBox="0 0 64 64"><path d="M50 4l10 10-34 34-14 4 4-14z" fill="#f6a9cc" stroke="#6a2c55" stroke-width="2"/><path d="M42 12l10 10" stroke="#6a2c55" stroke-width="2"/><path d="M50 4l10 10 3-3a3 3 0 0 0 0-4l-6-6a3 3 0 0 0-4 0z" fill="#d9b56a" stroke="#6a2c55" stroke-width="2"/><path d="M16 38l10 10-14 4z" fill="#fbe3c8" stroke="#6a2c55" stroke-width="2"/><path d="M12 52l-2 2 4-1z" fill="#4a2556"/></svg>';
-    $('.ley-marco', cuadro).append(lienzo, lapiz);
-    lienzo.addEventListener('contextmenu', e => e.preventDefault());
-    let dibujo = 0, pendiente = null;
-    // si la escena estaba escondida al elegir la obra, se dibuja apenas el marco tiene tamaño
-    new ResizeObserver(() => { if (pendiente && $('.ley-marco', cuadro).clientWidth) dibujar(...pendiente); }).observe($('.ley-marco', cuadro));
+    marco.append(lienzo, lapiz);
+    [lienzo, cFoto].forEach(n => n.addEventListener('contextmenu', e => e.preventDefault()));
+    let dibujo = 0, pendiente = null, actualSrc = '', actualModo = '';
+    new ResizeObserver(() => { if (pendiente && marco.clientWidth) dibujar(...pendiente); }).observe(marco);
+    function mostrar(src, titulo, texto, modo) {
+      actualSrc = src; actualModo = modo; cTit.textContent = titulo; cTxt.textContent = texto || '';
+      cuadro.dataset.modo = modo;
+      if (modo === 'foto') { dibujo++; lapiz.style.opacity = 0; cFoto.src = src; cFoto.alt = titulo; return; }
+      dibujar(src, titulo);
+    }
+    // el dibujo se ve tal cual es (nítido): el papel del cuaderno se ve a través del blanco porque el lienzo se mezcla «multiplicando»;
+    // la marca de agua gris clara se aclara un poco para que no tape las líneas
     function dibujar(src, alt) {
       const yo = ++dibujo, img = new Image();
       img.onload = () => {
         if (yo !== dibujo) return;
-        const marco = $('.ley-marco', cuadro), W = marco.clientWidth, H = marco.clientHeight; if (!W || !H) { pendiente = [src, alt]; return; } pendiente = null;
-        const k = Math.min(W * .96 / img.width, H * .96 / img.height), w = Math.round(img.width * k), h = Math.round(img.height * k), dpr = Math.min(2, devicePixelRatio || 1);
-        lienzo.width = w * dpr; lienzo.height = h * dpr; lienzo.style.width = w + 'px'; lienzo.style.height = h + 'px'; lienzo.setAttribute('aria-label', alt);
-        // el dibujo sin el blanco: cuanto más claro el píxel, más transparente (las líneas y el color quedan sobre el papel)
+        const W = marco.clientWidth, H = marco.clientHeight; if (!W || !H) { pendiente = [src, alt]; return; } pendiente = null;
+        const k = Math.min(W * .97 / img.width, H * .97 / img.height), w = Math.round(img.width * k), h = Math.round(img.height * k), dpr = Math.min(3, (devicePixelRatio || 1) * 1.5);
+        lienzo.width = Math.round(w * dpr); lienzo.height = Math.round(h * dpr); lienzo.style.width = w + 'px'; lienzo.style.height = h + 'px'; lienzo.setAttribute('aria-label', alt);
         const mk = () => { const c = document.createElement('canvas'); c.width = lienzo.width; c.height = lienzo.height; return c; };
-        const color = mk(), cx = color.getContext('2d'); cx.drawImage(img, 0, 0, color.width, color.height);
+        const color = mk(), cx = color.getContext('2d'); cx.imageSmoothingQuality = 'high'; cx.drawImage(img, 0, 0, color.width, color.height);
         const d = cx.getImageData(0, 0, color.width, color.height), p = d.data;
         const lineas = mk(), lx = lineas.getContext('2d'), dl = lx.createImageData(color.width, color.height), q = dl.data;
         for (let i = 0; i < p.length; i += 4) {
           const mx = Math.max(p[i], p[i + 1], p[i + 2]), mn = Math.min(p[i], p[i + 1], p[i + 2]), lum = (p[i] + p[i + 1] + p[i + 2]) / 3;
-          p[i + 3] = Math.round(Math.min(1, Math.max((255 - mn) / 60, (mx - mn) / 40)) * 255);   // blanco → transparente
-          const tinta = lum < 150 ? Math.min(1, (150 - lum) / 70) : 0;                          // solo los trazos oscuros, para el boceto
-          q[i] = 74; q[i + 1] = 37; q[i + 2] = 86; q[i + 3] = Math.round(tinta * 200);
+          if (mx - mn < 28 && lum > 175) { const f = .45; p[i] = 255 - (255 - p[i]) * f; p[i + 1] = 255 - (255 - p[i + 1]) * f; p[i + 2] = 255 - (255 - p[i + 2]) * f; }   // marca de agua más suave
+          const tinta = lum < 150 ? Math.min(1, (150 - lum) / 60) : 0;   // el boceto: solo los trazos oscuros
+          q[i] = 74; q[i + 1] = 37; q[i + 2] = 86; q[i + 3] = Math.round(tinta * 230);
         }
         cx.putImageData(d, 0, 0); lx.putImageData(dl, 0, 0);
         const ctx = lienzo.getContext('2d'), mascara = mk(), mctx = mascara.getContext('2d');
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { ctx.clearRect(0, 0, lienzo.width, lienzo.height); ctx.drawImage(color, 0, 0); lapiz.style.opacity = 0; return; }
-        const pasadas = [{ capa: lineas, ms: 1500, ancho: .07 }, { capa: color, ms: 1300, ancho: .11 }];
+        const final = () => { ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, lienzo.width, lienzo.height); ctx.drawImage(color, 0, 0); lapiz.style.opacity = 0; };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { final(); return; }
+        const pasadas = [{ capa: lineas, ms: 1400, ancho: .08 }, { capa: color, ms: 1200, ancho: .12 }];
         let n = 0, t0 = performance.now(), hechoLineas = false, prev = null;
-        // el lápiz va de lado a lado bajando fila por fila (en zigzag)
         const zig = (u, filas) => { const f = Math.min(filas - 1, Math.floor(u * filas)), v = u * filas - f; return [f % 2 ? 1 - v : v, (f + .5) / filas]; };
         const paso = ahora => {
           if (yo !== dibujo) return;
           const ps = pasadas[n], u = Math.min(1, (ahora - t0) / ps.ms), [x, y] = zig(u, Math.round(1 / ps.ancho)), X = x * lienzo.width, Y = y * lienzo.height;
-          mctx.lineCap = 'round'; mctx.lineWidth = lienzo.height * ps.ancho * 1.6; mctx.strokeStyle = '#000';
+          mctx.lineCap = 'round'; mctx.lineWidth = lienzo.height * ps.ancho * 1.8; mctx.strokeStyle = '#000';
           if (prev) { mctx.beginPath(); mctx.moveTo(prev[0], prev[1]); mctx.lineTo(X, Y); mctx.stroke(); } prev = [X, Y];
-          ctx.clearRect(0, 0, lienzo.width, lienzo.height);
+          ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, lienzo.width, lienzo.height);
           if (hechoLineas) ctx.drawImage(lineas, 0, 0);
           const tmp = mk(), tx = tmp.getContext('2d'); tx.drawImage(mascara, 0, 0); tx.globalCompositeOperation = 'source-in'; tx.drawImage(ps.capa, 0, 0); ctx.drawImage(tmp, 0, 0);
-          lapiz.style.opacity = 1; lapiz.style.transform = `translate(${(lienzo.offsetLeft - w / 2 + x * w).toFixed(1)}px, ${(lienzo.offsetTop - h / 2 + y * h).toFixed(1)}px)`;
+          lapiz.style.opacity = 1; lapiz.style.transform = `translate(${(lienzo.offsetLeft + x * w).toFixed(1)}px, ${(lienzo.offsetTop + y * h).toFixed(1)}px)`;
           if (u < 1) { requestAnimationFrame(paso); return; }
           if (n === 0) { hechoLineas = true; n = 1; t0 = performance.now(); mctx.clearRect(0, 0, mascara.width, mascara.height); prev = null; requestAnimationFrame(paso); return; }
-          ctx.clearRect(0, 0, lienzo.width, lienzo.height); ctx.drawImage(color, 0, 0); lapiz.style.opacity = 0;
+          final();   // al terminar queda el dibujo completo, igual al original
         };
         requestAnimationFrame(paso);
+        setTimeout(() => { if (yo === dibujo) { dibujo++; final(); } }, 4200);   // aunque la pestaña quede en segundo plano, siempre termina completo
       };
       img.src = src;
     }
+    // los dibujos de la galería (leyendas, procesos y regalos)
+    let elegida = null;
     const destacar = b => {
       if (!b) return; elegida = b;
       const im = b.querySelector('img'), alt = im.alt || '', corte = alt.indexOf('. ');
-      cImg.src = im.src; cImg.alt = alt; dibujar(im.src, alt);
-      cTit.textContent = b.querySelector('.obra-nombre')?.textContent || alt.slice(0, corte);
-      cTxt.textContent = corte >= 0 ? alt.slice(corte + 2) : '';
+      mostrar(im.src, b.querySelector('.obra-nombre')?.textContent || alt.slice(0, corte), corte >= 0 ? alt.slice(corte + 2) : '', 'dibujo');
       $$('.obra', rejilla).forEach(o => o.classList.toggle('elegida', o === b));
     };
-    // en el muro, tocar un cuadrito lo lleva al marco grande; el visor ampliado se abre desde el marco
-    rejilla.addEventListener('click', e => { const b = e.target.closest('.obra'); if (!b || b._directo) return; e.stopImmediatePropagation(); destacar(b); }, true);
-    const ampliar = () => { if (!elegida) return; elegida._directo = true; elegida.click(); elegida._directo = false; };
-    $('.ley-ver', cuadro).addEventListener('click', ampliar); cImg.addEventListener('click', ampliar);
-    cImg.addEventListener('contextmenu', e => e.preventDefault()); lienzo.addEventListener('click', ampliar);
-    // al cambiar el filtro, el marco muestra la primera obra del filtro
-    new MutationObserver(() => destacar(rejilla.firstElementChild)).observe(rejilla, { childList: true });
-    destacar(rejilla.firstElementChild);
+    rejilla.addEventListener('click', e => { if (!museo.contains(rejilla)) return; const b = e.target.closest('.obra'); if (!b || b._directo) return; e.stopImmediatePropagation(); destacar(b); }, true);
+    new MutationObserver(() => { if (museo.contains(rejilla) && vistaMuro === 'dibujos') destacar(rejilla.firstElementChild); }).observe(rejilla, { childList: true });
+    // ver en grande: los dibujos en el visor de la galería (mismo marco para todos); las fotos de papel, en un visor simple
+    const visorFoto = document.createElement('dialog'); visorFoto.className = 'visor ley-visor-foto'; visorFoto.setAttribute('aria-label', 'Obra ampliada');
+    visorFoto.innerHTML = '<figure><div class="visor-img"><img alt="" draggable="false"></div><figcaption><b></b><span></span></figcaption></figure><button type="button" class="visor-cerrar" aria-label="Cerrar">✕</button>';
+    document.body.append(visorFoto);
+    $('.visor-cerrar', visorFoto).addEventListener('click', () => visorFoto.close());
+    visorFoto.addEventListener('click', e => { if (e.target === visorFoto) visorFoto.close(); });
+    const ampliar = () => {
+      if (actualModo === 'dibujo' && elegida && vistaMuro === 'dibujos') { elegida._directo = true; elegida.click(); elegida._directo = false; return; }
+      const im = $('img', visorFoto); im.src = actualSrc; im.alt = cTit.textContent; $('b', visorFoto).textContent = cTit.textContent; $('span', visorFoto).textContent = cTxt.textContent;
+      visorFoto.showModal();
+    };
+    $('.ley-ver', cuadro).addEventListener('click', ampliar); lienzo.addEventListener('click', ampliar); cFoto.addEventListener('click', ampliar);
+    // al volver del cuento la galería vuelve al cuaderno: se muestra lo que estaba elegido
+    addEventListener('mce-a-clasico', () => { if (vistaMuro === 'dibujos') destacar(rejilla.firstElementChild); });
+    verMuro('camino');
   }
 
   // ---------------------------------------------------------- destellos en los bordes: aparecen aquí y allá, alternados, sobre los cuadros de la escena
-  const CUADROS = '.studio-brand-card, .service-gallery article, .service-more article, .role-node, .perfil-pro, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .contacto, .papel-app.activo';
+  const CUADROS = '.studio-brand-card, .service-gallery article, .service-more article, .role-node, .perfil-pro, .leyendas, .design-story, .health-card, .credential-gallery article, .cv-cta, .oraculo-form, .oraculo-viz, .transition-path a, .papel-app.activo';   // (sin .contacto: los destellos tapaban los correos)
   const capaBrillos = div('brillos-borde'); capaBrillos.setAttribute('aria-hidden', 'true'); document.body.append(capaBrillos);
   const TONOS_BORDE = ['#fff6d8', '#f3d48a', '#f5a8cf', '#d9c4ff', '#bfe9ff'];
   setInterval(() => {
     if (document.hidden || bloqueada() || magia.style.visibility === 'visible') return;
+    if (!E[actual]) return;
     const cuadros = $$(CUADROS, E[actual].ev).map(q => q.getBoundingClientRect()).filter(r => r.width > 40 && r.bottom > 0 && r.top < innerHeight);
     if (!cuadros.length || Math.random() < .25) return;
     // un punto al azar sobre el contorno de un cuadro al azar
@@ -795,6 +906,7 @@
   const barra = () => { const t = $('.topbar', site); return t ? Math.round(t.getBoundingClientRect().bottom) : 70; };
   function ajustar(e) {
     if (!e || pila) return;
+    if (flujo) { encajar(e); return; }
     capa.style.top = barra() + 'px';
     const caja = e.ev.firstElementChild;
     caja.style.zoom = ''; e.ev.classList.remove('desborda');
@@ -823,7 +935,7 @@
   let actual = 0, paso = 0, ocupado = false, tlEntrada = null;
   const objetivos = tl => [...new Set(tl.getChildren(true, true, false).flatMap(t => t.targets()))].filter(t => t instanceof Element);
   const marcarMenu = e => {
-    const zona = { servicios: 'estudio', equipo: 'estudio', leyendas: 'diseno', historia: 'diseno', salud: 'trayectoria', matrona: 'trayectoria' }[e.id] || e.id;
+    const zona = { servicios: 'estudio', equipo: 'inicio', leyendas: 'diseno', historia: 'diseno', salud: 'trayectoria', matrona: 'trayectoria' }[e.id] || e.id;
     $$('.topbar nav a, .topbar .mini-cta').forEach(a => a.classList.toggle('activo', a.getAttribute('href') === '#' + zona));
   };
   function mostrar(e) {
@@ -907,7 +1019,7 @@
   const bloqueada = () => site.getAttribute('aria-hidden') === 'true' || site.classList.contains('pintando') || document.body.classList.contains('bloqueado') || $('dialog[open]');
   let acumulado = 0, ultimaRueda = 0, gestoUsado = false;
   addEventListener('wheel', e => {
-    if (pila || bloqueada()) return;
+    if (pila || flujo || bloqueada()) return;
     if (e.target.closest('select') || (e.target.closest('canvas') && document.activeElement === e.target.closest('canvas'))) return;   // jugando con foco, la rueda no cambia de escena
     const ev = E[actual].ev, ahora = performance.now();
     if (ev.classList.contains('desborda')) {          // escena más alta que la pantalla: primero se recorre
@@ -924,37 +1036,82 @@
     if (Math.abs(acumulado) > 45) { gestoUsado = true; avanzar(acumulado > 0 ? 1 : -1); acumulado = 0; }
   }, { passive: false });
   addEventListener('keydown', e => {
-    if (pila || bloqueada() || e.target.closest('input, select, textarea, canvas, .calc-magica, .match-grid, .constellation-board')) return;
+    if (pila || flujo || bloqueada() || e.target.closest('input, select, textarea, canvas, .calc-magica, .match-grid, .constellation-board')) return;
     if (['ArrowDown', 'PageDown'].includes(e.key)) { e.preventDefault(); avanzar(1); }
     if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); avanzar(-1); }
     if (e.key === 'Home') { e.preventDefault(); irA(0); }
     if (e.key === 'End') { e.preventDefault(); irA(E.length - 1); }
   });
-  const DESTINO = { inicio: 'inicio', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'diseno', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'trayectoria', 'matrona-hoy': 'matrona', formacion: 'equipo', arcade: 'arcade', contacto: 'contacto' };
+  const DESTINO = { inicio: 'equipo', estudio: 'estudio', desarrollo: 'desarrollo', diseno: 'leyendas', leyendas: 'leyendas', datos: 'datos', trayectoria: 'trayectoria', 'salud-card': 'trayectoria', 'matrona-hoy': 'matrona', formacion: 'equipo', arcade: 'arcade', contacto: 'contacto' };
   const indiceDe = id => E.findIndex(e => e.id === id);
   document.addEventListener('click', e => {
     const a = e.target.closest('a[href^="#"]'); if (!a || !site.contains(a)) return;
     const id = DESTINO[a.getAttribute('href').slice(1)]; if (!id) return;
     e.preventDefault(); $('#main-nav')?.classList.remove('open');
-    if (pila) { E[indiceDe(id)]?.ev.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+    if (pila || flujo) { irFlujo(indiceDe(id), true); return; }
     irA(indiceDe(id));
   }, true);
 
   // al volver a la versión clásica (desde el cuento o con un enlace a una sección) se muestra la escena que corresponde
   history.scrollRestoration = 'manual';
+  if (site.getAttribute('aria-hidden') === 'true') devolverPiezas();   // la página partió en el cuento
   new MutationObserver(() => {
     if (site.getAttribute('aria-hidden') !== 'false') return;
+    tomarPiezas(); window.dispatchEvent(new Event('mce-a-clasico'));
     scrollTo(0, 0);
     const id = DESTINO[location.hash.slice(1)];
-    if (pila) { if (id) E[indiceDe(id)]?.ev.scrollIntoView({ block: 'start' }); return; }
+    if (pila || flujo) { if (id) irFlujo(indiceDe(id)); return; }
     saltar(id ? indiceDe(id) : actual);
   }).observe(site, { attributes: true, attributeFilter: ['aria-hidden'] });
 
+  // ---------------------------------------------------------- scroll continuo en el computador
+  // cada escena mide lo que queda de pantalla bajo el menú y su contenido se achica lo justo para verse entero
+  // (se escala con transform y no con zoom: los dibujos que ocupan todo el ancho, como el mural, con zoom volvían a crecer)
+  function encajar(e) {
+    const alto = innerHeight - barra(), caja = e.ev.firstElementChild;
+    // jugando en el Arcade: el juego ocupa toda la pantalla (la máquina se ve de cerca), sin achicarse
+    if (e.ev.classList.contains('jugando-arcade')) { e.ev.style.height = ''; caja.style.transform = ''; e.escala = 1; return; }
+    e.ev.style.height = alto + 'px';
+    const cs = getComputedStyle(e.ev), dispH = alto - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom),
+      dispW = e.ev.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const h = Math.max(1, caja.scrollHeight), w = Math.max(1, caja.scrollWidth);
+    const k = Math.min(1, dispH / h, dispW / w), y = Math.max(0, (dispH - h * k) / 2);
+    caja.style.transformOrigin = '50% 0';
+    caja.style.transform = 'translateY(' + y.toFixed(1) + 'px)' + (k < .995 ? ' scale(' + k.toFixed(4) + ')' : '');
+    e.escala = k;
+  }
+  const encajarTodo = () => { capa.style.top = ''; E.forEach(encajar); };
+  function irFlujo(i, suave) {
+    const e = E[i]; if (!e) return;
+    const y = e.ev.getBoundingClientRect().top + scrollY - barra();
+    scrollTo({ top: Math.max(0, y), behavior: suave ? 'smooth' : 'instant' });
+  }
+  function arrancarFlujo() {
+    $$('button', indice).forEach((b, i) => { const n = b.cloneNode(true); n.addEventListener('click', () => irFlujo(i, true)); b.replaceWith(n); });
+    velo.classList.add('visible'); raiz.classList.add('escena-contenido');
+    let cola = 0; const pedir = () => { cancelAnimationFrame(cola); cola = requestAnimationFrame(encajarTodo); };
+    addEventListener('resize', pedir);
+    const ro = new ResizeObserver(pedir); E.forEach(e => ro.observe(e.ev.firstElementChild));
+    $$('img', capa).forEach(img => { img.loading = 'eager'; if (!img.complete) img.addEventListener('load', pedir, { once: true }); });
+    encajarTodo();
+    // la escena que ocupa el centro de la pantalla es la «actual»: marca el menú y la estrella del índice
+    const vista = () => {
+      const medio = innerHeight / 2; let i = E.findIndex(e => { const r = e.ev.getBoundingClientRect(); return r.top <= medio && r.bottom > medio; });
+      if (i < 0 || i === actual) return;
+      E[actual]?.salir && E[actual].salir();
+      actual = i; marcarMenu(E[i]); $$('button', indice).forEach((b, k) => b.classList.toggle('activo', k === i));
+    };
+    addEventListener('scroll', vista, { passive: true }); actual = -1; vista();
+    const ini = DESTINO[location.hash.slice(1)]; if (ini && ini !== 'equipo') requestAnimationFrame(() => irFlujo(indiceDe(ini)));
+  }
+
   // ---------------------------------------------------------- arranque
-  if (pila) {
+  if (pila || flujo) {
     // todas las escenas visibles, en orden, sin el índice de estrellas ni la pista de la rueda
     E.forEach(e => { e.ev.classList.add('activa'); capa.append(e.ev); e.listo?.(e.ev); if (e.marcos) marcar(e, 0); });
-    indice.remove(); pistaRueda.remove();
+    pistaRueda.remove();
+    if (flujo) { arrancarFlujo(); return; }
+    indice.remove();
     // las escenas que son un solo dibujo ancho se ven completas; al tocar una de sus partes con información,
     // la cámara la encuadra entera (la ventana crece para mostrarla grande) y se lee bajando dentro de ella.
     // Las partes están medidas en el dibujo (porcentaje de ancho y alto): [nombre, x, y, ancho, alto]

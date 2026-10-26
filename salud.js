@@ -23,7 +23,7 @@
     const CORTO = { anticonceptivos: 'Anticonceptivos', its: 'ITS', embarazo: 'Embarazo y matronas', ajuar: 'Ajuar del recién nacido', cancer: 'Cáncer' };
     const T = window.TABLEROS;
     const TV = window.TABLEROS_VIVOS;
-    let t = 0, pag = 0, vista = TV ? 'vivo' : 'pbi', sub = 'hallazgos', kpiSel = 0;
+    let t = 0, pag = 0, vista = TV ? 'vivo' : 'pbi', sub = 'investigue', kpiSel = 0;
 
     // temas
     const temas = el('div', 'tab-temas'); temas.setAttribute('role', 'tablist'); temas.setAttribute('aria-label', 'Elige un tablero');
@@ -99,15 +99,16 @@
     const tieneTableau = () => !!pagina().tableau;
 
     function elegir(i) {
-      t = i; pag = 0; kpiSel = 0; if (sub === 'sim' && !actual().simulador) sub = 'hallazgos';
+      t = i; pag = 0; kpiSel = 0; if (sub === 'sim' && !actual().simulador) sub = 'investigue';
       $$('.tab-tema', temas).forEach((b, k) => { b.classList.toggle('activo', k === t); b.setAttribute('aria-selected', String(k === t)); });
       const d = actual();
       titulo.textContent = d.titulo;
-      // la primera frase de «Qué muestra»: el resto es común a los cinco tableros
-      pregunta.textContent = d.muestra.split(/ Cada página parte/)[0];
+      // la primera frase de «Qué muestra» va dentro de «Qué investigué» (la hoja muestra una sola parte a la vez, completa)
+      pregunta.textContent = d.muestra.split(/ Cada página parte/)[0]; pregunta.hidden = true;
       // pestañas internas
       subs.replaceChildren();
-      [['hallazgos', 'Lo que encontré'], ['kpi', 'Indicadores (' + d.kpi.length + ')'], ...(d.simulador ? [['sim', 'Simulador']] : []), ['archivos', 'Archivos']].forEach(([id, txt]) => {
+      /* antes: [['hallazgos', 'Lo que encontré'], ['kpi', …], …] con lo investigado, lo observado y lo concluido juntos (no cabía en la hoja) */
+      [['investigue', 'Qué investigué'], ['observe', 'Lo que observé'], ['concluyo', 'Lo que concluyo'], ['kpi', 'Indicadores'], ...(d.simulador ? [['sim', 'Simulador']] : []), ['archivos', 'Archivos']].forEach(([id, txt]) => {
         const b = boton('tab-sub', txt, { role: 'tab' }); b.dataset.sub = id;
         b.addEventListener('click', () => { sub = id; pintarSub(); });
         subs.append(b);
@@ -136,28 +137,29 @@
       const d = actual();
       $$('.tab-sub', subs).forEach(b => { const on = b.dataset.sub === sub; b.classList.toggle('activo', on); b.setAttribute('aria-selected', String(on)); });
       panel.replaceChildren();
-      if (sub === 'hallazgos') {
-        panel.append(el('p', 'tab-etiqueta', 'Qué investigué'), el('p', 'tab-texto', d.investigue), el('p', 'tab-etiqueta', 'Lo que observé'));
+      if (sub === 'hallazgos' || sub === 'investigue') {
+        panel.append(el('p', 'tab-etiqueta', 'Qué investigué'), el('p', 'tab-texto', pregunta.textContent), el('p', 'tab-texto', d.investigue));
+      } else if (sub === 'observe') {
+        panel.append(el('p', 'tab-etiqueta', 'Lo que observé'));
         const ul = el('ul', 'tab-obs'); d.observe.forEach(o => ul.append(el('li', null, o))); panel.append(ul);
-        const q = el('blockquote', 'tab-conclusion'); q.append(el('b', null, 'Lo que concluyo · '), document.createTextNode(d.concluyo)); panel.append(q);
+      } else if (sub === 'concluyo') {
+        panel.append(el('p', 'tab-etiqueta', 'Lo que concluyo'));
+        const q = el('blockquote', 'tab-conclusion'); q.append(document.createTextNode(d.concluyo)); panel.append(q);
       } else if (sub === 'kpi') {
-        panel.append(el('p', 'tab-ayuda', 'Toca un indicador para ver cómo se calcula, qué evalúa y por qué importa.'));
-        const grilla = el('div', 'tab-kpis');
-        const detalle = el('div', 'tab-kpi-detalle');
-        d.kpi.forEach((k, i) => {
-          const b = boton('tab-kpi'); b.append(el('span', 'tab-kpi-nombre', k.nombre), el('b', 'tab-kpi-valor', k.valor));
-          b.addEventListener('click', () => { kpiSel = i; pintarSub(); });
-          if (i === kpiSel) b.classList.add('activo');
-          grilla.append(b);
-        });
-        const k = d.kpi[kpiSel];
-        detalle.append(el('h4', null, k.nombre));
+        // un indicador a la vez (con flechas para pasar al siguiente), así cada uno se lee completo en la hoja
+        /* antes: la grilla con todos los indicadores y el detalle debajo (no cabía en la hoja) */
+        const n = d.kpi.length, nav = el('div', 'tab-kpi-nav');
+        const kAnt = boton('tab-kpi-flecha', '‹', { ariaLabel: 'Indicador anterior' }), kSig = boton('tab-kpi-flecha', '›', { ariaLabel: 'Indicador siguiente' });
+        kAnt.addEventListener('click', () => { kpiSel = (kpiSel - 1 + n) % n; pintarSub(); }); kSig.addEventListener('click', () => { kpiSel = (kpiSel + 1) % n; pintarSub(); });
+        nav.append(kAnt, el('span', 'tab-kpi-cuenta', 'Indicador ' + (kpiSel + 1) + ' de ' + n), kSig);
+        const k = d.kpi[kpiSel], detalle = el('div', 'tab-kpi-detalle');
+        detalle.append(el('h4', null, k.nombre), el('p', 'tab-kpi-grande', k.valor));
         const dl = el('dl');
-        [['Valor en Chile', k.valor], ['Cómo se calcula', k.calculo], ['Qué evalúa', k.evalua], ['Por qué importa', k.importa], ['Meta o referencia', k.meta]].forEach(([a, b]) => { if (b && b !== '—') dl.append(el('dt', null, a), el('dd', null, b)); });
+        [['Cómo se calcula', k.calculo], ['Qué evalúa', k.evalua], ['Por qué importa', k.importa], ['Meta o referencia', k.meta]].forEach(([a, b]) => { if (b && b !== '—') dl.append(el('dt', null, a), el('dd', null, b)); });
         detalle.append(dl);
-        panel.append(grilla, detalle);
+        panel.append(nav, detalle);
       } else if (sub === 'sim') {
-        panel.append(el('p', 'tab-texto', 'Una página del tablero donde se mueven los supuestos y se ve qué cambiaría con matronas haciendo educación sexual integral en los colegios:'));
+        panel.append(el('p', 'tab-texto', 'Mueve los supuestos y mira qué cambiaría con matronas haciendo educación sexual integral en los colegios:'));
         const ul = el('ul', 'tab-obs'); d.simulador.puntos.forEach(o => ul.append(el('li', null, o))); panel.append(ul);
         if (d.simulador.aviso) panel.append(el('p', 'tab-aviso', '⚠️ ' + d.simulador.aviso));
         const k = d.paginas.findIndex(p => /^Simulador/.test(p.titulo));
@@ -173,6 +175,10 @@
         panel.append(lista);
         panel.append(el('p', 'tab-nota', 'Cifras de fuentes públicas (MINSAL, DEIS, INE, ISP, OMS y otras): cada dato tiene su fuente en la hoja «Fuentes» de la base de datos.'));
       }
+      // lo elegido se lee completo en la hoja, sin barra: si no cabe, la letra se achica lo justo
+      const dentro = el('div', 'tab-dentro'); dentro.append(...panel.childNodes); panel.append(dentro);
+      const caber = () => { let z = 1; dentro.style.zoom = ''; while (panel.clientHeight && panel.scrollHeight > panel.clientHeight + 1 && z > .58) { z -= .03; dentro.style.zoom = z.toFixed(2); } };
+      caber(); setTimeout(caber, 300);
     }
 
     function irPagina(k) { const n = nPaginas(); pag = (k + n) % n; pintarPagina(); }

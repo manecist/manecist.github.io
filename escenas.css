@@ -270,3 +270,132 @@ html.escenas .ev .studio-team > div:first-child h3 { margin: 0; font: 700 clamp(
 html.escenas .ev .role-node p { font-size: .95rem; line-height: 1.55; }
 html.escenas .ley-muro .obra.obra-horizontal { grid-column: auto; grid-row: auto; }
 html.escenas .ev .ley-cuadro .btn.ley-ver { color: #6a2c55; background: #fff6fb; border: 2px solid #f0d6e8; }
+
+/* ---------------------------------------------------------------- scroll continuo en el computador (escenas.js «flujo»):
+   las escenas van una debajo de otra; cada una mide lo que queda de pantalla bajo el menú y se ve completa */
+html.escenas-flujo, html.escenas-flujo body { overflow: visible; height: auto; }
+html.escenas-flujo body { overflow-y: auto; }
+html.escenas-flujo .escenas-capa { position: relative; top: auto; left: auto; right: auto; bottom: auto; }
+html.escenas-flujo .ev { position: relative; inset: auto; display: flex; align-items: flex-start; justify-content: center; overflow: hidden; scroll-margin-top: 70px; }
+html.escenas-flujo .ev.desborda { overflow: hidden; }
+html.escenas-flujo .escenas-velo { position: fixed; }
+/* Trayectoria: la cinta va en el hueco sobre el borde del tablero, entre las flores de la izquierda y la luna (medido en el dibujo:
+   tablero de x 260 a 1410 y borde superior en y ≈ 80 de 1672 × 941), sin tapar el dibujo ni el borde */
+html.escenas-flujo .ev-trayectoria .section-head { top: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important; max-width: none !important; }
+html.escenas-flujo .ev-trayectoria .section-head > div { display: block !important; }
+html.escenas-flujo .ev-trayectoria .section-head .cinta-nombre { position: absolute !important; left: 26% !important; top: .4% !important; width: 13.5% !important; margin: 0 !important; padding: 0 0 .3em !important; box-sizing: border-box !important; aspect-ratio: 1400 / 368 !important; display: grid !important; font-size: 1.15rem !important; }
+
+/* Desarrollo · calculadora: más grande y al lado del cuaderno; en el cuaderno, el código en la hoja izquierda con letra legible
+   y en la hoja derecha cómo se usa y los botones en los colores del cuaderno (no oscuros) */
+.calc-guia { display: none; }
+html.escenas .ev-desarrollo .papel-app.app-calc { max-width: 1240px; }
+html.escenas .ev-desarrollo .app-calc .app-doble { grid-template-columns: minmax(360px, 430px) 1fr !important; gap: 34px !important; align-items: center; }
+html.escenas .ev-desarrollo .app-calc .calc-pantalla span { font-size: .95rem !important; }
+html.escenas .ev-desarrollo .app-calc .calc-pantalla strong { font-size: 2.3rem !important; }
+html.escenas .ev-desarrollo .app-calc .calc-teclas button { font-size: 1.25rem !important; border-radius: 14px !important; }
+html.escenas .ev-desarrollo .app-calc .calc-teclas .t-esp { font-size: 1rem !important; }
+html.escenas .ev-desarrollo .app-calc .calc-java { padding: 13% 55% 8% 9% !important; gap: 10px !important; }
+html.escenas .ev-desarrollo .app-calc .calc-java .chip { display: block; font: 700 .95rem/1.2 'Mali', sans-serif !important; letter-spacing: .06em; color: #c2457f !important; }
+html.escenas .ev-desarrollo .app-calc .calc-java h3 { display: block; font: 700 1.5rem/1.1 'Mali', sans-serif !important; color: #6a2c55 !important; }
+html.escenas .ev-desarrollo .app-calc .calc-java pre { font: 600 1.12rem/1.8 'Mali', monospace !important; }
+html.escenas .ev-desarrollo .app-calc .calc-guia { display: block; position: absolute; left: 56.5%; top: 12%; width: 35%; margin: 0; padding: 0 0 0 1.3em; color: #5b3a63; font: 600 1rem/1.5 'Mali', sans-serif; }
+html.escenas .ev-desarrollo .app-calc .calc-guia li { margin: 0 0 .55em; padding-left: .2em; }
+html.escenas .ev-desarrollo .app-calc .calc-guia li::marker { color: #c2457f; font-weight: 700; }
+html.escenas .ev-desarrollo .app-calc .calc-java .botonera { left: 57% !important; top: auto !important; bottom: 12%; width: 34% !important; gap: 10px !important; }
+html.escenas .ev-desarrollo .app-calc .calc-java .botonera .btn { background: linear-gradient(180deg, #fff6fb, #ffe3f0) !important; color: #6a2c55 !important; border: 2px solid #f0bcd8 !important; box-shadow: 0 3px 0 #e2a9c8 !important; font: 700 1rem 'Mali', sans-serif !important; padding: 9px 14px !important; border-radius: 14px !important; }
+html.escenas .ev-desarrollo .app-calc .calc-java .botonera .btn:hover { background: linear-gradient(180deg, #ffe9f4, #ffd2e6) !important; }
+
+/* Desarrollo · tienda: la boleta impresa se lee entera, ancha y ordenada, pegada con cinta sobre el vidrio de la vitrina */
+html.escenas .ev-desarrollo .tienda-caja .printer-output { visibility: hidden !important; }
+html.escenas .ev-desarrollo .tienda-boleta-vista { position: absolute; left: 63.2%; width: 32%; top: 27%; bottom: 8%; z-index: 14; display: flex; flex-direction: column; gap: 8px; align-items: stretch; animation: boleta-llega .5s ease-out; }
+html.escenas .ev-desarrollo .tienda-boleta-vista[hidden] { display: none; }
+@keyframes boleta-llega { from { opacity: 0; transform: translateY(-14px) rotate(-1.5deg); } }
+html.escenas .ev-desarrollo .tienda-boleta-hoja { position: relative; flex: 1; min-height: 0; overflow: hidden; margin: 0; padding: 26px 26px 18px; background: #fffdf6; color: #4a2556; font: 500 .95rem/1.45 'Mali', sans-serif; box-shadow: 0 10px 22px rgba(20, 8, 40, .4); rotate: -1deg;
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - 10px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 16px 10px repeat-x; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja::before { content: ""; position: absolute; left: 50%; top: -6px; width: 110px; height: 26px; translate: -50% 0; rotate: 2deg; background: rgba(245, 168, 207, .75); box-shadow: 0 1px 3px rgba(20, 8, 40, .2); }
+html.escenas .ev-desarrollo .tienda-boleta-hoja .paper-brand { text-align: center; font: 700 .8rem/1.2 'Mali', sans-serif; letter-spacing: .14em; color: #c2457f; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja h4 { margin: 2px 0 2px; text-align: center; font: 700 1.35rem/1.2 'Mali', sans-serif; color: #6a2c55; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja .paper-note { margin: 0 0 8px; text-align: center; font: 600 .72rem/1.3 'Mali', sans-serif; letter-spacing: .04em; color: #9b7aa8; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja .paper-items { margin: 0 0 6px; padding: 6px 0; border-block: 2px dashed #e7b9d4; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja :is(.paper-item, .paper-total) { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja :is(.paper-item, .paper-total) b { white-space: nowrap; font-weight: 700; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja .grand-total { margin: 4px 0; padding: 4px 0; border-block: 2px solid #f0d6e8; font-size: 1.15rem; color: #7a2f5f; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja .paper-medio b { font-size: .85rem; color: #6a2c55; }
+html.escenas .ev-desarrollo .tienda-boleta-hoja .paper-thanks { margin: 8px 0 0; text-align: center; font: italic 600 .9rem/1.3 var(--serif, Georgia, serif); color: #c2457f; }
+html.escenas .ev-desarrollo .tienda-boleta-nueva { align-self: center; padding: 8px 18px; border: 2px solid #fff; border-radius: 14px; background: linear-gradient(180deg, #ffd9ea, #e7d6ff); color: #5b3a63; font: 700 .95rem 'Mali', sans-serif; box-shadow: 0 3px 0 #d3a9cb, 0 6px 12px rgba(20, 8, 40, .3); cursor: pointer; }
+/* la pantalla de la caja: el total arriba y, debajo y sin montarse, cuánto se paga */
+html.escenas .ev-desarrollo .tienda-caja .caja-pago { top: 38.5% !important; font-size: 4.4cqw !important; text-align: center !important; padding-left: 0 !important; }
+/* los tres pasos bajo el puesto, numerados */
+html.escenas .ev-desarrollo .tienda-pista { font-size: 1.05rem !important; bottom: -5.5% !important; }
+html.escenas .ev-desarrollo .tienda-pista span { display: inline-grid; place-items: center; width: 1.5em; height: 1.5em; margin: 0 .3em 0 .9em; border-radius: 50%; background: #f5a8cf; color: #3b1d45; font: 700 .85em 'Mali', sans-serif; text-shadow: none; }
+
+/* «Pagas $…» es una línea de la versión clásica dentro de la caja: en el cuento (que toma prestada la misma caja) no se muestra */
+.caja-pago { display: none; }
+html.escenas .ev .caja-pago { display: block; }
+
+/* Diseño · «Mi trazo»: pestañas del cuaderno (Mi camino, Papel y los filtros de la galería), el camino por etapas y las fotos de papel */
+html.escenas .ev-leyendas .ley-pestanas { flex: none; display: flex; flex-wrap: wrap; justify-content: center; gap: .6cqw; }
+html.escenas .ev-leyendas .ley-pestanas > button, html.escenas .ev-leyendas .ley-pestanas .leyendas-filtros button { padding: .45cqw 1.2cqw !important; font: 700 1.05cqw 'Mali', sans-serif !important; border-radius: 999px !important; border: 1px solid #e6c6dc !important; background: #fff !important; color: #7a4f84 !important; cursor: pointer; }
+html.escenas .ev-leyendas .ley-pestanas > button[aria-pressed="true"], html.escenas .ev-leyendas .ley-pestanas .leyendas-filtros button[aria-pressed="true"] { background: linear-gradient(135deg, #f6b9d6, #cdb6f2) !important; color: #4a2556 !important; border-color: transparent !important; }
+html.escenas .ev-leyendas .ley-pestanas .leyendas-filtros { display: contents !important; }
+html.escenas .ev-leyendas .ley-muro:not([data-vista="camino"]) .ley-camino,
+html.escenas .ev-leyendas .ley-muro:not([data-vista="papel"]) .ley-papel,
+html.escenas .ev-leyendas .ley-muro:not([data-vista="dibujos"]) .leyendas-grid { display: none !important; }
+html.escenas .ev-leyendas .ley-camino { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: .7cqw; padding: .4cqw 1cqw; color: #4a2556; }
+html.escenas .ev-leyendas .ley-camino h4 { margin: 0; text-align: center; font: italic 700 1.75cqw/1.2 "Cormorant Garamond", Georgia, serif; color: #6a2c55; }
+html.escenas .ev-leyendas .ley-camino > p { margin: 0; text-align: center; font: 500 1.1cqw/1.45 'Mali', sans-serif; color: #5b3a63; }
+html.escenas .ev-leyendas .ley-etapas { list-style: none; margin: .4cqw 0 0; padding: 0; display: grid; gap: .8cqw; }
+html.escenas .ev-leyendas .ley-etapa { width: 100%; display: grid; grid-template-columns: 3cqw 1fr; grid-template-rows: auto auto; column-gap: 1cqw; align-items: center; text-align: left; padding: .7cqw 1cqw; border: 1px solid #ecd2e3; border-radius: 1cqw; background: rgba(255, 255, 255, .75); color: #4a2556; cursor: pointer; transition: background .2s, box-shadow .2s; }
+html.escenas .ev-leyendas .ley-etapa:hover, html.escenas .ev-leyendas .ley-etapa.elegida { background: #fff; box-shadow: 0 0 0 .2cqw #f5a8cf; }
+html.escenas .ev-leyendas .ley-etapa-num { grid-row: 1 / 3; display: grid; place-items: center; width: 3cqw; height: 3cqw; border-radius: 50%; background: linear-gradient(135deg, #f6b9d6, #cdb6f2); font: 700 1.15cqw 'Mali', sans-serif; color: #4a2556; }
+html.escenas .ev-leyendas .ley-etapa b { font: 700 1.3cqw/1.2 'Mali', sans-serif; }
+html.escenas .ev-leyendas .ley-etapa small { font: 500 1cqw/1.3 'Mali', sans-serif; color: #8a5f95; }
+html.escenas .ev-leyendas .ley-papel { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6cqw 1.4cqw; align-content: start; padding: 1cqw .6cqw; }
+html.escenas .ev-leyendas .ley-papel .obra img { aspect-ratio: 4 / 3 !important; object-fit: cover !important; }
+html.escenas .ev-leyendas .ley-papel .obra-nombre { font-size: 1.1cqw !important; }
+/* los cuadritos de la galería se ven enteros (sin recortar) */
+html.escenas .ev-leyendas .leyendas-grid .obra img { object-fit: contain !important; background: #fff; }
+html.escenas .ev-leyendas .leyendas-grid .obra-nombre { font-size: 1.05cqw !important; }
+/* la hoja izquierda: el dibujo nítido sobre su hoja blanca o la foto pegada con cinta */
+html.escenas .ev-leyendas .ley-lienzo { box-shadow: 0 .3cqw 1cqw rgba(106, 44, 85, .25); rotate: -.6deg; }
+html.escenas .ev-leyendas .ley-marco > img.ley-foto { display: none !important; }
+html.escenas .ev-leyendas .ley-cuadro[data-modo="foto"] .ley-marco > img.ley-foto { display: block !important; background: #fff; padding: .6cqw !important; box-shadow: 0 .3cqw 1cqw rgba(106, 44, 85, .3); rotate: -1.2deg; cursor: zoom-in; }
+html.escenas .ev-leyendas .ley-cuadro[data-modo="foto"] .ley-lienzo { display: none; }
+html.escenas .ev-leyendas .ley-cuadro figcaption span { font-size: 1.25cqw !important; }
+.ley-visor-foto figure { grid-template-columns: minmax(0, 1fr) 240px; }
+html.escenas .ev-leyendas .ley-cuadro[data-modo="foto"] .ley-marco > img.ley-foto { width: auto !important; height: auto !important; max-width: 94% !important; max-height: 88% !important; aspect-ratio: auto !important; object-fit: contain; }
+
+/* Arcade: al elegir una máquina el juego se abre a pantalla completa, encima de la página (el reino oscurecido detrás).
+   La máquina se ve de cerca: se recorta arriba y abajo para que su pantalla y su tablero ocupen casi todo el alto */
+html.arcade-pantalla body { overflow: hidden !important; }   /* (solo body: en html haría que body se volviera el que se desplaza) */
+html.escenas-flujo .ev-arcade.jugando-arcade { position: fixed !important; left: 0; right: 0; top: 67px; bottom: 0; height: auto !important; z-index: 60; padding: 0 3vw !important; align-items: center !important;
+  background: radial-gradient(ellipse at 50% 40%, rgba(46, 24, 78, .97), rgba(12, 6, 28, .99)); }
+html.escenas-flujo .ev-arcade.jugando-arcade .ev-caja { transform: none !important; height: 100%; }
+html.escenas-flujo .ev-arcade.jugando-arcade .sala-juegos { height: 100%; }
+html.escenas-flujo .ev-arcade.jugando-arcade .colgar-app.activo { height: 100%; }
+html.escenas-flujo .ev-arcade.jugando-arcade .maq-escena { height: 100%; align-items: center !important; padding: 0 !important; gap: 3vw; }
+html.escenas-flujo .ev-arcade.jugando-arcade .maq-juego { max-width: none !important; }
+html.escenas-flujo .ev-arcade.jugando-arcade .maq-1 { --h: calc((100vh - 90px) / .6) !important; margin: calc((100vh - 90px) / .6 * -.115) 0 calc((100vh - 90px) / .6 * -.27); }
+html.escenas-flujo .ev-arcade.jugando-arcade .maq-2 { --h: calc((100vh - 90px) / .6) !important; margin: calc((100vh - 90px) / .6 * -.175) 0 calc((100vh - 90px) / .6 * -.225); }
+html.escenas-flujo .ev-arcade.jugando-arcade .maq-3 { --h: calc((100vh - 90px) / .6) !important; margin: calc((100vh - 90px) / .6 * -.155) 0 calc((100vh - 90px) / .6 * -.245); }
+html.escenas-flujo .ev-arcade.jugando-arcade .juego-lado { height: min(680px, calc(100vh - 110px)) !important; width: 400px !important; }
+html.escenas-flujo .ev-arcade.jugando-arcade .juego-lado-texto { font-size: 1.05rem; }
+
+/* Contacto: medallones y letras más grandes y con más contraste (se leen sin esfuerzo); el pie y el nido, más compactos */
+html.escenas .ev-contacto .contactos { max-width: 1060px !important; row-gap: 22px !important; column-gap: 40px !important; }
+html.escenas .ev-contacto .contacto { grid-template-rows: 165px auto auto !important; gap: 6px !important; }
+html.escenas .ev-contacto .contacto-ico { width: 165px !important; height: 165px !important; }
+html.escenas .ev-contacto .contacto b { font-size: 1.35rem !important; letter-spacing: .02em; text-shadow: 0 1px 3px rgba(20, 8, 40, .9), 0 0 12px rgba(20, 8, 40, .7); }
+html.escenas .ev-contacto .contacto small { font-size: 1.12rem !important; font-weight: 700 !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .9), 0 0 10px rgba(20, 8, 40, .7); }
+html[data-tema="claro"].escenas .ev-contacto .contacto :is(b, small) { text-shadow: 0 0 6px #fff, 0 0 12px #fff; }
+html.escenas .ev-contacto .section-head:has(.cinta-nombre) { margin-bottom: 8px; }
+html.escenas .ev-contacto footer { margin-top: 18px !important; padding-top: 12px !important; }
+html.escenas .ev-contacto footer p { font-size: .95rem !important; color: #f3e6f7 !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .9); }
+html.escenas .ev-contacto footer p:first-child { font-size: 1.05rem !important; }
+html[data-tema="claro"].escenas .ev-contacto footer p { color: #4a2556 !important; text-shadow: 0 0 6px #fff; }
+html.escenas .ev-contacto .nido-escena { margin-top: 8px !important; }
+/* con scroll continuo ya no hace falta el margen inferior para la pista de la rueda */
+html.escenas-flujo .ev:not(.ev-trayectoria):not(.ev-datos) { padding-top: 10px !important; padding-bottom: 12px !important; }
+html.escenas-flujo .ev-contacto .contacto { grid-template-rows: 150px auto auto !important; }
+html.escenas-flujo .ev-contacto .contacto-ico { width: 150px !important; height: 150px !important; }
+html.escenas-flujo .ev-contacto .nido-escena { scale: .85; margin-top: 0 !important; }

@@ -433,10 +433,20 @@
         // { texto: { titulo: '', texto: 'Las hojas comenzaron a pasar solas… el libro se abrió de par en par y brotó un humo mágico.' }, fx: [{ tipo: 'destello', x: 50, ancho: 16, y: 4, ms: 1400 }], ms: 2200 },
         // conversan de cerca, cada uno con su animación (Wan); todas parten de la pose base, así el cambio no parpadea
         { aLaVez: true, nombre: 'ari', actor: 'cafe-ari-habla', x: 40, alto: 18.96, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 500, junto: true, sigue: true },
-        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 31, alto: 18.89, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 1400, ms: 500, junto: true, sigue: true },
+        // los tres conversan por turnos: quien habla gesticula y da un saltito; los otros escuchan (Coen con las manos en los bolsillos)
+        /* antes: Coen y Ari hablaban en bucle a la vez y solo se notaba a Rancek moverse
+        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 31, alto: 18.89, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 1400, ms: 500, junto: true, sigue: true }, */
+        { aLaVez: true, nombre: 'coen', actor: 'cafe-coen-habla', x: 31, alto: 18.89, pj: true, delante: true, de: 2, a: 2, bucle: [2, 3], cicloMs: 3200, ms: 500, junto: true, sigue: true },
         { nombre: 'rancek', actor: 'cafe-rancek-mira', x: 50.5, alto: 19.38, pj: true, delante: true, de: 0, a: 0, bucle: [0, 1], cicloMs: 4000, ms: 1200 },
-        { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: estas son nuestras ilustraciones. Creamos un estudio: queremos hacer un videojuego, soluciones digitales, diseño… ¡de todo! ✧»' }, ms: 3400 },
-        { texto: { titulo: 'Coen:', texto: '«Ahí está todo lo que queremos crear juntos. ¡Tienes que verlo!»' }, ms: 3000 },
+        // (los pasos «junto» no arrancan su bucle: cada animación se enciende con un paso corto propio, antes de su cartel)
+        { nombre: 'coen', bucle: [2, 3], cicloMs: 3200, ms: 10, sigue: true, pausa: 0 },   // Coen escucha
+        { nombre: 'ari', bucle: [0, 1], cicloMs: 2600, ms: 10, sigue: true, pausa: 0 },     // Ari habla
+        { texto: { titulo: 'Ari:', texto: '«Mira, Rancek: estas son nuestras ilustraciones. Creamos un estudio: queremos hacer un videojuego, soluciones digitales, diseño… ¡de todo! ✧»' }, nombre: 'ari', clase: 'saluda', sigue: true, ms: 3400 },
+        { nombre: 'ari', de: 0, a: 0, ms: 10, sigue: true, pausa: 0 },                        // Ari termina y escucha
+        { nombre: 'coen', bucle: [0, 1], cicloMs: 1400, ms: 10, sigue: true, pausa: 0 },      // Coen gesticula al hablar
+        { texto: { titulo: 'Coen:', texto: '«Ahí está todo lo que queremos crear juntos. ¡Tienes que verlo!»' }, nombre: 'coen', clase: 'saluda', sigue: true, ms: 3000 },
+        { nombre: 'coen', bucle: [2, 3], cicloMs: 3200, ms: 10, sigue: true, pausa: 0 },      // vuelve a las manos en los bolsillos
+        { texto: { titulo: 'Rancek:', texto: '«¿Un estudio? ¡Cuéntenme más!»' }, nombre: 'rancek', clase: 'saluda', sigue: true, ms: 2200 },
         { nombre: 'ari', de: 0, a: 0, ms: 120, pausa: 0 },   // vuelve a su pose base…
         { nombre: 'ari-o', actor: 'cafe-ari-ofrece', x: 40, alto: 18.96, pj: true, delante: true, clase: 'encima', reemplaza: 'ari', sigue: true, de: 0, a: 1, ms: 2000, pausa: 0 },   // …abre el libro y se lo muestra
         { nombre: 'rancek', de: 0, a: 0, ms: 120, pausa: 0 },
@@ -680,9 +690,14 @@
         // { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-paseo-anda', camina: [0, 1], cicloMs: 1800, x: 60, alto: 17.5, delante: true, entra: true, ruta: [[0, 8], [1, 60]], ms: 3150, junto: true },
         // { ms: 1350 },
         // caminata con avance real (Wan): los pies pisan el suelo, no resbalan; dos tramos encadenados desde el borde del libro
+        // en la caminata de video (Wan) la cara de Ari se deformaba en los cuadros de perfil: ahora entran con su dibujo limpio,
+        // con el vaivén de cada paso, hasta donde se dan vuelta
+        /* antes:
         { nombre: 'pareja-r1', actor: 'assets/cuento/tienda/pareja-paseo-real-1', x: 22.35, alto: 17.98, delante: true, entra: true, de: 0, a: 1, ms: 3000, pausa: 0 },
         { nombre: 'pareja-c', actor: 'assets/cuento/tienda/pareja-paseo-real-2', x: 49.22, alto: 17.98, delante: true, reemplaza: 'pareja-r1', sigue: true, de: 0, a: 1, ms: 3000, junto: true },
         { ms: 1150 },
+        */
+        { nombre: 'pareja-c', img: 'assets/cuento/tienda/pareja-paseo-quieta.webp', desde: -10, x: 62.65, alto: 17.5, delante: true, entra: true, ruta: [[0, -10, 0], [0.125, -0.92, 1.1], [0.25, 8.16, 0], [0.375, 17.24, 1.1], [0.5, 26.33, 0], [0.625, 35.41, 1.1], [0.75, 44.49, 0], [0.875, 53.57, 1.1], [1, 62.65, 0]], ms: 5200, pausa: 0 },
         // { nombre: 'pareja', img: 'assets/cuento/tienda/pareja-paseo-quieta.webp', x: 58, alto: 17.5, delante: true, reemplaza: 'pareja-c', sigue: true, ms: 300, pausa: 200 },
         // { nombre: 'pareja', clase: 'saluda', ms: 1200 },
         // …y Rancek llega corriendo con la respuesta que no alcanzó a darles en la tienda
@@ -728,16 +743,17 @@
           texto: { titulo: 'Así nace cada ilustración', texto: 'Primero la línea… y después el color.' } }
       ] }
     ] },
+    // las ocho láminas en una sola fila, del mismo tamaño y lejos de los bordes (antes alternaban dos filas y la de atrás se veía más chica)
     galeria: { carpeta: 'cap8/', hitos: [
       { fondo: 'fondo-galeria.webp', suelo: 'suelo-galeria.webp', pasos: [
-        { nombre: 'achachila', img: 'assets/galeria/achachila.webp', x: 9.0, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'alicanto', img: 'assets/galeria/alicanto.webp', x: 20.7, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'lascar', img: 'assets/galeria/lascar.webp', x: 32.4, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'lica', img: 'assets/galeria/lica.webp', x: 44.1, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'pachamama', img: 'assets/galeria/pachamama.webp', x: 55.8, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'reina-noche', img: 'assets/galeria/reina-noche.webp', x: 67.5, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'supai', img: 'assets/galeria/supai.webp', x: 79.2, alto: 15, clase: 'cuadro', ms: 250, pausa: 150 },
-        { nombre: 'tirana-1', img: 'assets/galeria/tirana-1.webp', x: 90.9, alto: 15, fila: 'medio', clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'achachila', img: 'assets/galeria/achachila.webp', x: 13, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'alicanto', img: 'assets/galeria/alicanto.webp', x: 23.6, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'lascar', img: 'assets/galeria/lascar.webp', x: 34.2, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'lica', img: 'assets/galeria/lica.webp', x: 44.8, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'pachamama', img: 'assets/galeria/pachamama.webp', x: 55.2, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'reina-noche', img: 'assets/galeria/reina-noche.webp', x: 65.8, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'supai', img: 'assets/galeria/supai.webp', x: 76.4, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
+        { nombre: 'tirana-1', img: 'assets/galeria/tirana-1.webp', x: 87, alto: 14, clase: 'cuadro', ms: 250, pausa: 150 },
         { app: true, ms: 300 }
       ] }
     ] },
@@ -780,14 +796,15 @@
     ] },
     cv: { carpeta: 'logros/', hitos: [
       { fondo: 'fondo-mapa.webp', suelo: 'suelo-mapa.webp', titulo: 'El mapa de su camino', texto: 'Cada lugar de su historia se levanta en el año en que llegó.', pasos: [
-        { nombre: 'lugarb1', img: 'assets/cuento/logros/lugarb1.webp', clase: 'rebote', x: 8, alto: 10, rotulo: '2018', ms: 2300, texto: { titulo: '2018 · Matrona · titulación con distinción', texto: 'Universidad San Sebastián, Concepción.' } },
-        { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp', clase: 'rebote', x: 20, alto: 9, fila: 'medio', rotulo: '2019', ms: 2300, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
-        { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', clase: 'rebote', x: 32, alto: 10, rotulo: '2019 – 2021', ms: 2300, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
-        { nombre: 'lugar3', img: 'assets/cuento/logros/lugar3.webp', clase: 'rebote', x: 44, alto: 9, fila: 'medio', rotulo: '2021', ms: 2300, texto: { titulo: '2021 · Matrona · CESFAM O\'Higgins', texto: 'Atención integral, planillas de PAP y mamografía, campañas educativas.' } },
-        { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', clase: 'rebote', x: 54, alto: 10, rotulo: '2022 – 2023', ms: 2300, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
-        { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', clase: 'rebote', x: 67.5, alto: 12, rotulo: '2024', ms: 2300, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
-        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', clase: 'rebote', x: 79.5, alto: 10, rotulo: '2025 – 2026', ms: 2300, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
-        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', clase: 'rebote', x: 91.5, alto: 14, fila: 'medio', rotulo: '2026 – hoy', ms: 2300, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
+        // los lugares en orden de llegada, todos del mismo tamaño en una sola fila y lejos de los bordes del libro (antes el de 2018 quedaba cortado)
+        { nombre: 'lugarb1', img: 'assets/cuento/logros/lugarb1.webp', clase: 'rebote', x: 12, ancho: 9.5, rotulo: '2018', ms: 2300, texto: { titulo: '2018 · Matrona · titulación con distinción', texto: 'Universidad San Sebastián, Concepción.' } },
+        { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp', clase: 'rebote', x: 23, ancho: 9.5, rotulo: '2019', ms: 2300, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
+        { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', clase: 'rebote', x: 34, ancho: 9.5, rotulo: '2019 – 2021', ms: 2300, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
+        { nombre: 'lugar3', img: 'assets/cuento/logros/lugar3.webp', clase: 'rebote', x: 45, ancho: 9.5, rotulo: '2021', ms: 2300, texto: { titulo: '2021 · Matrona · CESFAM O\'Higgins', texto: 'Atención integral, planillas de PAP y mamografía, campañas educativas.' } },
+        { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', clase: 'rebote', x: 56, ancho: 9.5, rotulo: '2022 – 2023', ms: 2300, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
+        { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', clase: 'rebote', x: 67, ancho: 9.5, rotulo: '2024', ms: 2300, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
+        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', clase: 'rebote', x: 78, ancho: 9.5, rotulo: '2025 – 2026', ms: 2300, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
+        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', clase: 'rebote', x: 89, ancho: 9.5, rotulo: '2026 – hoy', ms: 2300, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
         { texto: { titulo: 'Su currículum completo', texto: 'Experiencia, formación y habilidades.' }, app: true, ms: 400 }
       ] }
     ] },
@@ -829,12 +846,13 @@
     // IX · practicando sus hechizos: en la torre, el libro de hechizos de la matrona (tableros), sus cápsulas y el banco
     hechizos: { carpeta: 'cap9/', hitos: [
       { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'La torre de los hechizos', texto: 'Después de sus medallas, Ari siguió practicando cada día.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 22, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 22, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -4.25, 1.2], [0.25, -0.5, 0], [0.375, 3.25, 1.2], [0.5, 7, 0], [0.625, 10.75, 1.2], [0.75, 14.5, 0], [0.875, 18.25, 1.2], [1, 22, 0]], ms: 1300, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
         { texto: { titulo: 'Ari:', texto: '«Lo que aprendí de datos… ¡lo voy a usar en lo que conozco de cerca!»' }, nombre: 'ari', efecto: 'salto', ms: 1800 },
-        { nombre: 'perg', img: 'pergamino.webp', x: 62, alto: 19, clase: 'pergamino-hechizo', fx: { tipo: 'destello', x: 62, ancho: 14, y: 12 }, ms: 1200 }
+        { nombre: 'perg', img: 'pergamino.webp', x: 62, alto: 19, clase: 'pergamino-hechizo', fx: { tipo: 'destello', x: 62, ancho: 14, y: 12 }, ms: 1200 },
+        { pergTitulo: 'Mis nuevos hechizos', perg: 'Datos de salud que se entienden, cápsulas para las familias y herramientas para enseñar.', evento: 'hechizo-pergamino', ms: 2400 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'El libro de hechizos de la matrona', texto: 'Cinco tableros con datos de salud de Chile. Cada gema guarda lo que descubrió.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 92, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 87, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, 3.88, 1.2], [0.25, 15.75, 0], [0.375, 27.62, 1.2], [0.5, 39.5, 0], [0.625, 51.38, 1.2], [0.75, 63.25, 0], [0.875, 75.12, 1.2], [1, 87, 0]], ms: 3250, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
         { nombre: 'perg', img: 'pergamino.webp', x: 72, alto: 24, clase: 'pergamino-hechizo', ms: 600, pausa: 200 },
         { nombre: 'g-anticonceptivos', img: 'assets/cuento/hechizos/gema-anticonceptivos.webp', x: 10, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Anticonceptivos', ms: 300, pausa: 120 },
         { nombre: 'g-its', img: 'assets/cuento/hechizos/gema-its.webp', x: 22, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'ITS', ms: 300, pausa: 120 },
@@ -849,7 +867,7 @@
         { texto: { titulo: '', texto: 'Toca una gema para abrir sus tableros.' }, ms: 900 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'Ocho cápsulas nuevas', texto: 'Animadas y narradas por ella, con la información vigente en Chile.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 16, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 16, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -5, 1.2], [0.25, -2, 0], [0.375, 1, 1.2], [0.5, 4, 0], [0.625, 7, 1.2], [0.75, 10, 0], [0.875, 13, 1.2], [1, 16, 0]], ms: 1120, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
         // la cápsula aparece cerrada, se abre y de adentro van saliendo las cápsulas de video
         { nombre: 'capsula', img: 'assets/cuento/hechizos/capsula.webp', x: 60, alto: 9, fila: 'atras', efecto: 'flota', fx: { tipo: 'destello', x: 60, ancho: 14, y: 8 }, ms: 1100, pausa: 400 },
         { nombre: 'capsula-ab', img: 'assets/cuento/hechizos/capsula-abierta.webp', x: 60, alto: 10.1, fila: 'atras', reemplaza: 'capsula', sigue: true, fx: { tipo: 'destello', x: 60, ancho: 18, y: 10, ms: 1200 }, ms: 700, pausa: 200 },
@@ -860,12 +878,12 @@
         { texto: { titulo: 'Ari:', texto: '«Leche materna, Shantala, sueño seguro, el PAP… ¡para ver en la sala de espera o en la casa!»' }, nombre: 'ari', efecto: 'brilla', ms: 1800 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'El Banco de Evaluaciones', texto: 'Un banco de preguntas para docentes, probado con un Moodle real.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 20, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 20, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -4.5, 1.2], [0.25, -1, 0], [0.375, 2.5, 1.2], [0.5, 6, 0], [0.625, 9.5, 1.2], [0.75, 13, 0], [0.875, 16.5, 1.2], [1, 20, 0]], ms: 1240, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
         { nombre: 'banco', img: 'assets/cuento/hechizos/banco.webp', x: 62, alto: 12, fila: 'medio', clase: 'cuadro', abre: 'banco', fx: { tipo: 'destello', x: 62, ancho: 16, y: 10 }, ms: 900 },
         { texto: { titulo: 'Ari:', texto: '«La inteligencia artificial ayuda, pero la respuesta correcta siempre la confirma una persona.»' }, nombre: 'ari', efecto: 'salto', ms: 1800 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: '', texto: '', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 50, alto: 16, delante: true, ms: 900, pausa: 300 },
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 50, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -0.75, 1.2], [0.25, 6.5, 0], [0.375, 13.75, 1.2], [0.5, 21, 0], [0.625, 28.25, 1.2], [0.75, 35.5, 0], [0.875, 42.75, 1.2], [1, 50, 0]], ms: 2140, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
         { texto: { titulo: 'Ari:', texto: '«Cada hechizo que aprendo lo uso para ayudar a alguien.»' }, nombre: 'ari', efecto: 'brilla', fx: { tipo: 'destello', x: 50, ancho: 14, y: 14 }, ms: 1800 },
         { texto: { titulo: '', texto: 'Y sin que nadie lo notara, algo más grande empezaba a nacer…' }, ms: 2200 }
       ] }
@@ -1094,7 +1112,7 @@
         if (p.hadaSobre) { const t = actores[p.hadaSobre]; if (t && !quieto && window.MCELibro?.hadaMagia) await new Promise(fin => { let hecho = false; const una = () => { if (!hecho) { hecho = true; fin(); } }; MCELibro.hadaMagia(t, una); setTimeout(una, 6500); }); if (mia !== vuelta) return; continue; }
         if (p.hada) { if (!videos[nombre(p)] || !(await hadaEnVideo(p, mia)) || !(await espera(p.ms || 1200, mia))) { if (mia !== vuelta) return; } continue; }
         // espera a que pase algo afuera del cuento (por ejemplo, que se entregue la boleta en la caja); mientras, la caja no se puede subir
-        if (p.espera) { document.body.classList.add('app-obligada'); const ok = await new Promise(fin => { const f = () => { clearInterval(vig); removeEventListener(p.espera, f); fin(mia === vuelta); }; const vig = setInterval(() => { if (mia !== vuelta) { clearInterval(vig); removeEventListener(p.espera, f); fin(false); } }, 500); addEventListener(p.espera, f); }); document.body.classList.remove('app-obligada'); if (!ok) return; }
+        if (p.espera) { document.body.classList.add('app-obligada'); const ok = await new Promise(fin => { const f = () => { clearInterval(vig); removeEventListener(p.espera, f); removeEventListener('cuento-salta-espera', f); fin(mia === vuelta); }; const vig = setInterval(() => { if (mia !== vuelta) { clearInterval(vig); removeEventListener(p.espera, f); removeEventListener('cuento-salta-espera', f); fin(false); } }, 500); addEventListener(p.espera, f); addEventListener('cuento-salta-espera', f); }); document.body.classList.remove('app-obligada'); if (!ok) return; }
         if (p.cierraApp) window.dispatchEvent(new CustomEvent('cuento-app', { detail: { abrir: false } }));
         if (p.fx) [].concat(p.fx).forEach(f => luego(() => { if (mia !== vuelta) return; efecto(f.tipo, f.x, f.ancho, f.y, f.ms); [].concat(f.golpe || []).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } }); }, f.tras || 0));
         if (p.golpe) [].concat(p.golpe).forEach(n => { const g = actores[n]; if (g) { g.classList.remove('golpeado'); void g.offsetWidth; g.classList.add('golpeado'); } });
@@ -1224,7 +1242,7 @@
     window.dispatchEvent(new CustomEvent('look-elegido', { detail: b.dataset.look }));
   });
   window.addEventListener('hechizo-pergamino', e => {
-    const zona = e.detail?.zona, paso = e.detail?.paso || {}, txt = { titulo: paso.texto?.titulo, texto: paso.perg || paso.texto?.texto }, perg = zona?.querySelector('.pergamino-hechizo'); if (!perg) return;
+    const zona = e.detail?.zona, paso = e.detail?.paso || {}, txt = { titulo: paso.pergTitulo ?? paso.texto?.titulo, texto: paso.perg || paso.texto?.texto }, perg = zona?.querySelector('.pergamino-hechizo'); if (!perg) return;
     let t = perg.querySelector('.perg-texto'); if (!t) { t = document.createElement('div'); t.className = 'perg-texto'; perg.append(t); }
     const b = document.createElement('b'), x = document.createElement('span');
     b.textContent = txt.titulo || ''; x.textContent = txt.texto || '';
@@ -1523,6 +1541,8 @@
           const tab = document.createElement('button'); tab.type = 'button'; tab.className = 'app-pestana';
           const nom = el.dataset.app || 'la aplicación', verbo = el.dataset.verbo || 'Usar';
           const rotular = () => { const arriba = c.classList.contains('arriba'); tab.textContent = arriba ? '▼ ' + verbo + ' ' + nom : '▲ Subir'; tab.setAttribute('aria-expanded', String(!arriba)); };
+          // si el cuento espera que se use la aplicación (por ejemplo, pagar en la caja), subirla deja seguir igual
+          tab.addEventListener('click', () => { if (!c.classList.contains('arriba') && document.body.classList.contains('app-obligada')) window.dispatchEvent(new Event('cuento-salta-espera')); });
           tab.addEventListener('click', () => { const abrir = c.classList.contains('arriba'); teatro.querySelectorAll('.colgante-app').forEach(o => { o.classList.add('mueve'); clearTimeout(o._mv); o._mv = setTimeout(() => o.classList.remove('mueve'), 1000); o.classList.toggle('arriba', !(abrir && o === c)); o._rotular && o._rotular(); }); if (abrir) c.querySelectorAll('iframe[data-src]').forEach(f => { f.src = f.dataset.src; f.removeAttribute('data-src'); }); });
           c._rotular = rotular; rotular(); c.append(tab);
           // el cuadro entero (con su marco) se achica lo justo para caber entre el borde de arriba y la barra del libro
@@ -1610,7 +1630,8 @@
       if (!quieto) {
         // al final de la página (o en la última escena) aterriza en el nido; si no, borde derecho a la altura del mouse
         const rc = document.documentElement.classList;
-        const final = rc.contains('escenas') ? rc.contains('escena-final') : scrollY + innerHeight >= document.documentElement.scrollHeight - 40;
+        // con scroll continuo (computador o celular) el final es llegar al fondo de la página; con escenas, la última escena
+        const final = rc.contains('escenas') && !rc.contains('escenas-flujo') && !rc.contains('escenas-pila') ? rc.contains('escena-final') : scrollY + innerHeight >= document.documentElement.scrollHeight - 40;
         const r = final && posada ? posada.getBoundingClientRect() : null;
         let tx, ty;
         if (r && r.width) { tx = r.left + (r.width - 110) / 2; ty = r.bottom - 104; }

@@ -231,3 +231,23 @@ html.escenas .ev .mh-cabeza p, html.escenas .ev .tab-pregunta { color: #6e5577; 
 .tab-marco.tv-marco-vivo { display: flex; flex-direction: column; }
 .tab-marco.tv-marco-vivo .tv-pagina { flex: 1; aspect-ratio: 16 / 9; font-size: 14px; }
 .tab-zoom .tv-grande { height: calc(96vh - 44px); font-size: 16px; padding: 1.2em 3.4em; }
+/* indicadores: uno a la vez, con flechas */
+.tab-kpi-nav { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 0 6px; }
+.tab-kpi-flecha { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #f0d6e8; background: #fff; color: #6a2c55; font: 700 1rem/1 var(--sans, sans-serif); cursor: pointer; }
+.tab-kpi-flecha:hover { background: #fdf0f7; }
+.tab-kpi-cuenta { font: 700 .78rem var(--sans, sans-serif); color: #8a5f95; }
+.tab-kpi-grande { margin: 0 0 6px; font: 700 1.05rem/1.2 var(--sans, sans-serif); color: var(--s-rosa, #c2457f); }
+
+/* «Ampliar»: el tablero en un marco del reino (borde rosado, lila y dorado, con su título arriba y la ✕ dentro del marco) */
+.tab-zoom { width: min(94vw, 1640px); max-height: 94vh; padding: 10px; border-radius: 26px; overflow: visible;
+  background: linear-gradient(#fffaf3, #fffaf3) padding-box, linear-gradient(135deg, #f5a8cf, #cdb6f2 45%, #f3d48a 75%, #f5a8cf) border-box; border: 6px solid transparent;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .7), 0 20px 60px rgba(10, 6, 30, .55), 0 0 40px rgba(245, 168, 207, .35); }
+.tab-zoom[open] { display: flex; flex-direction: column; }
+.tab-zoom::before, .tab-zoom::after { content: "✦"; position: absolute; top: -18px; font-size: 26px; color: #f3d48a; text-shadow: 0 0 10px #fff3c4; pointer-events: none; }
+.tab-zoom::before { left: 22px; } .tab-zoom::after { right: 70px; }
+.tab-zoom-pie { order: -1; margin: 0 56px 8px; padding: 8px 18px; text-align: center; font: 700 1rem/1.3 'Mali', var(--sans, sans-serif); color: #6a2c55; background: linear-gradient(90deg, transparent, #ffe3f0 15%, #ffe3f0 85%, transparent); border-radius: 12px; white-space: normal; }
+.tab-zoom img, .tab-zoom .tv-pagina { border-radius: 14px; overflow: hidden; }
+.tab-zoom img { max-height: calc(94vh - 90px); background: #fff; }
+.tab-zoom .tv-grande { height: calc(94vh - 92px); }
+.tab-zoom-cerrar { top: 12px; right: 14px; width: 38px; height: 38px; background: linear-gradient(135deg, #ffd9ea, #e7d6ff); color: #5b3a63; border: 2px solid #fff; box-shadow: 0 3px 0 #d3a9cb; font-weight: 700; z-index: 3; }
+.tab-zoom .tab-flecha { z-index: 3; }
