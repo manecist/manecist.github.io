@@ -1620,6 +1620,8 @@
     [sitio, libroEscena].forEach(n => n && obs.observe(n, { attributes: true, attributeFilter: ['class', 'aria-hidden'] }));
     ver();
     const globo = dr.querySelector('.dragoncito-globo');
+    // al tocar el dragón, vuela de vuelta al inicio de la página
+    dr.addEventListener('click', () => { scrollTo({ top: 0, behavior: 'smooth' }); globo.textContent = '¡Arriba!'; dr.classList.remove('feliz'); void dr.offsetWidth; dr.classList.add('feliz'); });
     let x = innerWidth - 150, y = innerHeight * .45, objY = null, mira = -1, ultimoMov = performance.now(), dormido = false, posado = false;
     const nido = $('.nido-escena'), posada = $('#nido-posada');
     addEventListener('pointermove', e => {

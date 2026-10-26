@@ -143,3 +143,35 @@ html.escenas .ev.ev-datos .tab-panel:has(.tab-dentro > .btn.primary) .tab-obs li
 /* separación entre secciones (antes quedaban pegadas) y sin el aviso de derechos bajo el cuaderno (ya está en el pie de página) */
 html.escenas.escenas-flujo .escenas-capa > .ev + .ev { margin-top: 70px !important; }
 html.escenas .ev.ev-leyendas .leyendas-aviso { display: none !important; }
+
+/* Arcade · Jardín de gemas: explicación corta y ordenada (título, una línea, los 3 poderes y los que tienes), sin párrafos largos */
+html.escenas .ev.ev-arcade .app-gemas .juego-lado :is(.gem-welcome .chip, .gem-welcome p, .gem-lessons, .gem-lesson-hint, #gem-power-message, #gema-lado > p) { display: none !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .gem-welcome h3 { display: none !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gema-lado > h3 { font-size: 1.35rem !important; margin: 0 0 6px !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gema-lado::after { content: none; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .juego-lado-texto::before { content: "Intercambia dos gemas vecinas y une 3 o más iguales."; display: block; margin: 0 0 10px; font: 600 1rem/1.4 'Mali', sans-serif; color: #4a2556; text-align: center; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .special-guide p { display: grid !important; grid-template-columns: 36px 1fr; column-gap: 8px; align-items: center; margin: 0 0 8px !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .special-guide img { width: 36px !important; height: 36px !important; grid-row: span 2; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .special-guide b { font-size: 1rem !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .special-guide span { font-size: .9rem !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gem-inventory { display: flex !important; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 8px; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gem-inventory span { font-size: .9rem !important; padding: 4px 10px !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .juego-lado-texto { display: flex; flex-direction: column; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gema-intro { order: 2; }
+
+/* Arcade a pantalla completa: cubre todo bajo el menú (sin que se asome la sección de abajo) y sin la cinta del salón */
+html.escenas.escenas-flujo .ev.ev.ev-arcade.jugando-arcade { top: 0 !important; padding-top: 86px !important; }
+html.escenas.escenas-flujo .ev.ev.ev.ev-arcade.jugando-arcade .section-head { display: none !important; }
+/* Cielo de constelaciones: la máquina ancha, vista de cerca pero entera en la pantalla */
+html.escenas.escenas-flujo .ev-arcade.jugando-arcade .maq-3 { --h: calc((100vh - 120px) / .7) !important; margin: calc((100vh - 120px) / .7 * -.13) 0 calc((100vh - 120px) / .7 * -.17) !important; }
+html.escenas.escenas-flujo .ev-arcade.jugando-arcade .app-gemas .juego-lado { width: 440px !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .special-guide span { display: none !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .special-guide img { grid-row: auto !important; width: 32px !important; height: 32px !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado .special-guide p { margin: 0 0 6px !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gem-inventory { flex-direction: row !important; flex-wrap: nowrap !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gem-inventory span { display: inline-flex !important; align-items: center; gap: 4px; white-space: nowrap; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gem-inventory img { width: 22px !important; height: 22px !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gema-lado > h3 { display: none !important; }
+html.escenas .ev.ev-arcade .app-gemas .juego-lado #gem-inventory { flex-wrap: wrap !important; }
+/* el dragón se puede tocar: sube al inicio */
+.dragoncito.visible { pointer-events: auto !important; cursor: pointer; }

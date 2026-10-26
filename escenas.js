@@ -1050,6 +1050,8 @@
     const a = e.target.closest('a[href^="#"]'); if (!a || !site.contains(a)) return;
     const id = DESTINO[a.getAttribute('href').slice(1)]; if (!id) return;
     e.preventDefault(); $('#main-nav')?.classList.remove('open');
+    // con los botones del menú: el hada cruza con su estela, cubre la pantalla y la descubre ya encuadrada en la sección elegida
+    if (flujo && !matchMedia('(prefers-reduced-motion: reduce)').matches) { const i = indiceDe(id), e = E[i]; if (e) hechizo(e.hada || NOMBRE[e.id] || '', () => irFlujo(i, false), null); return; }
     if (pila || flujo) { irFlujo(indiceDe(id), true); return; }
     irA(indiceDe(id));
   }, true);
