@@ -2241,3 +2241,5 @@ html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{right:auto;lef
 /* las máquinas del salón de juegos: sin el marco crema (el pergamino ya es su papel); flotan sobre el cielo */
 .teatro-app .colgante-app:has(> .app-maquina){background:none!important;box-shadow:none!important;padding:0!important}
 .teatro-app .colgante-app > .app-maquina{max-height:none;overflow:hidden}
+/* X · los contactos en el cartel: en dos líneas compactas, sin un ícono suelto sobre cada correo */
+.teatro-lado .colgante :is(a,.btn){font-size:.8rem}

@@ -1563,7 +1563,8 @@
         colgados.push({ el, marca });
       }));
       // los carteles de cada lado siempre caben en la pantalla (si son muchos, se achican lo justo)
-      const caber = () => zonas.forEach(z => { z.style.zoom = ''; const r = z.getBoundingClientRect(), disp = innerHeight * .9 - r.top; if (z.scrollHeight > disp && disp > 120) z.style.zoom = Math.max(.6, disp / z.scrollHeight).toFixed(3); });
+      // los carteles caben entre su borde de arriba y la barra del libro (si no, se achican lo justo; antes el último quedaba cortado abajo)
+      const caber = () => zonas.forEach(z => { z.style.zoom = ''; const r = z.getBoundingClientRect(), nav = document.getElementById('libro-nav'), piso = nav && nav.offsetParent ? nav.getBoundingClientRect().top - 12 : innerHeight * .9, disp = piso - r.top; if (z.scrollHeight > disp && disp > 120) z.style.zoom = Math.max(.45, disp / z.scrollHeight).toFixed(3); });
       requestAnimationFrame(caber); setTimeout(caber, 700);
       const apps = [...teatro.querySelectorAll('.colgante-app')]; apps.forEach((c, k) => c.style.setProperty('--tab', (93 - (apps.length - 1 - k) * 24) + '%'));
       teatro.querySelector('.teatro-app')?.classList.toggle('varias', apps.length > 1);   // con varias, se abren desde la escena
