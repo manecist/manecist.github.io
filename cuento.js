@@ -673,7 +673,8 @@
         { texto: { titulo: '', texto: 'Se sacó el delantal…' }, nombre: 'mago-d', img: 'assets/cuento/tienda/rancek-delantal.webp', x: 78, alto: 19.69, clase: 'tras-mostrador', reemplaza: 'mago-x', sigue: true, ms: 1300 },
         // …y salió corriendo tras ellos hasta el borde del libro
         { texto: { titulo: 'Rancek:', texto: '«¡Espérenme!»' }, nombre: 'mago-c', actor: 'assets/cuento/tienda/rancek-corre-amigo-m', camina: [0, 1], cicloMs: 900, x: -12, alto: 17.96, clase: 'tras-mostrador espejo', reemplaza: 'mago-d', sigue: true, ruta: [[0, 78], [1, -12]], ms: 3270, pausa: 0 },
-        { sale: ['mago-c'], ms: 300 }
+        { sale: ['mago-c'], ms: 300 },
+        { texto: { titulo: '', texto: 'Rancek salió corriendo a alcanzarlos… ¡pasa la página para ver si los encuentra! →' }, ms: 1800 }   // la tienda no queda vacía sin explicación
       ] }
     ] },
     paseo: { carpeta: 'cap6/', suave: true, hitos: [
@@ -1580,6 +1581,19 @@
     window.addEventListener('cuento-app', () => setTimeout(() => document.querySelectorAll('.teatro-app .colgante-app:not(.arriba) .vitrina-viva iframe[data-src]').forEach(f => { f.src = f.dataset.src; f.removeAttribute('data-src'); }), 50));
     window.addEventListener('cuento-app', e => { const id = e.detail.abrir; teatro.querySelectorAll('.colgante-app').forEach(c => { c.classList.add('mueve'); clearTimeout(c._mv); c._mv = setTimeout(() => c.classList.remove('mueve'), 1000); const mia = id === true || (typeof id === 'string' && c.dataset.app === id); c.classList.toggle('arriba', !(id && mia)); c._rotular && c._rotular(); }); });
     window.addEventListener('cuento-pasa', () => document.body.classList.remove('app-obligada'));
+    // la boleta impresa en la caja del cuento se muestra ancha y completa en la columna del recibo (la ranura de la caja es muy angosta);
+    // con «Vaciar carrito / nueva compra» vuelve la vista previa
+    const salida = document.getElementById('printer-output');
+    if (salida) new MutationObserver(() => {
+      const app = salida.closest('.teatro-app .app-caja'); if (!app) return;
+      const col = app.querySelector('.app-doble > div:nth-child(2)'); if (!col) return;
+      col.querySelector('.boleta-cuento')?.remove(); col.classList.remove('con-boleta');
+      const papel = document.getElementById('printed-receipt'); if (salida.hidden || !papel || !papel.childElementCount) return;
+      const hoja = papel.cloneNode(true); hoja.removeAttribute('id'); hoja.className = 'boleta-cuento';
+      const pagaste = [...hoja.querySelectorAll('.paper-total')].find(l => /Pagaste/.test(l.textContent));
+      if (pagaste) { const m = document.createElement('div'); m.className = 'paper-total'; m.innerHTML = '<span>Medio de pago</span><b>Efectivo</b>'; pagaste.after(m); }
+      col.append(hoja); col.classList.add('con-boleta');
+    }).observe(salida, { attributes: true, attributeFilter: ['hidden'] });
     window.addEventListener('cuento-pasa', () => { if (colgados.length) descolgar(true); bajarDelCielo(); borrarEscritura(); });
     window.addEventListener('cuento-paginas', e => {
       const ps = e.detail.paginas, pop = ps.some(p => p.classList.contains('pagina-pop'));

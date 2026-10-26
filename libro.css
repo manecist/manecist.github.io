@@ -2168,3 +2168,35 @@ body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-
    izquierda; antes «Leer» quedaba encima del libro y la pestaña tapaba el título */
 html.pantalla-corta .cielo-leer{position:absolute;right:calc(100% + 10px);top:2px;margin:0;white-space:nowrap}
 html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{right:auto;left:-1%;translate:0 36px;border:3px solid #fff;border-radius:14px}
+/* los carteles de la derecha, alineados en una sola columna (antes iban en zigzag y se veían desordenados) y con letra legible */
+.teatro-lado .colgante:nth-child(n){margin-left:0;margin-right:0;width:100%}
+@media (pointer:fine){
+  html.pantalla-corta .teatro-lado{width:min(22vw,260px)}
+  html.pantalla-corta .colgante{font-size:.85rem}
+  html.pantalla-corta .colgante :is(.vida-cartel,.hitos-cartel) b{font-size:.8rem}
+  html.pantalla-corta .colgante :is(.vida-texto,.hito-texto){font-size:.86rem;line-height:1.35}
+  html.pantalla-corta .colgante .btn{font-size:.8rem;padding:6px 12px}
+}
+/* la caja del cuento: el botón en una línea y el mensaje debajo, sin montarse */
+.app-caja .register-confirm{white-space:nowrap;font-size:.72rem}
+.app-caja .register-message{top:112%}
+/* en las escenas con diálogo, todos los personajes quietos respiran y cambian el peso de un pie a otro (antes había largos ratos inmóviles),
+   cada uno a su ritmo para que no se muevan al unísono */
+.suave .hito-actor.hito-fija:not(.cuadro):not(.mostrador) > img:first-child{transform-origin:50% 100%;animation:vive2 3.2s ease-in-out infinite}
+.suave .hito-actor.hito-fija:nth-child(3n) > img:first-child{animation-duration:3.7s;animation-delay:-1.1s}
+.suave .hito-actor.hito-fija:nth-child(3n+1) > img:first-child{animation-duration:2.9s;animation-delay:-2s}
+@keyframes vive2{0%,100%{transform:scale(1,1) rotate(0)}30%{transform:scale(1.01,1.028) rotate(-.9deg)}65%{transform:scale(1.005,1.014) rotate(.8deg)}}
+.suave .hito-actor.hito-fija.saluda > img:first-child{animation:habla 1s ease-in-out}
+/* la boleta impresa del cuento: ancha y completa en la columna del recibo; la tira angosta de la caja no se muestra */
+.teatro-app .app-caja .printer-output{visibility:hidden!important}
+.app-caja .app-doble > div.con-boleta > :not(.caja-paso):not(.boleta-cuento){display:none}
+.boleta-cuento{margin:4px 0 0;padding:16px 18px 14px;background:#fffdf6;color:#4a2556;font:500 .82rem/1.45 'Mali',sans-serif;box-shadow:0 8px 18px rgba(60,30,60,.25);rotate:-.6deg;animation:funde .5s ease-out both;
+  -webkit-mask:linear-gradient(#000 0 0) top/100% calc(100% - 9px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/14px 9px repeat-x}
+.boleta-cuento .paper-brand{text-align:center;font-weight:700;letter-spacing:.12em;color:#c2457f;font-size:.72rem}
+.boleta-cuento h4{margin:2px 0;text-align:center;font:700 1.1rem 'Mali',sans-serif;color:#6a2c55}
+.boleta-cuento .paper-note{margin:0 0 6px;text-align:center;font-size:.62rem;color:#9b7aa8}
+.boleta-cuento .paper-items{padding:5px 0;margin:0 0 4px;border-block:2px dashed #e7b9d4}
+.boleta-cuento :is(.paper-item,.paper-total){display:flex;justify-content:space-between;gap:10px}
+.boleta-cuento :is(.paper-item,.paper-total) b{white-space:nowrap}
+.boleta-cuento .grand-total{margin:3px 0;padding:3px 0;border-block:2px solid #f0d6e8;font-size:.98rem;color:#7a2f5f}
+.boleta-cuento .paper-thanks{margin:6px 0 0;text-align:center;font:italic 600 .8rem var(--serif,Georgia,serif);color:#c2457f}
