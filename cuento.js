@@ -809,15 +809,16 @@
       ] }
     ] },
     iii: { carpeta: 'cap3/', textos: 'huellas', hitos: [
+      // en el orden de su currículum: tesis, hospital, Andacollo, CESFAM, clínica móvil, Academia Aliwen y su estudio
       { fondo: 'fondo-biblioteca.webp', suelo: 'suelo-biblioteca.webp', pasos: [
         { actor: 'tes', x: 27, alto: 15, de: 0, a: 1, ms: 4000 },                     // a la izquierda: escribe la tesis y la muestra
         { actor: 'par', x: 72, alto: 13, de: 0, a: 1, ms: 3500 }                      // a la derecha: el cariño de los adultos mayores
       ] },
+      { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
+        { actor: 'edu', x: 28, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
+      ] },
       { fondo: 'fondo-familia.webp', suelo: 'suelo-familia.webp', pasos: [
         { actor: 'ccc', x: 64, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la derecha: graba el video para las familias
-      ] },
-      { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
-        { actor: 'ssm', x: 40, alto: 16, de: 0, a: 1, ms: 4500 }                      // la matrona las atiende y se despide desde su lugar; ellas se van al camión
       ] },
       { fondo: 'fondo-cesfam.webp', suelo: 'suelo-cesfam.webp', pasos: [
         { actor: 'disp', x: 50, alto: 16, de: 0, a: 1, ms: 5000 },                   // al centro: arma el dispensador y lo muestra
@@ -826,11 +827,11 @@
         { actor: 'pac', de: 1, a: 2, ms: 450, pausa: 0, sigue: true },                             // …y sin detenerse pasa de la caminata a estirar la mano (fundido)
         { actor: 'pac', de: 2, a: 3, ms: 3000, sigue: true }                                       // …saca uno del dispensador y sonríe
       ] },
-      { fondo: 'fondo-feria.webp', suelo: 'suelo-feria.webp', pasos: [
-        { actor: 'edu', x: 28, alto: 16, de: 0, a: 1, ms: 4500 }                      // a la izquierda: explica con una lámina a las alumnas
-      ] },
       { fondo: 'fondo-box.webp', suelo: 'suelo-box.webp', pasos: [
         { actor: 'pla', x: 44, alto: 15, de: 0, a: 1, ms: 4500 }                      // los papeles se vuelven planilla
+      ] },
+      { fondo: 'assets/cuento/cap2/g05f-fondo.webp', suelo: 'assets/cuento/cap2/g05f-suelo.webp', pasos: [
+        { actor: 'ssm', x: 40, alto: 16, de: 0, a: 1, ms: 4500 }                      // la matrona las atiende y se despide desde su lugar; ellas se van al camión
       ] },
       { fondo: 'fondo-aula.webp', suelo: 'assets/cuento/cap2/g02-suelo.webp', pasos: [
         { nombre: 'profe', actor: 'aula-anim', x: 46, alto: 19.5, pj: true, bucle: [0, 1], cicloMs: 3100, ms: 3200 }      // enseña a los niños de básica
