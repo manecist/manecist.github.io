@@ -2162,5 +2162,9 @@ body:has(.teatro-app .colgante-app:not(.arriba)) #hada-escena{opacity:0;pointer-
 /* el visor de ilustraciones: un marco de medida fija, así todas las obras se ven del mismo tamaño (se ajustan dentro sin recortarse) */
 .visor{width:min(94vw,980px)}
 .visor-img{height:min(82vh,720px)}
-.visor-img img{width:100%;height:100%;max-height:none;max-width:none;object-fit:contain}
+.visor-img img{position:absolute;inset:0;width:100%;height:100%;max-height:none;max-width:none;object-fit:contain}   /* (el alto en % no se resolvía dentro de la grilla: la obra salía ampliada y cortada) */
 @media (max-width:700px){.visor-img{height:min(62vh,520px)}}
+/* pantallas bajas (o con zoom del navegador): «Leer» va a la izquierda del título y la pestaña de la aplicación guardada arriba, en la esquina
+   izquierda; antes «Leer» quedaba encima del libro y la pestaña tapaba el título */
+html.pantalla-corta .cielo-leer{position:absolute;right:calc(100% + 10px);top:2px;margin:0;white-space:nowrap}
+html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{right:auto;left:-1%;translate:0 36px;border:3px solid #fff;border-radius:14px}
