@@ -795,17 +795,17 @@
         { texto: { titulo: 'En pausa… por ahora', texto: 'Lo pausaron por sus proyectos… ¡pero volverán!' }, ms: 2400 }
       ] }
     ] },
-    cv: { carpeta: 'logros/', hitos: [
+    cv: { carpeta: 'logros/', apura: true, hitos: [
       { fondo: 'fondo-mapa.webp', suelo: 'suelo-mapa.webp', titulo: 'El mapa de su camino', texto: 'Cada lugar de su historia se levanta en el año en que llegó.', pasos: [
         // los lugares en orden de llegada, todos del mismo tamaño en una sola fila y lejos de los bordes del libro (antes el de 2018 quedaba cortado)
-        { nombre: 'lugarb1', img: 'assets/cuento/logros/lugarb1.webp', clase: 'rebote', x: 12, ancho: 9.5, rotulo: '2018', ms: 2300, texto: { titulo: '2018 · Matrona · titulación con distinción', texto: 'Universidad San Sebastián, Concepción.' } },
-        { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp?v=2', clase: 'rebote', x: 23, ancho: 9.5, rotulo: '2019', ms: 2300, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
-        { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', clase: 'rebote', x: 34, ancho: 9.5, rotulo: '2019 – 2021', ms: 2300, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
-        { nombre: 'lugar3', img: 'assets/cuento/logros/lugar3.webp', clase: 'rebote', x: 45, ancho: 9.5, rotulo: '2021', ms: 2300, texto: { titulo: '2021 · Matrona · CESFAM O\'Higgins', texto: 'Atención integral, planillas de PAP y mamografía, campañas educativas.' } },
-        { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', clase: 'rebote', x: 56, ancho: 9.5, rotulo: '2022 – 2023', ms: 2300, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
-        { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', clase: 'rebote', x: 67, ancho: 9.5, rotulo: '2024', ms: 2300, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
-        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', clase: 'rebote', x: 78, ancho: 9.5, rotulo: '2025 – 2026', ms: 2300, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
-        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', clase: 'rebote', x: 89, ancho: 9.5, rotulo: '2026 – hoy', ms: 2300, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
+        { nombre: 'lugarb1', img: 'assets/cuento/logros/lugarb1.webp', clase: 'rebote', x: 12, ancho: 9.5, rotulo: '2018', ms: 1100, pausa: 350, texto: { titulo: '2018 · Matrona · titulación con distinción', texto: 'Universidad San Sebastián, Concepción.' } },
+        { nombre: 'lugar1', img: 'assets/cuento/logros/lugar1.webp?v=2', clase: 'rebote', x: 23, ancho: 9.5, rotulo: '2019', ms: 1100, pausa: 350, texto: { titulo: '2019 · Matrona · Hospital de Andacollo', texto: 'Clínica de Lactancia Materna, programa VIH y atención primaria.' } },
+        { nombre: 'lugar2', img: 'assets/cuento/logros/lugar2.webp', clase: 'rebote', x: 34, ancho: 9.5, rotulo: '2019 – 2021', ms: 1100, pausa: 350, texto: { titulo: '2019 – 2021 · Matrona clínica · Hospital San José de Coronel', texto: 'Urgencias obstétricas, preparto, parto y puerperio.' } },
+        { nombre: 'lugar3', img: 'assets/cuento/logros/lugar3.webp', clase: 'rebote', x: 45, ancho: 9.5, rotulo: '2021', ms: 1100, pausa: 350, texto: { titulo: '2021 · Matrona · CESFAM O\'Higgins', texto: 'Atención integral, planillas de PAP y mamografía, campañas educativas.' } },
+        { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', clase: 'rebote', x: 56, ancho: 9.5, rotulo: '2022 – 2023', ms: 1100, pausa: 350, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
+        { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', clase: 'rebote', x: 67, ancho: 9.5, rotulo: '2024', ms: 1100, pausa: 350, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
+        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', clase: 'rebote', x: 78, ancho: 9.5, rotulo: '2025 – 2026', ms: 1100, pausa: 350, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
+        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', clase: 'rebote', x: 89, ancho: 9.5, rotulo: '2026 – hoy', ms: 1100, pausa: 350, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
         { texto: { titulo: 'Su currículum completo', texto: 'Experiencia, formación y habilidades.' }, app: true, ms: 400 }
       ] }
     ] },
@@ -1039,7 +1039,10 @@
       if (!quieto && window.MCELibro?.hadaMagia && document.getElementById('libro')?.classList.contains('acostado')) { let hecho = false; const una = () => { if (!hecho) { hecho = true; trazar(); } }; MCELibro.hadaMagia(a, una); setTimeout(una, 6500); }
       else trazar();
     });
-    const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms));
+    // apura: en escenas que lo permiten, un clic sobre el escenario hace que lo que falta aparezca de inmediato
+    let rapido = 1;
+    if (esc.apura && zona) zona.closest('.hitos')?.addEventListener('click', e => { if (!e.target.closest('button, a, .colgante')) rapido = .04; });
+    const espera = (ms, mia) => new Promise(fin => luego(() => fin(mia === vuelta), ms * rapido));
     // escena animada (video Wan): una lámina que se levanta del papel como cualquier pop-up; si no carga, corren los pasos de respaldo (sinVideo)
     const videos = {};
     const verVideo = (p, mia) => new Promise(fin => {
@@ -1073,7 +1076,7 @@
     // texto central propio de una escena (cambia el que se escribió sobre el libro)
     const cambiarCentral = txt => { const c = document.querySelector('.teatro-cielo .cielo-bloque .cuento') || el.closest('.pagina')?.querySelector('.cuento'); if (!c) return; c.querySelectorAll('.ch').forEach(x => x.remove()); c.textContent = txt; c.classList.remove('escribe'); void c.offsetWidth; c.classList.add('aparece'); };
     const mostrar = async n => {
-      h = n; const mia = ++vuelta, H = esc.hitos[Math.min(n, total - 1)];
+      h = n; rapido = 1; const mia = ++vuelta, H = esc.hitos[Math.min(n, total - 1)];
       el.classList.remove('llego'); document.getElementById('libro')?.classList.remove('invita');
       const [ct, cx] = cartel(n, H);
       const enVista = () => (window.MCELibro?.visibles?.() || []).some(p => p.contains(el));   // solo narra la escena del pliego que se está mirando
