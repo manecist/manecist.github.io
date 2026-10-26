@@ -1080,7 +1080,8 @@
       dispW = e.ev.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const h = Math.max(1, caja.scrollHeight), w = Math.max(1, caja.scrollWidth);
     // nunca bajo 0,9: la letra de lo importante se tiene que leer (si no cabe entero, la sección es un poco más alta y se baja con la rueda)
-    const k = Math.max(.9, Math.min(1, dispH / h, dispW / w)), y = Math.max(0, (dispH - h * k) / 2);
+    const minimo = raiz.classList.contains('escenas-acercar') ? .3 : e.id === 'matrona' ? .72 : .9;   // la sala es un dibujo con su texto grande en la tele: puede achicarse más para verse entera
+    const k = Math.max(minimo, Math.min(1, dispH / h, dispW / w)), y = Math.max(0, (dispH - h * k) / 2);
     if (h * k > dispH) e.ev.style.height = (h * k + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)) + 'px';
     caja.style.transformOrigin = '50% 0';
     caja.style.transform = 'translateY(' + y.toFixed(1) + 'px)' + (k < .995 ? ' scale(' + k.toFixed(4) + ')' : '');
@@ -1116,8 +1117,11 @@
     // todas las escenas visibles, en orden, sin el índice de estrellas ni la pista de la rueda
     E.forEach(e => { e.ev.classList.add('activa'); capa.append(e.ev); e.listo?.(e.ev); if (e.marcos) marcar(e, 0); });
     pistaRueda.remove();
-    if (flujo) { arrancarFlujo(); return; }
-    indice.remove();
+    // computador con pantalla mediana o chica: los dibujos con texto (escritorio, mural, sala) se ven enteros y se acercan por partes
+    const acercar = flujo && innerWidth < 1600;
+    if (acercar) raiz.classList.add('escenas-acercar');
+    if (flujo) arrancarFlujo(); else indice.remove();
+    if (flujo && !acercar) return;
     // las escenas que son un solo dibujo ancho se ven completas; al tocar una de sus partes con información,
     // la cámara la encuadra entera (la ventana crece para mostrarla grande) y se lee bajando dentro de ella.
     // Las partes están medidas en el dibujo (porcentaje de ancho y alto): [nombre, x, y, ancho, alto]
@@ -1125,7 +1129,7 @@
       '.app-tableros .tableros': ['el escritorio', [['Carpeta y temas', 4, 10, 42, 60], ['Monitor', 46, 13, 50, 52]]],
       '.mural': ['el mural', [['Mi trayectoria', 19, 12, 30, 61], ['Lugares, campaña y planilla', 47, 14, 34, 58]]],
       '.sala': ['la sala', [['Tele de cápsulas', 30, 14, 42, 41], ['Revistero', 8, 38, 20, 36], ['Planilla PAP', 71, 44, 25, 26]]],
-      '.ev-leyendas .ley-museo': ['el cuaderno', [['Dibujo elegido', 5, 7, 44, 78], ['Mis dibujos', 51, 6, 45, 80]]],
+      ...(flujo ? {} : { '.ev-leyendas .ley-museo': ['el cuaderno', [['Dibujo elegido', 5, 7, 44, 78], ['Mis dibujos', 51, 6, 45, 80]]] }),
     };
     Object.entries(PARTES).forEach(([sel, [nombre, partes]]) => {
       const lam = $(sel); if (!lam) return;
@@ -1162,6 +1166,7 @@
       }, true);
       addEventListener('resize', () => { if (actualParte >= 0) acercar(actualParte); });
     });
+    if (flujo) return;
     // la tele: al darle play en el teléfono, la cápsula pasa a pantalla completa y se gira a lo ancho
     const videoTele = $('.sala-tele video');
     if (videoTele) videoTele.addEventListener('play', () => {

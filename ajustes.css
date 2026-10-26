@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Ajustes de legibilidad y responsive de la versión clásica (se carga al final,
+   después de pergamino.css y pila.css, para que estas medidas manden).
+   Regla: lo importante se lee sin esfuerzo (≥ 14 px reales en pantalla) en
+   notebooks, monitores grandes y pantallas enormes; nada se achica para caber.
+   ========================================================================== */
+
+/* Perfil */
+html.escenas .ev.ev-equipo .perfil-pro-texto .eyebrow { font-size: .85rem !important; }
+html.escenas .ev.ev-equipo .perfil-pro-areas li { font-size: .88rem !important; }
+html.escenas .ev.ev-equipo .perfil-medalla small { font-size: .78rem !important; }
+html.escenas .ev.ev-equipo .perfil-medalla b { font-size: 1rem !important; }
+html.escenas .ev.ev-equipo .perfil-cv span { font-size: .95rem !important; }
+
+/* Studios Conari: el pergamino del centro más ancho y con letra legible; los servicios con texto grande */
+html.escenas .ev.ev-estudio .estudio-marca > p:not(.estudio-lema) { font-size: .95rem !important; line-height: 1.45 !important; }
+html.escenas .ev.ev-estudio .estudio-lema { font-size: 1.05rem !important; }
+html.escenas .ev.ev-estudio .estudio-marca .btn { font-size: .9rem !important; }
+html.escenas .ev.ev-estudio .estudio-servicio h3 { font-size: .95rem !important; }
+html.escenas .ev.ev-estudio .estudio-servicio p { font-size: .9rem !important; max-width: 260px !important; }
+
+/* Trayectoria: la hoja del mural con letra más grande (en píxeles del dibujo, que luego se escala) */
+html.escenas .ev.ev-trayectoria .mural-paso b { font-size: 15px !important; }
+html.escenas .ev.ev-trayectoria .mural-paso span { font-size: 15.5px !important; }
+html.escenas .ev.ev-trayectoria .mural-paso small { font-size: 13.5px !important; }
+html.escenas .ev.ev-trayectoria .mural-paso i { font-size: 13px !important; }
+html.escenas .ev.ev-trayectoria .mural-foto b { font-size: 15.5px !important; }
+html.escenas .ev.ev-trayectoria .mural-foto small { font-size: 13.5px !important; }
+
+/* Datos: las pestañas del portapapeles */
+html.escenas .ev.ev-datos .tab-sub { font-size: 1rem !important; }
+
+/* Matrona hoy: los folletos con su nombre legible */
+html.escenas .ev.ev-matrona .sala-folleto { font-size: 11px !important; line-height: 1.1 !important; }
+
+/* Contacto: los datos bajo cada medallón */
+html.escenas .ev.ev-contacto .contacto small { font-size: 1.05rem !important; }
+html.escenas .ev.ev-contacto .contacto b { font-size: 1.25rem !important; }
+
+/* pantallas enormes (2K, 4K): todo crece en proporción (antes quedaba chico al centro) */
+@media (min-width: 2200px) { html.escenas:not(.escenas-pila) { font-size: 20px; } }
+@media (min-width: 3000px) { html.escenas:not(.escenas-pila) { font-size: 26px; } }
+
+/* Studios Conari: pergamino más ancho que crece con su texto (estirado solo en alto) y el lema bajo el rollo de arriba */
+html.escenas .ev.ev-estudio .estudio-dos.estudio-tres { grid-template-columns: minmax(280px, 1fr) 360px minmax(480px, 1.5fr) !important; }
+html.escenas .ev.ev-estudio .estudio-marca { aspect-ratio: auto !important; max-height: none !important; padding: 124px 58px 96px !important; gap: 8px !important; }
+/* la hoja del mural: con letra grande caben los 7 trabajos si se omite la línea en cursiva de detalle (los detalles están en el CV) */
+html.escenas .ev.ev-trayectoria .mural-paso i { display: none !important; }
+html.escenas .ev.ev-trayectoria .mural-paso { grid-template-columns: 74px 1fr !important; }
+html.escenas .ev.ev-trayectoria .mural-paso b { white-space: nowrap; grid-row: span 2 !important; }
+
+/* Matrona hoy: la cinta centrada arriba de la sala (no sobre el dibujo ni bajo el menú) y los folletos con su nombre completo */
+html.escenas.escenas-flujo .ev.ev-matrona .section-head { position: relative !important; top: auto !important; left: auto !important; right: auto !important; width: 100% !important; display: flex !important; justify-content: center !important; margin: 0 0 8px !important; }
+html.escenas.escenas-flujo .ev.ev-matrona .section-head .cinta-nombre { position: static !important; width: 400px !important; margin: 0 auto !important; padding: 0 0 .35em !important; aspect-ratio: 1400 / 368 !important; display: grid !important; place-items: center !important; white-space: nowrap !important; font-size: 1.6rem !important; }
+html.escenas .ev.ev-matrona .sala-folleto { font-size: 10px !important; word-break: normal !important; overflow-wrap: anywhere !important; }
+html.escenas.escenas-flujo .ev.ev-matrona .section-head > div, html.escenas.escenas-flujo .ev.ev-datos .section-head > div { width: 100% !important; display: flex !important; justify-content: center !important; }
+/* perfil: el «Mi rol en Studios Conari» bajo el rollo de arriba */
+html.escenas.escenas-flujo .ev.ev-equipo .perfil-pro-texto { padding-top: 142px !important; }
+html.escenas.escenas-flujo .ev.ev-matrona .section-head, html.escenas.escenas-flujo .ev.ev-datos .section-head { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; }
+
+/* computador mediano o chico (< 1600 px): los dibujos con texto se ven enteros y se acercan por partes (como en la tableta) */
+html.escenas-acercar .zoom-marco { position: relative; width: 100%; overflow: hidden; border-radius: 10px; cursor: zoom-in; transition: height .5s cubic-bezier(.2,.8,.2,1); }
+html.escenas-acercar .zoom-marco.acercado { cursor: auto; box-shadow: 0 0 0 2px rgba(245, 168, 207, .8), 0 8px 22px rgba(40, 14, 56, .3); }
+html.escenas-acercar .zoom-marco > * { transform-origin: 0 0; will-change: transform; }
+html.escenas-acercar .zoom-marco :is(.tableros, .mural, .sala) { width: 100% !important; max-width: none !important; }
+html.escenas-acercar .zoom-barra { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 12px 0 0; }
+html.escenas-acercar :is(.zoom-parte, .zoom-todo) { margin: 0; padding: 9px 16px; border-radius: 999px; border: 2px solid #fff; background: #fff6fb; color: #6a2c55; font: 700 1rem 'Mali', var(--sans, sans-serif); cursor: pointer; box-shadow: 0 3px 0 #e2c4dc; }
+html.escenas-acercar .zoom-parte.activo { background: linear-gradient(135deg, #f6b9d6, #cdb6f2); color: #4a2556; }
+html.escenas-acercar .zoom-barra:not(.acercado) .zoom-todo { display: none; }
+html.escenas-acercar .zoom-barra::before { content: "Toca una parte del dibujo para verla de cerca:"; flex-basis: 100%; text-align: center; font: italic 600 1.05rem var(--serif, Georgia, serif); color: #fff7fc; text-shadow: 0 1px 3px rgba(20, 8, 40, .95); }
+html[data-tema="claro"].escenas-acercar .zoom-barra::before { color: #4a2556; text-shadow: 0 0 6px #fff; }
+html.escenas-acercar .zoom-barra.acercado::before { content: none; }
+/* (el zoom fijo de 1,2/1,4 para pantallas grandes descuadraba las medidas: ahora crece la letra base) */
+html.escenas.escenas-flujo .ev .ev-caja { zoom: 1 !important; }
+/* perfil y Studios Conari en rem: en pantallas enormes crecen junto con la letra */
+html.escenas.escenas-flujo .ev.ev-equipo .perfil-pro { grid-template-columns: minmax(12.5rem, 16.5rem) 28rem minmax(12.5rem, 15.5rem) !important; gap: 1.6rem !important; }
+html.escenas.escenas-flujo .ev.ev-equipo .perfil-pro-texto { width: 28rem !important; min-height: 40rem !important; padding: 8.9rem 6rem 6.2rem !important; }
+html.escenas.escenas-flujo .ev.ev-equipo .perfil-medalla img { width: 6.5rem !important; height: 6.5rem !important; }
+html.escenas.escenas-flujo .ev.ev-estudio .estudio-dos.estudio-tres { grid-template-columns: minmax(17.5rem, 1fr) 22.5rem minmax(30rem, 1.5fr) !important; }
+html.escenas.escenas-flujo .ev.ev-estudio .estudio-marca { padding: 7.75rem 3.6rem 6rem !important; }

@@ -382,18 +382,18 @@ html.escenas.escenas-flujo .ev-arcade.jugando-arcade .juego-lado { height: min(6
 html.escenas.escenas-flujo .ev-arcade.jugando-arcade .juego-lado-texto { font-size: 1.05rem; }
 
 /* Contacto: medallones y letras más grandes y con más contraste (se leen sin esfuerzo); el pie y el nido, más compactos */
-html.escenas .ev-contacto .contactos { max-width: 1060px !important; row-gap: 22px !important; column-gap: 40px !important; }
-html.escenas .ev-contacto .contacto { grid-template-rows: 165px auto auto !important; gap: 6px !important; }
-html.escenas .ev-contacto .contacto-ico { width: 165px !important; height: 165px !important; }
-html.escenas .ev-contacto .contacto b { font-size: 1.35rem !important; letter-spacing: .02em; text-shadow: 0 1px 3px rgba(20, 8, 40, .9), 0 0 12px rgba(20, 8, 40, .7); }
-html.escenas .ev-contacto .contacto small { font-size: 1.12rem !important; font-weight: 700 !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .9), 0 0 10px rgba(20, 8, 40, .7); }
-html[data-tema="claro"].escenas .ev-contacto .contacto :is(b, small) { text-shadow: 0 0 6px #fff, 0 0 12px #fff; }
-html.escenas .ev-contacto .section-head:has(.cinta-nombre) { margin-bottom: 8px; }
-html.escenas .ev-contacto footer { margin-top: 18px !important; padding-top: 12px !important; }
-html.escenas .ev-contacto footer p { font-size: .95rem !important; color: #f3e6f7 !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .9); }
-html.escenas .ev-contacto footer p:first-child { font-size: 1.05rem !important; }
-html[data-tema="claro"].escenas .ev-contacto footer p { color: #4a2556 !important; text-shadow: 0 0 6px #fff; }
-html.escenas .ev-contacto .nido-escena { margin-top: 8px !important; }
+html.escenas .ev.ev-contacto .contactos { max-width: 1060px !important; row-gap: 22px !important; column-gap: 40px !important; }
+html.escenas .ev.ev-contacto .contacto { grid-template-rows: 165px auto auto !important; gap: 6px !important; }
+html.escenas .ev.ev-contacto .contacto-ico { width: 165px !important; height: 165px !important; }
+html.escenas .ev.ev-contacto .contacto b { font-size: 1.35rem !important; letter-spacing: .02em; text-shadow: 0 1px 3px rgba(20, 8, 40, .9), 0 0 12px rgba(20, 8, 40, .7); }
+html.escenas .ev.ev-contacto .contacto small { font-size: 1.12rem !important; font-weight: 700 !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .9), 0 0 10px rgba(20, 8, 40, .7); }
+html[data-tema="claro"].escenas .ev.ev-contacto .contacto :is(b, small) { text-shadow: 0 0 6px #fff, 0 0 12px #fff; }
+html.escenas .ev.ev-contacto .section-head:has(.cinta-nombre) { margin-bottom: 8px; }
+html.escenas .ev.ev-contacto footer { margin-top: 18px !important; padding-top: 12px !important; }
+html.escenas .ev.ev-contacto footer p { font-size: .95rem !important; color: #f3e6f7 !important; text-shadow: 0 1px 3px rgba(20, 8, 40, .9); }
+html.escenas .ev.ev-contacto footer p:first-child { font-size: 1.05rem !important; }
+html[data-tema="claro"].escenas .ev.ev-contacto footer p { color: #4a2556 !important; text-shadow: 0 0 6px #fff; }
+html.escenas .ev.ev-contacto .nido-escena { margin-top: 8px !important; }
 /* con scroll continuo ya no hace falta el margen inferior para la pista de la rueda */
 html.escenas.escenas-flujo .ev:not(.ev-trayectoria):not(.ev-datos) { padding-top: 10px !important; padding-bottom: 12px !important; }
 html.escenas.escenas-flujo .ev-contacto .contacto { grid-template-rows: 150px auto auto !important; }
