@@ -2200,3 +2200,6 @@ html.pantalla-corta .teatro-app .colgante-app.arriba .app-pestana{right:auto;lef
 .boleta-cuento :is(.paper-item,.paper-total) b{white-space:nowrap}
 .boleta-cuento .grand-total{margin:3px 0;padding:3px 0;border-block:2px solid #f0d6e8;font-size:.98rem;color:#7a2f5f}
 .boleta-cuento .paper-thanks{margin:6px 0 0;text-align:center;font:italic 600 .8rem var(--serif,Georgia,serif);color:#c2457f}
+/* «vive» también fuera de las escenas suaves: la figura respira y, al hablar, gesticula un poco */
+.hito-actor.vive.hito-fija > img:first-child{transform-origin:50% 100%;animation:vive2 3.2s ease-in-out infinite}
+.hito-actor.vive.hito-fija.saluda > img:first-child{animation:habla 1s ease-in-out,vive2 3.2s ease-in-out 1s infinite}

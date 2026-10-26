@@ -804,8 +804,8 @@
         { nombre: 'lugar3', img: 'assets/cuento/logros/lugar3.webp', clase: 'rebote', x: 45, ancho: 9.5, rotulo: '2021', ms: 1100, pausa: 350, texto: { titulo: '2021 · Matrona · CESFAM O\'Higgins', texto: 'Atención integral, planillas de PAP y mamografía, campañas educativas.' } },
         { nombre: 'lugar4', img: 'assets/cuento/logros/lugar4.webp', clase: 'rebote', x: 56, ancho: 9.5, rotulo: '2022 – 2023', ms: 1100, pausa: 350, texto: { titulo: '2022 – 2023 · Matrona · SSMSO', texto: 'Campañas de PAP en clínicas móviles y seguimiento de pacientes.' } },
         { nombre: 'lugarb2', img: 'assets/cuento/logros/lugarb2.webp', clase: 'rebote', x: 67, ancho: 9.5, rotulo: '2024', ms: 1100, pausa: 350, texto: { titulo: '2024 · Educadora · Academia Aliwen', texto: 'Matemáticas, Ciencias y Lenguaje con material adaptado.' } },
-        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', clase: 'rebote', x: 78, ancho: 9.5, rotulo: '2025 – 2026', ms: 1100, pausa: 350, texto: { titulo: '2025 – 2026 · VILU · arte y 3D', texto: 'Line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
-        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', clase: 'rebote', x: 89, ancho: 9.5, rotulo: '2026 – hoy', ms: 1100, pausa: 350, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
+        { nombre: 'lugarb4', img: 'assets/cuento/logros/lugarb4.webp', clase: 'rebote', x: 78, ancho: 9.5, rotulo: '2026 – hoy', ms: 1100, pausa: 350, texto: { titulo: '2026 – hoy · Socia fundadora · Studios Conari SpA', texto: 'Diseño editorial, ilustración, 3D, sitio web y administración.' } },
+        { nombre: 'lugarb3', img: 'assets/cuento/logros/lugarb3.webp', clase: 'rebote', x: 89, ancho: 9.5, rotulo: '2026', ms: 1100, pausa: 350, texto: { titulo: '2026 · VILU · proyecto de Studios Conari', texto: 'Para postular al Fondo de Cultura: line art de 14 personajes, modelado, rigging y animación en Blender, integración en Godot.' } },
         { texto: { titulo: 'Su currículum completo', texto: 'Experiencia, formación y habilidades.' }, app: true, ms: 400 }
       ] }
     ] },
@@ -848,13 +848,13 @@
     // IX · practicando sus hechizos: en la torre, el libro de hechizos de la matrona (tableros), sus cápsulas y el banco
     hechizos: { carpeta: 'cap9/', hitos: [
       { fondo: 'fondo-torre.webp', suelo: 'suelo-torre.webp', titulo: 'La torre de los hechizos', texto: 'Después de sus medallas, Ari siguió practicando cada día.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 22, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -4.25, 1.2], [0.25, -0.5, 0], [0.375, 3.25, 1.2], [0.5, 7, 0], [0.625, 10.75, 1.2], [0.75, 14.5, 0], [0.875, 18.25, 1.2], [1, 22, 0]], ms: 1300, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
-        { texto: { titulo: 'Ari:', texto: '«Lo que aprendí de datos… ¡lo voy a usar en lo que conozco de cerca!»' }, nombre: 'ari', efecto: 'salto', ms: 1800 },
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 22, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
+        { texto: { titulo: 'Ari:', texto: '«Lo que aprendí de datos… ¡lo voy a usar en lo que conozco de cerca!»' }, nombre: 'ari', clase: 'vive saluda', ms: 1800 },
         { nombre: 'perg', img: 'pergamino.webp', x: 62, alto: 19, clase: 'pergamino-hechizo', fx: { tipo: 'destello', x: 62, ancho: 14, y: 12 }, ms: 1200 },
         { pergTitulo: 'Mis nuevos hechizos', perg: 'Datos de salud que se entienden, cápsulas para las familias y herramientas para enseñar.', evento: 'hechizo-pergamino', ms: 2400 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'El libro de hechizos de la matrona', texto: 'Cinco tableros con datos de salud de Chile. Cada gema guarda lo que descubrió.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 87, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, 3.88, 1.2], [0.25, 15.75, 0], [0.375, 27.62, 1.2], [0.5, 39.5, 0], [0.625, 51.38, 1.2], [0.75, 63.25, 0], [0.875, 75.12, 1.2], [1, 87, 0]], ms: 3250, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 87, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         { nombre: 'perg', img: 'pergamino.webp', x: 72, alto: 24, clase: 'pergamino-hechizo', ms: 600, pausa: 200 },
         { nombre: 'g-anticonceptivos', img: 'assets/cuento/hechizos/gema-anticonceptivos.webp', x: 10, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'Anticonceptivos', ms: 300, pausa: 120 },
         { nombre: 'g-its', img: 'assets/cuento/hechizos/gema-its.webp', x: 22, alto: 7, fila: 'atras', clase: 'gema rebote', abre: 'tableros', rotulo: 'ITS', ms: 300, pausa: 120 },
@@ -869,7 +869,7 @@
         { texto: { titulo: '', texto: 'Toca una gema para abrir sus tableros.' }, ms: 900 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'Ocho cápsulas nuevas', texto: 'Animadas y narradas por ella, con la información vigente en Chile.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 16, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -5, 1.2], [0.25, -2, 0], [0.375, 1, 1.2], [0.5, 4, 0], [0.625, 7, 1.2], [0.75, 10, 0], [0.875, 13, 1.2], [1, 16, 0]], ms: 1120, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 16, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         // la cápsula aparece cerrada, se abre y de adentro van saliendo las cápsulas de video
         { nombre: 'capsula', img: 'assets/cuento/hechizos/capsula.webp', x: 60, alto: 9, fila: 'atras', efecto: 'flota', fx: { tipo: 'destello', x: 60, ancho: 14, y: 8 }, ms: 1100, pausa: 400 },
         { nombre: 'capsula-ab', img: 'assets/cuento/hechizos/capsula-abierta.webp', x: 60, alto: 10.1, fila: 'atras', reemplaza: 'capsula', sigue: true, fx: { tipo: 'destello', x: 60, ancho: 18, y: 10, ms: 1200 }, ms: 700, pausa: 200 },
@@ -880,12 +880,12 @@
         { texto: { titulo: 'Ari:', texto: '«Leche materna, Shantala, sueño seguro, el PAP… ¡para ver en la sala de espera o en la casa!»' }, nombre: 'ari', efecto: 'brilla', ms: 1800 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: 'El Banco de Evaluaciones', texto: 'Un banco de preguntas para docentes, probado con un Moodle real.', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 20, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -4.5, 1.2], [0.25, -1, 0], [0.375, 2.5, 1.2], [0.5, 6, 0], [0.625, 9.5, 1.2], [0.75, 13, 0], [0.875, 16.5, 1.2], [1, 20, 0]], ms: 1240, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 20, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         { nombre: 'banco', img: 'assets/cuento/hechizos/banco.webp', x: 62, alto: 12, fila: 'medio', clase: 'cuadro', abre: 'banco', fx: { tipo: 'destello', x: 62, ancho: 16, y: 10 }, ms: 900 },
         { texto: { titulo: 'Ari:', texto: '«La inteligencia artificial ayuda, pero la respuesta correcta siempre la confirma una persona.»' }, nombre: 'ari', efecto: 'salto', ms: 1800 }
       ] },
       { suelo: 'suelo-torre.webp', titulo: '', texto: '', pasos: [
-        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, desde: -8, x: 50, alto: 16, delante: true, entra: true, ruta: [[0, -8, 0], [0.125, -0.75, 1.2], [0.25, 6.5, 0], [0.375, 13.75, 1.2], [0.5, 21, 0], [0.625, 28.25, 1.2], [0.75, 35.5, 0], [0.875, 42.75, 1.2], [1, 50, 0]], ms: 2140, pausa: 300 },   // entra caminando desde el borde del libro (antes aparecía de golpe)
+        { nombre: 'ari', img: 'assets/cuento/etapas/etapa-15.webp', pj: true, x: 50, alto: 16, delante: true, clase: 'vive', ms: 900, pausa: 300 },   // se levanta de la página como figura pop-up y respira (sin deslizarse ni saltar)
         { texto: { titulo: 'Ari:', texto: '«Cada hechizo que aprendo lo uso para ayudar a alguien.»' }, nombre: 'ari', efecto: 'brilla', fx: { tipo: 'destello', x: 50, ancho: 14, y: 14 }, ms: 1800 },
         { texto: { titulo: '', texto: 'Y sin que nadie lo notara, algo más grande empezaba a nacer…' }, ms: 2200 }
       ] }
