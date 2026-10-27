@@ -393,3 +393,7 @@ html .teatro-app .colgante-app .app-cv .cv-hab[hidden], html .teatro-app .colgan
 /* Matrona hoy: el título bordado en el frente del cojín del sillón (sala.webp: frente ≈ x 590–1350, y 690–748) */
 html.escenas .sala-capa .sala-sillon { left: 396px !important; top: 768px !important; width: 900px !important; height: 84px !important; }
 html.escenas .sala-capa .sala-sillon-titulo { font-size: 64px !important; color: #8a2f6c !important; text-shadow: 0 2px 0 #ffe3f1, 0 0 10px rgba(255, 236, 246, .95), 0 0 2px #fff !important; }
+
+/* pétalos de sakura cayendo sobre el reino: más grandes y visibles, por delante del dibujo */
+.reino-petalos { z-index: 2; }
+.reino-petalos i { width: 20px !important; height: 15px !important; opacity: .95 !important; box-shadow: 0 0 6px rgba(255, 214, 236, .7); }

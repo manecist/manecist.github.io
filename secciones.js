@@ -237,7 +237,7 @@
     };
     // pétalos de sakura
     const caja = $('#reino-petalos');
-    if (!quieto) for (let i = 0; i < 22; i++) {
+    if (!quieto) for (let i = 0; i < 34; i++) {   // antes 22: casi no se veían
       const p = el('i'); p.style.cssText = `--x:${Math.random() * 100}vw;--d:${9 + Math.random() * 11}s;--r:${Math.random() * 360}deg;--s:${.5 + Math.random() * .9};--dx:${(Math.random() * 40 - 10)}vw;animation-delay:-${Math.random() * 20}s`;
       caja.append(p);
     }
