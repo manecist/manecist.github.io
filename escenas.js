@@ -1198,7 +1198,7 @@
       dispW = e.ev.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const h = Math.max(1, caja.scrollHeight), w = Math.max(1, caja.scrollWidth);
     // nunca bajo 0,9: la letra de lo importante se tiene que leer (si no cabe entero, la sección es un poco más alta y se baja con la rueda)
-    const minimo = raiz.classList.contains('escenas-acercar') ? .3 : e.id === 'matrona' ? .72 : .9;   // la sala es un dibujo con su texto grande en la tele: puede achicarse más para verse entera
+    const minimo = raiz.classList.contains('escenas-acercar') ? .3 : .55;   // los dibujos (mural, escritorio, sala) caben enteros en notebooks; su letra ya es grande   // la sala es un dibujo con su texto grande en la tele: puede achicarse más para verse entera
     const k = Math.max(minimo, Math.min(1, dispH / h, dispW / w)), y = Math.max(0, (dispH - h * k) / 2);
     if (h * k > dispH) e.ev.style.height = (h * k + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom)) + 'px';
     caja.style.transformOrigin = '50% 0';
@@ -1242,7 +1242,8 @@
     E.forEach(e => { e.ev.classList.add('activa'); capa.append(e.ev); e.listo?.(e.ev); if (e.marcos) marcar(e, 0); });
     pistaRueda.remove();
     // computador con pantalla mediana o chica: los dibujos con texto (escritorio, mural, sala) se ven enteros y se acercan por partes
-    const acercar = flujo && innerWidth < 1600;
+    // const acercar = flujo && innerWidth < 1600;   // antes: en notebooks los dibujos se acercaban por partes (capturaba los clics y confundía)
+    const acercar = false;
     if (acercar) raiz.classList.add('escenas-acercar');
     if (flujo) arrancarFlujo(); else indice.remove();
     if (flujo && !acercar) return;

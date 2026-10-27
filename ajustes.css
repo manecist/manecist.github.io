@@ -389,3 +389,7 @@ html .teatro-app .colgante-app .app-cv .cv-lista b { font-size: 1.22rem !importa
 html .teatro-app .colgante-app .app-cv .cv-hab { max-width: 1100px; margin: 18px auto 0 !important; display: flex !important; flex-wrap: wrap; justify-content: center; gap: 10px; }
 html .teatro-app .colgante-app .app-cv .cv-hab span { font-size: 1.15rem !important; padding: 8px 16px !important; }
 html .teatro-app .colgante-app .app-cv .cv-hab[hidden], html .teatro-app .colgante-app .app-cv .cv-lista[hidden] { display: none !important; }
+
+/* Matrona hoy: el título bordado en el frente del cojín del sillón (sala.webp: frente ≈ x 590–1350, y 690–748) */
+html.escenas .sala-capa .sala-sillon { left: 396px !important; top: 768px !important; width: 900px !important; height: 84px !important; }
+html.escenas .sala-capa .sala-sillon-titulo { font-size: 64px !important; color: #8a2f6c !important; text-shadow: 0 2px 0 #ffe3f1, 0 0 10px rgba(255, 236, 246, .95), 0 0 2px #fff !important; }

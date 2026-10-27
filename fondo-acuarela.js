@@ -128,6 +128,9 @@ window.FondoAcuarela = (() => {
       // lineart en blanco y negro, ajustado al marco común; se calcula una sola vez
       const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, 0, 0, W, H);
       const co = lienzo(W, H); co.getContext('2d').drawImage(acu, 0, 0, W, H);
+      if (FONDO.includes(CAPAS.indexOf(c))) {   // el borde izquierdo del paisaje se funde con su continuación ancha (sin costura)
+        [co.getContext('2d'), g].forEach(x => { x.save(); x.filter = 'none'; x.globalCompositeOperation = 'destination-out'; const gr = x.createLinearGradient(0, 0, 70, 0); gr.addColorStop(0, '#000'); gr.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gr; x.fillRect(0, 0, 70, H); x.restore(); });
+      }
       // aura de energía de la figura: un halo con sus propios colores que late suave
       const aura = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp${VER}`).catch(() => null) : null;
       juego[c.id] = { bn, co, aura, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
@@ -138,6 +141,10 @@ window.FondoAcuarela = (() => {
     const relleno = lienzo(W / 4, H / 4), rg = relleno.getContext('2d');
     rg.filter = 'blur(6px)'; rg.drawImage(chica, -8, -8, W / 4 + 16, H / 4 + 16);
     juego.relleno = relleno; juego.tema = tema;
+    // el paisaje ancho (continuación a la izquierda, mismo estilo) para pantallas más anchas que el dibujo
+    juego.ancho = await cargar(`assets/fondo/reino/${tema}/00-ancho-acuarela.webp${VER}`).catch(() => null);
+    const anchoLin = await cargar(`assets/fondo/reino/comun/00-ancho-lineart.webp${VER}`).catch(() => null);
+    if (anchoLin) { const b = lienzo(ANCHO_EXTRA + 70, H), bg = b.getContext('2d'); bg.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; bg.drawImage(anchoLin, 0, 0, ANCHO_EXTRA + 70, H); juego.anchoLin = b; }
     // de noche, neblina en algunas partes de la cordillera (entre las montañas y el valle)
     if (tema === 'noche') {
       const n = lienzo(W, H), ng = n.getContext('2d'), r = azar(7);
@@ -163,35 +170,14 @@ window.FondoAcuarela = (() => {
   function encuadre(cw, ch) {
     // la escena cubre toda la pantalla (también detrás de la barra), sin franjas difuminadas arriba ni abajo
     // const k = Math.max(cw / W, ch / H) * 1.045;   // antes: todo cubría la pantalla y en pantallas anchas se cortaban las alas y el risco
-    // en pantallas más anchas que el dibujo, las figuras (dragón, mago, árbol con el risco, la pareja) se ven enteras, del alto de la
-    // pantalla y pegadas a la derecha; el fondo (cielo, cordillera, valle) se amplía para llenar todo el ancho (ver marcoFondo)
     if (cw / W <= ch / H) { const k = Math.max(cw / W, ch / H) * 1.045; return { k, ox: (cw - W * k) / 2, oy: (ch - H * k) / 2 }; }
-    const k = ch / H * 1.045;
-    return { k, ox: cw - W * k * .995, oy: (ch - H * k) / 2 };
+    // pantalla más ancha que el dibujo: la composición entera (todas las capas, misma escala y posición) del alto de la pantalla,
+    // pegada a la derecha; a la izquierda continúa el paisaje ancho (capa «ancho», pintada en el mismo estilo)
+    const k = ch / H * 1.03;
+    return { k, ox: Math.min(cw - W * k * .99, ANCHO_EXTRA * k), oy: (ch - H * k) / 2 };
   }
-  // el fondo ampliado: cubre toda la pantalla, pegado a la derecha y con su horizonte a la misma altura que el de las figuras
-  function marcoFondo(cw, ch) {
-    const f = marcoFiguras(cw, ch); if (cw / W <= ch / H) return f;
-    // se amplía lo justo para cubrir, y la luna queda lo más cerca posible de donde la ven las figuras
-    const k = Math.max(cw / W, ch / H) * 1.03;
-    const ox = Math.min(0, Math.max(cw - W * k, f.ox + LUNA[0] * f.k - LUNA[0] * k));
-    const oy = ch - H * k;   // anclado abajo: el castillo, el puente y las cascadas se ven enteros hasta su base
-    return { k, ox, oy };
-  }
-  const FONDOS = 3;                                 // las tres primeras capas son el paisaje (se amplían); desde el dragón, figuras
-  // el primer plano (árbol con el risco y la pareja) va grande e imponente, pegado abajo y a la derecha (como en el dibujo original)
-  function marcoFrente(cw, ch) {
-    const f = encuadre(cw, ch); if (cw / W <= ch / H) return f;
-    const k = Math.max(cw / W, ch / H) * 1.03;
-    return { k, ox: cw - W * k, oy: ch - H * k };
-  }
-  // el dragón y el mago se ven enteros (alas incluidas) y se corren a la izquierda lo justo para que las ramas no los tapen
-  function marcoFiguras(cw, ch) {
-    const f = encuadre(cw, ch); if (cw / W <= ch / H) return f;
-    const fr = marcoFrente(cw, ch), rama = fr.ox + 785 * fr.k;
-    return { k: f.k, ox: Math.max(10 - 65 * f.k, Math.min(f.ox, rama - 727 * f.k - 24)), oy: f.oy };
-  }
-  const marcoDe = (i, cw, ch) => i < FONDOS ? marcoFondo(cw, ch) : i < 5 ? marcoFiguras(cw, ch) : marcoFrente(cw, ch);
+  const ANCHO_EXTRA = 460;                          // px del paisaje ancho a la izquierda del dibujo
+  const marcoDe = (i, cw, ch) => encuadre(cw, ch);   // todas las capas en el mismo marco (antes cada una tenía el suyo y se deformaba la composición)
   /* versión anterior (escena entera bajo la barra, bordes rellenos con la escena difuminada):
   function encuadre(cw, ch) {
     const disp = ch - arriba, vertical = cw / disp < 1.2;
@@ -208,6 +194,12 @@ window.FondoAcuarela = (() => {
     ctx.restore();
   }
 
+  // la continuación del paisaje a la izquierda del dibujo (se mueve con la cordillera en el parallax)
+  function pintarAncho(ctx, cw, ch, k, ox, oy, mx, my, a) {
+    if (!img.ancho || ox <= 1 || a <= 0) return;
+    const prof = CAPAS[1].prof, dx = -mx * DESPLAZA * prof, dy = -my * DESPLAZA * prof, AW = W + ANCHO_EXTRA;
+    ctx.globalAlpha = a; ctx.drawImage(img.ancho, ox + (dx - ANCHO_EXTRA) * k, oy + dy * k, AW * k, H * k); ctx.globalAlpha = 1;
+  }
   function pintar(ctx, t, px = 0, py = 0) {
     if (!listos) return;
     const cw = ctx.canvas.width, ch = ctx.canvas.height;
@@ -218,6 +210,7 @@ window.FondoAcuarela = (() => {
     const v = varita(Math.min(t, DURACION));
     ctx.fillStyle = '#f4f1ea'; ctx.fillRect(0, 0, cw, ch);
     rellenar(ctx, cw, ch, suave((t - HECHIZO) / 1.6));   // el borde se tiñe junto con el cielo
+    pintarAncho(ctx, cw, ch, k, ox, oy, mx, my, t < DURACION ? suave((t - HECHIZO) / 1.6) : 1);
     if (t >= DURACION) {
       // la energía aparece de a poco cuando la escena ya está pintada y luego late suave
       const energia = suave((t - DURACION) / 2.5) * (img.tema === 'dia' ? .38 : .72);
@@ -271,7 +264,7 @@ window.FondoAcuarela = (() => {
       const prof = v.mezcla !== undefined ? CAPAS[v.desde].prof + (CAPAS[v.capa].prof - CAPAS[v.desde].prof) * v.mezcla : CAPAS[v.capa].prof;
       const dx = -mx * DESPLAZA * prof, dy = -my * DESPLAZA * prof;
       const H0 = marcoDe(v.capa, cw, ch), { k, ox, oy } = H0;   // el hada en el marco de la capa que pinta
-      const tx = ox + (v.p[0] + dx) * k, ty = oy + (v.p[1] + dy) * k, e = HADA_ESC * encuadre(cw, ch).k;
+      const tx = ox + (v.p[0] + dx) * k, ty = oy + (v.p[1] + dy) * k, e = HADA_ESC * k;
       // estela de destellos: se calcula desde el tiempo, sin estado
       for (let s = Math.floor((t - .9) * 40) / 40; s <= t; s += 1 / 40) {
         if (s < .6 || s > 12.4) continue;
@@ -308,6 +301,7 @@ window.FondoAcuarela = (() => {
     const g = mascaraTrazo.getContext('2d'); g.clearRect(0, 0, W / 2, H / 2);
     for (const m of marcasTrazo) { if (t < m.nace) continue; const Rm = m.R * (.3 + .7 * suave((t - m.nace) / .5)) / 2; g.drawImage(sellos[m.v], m.x / 2 - Rm, m.y / 2 - Rm, Rm * 2, Rm * 2); }
     const listo = suave((t - (TRAZO - .7)) / .6); if (listo > 0) { g.globalAlpha = listo; g.fillRect(0, 0, W / 2, H / 2); g.globalAlpha = 1; }
+    if (img.anchoLin && ox > 1) { ctx.save(); ctx.globalAlpha = suave(t / (TRAZO * .5)); const pr = CAPAS[1].prof; ctx.drawImage(img.anchoLin, ox - (ANCHO_EXTRA + px * 38 * pr) * k, oy - py * 38 * pr * k, (ANCHO_EXTRA + 70) * k, H * k); ctx.restore(); }
     const lg = lineaTrazo.getContext('2d');
     CAPAS.forEach((c, i) => {
       const M = marcoDe(i, cw, ch);
