@@ -14,7 +14,7 @@
 .escena.activa{opacity:1;visibility:visible}
 .escena.oculta{opacity:0!important;visibility:hidden!important;pointer-events:none}
 .escena-fondo{position:absolute;inset:0;background:#070b1d}
-.escena-cielo{position:absolute;inset:-4%;background:url("assets/fondo/noche2.webp") center 60%/cover no-repeat;filter:saturate(1.05) brightness(.55);transform:scale(1.04);animation:respira-cielo 28s ease-in-out infinite alternate}
+.escena-cielo{position:absolute;inset:-4%;background:url("assets/fondo/reino-noche.webp") center 60%/cover no-repeat;filter:saturate(1.05) brightness(.55);transform:scale(1.04);animation:respira-cielo 28s ease-in-out infinite alternate}
 .escena-niebla{position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 50% 52%,rgba(186,147,240,.22),transparent 70%),radial-gradient(ellipse at 50% 100%,rgba(7,10,28,.95),transparent 55%),radial-gradient(ellipse at 50% 0,rgba(7,10,28,.75),transparent 50%)}
 @keyframes respira-cielo{to{transform:scale(1.1) translate(-1%,-1%)}}
 .escena-estela{position:absolute;left:-30%;top:10%;width:60%;height:6px;border-radius:99px;opacity:0;transform:rotate(14deg);
@@ -200,7 +200,7 @@
 .pareja.ari{left:calc(50% - 4%);transform:translateX(-82%)}.pareja.coen{left:calc(50% - 7%)}
 .pareja-corazon{position:absolute;left:45%;top:50%;color:#ff8fc0;font-size:1.3rem;text-shadow:0 0 10px #ff6fa8;animation:corazon 1.8s ease-in-out infinite}
 @keyframes corazon{50%{transform:translateY(-10px) scale(1.3);opacity:.6}}
-.vineta-trio{height:min(300px,40vh);background:url("assets/fondo/noche.webp") center 65%/cover}
+.vineta-trio{height:min(300px,40vh);background:url("assets/fondo/reino-noche.webp") center 65%/cover}
 .vineta-trio img{position:absolute;bottom:-4%;height:70%;filter:drop-shadow(0 6px 8px rgba(0,0,0,.6))}
 .trio-mago{left:4%;bottom:18%!important;height:62%!important;animation:mago-flota 4s ease-in-out infinite}.trio-coen{left:44%}.trio-ari{left:63%;height:64%!important}
 .logo-pagina{width:min(260px,64%);margin:0 auto 6px;filter:invert(1) hue-rotate(180deg) brightness(.45) sepia(.4)}
@@ -711,7 +711,7 @@ html[data-cielo="dia"] .escena-cielo{background:#c9c6f2 url("assets/fondo/galaxi
 html[data-cielo="dia"] .escena-nubes{opacity:1}
 html[data-cielo="dia"] .escena-niebla{background:radial-gradient(ellipse 55% 50% at 50% 52%,rgba(255,255,255,.4),transparent 70%)}
 html[data-cielo="dia"] .escena-pista{color:#6b2d5c;text-shadow:0 0 10px #fff}
-html[data-cielo="dia"] .reino-cielo{background-image:url("assets/fondo/dia.webp")}
+html[data-cielo="dia"] .reino-cielo{background-image:url("assets/fondo/reino-dia.webp")}
 html[data-cielo="dia"] .reino-velo{opacity:calc(.3 + var(--scroll)*.5)}
 .cielo-btn{width:40px;height:40px;padding:0!important;border-radius:50%!important;font-size:1.15rem!important;display:inline-grid;place-items:center}
 .cielo-top{border:1px solid rgba(243,212,138,.6);background:linear-gradient(135deg,#2a2160,#4a2a6a);color:#ffe9f5;cursor:pointer}
@@ -893,8 +893,8 @@ html[data-cielo="dia"] .popup-escenario{background:linear-gradient(180deg,#9fd3f
 
 /* VI · el paseo */
 .pagina-paseo{display:grid;grid-template-rows:1fr auto;gap:10px}
-.paseo{position:relative;min-height:260px;border-radius:16px;overflow:hidden;background:url("assets/fondo/dia.webp") center 70%/cover}
-html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/noche.webp")}
+.paseo{position:relative;min-height:260px;border-radius:16px;overflow:hidden;background:url("assets/fondo/reino-dia.webp") center 70%/cover}
+html[data-cielo="noche"] .paseo{background-image:url("assets/fondo/reino-noche.webp")}
 .paseo-suelo{position:absolute;left:0;right:0;bottom:0;height:12%;background:linear-gradient(180deg,transparent,rgba(40,20,40,.35))}
 .paseo-grupo{position:absolute;left:-40%;bottom:2%;height:72%;display:flex;align-items:flex-end;gap:2%}
 .paseo-pj{margin:0;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
