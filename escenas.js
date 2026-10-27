@@ -117,6 +117,12 @@
   const cv = document.createElement('a'); cv.className = 'perfil-cv'; cv.href = 'assets/cv-maria-cisterna.pdf'; cv.target = '_blank'; cv.rel = 'noopener'; cv.download = '';
   cv.innerHTML = '<span>✦ Descargar mi CV ✦</span>';
   credPerfil.append(cv);
+  // lo comprobable, en primera plana: la medalla digital verificable, LinkedIn y GitHub
+  const enlaces = div('perfil-enlaces');
+  [['🏅 Medalla verificable', 'https://acreditta.com/credential/840655be-6245-4c15-a9f4-6fc4542a71b1', 'medalla'], ['LinkedIn', 'https://www.linkedin.com/in/maria-cisterna-e/', ''], ['GitHub', 'https://github.com/manecist', '']].forEach(([t, h, c]) => {
+    const a = document.createElement('a'); a.href = h; a.target = '_blank'; a.rel = 'noopener'; a.textContent = t + ' ↗'; if (c) a.className = c; enlaces.append(a);
+  });
+  credPerfil.prepend(enlaces);
   const perfilPro = $('#estudio .perfil-pro'); if (perfilPro) perfilPro.append(credPerfil);
   E.push({
     id: 'equipo', ev: crear('ev-equipo', de('.studio-team', est)),
@@ -125,7 +131,35 @@
       const perg = $('.perfil-pro-texto', ev); if (!perg) return;
       gsap.set(perg, { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }); perg.style.clipPath = ''; perg.classList.add('abierto');
       const rollo = $('.perfil-rollito', ev); if (rollo) rollo.style.opacity = 0;
-      gsap.set($$('.perfil-medalla, .perfil-cv', ev), { opacity: 1 });
+      gsap.set($$('.perfil-medalla, .perfil-cv, .perfil-enlaces', ev), { opacity: 1 });
+      // en el scroll continuo no hay «entrar»: la primera vez que se ve el perfil, el hada llega y transforma a Ari en la asesina
+      if (!raiz.classList.contains('escenas-flujo') && !raiz.classList.contains('escenas-pila')) return;
+      const humana = $('.perfil-pro-ari:not(.perfil-pro-asesina)', ev), asesina = $('.perfil-pro-asesina', ev), retrato = $('.perfil-pro-retrato', ev);
+      if (!humana || !asesina || !retrato) return;
+      const io = new IntersectionObserver(ents => {
+        if (!ents.some(x => x.isIntersecting)) return; io.disconnect();
+        setTimeout(() => {
+          const destello = $('.perfil-destello', ev) || retrato.appendChild(Object.assign(document.createElement('span'), { className: 'perfil-destello' }));
+          const hada = document.createElement('img'); hada.src = 'assets/hada-cometa.webp'; hada.alt = ''; hada.className = 'perfil-hada'; ev.append(hada);
+          const base = ev.getBoundingClientRect(), rr = humana.getBoundingClientRect();
+          gsap.timeline()
+            .fromTo(hada, { x: base.width + 60, y: rr.top - base.top - 60, rotate: -12, opacity: 0 }, { x: rr.left - base.left + rr.width * .55, y: rr.top - base.top + rr.height * .12, rotate: 0, opacity: 1, duration: 1.3, ease: 'power2.out' })
+            .call(() => { if (window.Magia) Magia.chispas(rr.left + rr.width / 2, rr.top + rr.height / 2, { n: 70, vel: 6, colores: ['#ff8fc0', '#ffd9ea', '#f3d48a', '#fff'] }); })
+            .to(destello, { opacity: 1, scale: 1.15, duration: .45, ease: 'power2.out' })
+            .to(humana, { opacity: 0, duration: .2 }).to(asesina, { opacity: 1, duration: .2 }, '<')
+            .to(destello, { opacity: 0, scale: 1.4, duration: .7, ease: 'power1.out' })
+            .to(hada, { x: base.width + 80, y: -120, opacity: 0, duration: .9, ease: 'power1.in' }, '<')
+            .call(() => hada.remove());
+        }, 900);
+      }, { threshold: .5 });
+      io.observe(retrato);
+      // tocar el retrato la vuelve a transformar (ida y vuelta), como un hechizo
+      retrato.addEventListener('click', () => {
+        const ahora = getComputedStyle(asesina).opacity > .5, d = $('.perfil-destello', ev);
+        if (window.Magia) { const r = retrato.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + r.height / 2, { n: 50, vel: 5, colores: ['#ff8fc0', '#ffd9ea', '#f3d48a', '#fff'] }); }
+        if (d) gsap.fromTo(d, { opacity: 1, scale: 1.1 }, { opacity: 0, scale: 1.4, duration: .7 });
+        gsap.to(asesina, { opacity: ahora ? 0 : 1, duration: .25 }); gsap.to(humana, { opacity: ahora ? 1 : 0, duration: .25 });
+      });
     },
     entrar(tl, ev) {
       // el perfil profesional: primero el retrato, luego el texto línea por línea
@@ -208,6 +242,14 @@
     const pago = $('#m4-paid'), linea = document.createElement('output'); linea.className = 'caja-pago'; linea.setAttribute('aria-live', 'polite');
     const ver = () => { const v = Number(String($('#m4-paid')?.value || '').replace(/\D/g, '')) || 0; linea.textContent = v ? 'Pagas $' + v.toLocaleString('es-CL') : 'Paga con el teclado'; };
     $('#caja .register-marquee')?.after(linea); ver(); setInterval(ver, 300);
+    // el descuento se elige en la misma caja (como en la tienda Java: un porcentaje sobre el subtotal)
+    const descuentos = div('caja-descuentos');
+    [0, 10, 20, 30].forEach(p => { const b = document.createElement('button'); b.type = 'button'; b.textContent = p ? '−' + p + '%' : 'Sin dcto.'; b.dataset.p = p;
+      b.addEventListener('click', () => { const d = $('#m4-discount'); if (!d) return; d.value = p; ['input', 'change'].forEach(t => d.dispatchEvent(new Event(t, { bubbles: true })));
+        descuentos.querySelectorAll('button').forEach(o => o.classList.toggle('activo', o === b)); });
+      descuentos.append(b); });
+    descuentos.firstChild.classList.add('activo');
+    linea.after(descuentos);
     // todo en un solo puesto, como la maqueta aprobada: repisas que se tocan, la caja registradora sobre el mesón y la vitrina,
     // que muestra la tienda en vivo (M7) o la caja M4 para elegir y revisar el pedido; la boleta sale de la caja sobre el mantel
     const pestanaVitrina = (t, cual) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; b.dataset.vista = cual; return b; };
@@ -253,7 +295,18 @@
       const pagaste = [...pago].find(l => /Pagaste/.test(l.textContent));
       if (pagaste) { const m = document.createElement('div'); m.className = 'paper-total paper-medio'; m.innerHTML = '<span>Medio de pago</span><b>Efectivo (teclado de la caja)</b>'; pagaste.after(m); }
       boletaVista.replaceChildren(hoja, nueva); boletaVista.hidden = false;
-      if (window.Magia) { const r = boletaVista.getBoundingClientRect(); Magia.chispas(r.left + r.width / 2, r.top + 30, { n: 26, vel: 3 }); }
+      // la boleta sale impresa de la caja: asoma por la ranura, crece como papel y se va a la vitrina para leerla entera
+      const caja = $('.tienda-caja', escena);
+      if (caja && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const rc = caja.getBoundingClientRect(), rb = boletaVista.getBoundingClientRect(), k = Math.min(.45, rc.width * .7 / rb.width);
+        const dx = rc.left + rc.width / 2 - (rb.left + rb.width / 2), dy = rc.top + rc.height * .12 - rb.top;
+        boletaVista.animate([
+          { transformOrigin: '50% 0', transform: `translate(${dx}px, ${dy}px) scale(${k})`, clipPath: 'inset(0 0 100% 0)' },
+          { transformOrigin: '50% 0', transform: `translate(${dx}px, ${dy - rc.height * .5}px) scale(${k})`, clipPath: 'inset(0 0 0 0)', offset: .55 },
+          { transformOrigin: '50% 0', transform: 'none', clipPath: 'inset(0 0 0 0)' }
+        ], { duration: 1700, easing: 'cubic-bezier(.3,.7,.3,1)' });
+      }
+      if (window.Magia) { const r = boletaVista.getBoundingClientRect(); setTimeout(() => Magia.chispas(r.left + r.width / 2, r.top + 30, { n: 26, vel: 3 }), 1500); }
     };
     new MutationObserver(() => requestAnimationFrame(copiarBoleta)).observe($('#printer-output') || document.body, { attributes: true, attributeFilter: ['hidden'] });
     const escena = div('tienda-puesto', puestoArte(), vidrio, ...ETIQUETAS.map(etiqueta), oculto, div('tienda-caja', $('#caja')), boletaVista, pista);
@@ -615,7 +668,7 @@
       .call(() => { marcar(e, i); ajustar(e); })
       .fromTo(nuevo, { opacity: 0, x: dir * 40 }, { opacity: 1, x: 0, duration: .45, ease: 'power2.out' });
   }
-  E.filter(e => e.botones).forEach(e => e.botones.forEach((b, k) => b.addEventListener('click', () => { if (flujo) { actual = E.indexOf(e); paso = k; marcar(e, k); encajar(e); return; } if (E[actual] === e) irPaso(k); })));
+  E.filter(e => e.botones).forEach(e => e.botones.forEach((b, k) => b.addEventListener('click', () => { if (flujo) { actual = E.indexOf(e); paso = k; marcar(e, k); encajar(e); if (e.ev.getBoundingClientRect().top < barra() - 4) irFlujo(E.indexOf(e), false); return; } /* al cambiar de proyecto se ve desde su comienzo */ if (E[actual] === e) irPaso(k); })));
 
   // ---------------------------------------------------------- el hada que tapa todo con su estela y pinta la sección siguiente
   // 1. vuela de la esquina superior derecha a la inferior izquierda; de la estrella de su varita nace una estela
@@ -1132,6 +1185,12 @@
     const e = E[i]; if (!e) return;
     const y = e.ev.getBoundingClientRect().top + scrollY - barra();
     scrollTo({ top: Math.max(0, y), behavior: suave ? 'smooth' : 'instant' });
+    // las imágenes que terminan de cargar y las secciones que se ajustan mueven la página: se vuelve a encuadrar
+    // un par de veces (salvo que la persona ya esté moviéndose por su cuenta)
+    if (suave) return;
+    let mueve = false; const yo = () => { mueve = true; };
+    ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, yo, { once: true, passive: true }));
+    [180, 600, 1300].forEach(ms => setTimeout(() => { if (mueve) return; const t = e.ev.getBoundingClientRect().top - barra(); if (Math.abs(t) > 2) scrollTo({ top: Math.max(0, scrollY + t), behavior: 'instant' }); }, ms));
   }
   function arrancarFlujo() {
     $$('button', indice).forEach((b, i) => { const n = b.cloneNode(true); n.addEventListener('click', () => irFlujo(i, true)); b.replaceWith(n); });

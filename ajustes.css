@@ -113,21 +113,6 @@ html.escenas .ev.ev-desarrollo .tienda-boleta-hoja .paper-thanks { margin-top: 4
 html.escenas .ev.ev-desarrollo .tienda-puesto { width: min(100%, 1560px, calc((100vh - 150px) * 1660 / 921)) !important; }
 html.escenas.escenas-flujo .ev.ev.ev.ev-desarrollo.tienda-activa .section-head { display: none !important; }
 
-/* Banco de Evaluaciones: la explicación resumida (solo los 5 pasos, sin el detalle) y con letra grande, dentro de la hoja */
-html.escenas .ev.ev-desarrollo .app-banco .banco-texto > p:not(.banco-moodle):not(.small-note) { font-size: 1.08rem !important; line-height: 1.5 !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-flujo span { display: none !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-flujo li { padding: 8px 12px !important; min-height: 0 !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-flujo b { font-size: 1.12rem !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-flujo li::before { font-size: .95rem !important; width: 1.7em !important; height: 1.7em !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-moodle { font-size: 1rem !important; line-height: 1.45 !important; }
-html.escenas .ev.ev-desarrollo .app-banco .stack-cloud span { font-size: .9rem !important; padding: 4px 10px !important; }
-html.escenas .ev.ev-desarrollo .app-banco .small-note { display: none !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-vivo .botonera .btn { font-size: .95rem !important; padding: 9px 16px !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-flujo { gap: 5px !important; margin: 6px 0 !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-flujo li { padding: 5px 10px !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-texto > p:not(.banco-moodle):not(.small-note) { font-size: 1rem !important; margin: 0 0 4px !important; }
-html.escenas .ev.ev-desarrollo .app-banco .banco-moodle { font-size: .95rem !important; margin: 4px 0 !important; }
-html.escenas .ev.ev-desarrollo .app-banco .stack-cloud { margin: 4px 0 0 !important; gap: 4px !important; }
 
 /* Datos: la hoja más acotada (las 3 observaciones principales) y el texto lejos de las flores del borde del portapapeles */
 html.escenas .ev.ev-datos .tab-panel .tab-obs li:nth-child(n+4) { display: none !important; }
@@ -280,3 +265,127 @@ html.escenas .sala-capa .sala-sillon { top: 776px !important; height: 80px !impo
   html.escenas .ev.ev.ev-estudio .estudio-dos.estudio-tres { grid-template-columns: minmax(0, 1fr) 430px minmax(0, 760px) !important; }
   html.escenas .ev.ev.ev-estudio .estudio-marca { width: 430px !important; padding-left: 74px !important; padding-right: 74px !important; }
 }
+
+/* ================================================================ Cuento: las aplicaciones abiertas
+   El cuadro abierto ocupa la pantalla desde arriba hasta la barra del libro, con un velo detrás (no se confunde con el fondo).
+   Su contenido no lleva barra propia: cuento.js lo ensancha o lo achica un poco para que quepa entero (ajustarApp). */
+html .teatro-app .colgante-app:not(:has(> .app-maquina)) { position: fixed !important; left: 50% !important; right: auto !important; top: 8px !important; translate: -50% 0 !important; width: min(1560px, calc(100vw - 28px)) !important; height: var(--alto-app, calc(100vh - 90px)) !important; max-height: none !important; margin: 0 !important; box-sizing: border-box !important; padding: clamp(40px, 6.2vh, 62px) clamp(56px, 4.6vw, 84px) clamp(40px, 6vh, 60px) !important; overflow: hidden !important; display: block !important; scale: none !important; z-index: 60 !important; }
+html .teatro-app .colgante-app:not(:has(> .app-maquina)) > .colgar-app { transform-origin: 0 0; overflow: hidden auto !important; max-height: none !important; scrollbar-width: thin; padding: 0 !important; margin: 0 !important; box-sizing: border-box; }
+html .teatro-app .colgante-app.arriba:not(:has(> .app-maquina)) { transform: translateY(calc(-100% - 40px)) !important; }
+/* velo detrás del cuadro abierto y los carteles de los lados se esconden mientras tanto (antes quedaban encima y tapaban) */
+html body:has(.teatro-app .colgante-app:not(.arriba))::after { content: ""; position: fixed; inset: 0; z-index: 55; background: radial-gradient(ellipse at center, rgba(30, 14, 52, .55), rgba(16, 8, 30, .82)); pointer-events: none; }
+html body:has(.teatro-app .colgante-app:not(.arriba)) .teatro-lado { opacity: 0 !important; pointer-events: none !important; transition: opacity .3s; }
+html body:has(.teatro-app .colgante-app:not(.arriba)) #libro-nav { z-index: 70 !important; }
+/* la pestaña del cuadro abierto: un botón claro para volver al cuento */
+html .teatro-app .colgante-app:not(.arriba) .app-pestana { top: 14px !important; right: 28px !important; left: auto !important; translate: none !important; font-size: 1rem !important; padding: 8px 18px !important; z-index: 8 !important; }
+/* la nota de cada aplicación, más grande */
+html .teatro-app .colgante-app .app-nota { font-size: 1.12rem !important; line-height: 1.4 !important; margin: 0 auto 12px !important; max-width: 70ch; }
+
+/* Inicio: el pergamino en tres piezas (arriba con la luna, papel, abajo): la luna y los rollos guardan su forma aunque el papel se ensanche */
+html.escenas .ev.ev-equipo .perfil-pro-texto { background: url("assets/pergamino/perg-arriba.webp") center top / 100% auto no-repeat, url("assets/pergamino/perg-abajo.webp") center bottom / 100% auto no-repeat, url("assets/pergamino/perg-medio.webp") center center / 100% calc(100% - var(--perg-w, 450px) * .74) no-repeat !important; }
+html.escenas .ev.ev.ev-equipo .perfil-pro-texto { --perg-w: 450px; }
+@media (min-width: 1500px) { html.escenas .ev.ev.ev-equipo .perfil-pro-texto { --perg-w: 600px; padding-top: 200px !important; padding-bottom: 168px !important; } }
+/* Ari más grande dentro del arco */
+html.escenas .ev.ev-equipo .perfil-pro-retrato .perfil-pro-ari { left: 9% !important; width: 82% !important; right: auto !important; height: 89% !important; bottom: 5.5% !important; }
+html.escenas .ev.ev-equipo .perfil-pro-retrato { cursor: pointer; }
+/* lo comprobable en primera plana */
+html.escenas .perfil-enlaces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 10px; }
+html.escenas .perfil-enlaces a { font: 700 1rem/1 var(--sans, sans-serif); color: #4a2556; background: #fff6fb; border: 2px solid #f0c6dd; border-radius: 999px; padding: 9px 14px; text-decoration: none; box-shadow: 0 3px 0 #d9a9c5; }
+html.escenas .perfil-enlaces a.medalla { flex-basis: 100%; text-align: center; font-size: 1.08rem; background: linear-gradient(135deg, #ffe7a8, #f6b9d6); border-color: #fff; }
+html.escenas .perfil-enlaces a:hover { transform: translateY(-2px); }
+html.escenas.escenas-flujo .ev.ev.ev-equipo .perfil-medalla img { width: 5.2rem !important; height: 5.2rem !important; }
+html.escenas.escenas-flujo .ev.ev.ev-equipo .perfil-credenciales { gap: 4px !important; align-self: center; }
+
+/* ================================================================ Desarrollo (scroll continuo): los botones de proyecto siempre a la vista
+   (quedan pegados bajo el menú al bajar) y cada proyecto ocupa la pantalla con letra que se lee */
+html.escenas.escenas-flujo .ev.ev-desarrollo { --dev-h: max(420px, calc(100vh - 67px - 190px)); }
+html.escenas.escenas-flujo .ev.ev.ev.ev-desarrollo .section-head .cinta-nombre { width: 340px !important; font-size: 1.5rem !important; }
+html.escenas.escenas-flujo .ev.ev-desarrollo .section-head h2 { font-size: 1.15rem !important; margin: 0 !important; }
+html.escenas.escenas-flujo .ev.ev-desarrollo .papel-pestanas { position: sticky !important; top: 72px; z-index: 60; padding: 6px 0 !important; margin: 0 auto 10px !important; }
+html.escenas.escenas-flujo .ev.ev-desarrollo .papel-pestanas button { font-size: 1.05rem !important; padding: 9px 20px !important; box-shadow: 0 4px 14px rgba(10, 4, 24, .55) !important; }
+/* la calculadora y su cuaderno, del alto de la pantalla y lado a lado */
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .app-nota { margin: 0 auto 8px !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .app-doble { display: grid !important; grid-template-columns: calc(var(--dev-h) * .62) min(54vw, calc(var(--dev-h) * .92 * 1257 / 873), 780px) !important; justify-content: center !important; align-items: center !important; gap: 34px !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc #calc-zona { width: 100% !important; max-width: none !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc #calc-java { width: 100% !important; max-width: none !important; }
+/* la tienda: el puesto del alto disponible (los pasos quedan a la vista bajo él) */
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .tienda-puesto { width: min(100%, 1560px, calc((100vh - 67px - 75px) * 1660 / 921)) !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .tienda-puesto .tienda-pista { position: absolute !important; left: 4% !important; right: 4% !important; bottom: 1.2% !important; margin: 0 !important; font-size: 1.35cqw !important; z-index: 7; }
+/* el Banco de Evaluaciones: el libro escala con su contenido (todo en cqw) y la letra es más grande; solo los 5 pasos, sin el detalle */
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .papel-app.app-banco { width: min(100%, 1400px, max(1000px, calc(var(--dev-h) * 1627 / 1150))) !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-texto p { font-size: 1.28cqw !important; line-height: 1.45 !important; margin-bottom: .8cqw !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-flujo span { display: none !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-flujo { gap: .8cqw !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-flujo li { padding: .7cqw .9cqw !important; align-items: center !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-flujo b { font-size: 1.35cqw !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-flujo li::before { width: 2.1cqw !important; height: 2.1cqw !important; font-size: 1.05cqw !important; grid-row: auto !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-flujo li { grid-template-columns: 2.1cqw 1fr !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-texto .banco-moodle { font-size: 1.05cqw !important; line-height: 1.4 !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .stack-cloud span { font-size: .95cqw !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .small-note { display: none !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-texto h3 { font-size: 1.9cqw !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco #banco-card.banco-card::before { font-size: 1.9cqw !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-vivo .botonera { flex-wrap: wrap !important; }
+html.escenas .ev.ev-desarrollo .papel-app.app-banco .banco-vivo .botonera .btn { font-size: 1cqw !important; padding: .6cqw 1.1cqw !important; }
+
+/* Tienda: la boleta sale de la caja y se lee entera sobre la vitrina (todo escala con el puesto: nada se corta) */
+html.escenas .ev.ev-desarrollo .tienda-puesto { container-type: inline-size; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-vista { left: 60.5% !important; width: 37% !important; top: 3% !important; bottom: 3% !important; gap: .6cqw !important; animation: none !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja { overflow: hidden !important; padding: 1.6cqw 1.8cqw 1.2cqw !important; font: 500 1.45cqw/1.35 'Mali', sans-serif !important; rotate: 0deg !important; display: flex; flex-direction: column; justify-content: center; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja h4 { font-size: 1.75cqw !important; margin: .2cqw 0 !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja .paper-brand { font-size: 1cqw !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja .paper-note { font-size: .85cqw !important; margin: 0 0 .5cqw !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja .paper-items { padding: .4cqw 0 !important; margin: 0 0 .4cqw !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja .grand-total { font-size: 1.5cqw !important; margin: .3cqw 0 !important; padding: .3cqw 0 !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja .paper-total:last-of-type { font-size: 1.45cqw !important; color: #2f7a52 !important; font-weight: 800; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja .paper-medio b { font-size: 1.05cqw !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-hoja .paper-thanks { font-size: 1.1cqw !important; margin: .4cqw 0 0 !important; }
+html.escenas .ev.ev.ev-desarrollo .tienda-boleta-nueva { font-size: 1.3cqw !important; padding: .6cqw 1.4cqw !important; align-self: center; }
+/* el descuento, en chips bajo el botón de cobrar */
+.caja-descuentos { display: none; }
+html.escenas .ev .tienda-caja .caja-descuentos { display: flex; position: absolute; left: -45%; width: 190%; bottom: -36%; justify-content: center; gap: 2.5cqw; z-index: 6; }
+html.escenas .ev .tienda-caja .caja-descuentos::before { content: "Descuento:"; align-self: center; font: 700 8cqw/1 'Mali', sans-serif; color: #fff7fc; text-shadow: 0 1px 3px rgba(20, 8, 40, .9); }
+html.escenas .ev .tienda-caja .caja-descuentos button { font: 700 8cqw/1 'Mali', sans-serif; padding: 2.4cqw 4cqw; border-radius: 99px; border: .6cqw solid #fff; background: #fff6fb; color: #6a2c55; box-shadow: 0 1cqw 0 #d9a9c5; cursor: pointer; }
+html.escenas .ev .tienda-caja .caja-descuentos button.activo { background: linear-gradient(135deg, #f6b9d6, #cdb6f2); }
+
+/* el menú de arriba tapa por completo lo que pasa debajo al bajar (antes se transparentaban títulos y textos) */
+html.escenas.escenas-flujo .site .topbar { z-index: 90 !important; background: linear-gradient(180deg, rgba(22, 12, 42, .97), rgba(30, 16, 54, .95)) padding-box, var(--pc-marco) border-box !important; }
+html[data-tema="claro"].escenas.escenas-flujo .site .topbar { background: linear-gradient(180deg, rgba(255, 248, 252, .97), rgba(250, 238, 247, .95)) padding-box, var(--pc-marco) border-box !important; }
+/* pantallas bajas (notebook con escala de Windows): sin subtítulo ni nota, para que cada proyecto entre entero bajo sus botones */
+@media (max-height: 820px) {
+  html.escenas.escenas-flujo .ev.ev.ev-desarrollo .section-head h2, html.escenas.escenas-flujo .ev.ev.ev-desarrollo .papel-app .app-nota { display: none !important; }
+  html.escenas.escenas-flujo .ev.ev.ev-desarrollo { --dev-h: max(380px, calc(100vh - 67px - 205px)); padding-top: 14px !important; }
+}
+/* el cuaderno de la calculadora: su letra crece con él */
+html.escenas.escenas-flujo .ev.ev-desarrollo .app-calc #calc-java { container-type: inline-size; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .calc-java .chip { font-size: 2.1cqw !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .calc-java h3 { font-size: 3.6cqw !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .calc-java pre { font-size: 2.7cqw !important; line-height: 1.7 !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .calc-guia { font-size: 2.35cqw !important; line-height: 1.4 !important; top: 11% !important; width: 33% !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .calc-java .botonera { bottom: 10% !important; }
+html.escenas.escenas-flujo .ev.ev.ev-desarrollo .app-calc .calc-java .botonera .btn { font-size: 2.2cqw !important; padding: 1.2cqw 1.4cqw !important; white-space: nowrap; }
+/* los descuentos: una fila ordenada y legible bajo el botón de cobrar */
+html.escenas .ev.ev .tienda-caja .caja-descuentos { gap: 2cqw !important; bottom: -33% !important; }
+html.escenas .ev.ev .tienda-caja .caja-descuentos button, html.escenas .ev.ev .tienda-caja .caja-descuentos::before { font-size: 6.4cqw !important; white-space: nowrap; }
+html.escenas .ev.ev .tienda-caja .caja-descuentos button { padding: 2cqw 3cqw !important; }
+
+/* Cuento · la calculadora: calculadora y cuaderno lado a lado, del alto del cuadro; el código se lee */
+html .teatro-app .colgante-app .app-calc .app-doble { display: grid !important; grid-template-columns: 32% 62% !important; justify-content: center !important; align-items: center !important; gap: 4% !important; padding: 0 !important; }
+html .teatro-app .colgante-app .app-calc #calc-zona { width: 100% !important; }
+html .teatro-app .colgante-app .app-calc #calc-java { container-type: inline-size; width: 100% !important; padding: 13% 55% 8% 9% !important; }
+html .teatro-app .colgante-app .app-calc .calc-java .chip { display: block !important; font-size: 1.9cqw !important; }
+html .teatro-app .colgante-app .app-calc .calc-java h3 { font-size: 3.4cqw !important; }
+html .teatro-app .colgante-app .app-calc .calc-java pre { font-size: 2.5cqw !important; line-height: 1.75 !important; }
+html .teatro-app .colgante-app .app-calc .calc-java .botonera { position: absolute !important; left: 57% !important; width: 34% !important; top: auto !important; bottom: 12% !important; display: grid !important; gap: 1.2cqw !important; }
+html .teatro-app .colgante-app .app-calc .calc-java .botonera .btn { font-size: 2.1cqw !important; padding: 1.1cqw 1cqw !important; }
+html .teatro-app .colgante-app .app-calc .calc-pantalla strong { font-size: 2.4rem !important; }
+html .teatro-app .colgante-app .app-calc .calc-teclas button { font-size: 1.2rem !important; }
+/* Cuento · el currículum: dos columnas y letra grande, centrado en la hoja */
+html .teatro-app .colgante-app .app-cv .cv-tabs button { font-size: 1.05rem !important; padding: 9px 20px !important; }
+html .teatro-app .colgante-app .app-cv .cv-lista:not(.cv-hab) { columns: 2 !important; column-gap: 48px; max-width: 1200px; margin: 10px auto 0 !important; font-size: 1.12rem !important; }
+html .teatro-app .colgante-app .app-cv .cv-lista li { break-inside: avoid; margin-bottom: 14px !important; }
+html .teatro-app .colgante-app .app-cv .cv-lista time { font-size: .95rem !important; }
+html .teatro-app .colgante-app .app-cv .cv-lista b { font-size: 1.22rem !important; }
+html .teatro-app .colgante-app .app-cv .cv-hab { max-width: 1100px; margin: 18px auto 0 !important; display: flex !important; flex-wrap: wrap; justify-content: center; gap: 10px; }
+html .teatro-app .colgante-app .app-cv .cv-hab span { font-size: 1.15rem !important; padding: 8px 16px !important; }
+html .teatro-app .colgante-app .app-cv .cv-hab[hidden], html .teatro-app .colgante-app .app-cv .cv-lista[hidden] { display: none !important; }

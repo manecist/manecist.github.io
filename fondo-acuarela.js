@@ -12,7 +12,9 @@
    para cambiar de escena con un fundido (las imágenes de cada modo se cargan al usarse).
    ========================================================================== */
 window.FondoAcuarela = (() => {
-  const W = 1672, H = 941;                         // marco común de todas las capas
+  // const W = 1672, H = 941;                      // antes: el marco del dibujo; en pantallas anchas se cortaban las alas o quedaban franjas
+  // el dibujo (1672 × 941) se extiende a cada lado con su mismo paisaje reflejado: llena pantallas anchas sin cortar arriba ni abajo
+  const W0 = 1672, E = 230, W = W0 + 2 * E, H = 941;   // marco común de todas las capas (con sus márgenes)
   const DURACION = 13;                             // segundos de la animación de pintado (desde el lineart)
   const TRAZO = 5.2;                               // segundos previos: el hada dibuja el lineart sobre la hoja en blanco
 
@@ -40,10 +42,11 @@ window.FondoAcuarela = (() => {
     { capas: [3], capa: 3, ini: 7.35, fin: 8.9, radio: 150, ruta: [[640, 290], [520, 240], [400, 180], [270, 140], [150, 110], [300, 80], [450, 150], [330, 250], [560, 320]] }
   ];
   const FONDO = [0, 1, 2];                         // las capas que pinta el hechizo de la luna
-  const LUNA = [700, 464], HECHIZO = 9.55;
+  const LUNA = [700 + E, 464], HECHIZO = 9.55;
 
   // ---------------------------------------------------------- recorridos suaves (Catmull-Rom)
-  function curva(pts) {
+  function curva(pts, cubre) {
+    pts = pts.map(([x, y]) => [cubre ? x / W0 * W : x + E, y]);   // de coordenadas del dibujo al marco extendido
     const seg = [], L = [0];
     for (let i = 0; i < pts.length - 1; i++) seg.push([pts[Math.max(0, i - 1)], pts[i], pts[i + 1], pts[Math.min(pts.length - 1, i + 2)]]);
     const punto = (s, u) => { const [a, b, c, d] = s, u2 = u * u, u3 = u2 * u; return [0, 1].map(k => .5 * (2 * b[k] + (-a[k] + c[k]) * u + (2 * a[k] - 5 * b[k] + 4 * c[k] - d[k]) * u2 + (-a[k] + 3 * b[k] - 3 * c[k] + d[k]) * u3)); };
@@ -56,7 +59,7 @@ window.FondoAcuarela = (() => {
 
   // posición de la punta de la varita en el tiempo t y la capa sobre la que está
   function varita(t) {
-    const entrada = [W + 120, 760];
+    const entrada = [W0 + E + 120, 760];
     if (t < TRAMOS[0].ini) { const f = suave((t - .5) / (TRAMOS[0].ini - .5)); const a = TRAMOS[0].c.en(0); return { p: [entrada[0] + (a[0] - entrada[0]) * f, entrada[1] + (a[1] - entrada[1]) * f], capa: 6, pose: 0 }; }
     for (let i = 0; i < TRAMOS.length; i++) {
       const tr = TRAMOS[i];
@@ -121,15 +124,22 @@ window.FondoAcuarela = (() => {
     img = juego; listos = true;
     return juego;
   }
+  // pinta una capa en el marco extendido: el dibujo al centro y, a cada lado, su borde reflejado como en un espejo
+  function ampliar(g, im, sola) {
+    g.drawImage(im, E, 0, W0, H); if (sola) return;   // las figuras (dragón, mago, pareja) no se reflejan
+    g.save(); g.translate(E, 0); g.scale(-1, 1); g.drawImage(im, 0, 0, E * im.width / W0, im.height, 0, 0, E, H); g.restore();
+    g.save(); g.translate(E + W0, 0); g.scale(-1, 1); g.drawImage(im, (W0 - E) * im.width / W0, 0, E * im.width / W0, im.height, -E, 0, E, H); g.restore();
+  }
   async function cargarJuego(tema) {
     const juego = {};
     await Promise.all(CAPAS.map(async c => {
       const [lin, acu] = await Promise.all(['lineart', 'acuarela'].map(e => cargar(ruta(tema, c, e))));
       // lineart en blanco y negro, ajustado al marco común; se calcula una sola vez
-      const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, 0, 0, W, H);
-      const co = lienzo(W, H); co.getContext('2d').drawImage(acu, 0, 0, W, H);
+      const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; ampliar(g, lin, c.figura);
+      const co = lienzo(W, H); ampliar(co.getContext('2d'), acu, c.figura);
       // aura de energía de la figura: un halo con sus propios colores que late suave
-      const aura = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp${VER}`).catch(() => null) : null;
+      const auraImg = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp${VER}`).catch(() => null) : null;
+      const aura = auraImg ? lienzo(W, H) : null; if (aura) ampliar(aura.getContext('2d'), auraImg, c.figura);
       juego[c.id] = { bn, co, aura, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
     }));
     // la escena entera, chica y difuminada, para rellenar los bordes cuando la pantalla no tiene su misma proporción
@@ -149,7 +159,9 @@ window.FondoAcuarela = (() => {
   let arriba = 0;                                   // alto de la barra superior, en px del lienzo
   function encuadre(cw, ch) {
     // la escena cubre toda la pantalla (también detrás de la barra), sin franjas difuminadas arriba ni abajo
-    const k = Math.max(cw / W, ch / H) * 1.045;
+    // const k = Math.max(cw / W, ch / H) * 1.045;   // antes: en pantallas más anchas que el dibujo se cortaban las alas y el risco
+    // en pantallas anchas la escena se ve entera de alto (alas del dragón arriba, risco abajo); los costados se rellenan con la misma escena
+    const k = Math.max(cw / W, ch / H) * 1.04;   // cubre la pantalla con el marco extendido (en pantallas anchas solo se recortan los márgenes reflejados)
     return { k, ox: (cw - W * k) / 2, oy: (ch - H * k) / 2 };
   }
   /* versión anterior (escena entera bajo la barra, bordes rellenos con la escena difuminada):
@@ -251,7 +263,7 @@ window.FondoAcuarela = (() => {
 
   // ---------------------------------------------------------- el trazo: la hoja en blanco se llena de línea
   // recorrido en zigzag que cubre todo el cuadro y termina donde el hada empieza a pintar (fuera, a la derecha)
-  const RUTA_TRAZO = curva([[W + 140, 120], [1420, 140], [980, 110], [520, 170], [110, 150], [180, 340], [620, 300], [1080, 360], [1540, 330], [1500, 540], [1020, 580], [560, 520], [120, 600], [210, 820], [700, 860], [1160, 800], [1560, 880], [W + 140, 760]]);
+  const RUTA_TRAZO = curva([[W0 + 140, 120], [1420, 140], [980, 110], [520, 170], [110, 150], [180, 340], [620, 300], [1080, 360], [1540, 330], [1500, 540], [1020, 580], [560, 520], [120, 600], [210, 820], [700, 860], [1160, 800], [1560, 880], [W + 140, 760]], true);
   const marcasTrazo = (() => { const lista = [], rr = azar(31), pasos = Math.ceil(RUTA_TRAZO.total / 95); for (let i = 0; i <= pasos; i++) { const f = i / pasos, [x, y] = RUTA_TRAZO.en(f); lista.push({ x: x + (rr() - .5) * 50, y: y + (rr() - .5) * 50, R: 250 + rr() * 90, nace: .35 + f * (TRAZO - 1), v: rr() * 4 | 0 }); } return lista; })();
   const mascaraTrazo = lienzo(W / 2, H / 2), lineaTrazo = lienzo(W, H);
   function trazar(ctx, t, px, py) {
