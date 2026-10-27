@@ -803,9 +803,8 @@
     // Mi camino: por qué dibuja y sus cuatro etapas (lo que antes era la escena «Dibujo porque…»)
     const ETAPAS = [
       ['01', 'Papel y pintura', 'Observar y dar forma', 'Mi punto de partida fue el trazo a mano, el color y la emoción: pintar por gusto, sin una formación formal.', 'assets/galeria/papel-luna-sakura.webp', 'foto'],
-      ['02', 'Line art y color', 'Llevar la idea a la pantalla', 'Pasé al dibujo digital probando líneas, paletas y vestuario para construir un lenguaje propio.', 'assets/galeria/digital-lineart.webp', 'dibujo'],
-      ['03', 'Personajes e historias', 'Crear una identidad', 'Relaciono expresiones, narrativa gráfica y estilo para que cada personaje comunique.', 'assets/galeria/expressions.webp', 'dibujo'],
-      ['04', 'Exploración 3D', 'Ampliar las posibilidades', 'Hoy sumo Blender, la preparación de recursos y la impresión 3D en PLA, y sigo aprendiendo.', 'assets/emblema-conari-magico.webp', 'foto'],
+      ['02', 'Digital: line art y color', 'Llevar la idea a la pantalla', 'Pasé al dibujo digital probando líneas, paletas y vestuario para construir un lenguaje propio.', 'assets/galeria/digital-lineart.webp', 'dibujo'],
+      // antes también: 03 Personajes e historias y 04 Exploración 3D (mostraba el logo del estudio); el cuaderno queda en papel y digital
     ];
     const camino = div('ley-camino',
       el('h4', null, 'Dibujo porque me gusta transformar ideas en imágenes'),
@@ -890,22 +889,41 @@
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) { final(); return; }
         // 1) el lápiz recorre las líneas de verdad: los puntos de tinta se ordenan siguiendo cada trazo (el vecino más cercano) y
         //    la línea aparece justo donde pasa la punta; 2) después el color se posa sobre el lineart, suave, de arriba hacia abajo
-        const paso0 = Math.max(3, Math.round(lienzo.width / 170)), cols = Math.ceil(lienzo.width / paso0), filas = Math.ceil(lienzo.height / paso0);
+        // los trazos se siguen de verdad: desde una punta de línea se avanza por los puntos de tinta vecinos (prefiriendo seguir la
+        // misma dirección) hasta que la línea termina; la siguiente empieza en la línea más cercana. Así la punta del lápiz recorre
+        // cada contorno de punta a punta, como al dibujar a mano
+        const paso0 = Math.max(2, Math.round(lienzo.width / 260)), cols = Math.ceil(lienzo.width / paso0), filas = Math.ceil(lienzo.height / paso0);
         const tinta = new Uint8Array(cols * filas);
         for (let fy = 0; fy < filas; fy++) for (let fx = 0; fx < cols; fx++) {
-          const px = Math.min(lienzo.width - 1, fx * paso0 + (paso0 >> 1)), py = Math.min(lienzo.height - 1, fy * paso0 + (paso0 >> 1));
-          if (q[(py * lienzo.width + px) * 4 + 3] > 90) tinta[fy * cols + fx] = 1;
+          let m = 0; for (let yy = fy * paso0; yy < Math.min(lienzo.height, fy * paso0 + paso0); yy++) for (let xx = fx * paso0; xx < Math.min(lienzo.width, fx * paso0 + paso0); xx++) m = Math.max(m, q[(yy * lienzo.width + xx) * 4 + 3]);
+          if (m > 120) tinta[fy * cols + fx] = 1;
         }
-        const orden = [], libre = tinta.slice(); let scan = 0, cx0 = -1, cy0 = -1;
-        const vecino = (x0, y0) => { for (let r = 1; r <= 3; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue; const x = x0 + dx, y = y0 + dy; if (x >= 0 && y >= 0 && x < cols && y < filas && libre[y * cols + x]) return y * cols + x; } return -1; };
+        const libre = tinta.slice(), vecinos = (x, y) => { let n = 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && x + dx >= 0 && y + dy >= 0 && x + dx < cols && y + dy < filas && libre[(y + dy) * cols + x + dx]) n++; return n; };
+        const trazos = []; let scan = 0, ux = -1, uy = -1;
+        const cerca = (x0, y0) => { for (let r = 2; r <= 14; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) { if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue; const x = x0 + dx, y = y0 + dy; if (x >= 0 && y >= 0 && x < cols && y < filas && libre[y * cols + x]) return y * cols + x; } return -1; };
         for (;;) {
-          let i = cx0 >= 0 ? vecino(cx0, cy0) : -1;
+          let i = ux >= 0 ? cerca(ux, uy) : -1;
           if (i < 0) { while (scan < libre.length && !libre[scan]) scan++; if (scan >= libre.length) break; i = scan; }
-          libre[i] = 0; orden.push(i); cx0 = i % cols; cy0 = (i / cols) | 0;
+          // se parte desde la punta de esa línea (un punto con un solo vecino), si la hay cerca
+          let x = i % cols, y = (i / cols) | 0;
+          const trazo = []; let ddx = 0, ddy = 0;
+          for (;;) {
+            libre[y * cols + x] = 0; trazo.push(x, y);
+            let mejor = -1, mx = 0, my = 0, puntaje = -9;
+            for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+              if (!dx && !dy) continue; const nx = x + dx, ny = y + dy; if (nx < 0 || ny < 0 || nx >= cols || ny >= filas || !libre[ny * cols + nx]) continue;
+              const sc = dx * ddx + dy * ddy - vecinos(nx, ny) * .15; if (sc > puntaje) { puntaje = sc; mejor = 1; mx = dx; my = dy; }
+            }
+            if (mejor < 0) break; ddx = mx; ddy = my; x += mx; y += my;
+          }
+          // las motas sueltas (un punto) no se dibujan como trazo propio: aparecen con el color
+          if (trazo.length > 4) trazos.push(trazo);
+          ux = x; uy = y;
         }
-        const T_LINEAS = Math.min(3800, 2200 + orden.length * .3), T_COLOR = 1200;
-        let hechos = 0, t0 = performance.now(), fase = 0;
-        mctx.fillStyle = '#000';
+        const total = trazos.reduce((n, t) => n + t.length / 2, 0);
+        const orden = { length: total };
+        const T_LINEAS = Math.min(3400, 1800 + total * .12), T_COLOR = 1100;
+        let hechos = 0, t0 = performance.now(), fase = 0, ti = 0, pi = 0;
         const pinta = () => {
           ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, lienzo.width, lienzo.height);
           const tmp = mk(), tx = tmp.getContext('2d'); tx.drawImage(mascara, 0, 0); tx.globalCompositeOperation = 'source-in'; tx.drawImage(lineas, 0, 0); ctx.drawImage(tmp, 0, 0);
@@ -913,11 +931,18 @@
         const paso = ahora => {
           if (yo !== dibujo) return;
           if (fase === 0) {
-            const u = Math.min(1, (ahora - t0) / T_LINEAS), meta = Math.round(orden.length * u);
-            for (; hechos < meta; hechos++) { const i = orden[hechos]; mctx.beginPath(); mctx.arc((i % cols + .5) * paso0, (((i / cols) | 0) + .5) * paso0, paso0 * 1.5, 0, 6.2832); mctx.fill(); }
+            const u = Math.min(1, (ahora - t0) / T_LINEAS), meta = Math.round(total * u);
+            mctx.lineCap = mctx.lineJoin = 'round'; mctx.lineWidth = paso0 * 2.6; mctx.strokeStyle = '#000';
+            let ult = null;
+            while (hechos < meta && ti < trazos.length) {
+              const t = trazos[ti], n = t.length / 2, hasta = Math.min(n, pi + (meta - hechos));
+              mctx.beginPath(); mctx.moveTo((t[Math.max(0, pi - 1) * 2] + .5) * paso0, (t[Math.max(0, pi - 1) * 2 + 1] + .5) * paso0);
+              for (let j = pi; j < hasta; j++) mctx.lineTo((t[j * 2] + .5) * paso0, (t[j * 2 + 1] + .5) * paso0);
+              mctx.stroke(); hechos += hasta - pi; pi = hasta; ult = [t[(hasta - 1) * 2], t[(hasta - 1) * 2 + 1]];
+              if (pi >= n) { ti++; pi = 0; }
+            }
             pinta();
-            const ult = orden[Math.max(0, hechos - 1)] ?? 0;
-            lapiz.style.opacity = 1; lapiz.style.transform = `translate(${(lienzo.offsetLeft + (ult % cols + .5) * paso0 / lienzo.width * w).toFixed(1)}px, ${(lienzo.offsetTop + (((ult / cols) | 0) + .5) * paso0 / lienzo.height * h).toFixed(1)}px)`;
+            if (ult) { lapiz.style.opacity = 1; lapiz.style.transform = `translate(${(lienzo.offsetLeft + (ult[0] + .5) * paso0 / lienzo.width * w).toFixed(1)}px, ${(lienzo.offsetTop + (ult[1] + .5) * paso0 / lienzo.height * h).toFixed(1)}px)`; }
             if (u < 1) { requestAnimationFrame(paso); return; }
             fase = 1; t0 = ahora; lapiz.style.opacity = 0; ctx.drawImage(lineas, 0, 0);
             requestAnimationFrame(paso); return;

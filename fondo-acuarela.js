@@ -12,9 +12,7 @@
    para cambiar de escena con un fundido (las imágenes de cada modo se cargan al usarse).
    ========================================================================== */
 window.FondoAcuarela = (() => {
-  // const W = 1672, H = 941;                      // antes: el marco del dibujo; en pantallas anchas se cortaban las alas o quedaban franjas
-  // el dibujo (1672 × 941) se extiende a cada lado con su mismo paisaje reflejado: llena pantallas anchas sin cortar arriba ni abajo
-  const W0 = 1672, E = 230, W = W0 + 2 * E, H = 941;   // marco común de todas las capas (con sus márgenes)
+  const W = 1672, H = 941;                         // marco común de todas las capas
   const DURACION = 13;                             // segundos de la animación de pintado (desde el lineart)
   const TRAZO = 5.2;                               // segundos previos: el hada dibuja el lineart sobre la hoja en blanco
 
@@ -42,11 +40,10 @@ window.FondoAcuarela = (() => {
     { capas: [3], capa: 3, ini: 7.35, fin: 8.9, radio: 150, ruta: [[640, 290], [520, 240], [400, 180], [270, 140], [150, 110], [300, 80], [450, 150], [330, 250], [560, 320]] }
   ];
   const FONDO = [0, 1, 2];                         // las capas que pinta el hechizo de la luna
-  const LUNA = [700 + E, 464], HECHIZO = 9.55;
+  const LUNA = [700, 464], HECHIZO = 9.55;
 
   // ---------------------------------------------------------- recorridos suaves (Catmull-Rom)
-  function curva(pts, cubre) {
-    pts = pts.map(([x, y]) => [cubre ? x / W0 * W : x + E, y]);   // de coordenadas del dibujo al marco extendido
+  function curva(pts) {
     const seg = [], L = [0];
     for (let i = 0; i < pts.length - 1; i++) seg.push([pts[Math.max(0, i - 1)], pts[i], pts[i + 1], pts[Math.min(pts.length - 1, i + 2)]]);
     const punto = (s, u) => { const [a, b, c, d] = s, u2 = u * u, u3 = u2 * u; return [0, 1].map(k => .5 * (2 * b[k] + (-a[k] + c[k]) * u + (2 * a[k] - 5 * b[k] + 4 * c[k] - d[k]) * u2 + (-a[k] + 3 * b[k] - 3 * c[k] + d[k]) * u3)); };
@@ -59,7 +56,7 @@ window.FondoAcuarela = (() => {
 
   // posición de la punta de la varita en el tiempo t y la capa sobre la que está
   function varita(t) {
-    const entrada = [W0 + E + 120, 760];
+    const entrada = [W + 120, 760];
     if (t < TRAMOS[0].ini) { const f = suave((t - .5) / (TRAMOS[0].ini - .5)); const a = TRAMOS[0].c.en(0); return { p: [entrada[0] + (a[0] - entrada[0]) * f, entrada[1] + (a[1] - entrada[1]) * f], capa: 6, pose: 0 }; }
     for (let i = 0; i < TRAMOS.length; i++) {
       const tr = TRAMOS[i];
@@ -124,22 +121,15 @@ window.FondoAcuarela = (() => {
     img = juego; listos = true;
     return juego;
   }
-  // pinta una capa en el marco extendido: el dibujo al centro y, a cada lado, su borde reflejado como en un espejo
-  function ampliar(g, im, sola) {
-    g.drawImage(im, E, 0, W0, H); if (sola) return;   // las figuras (dragón, mago, pareja) no se reflejan
-    g.save(); g.translate(E, 0); g.scale(-1, 1); g.drawImage(im, 0, 0, E * im.width / W0, im.height, 0, 0, E, H); g.restore();
-    g.save(); g.translate(E + W0, 0); g.scale(-1, 1); g.drawImage(im, (W0 - E) * im.width / W0, 0, E * im.width / W0, im.height, -E, 0, E, H); g.restore();
-  }
   async function cargarJuego(tema) {
     const juego = {};
     await Promise.all(CAPAS.map(async c => {
       const [lin, acu] = await Promise.all(['lineart', 'acuarela'].map(e => cargar(ruta(tema, c, e))));
       // lineart en blanco y negro, ajustado al marco común; se calcula una sola vez
-      const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; ampliar(g, lin, c.figura);
-      const co = lienzo(W, H); ampliar(co.getContext('2d'), acu, c.figura);
+      const bn = lienzo(W, H), g = bn.getContext('2d'); g.filter = 'grayscale(1) contrast(1.25) brightness(1.06)'; g.drawImage(lin, 0, 0, W, H);
+      const co = lienzo(W, H); co.getContext('2d').drawImage(acu, 0, 0, W, H);
       // aura de energía de la figura: un halo con sus propios colores que late suave
-      const auraImg = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp${VER}`).catch(() => null) : null;
-      const aura = auraImg ? lienzo(W, H) : null; if (aura) ampliar(aura.getContext('2d'), auraImg, c.figura);
+      const aura = c.aura ? await cargar(`assets/fondo/reino/${tema}/${c.id}-aura.webp${VER}`).catch(() => null) : null;
       juego[c.id] = { bn, co, aura, mascara: lienzo(W / 2, H / 2), capa: lienzo(W, H) };
     }));
     // la escena entera, chica y difuminada, para rellenar los bordes cuando la pantalla no tiene su misma proporción
@@ -159,11 +149,24 @@ window.FondoAcuarela = (() => {
   let arriba = 0;                                   // alto de la barra superior, en px del lienzo
   function encuadre(cw, ch) {
     // la escena cubre toda la pantalla (también detrás de la barra), sin franjas difuminadas arriba ni abajo
-    // const k = Math.max(cw / W, ch / H) * 1.045;   // antes: en pantallas más anchas que el dibujo se cortaban las alas y el risco
-    // en pantallas anchas la escena se ve entera de alto (alas del dragón arriba, risco abajo); los costados se rellenan con la misma escena
-    const k = Math.max(cw / W, ch / H) * 1.04;   // cubre la pantalla con el marco extendido (en pantallas anchas solo se recortan los márgenes reflejados)
-    return { k, ox: (cw - W * k) / 2, oy: (ch - H * k) / 2 };
+    // const k = Math.max(cw / W, ch / H) * 1.045;   // antes: todo cubría la pantalla y en pantallas anchas se cortaban las alas y el risco
+    // en pantallas más anchas que el dibujo, las figuras (dragón, mago, árbol con el risco, la pareja) se ven enteras, del alto de la
+    // pantalla y pegadas a la derecha; el fondo (cielo, cordillera, valle) se amplía para llenar todo el ancho (ver marcoFondo)
+    if (cw / W <= ch / H) { const k = Math.max(cw / W, ch / H) * 1.045; return { k, ox: (cw - W * k) / 2, oy: (ch - H * k) / 2 }; }
+    const k = ch / H * 1.045;
+    return { k, ox: cw - W * k * .995, oy: (ch - H * k) / 2 };
   }
+  // el fondo ampliado: cubre toda la pantalla, pegado a la derecha y con su horizonte a la misma altura que el de las figuras
+  function marcoFondo(cw, ch) {
+    const f = encuadre(cw, ch); if (cw / W <= ch / H) return f;
+    // se amplía lo justo para cubrir, y la luna queda lo más cerca posible de donde la ven las figuras
+    const k = Math.max(cw / W, ch / H) * 1.03;
+    const ox = Math.min(0, Math.max(cw - W * k, f.ox + LUNA[0] * f.k - LUNA[0] * k));
+    const oy = Math.min(0, Math.max(ch - H * k, f.oy + LUNA[1] * f.k - LUNA[1] * k));
+    return { k, ox, oy };
+  }
+  const FONDOS = 3;                                 // las tres primeras capas son el paisaje (se amplían); desde el dragón, figuras
+  const marcoDe = (i, cw, ch) => i < FONDOS ? marcoFondo(cw, ch) : encuadre(cw, ch);
   /* versión anterior (escena entera bajo la barra, bordes rellenos con la escena difuminada):
   function encuadre(cw, ch) {
     const disp = ch - arriba, vertical = cw / disp < 1.2;
@@ -195,13 +198,13 @@ window.FondoAcuarela = (() => {
       const energia = suave((t - DURACION) / 2.5) * (img.tema === 'dia' ? .38 : .72);
       CAPAS.forEach((c, i) => {
         const dx = -mx * DESPLAZA * c.prof, dy = -my * DESPLAZA * c.prof + (c.flota ? Math.sin(t * c.flota[0] + i) * c.flota[1] : 0);
-        const x = ox + dx * k, y = oy + dy * k, I = img[c.id];
-        ctx.drawImage(I.co, x, y, W * k, H * k);
+        const M = marcoDe(i, cw, ch), x = M.ox + dx * M.k, y = M.oy + dy * M.k, I = img[c.id];
+        ctx.drawImage(I.co, x, y, W * M.k, H * M.k);
         if (I.aura && energia > 0) {
           const [vel, fase] = c.aura;
           ctx.globalCompositeOperation = 'screen';
           ctx.globalAlpha = energia * (.45 + .55 * (.5 + .5 * Math.sin(t * vel + fase)) * (.75 + .25 * Math.sin(t * vel * 2.7 + fase)));
-          ctx.drawImage(I.aura, x, y, W * k, H * k);
+          ctx.drawImage(I.aura, x, y, W * M.k, H * M.k);
           ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
         }
       });
@@ -230,14 +233,15 @@ window.FondoAcuarela = (() => {
       cg.globalCompositeOperation = 'destination-out'; cg.drawImage(m, 0, 0, W, H);
       cg.globalCompositeOperation = 'source-over'; cg.drawImage(tmp, 0, 0);
       const dx = -mx * DESPLAZA * c.prof, dy = -my * DESPLAZA * c.prof + (c.flota ? Math.sin(t * c.flota[0] + i) * c.flota[1] : 0);
-      ctx.drawImage(capa, ox + dx * k, oy + dy * k, W * k, H * k);
+      const M = marcoDe(i, cw, ch); ctx.drawImage(capa, M.ox + dx * M.k, M.oy + dy * M.k, W * M.k, H * M.k);
     });
 
     // el hada vuela sobre la capa que está pintando
     if (t < 12.6) {
       const prof = v.mezcla !== undefined ? CAPAS[v.desde].prof + (CAPAS[v.capa].prof - CAPAS[v.desde].prof) * v.mezcla : CAPAS[v.capa].prof;
       const dx = -mx * DESPLAZA * prof, dy = -my * DESPLAZA * prof;
-      const tx = ox + (v.p[0] + dx) * k, ty = oy + (v.p[1] + dy) * k, e = HADA_ESC * k;
+      const H0 = marcoDe(v.capa, cw, ch), { k, ox, oy } = H0;   // el hada en el marco de la capa que pinta
+      const tx = ox + (v.p[0] + dx) * k, ty = oy + (v.p[1] + dy) * k, e = HADA_ESC * encuadre(cw, ch).k;
       // estela de destellos: se calcula desde el tiempo, sin estado
       for (let s = Math.floor((t - .9) * 40) / 40; s <= t; s += 1 / 40) {
         if (s < .6 || s > 12.4) continue;
@@ -253,7 +257,7 @@ window.FondoAcuarela = (() => {
       // luz del hechizo sobre la luna
       const luz = Math.max(0, 1 - Math.abs(t - (HECHIZO + .35)) / .55);
       if (luz > 0) {
-        const lx = ox + (LUNA[0] - mx * DESPLAZA * CAPAS[0].prof) * k, ly = oy + (LUNA[1] - my * DESPLAZA * CAPAS[0].prof) * k, rad = (120 + 380 * luz) * k;
+        const L0 = marcoDe(0, cw, ch), lx = L0.ox + (LUNA[0] - mx * DESPLAZA * CAPAS[0].prof) * L0.k, ly = L0.oy + (LUNA[1] - my * DESPLAZA * CAPAS[0].prof) * L0.k, rad = (120 + 380 * luz) * L0.k;
         const gr = ctx.createRadialGradient(lx, ly, 0, lx, ly, rad);
         gr.addColorStop(0, `rgba(255,255,255,${.95 * luz})`); gr.addColorStop(.3, `rgba(255,226,240,${.6 * luz})`); gr.addColorStop(1, 'rgba(255,200,230,0)');
         ctx.fillStyle = gr; ctx.fillRect(lx - rad, ly - rad, rad * 2, rad * 2);
@@ -263,7 +267,7 @@ window.FondoAcuarela = (() => {
 
   // ---------------------------------------------------------- el trazo: la hoja en blanco se llena de línea
   // recorrido en zigzag que cubre todo el cuadro y termina donde el hada empieza a pintar (fuera, a la derecha)
-  const RUTA_TRAZO = curva([[W0 + 140, 120], [1420, 140], [980, 110], [520, 170], [110, 150], [180, 340], [620, 300], [1080, 360], [1540, 330], [1500, 540], [1020, 580], [560, 520], [120, 600], [210, 820], [700, 860], [1160, 800], [1560, 880], [W + 140, 760]], true);
+  const RUTA_TRAZO = curva([[W + 140, 120], [1420, 140], [980, 110], [520, 170], [110, 150], [180, 340], [620, 300], [1080, 360], [1540, 330], [1500, 540], [1020, 580], [560, 520], [120, 600], [210, 820], [700, 860], [1160, 800], [1560, 880], [W + 140, 760]]);
   const marcasTrazo = (() => { const lista = [], rr = azar(31), pasos = Math.ceil(RUTA_TRAZO.total / 95); for (let i = 0; i <= pasos; i++) { const f = i / pasos, [x, y] = RUTA_TRAZO.en(f); lista.push({ x: x + (rr() - .5) * 50, y: y + (rr() - .5) * 50, R: 250 + rr() * 90, nace: .35 + f * (TRAZO - 1), v: rr() * 4 | 0 }); } return lista; })();
   const mascaraTrazo = lienzo(W / 2, H / 2), lineaTrazo = lienzo(W, H);
   function trazar(ctx, t, px, py) {
@@ -275,10 +279,11 @@ window.FondoAcuarela = (() => {
     for (const m of marcasTrazo) { if (t < m.nace) continue; const Rm = m.R * (.3 + .7 * suave((t - m.nace) / .5)) / 2; g.drawImage(sellos[m.v], m.x / 2 - Rm, m.y / 2 - Rm, Rm * 2, Rm * 2); }
     const listo = suave((t - (TRAZO - .7)) / .6); if (listo > 0) { g.globalAlpha = listo; g.fillRect(0, 0, W / 2, H / 2); g.globalAlpha = 1; }
     const lg = lineaTrazo.getContext('2d');
-    CAPAS.forEach(c => {
+    CAPAS.forEach((c, i) => {
+      const M = marcoDe(i, cw, ch);
       lg.globalCompositeOperation = 'source-over'; lg.clearRect(0, 0, W, H); lg.drawImage(img[c.id].bn, 0, 0);
       lg.globalCompositeOperation = 'destination-in'; lg.drawImage(mascaraTrazo, 0, 0, W, H); lg.globalCompositeOperation = 'source-over';
-      ctx.drawImage(lineaTrazo, ox - px * 38 * c.prof * k, oy - py * 38 * c.prof * k, W * k, H * k);
+      ctx.drawImage(lineaTrazo, M.ox - px * 38 * c.prof * M.k, M.oy - py * 38 * c.prof * M.k, W * M.k, H * M.k);
     });
     // el hada con su varita al frente del trazo, dejando destellos
     const f = Math.min(1, t / TRAZO), p = RUTA_TRAZO.en(f), e = HADA_ESC * k;
