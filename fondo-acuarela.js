@@ -211,6 +211,10 @@ window.FondoAcuarela = (() => {
     ctx.fillStyle = '#f4f1ea'; ctx.fillRect(0, 0, cw, ch);
     rellenar(ctx, cw, ch, suave((t - HECHIZO) / 1.6));   // el borde se tiñe junto con el cielo
     pintarAncho(ctx, cw, ch, k, ox, oy, mx, my, t < DURACION ? suave((t - HECHIZO) / 1.6) : 1);
+    if (t < DURACION && img.anchoLin && ox > 1) {   // mientras se pinta, el lado ancho sigue en lineart hasta que llega el hechizo de la luna
+      const pr = CAPAS[1].prof; ctx.globalAlpha = 1 - suave((t - HECHIZO) / 1.6);
+      ctx.drawImage(img.anchoLin, ox - (ANCHO_EXTRA + mx * DESPLAZA * pr) * k, oy - my * DESPLAZA * pr * k, (ANCHO_EXTRA + 70) * k, H * k); ctx.globalAlpha = 1;
+    }
     if (t >= DURACION) {
       // la energía aparece de a poco cuando la escena ya está pintada y luego late suave
       const energia = suave((t - DURACION) / 2.5) * (img.tema === 'dia' ? .38 : .72);
