@@ -138,6 +138,19 @@ window.FondoAcuarela = (() => {
     const relleno = lienzo(W / 4, H / 4), rg = relleno.getContext('2d');
     rg.filter = 'blur(6px)'; rg.drawImage(chica, -8, -8, W / 4 + 16, H / 4 + 16);
     juego.relleno = relleno; juego.tema = tema;
+    // de noche, neblina en algunas partes de la cordillera (entre las montañas y el valle)
+    if (tema === 'noche') {
+      const n = lienzo(W, H), ng = n.getContext('2d'), r = azar(7);
+      [[180, 600, 260], [520, 625, 300], [930, 610, 240], [1280, 600, 300], [1560, 620, 220], [760, 660, 380]].forEach(([x, y, rx]) => {
+        for (let j = 0; j < 4; j++) {
+          const cx = x + (r() - .5) * rx * .6, cy = y + (r() - .5) * 26, rr = rx * (.55 + r() * .5);
+          ng.save(); ng.translate(cx, cy); ng.scale(1, .22);
+          const g = ng.createRadialGradient(0, 0, 0, 0, 0, rr); g.addColorStop(0, 'rgba(232,226,255,.62)'); g.addColorStop(.6, 'rgba(214,204,250,.28)'); g.addColorStop(1, 'rgba(200,190,240,0)');
+          ng.fillStyle = g; ng.beginPath(); ng.arc(0, 0, rr, 0, 6.2832); ng.fill(); ng.restore();
+        }
+      });
+      juego.niebla = n;
+    }
     return juego;
   }
 
@@ -158,15 +171,27 @@ window.FondoAcuarela = (() => {
   }
   // el fondo ampliado: cubre toda la pantalla, pegado a la derecha y con su horizonte a la misma altura que el de las figuras
   function marcoFondo(cw, ch) {
-    const f = encuadre(cw, ch); if (cw / W <= ch / H) return f;
+    const f = marcoFiguras(cw, ch); if (cw / W <= ch / H) return f;
     // se amplía lo justo para cubrir, y la luna queda lo más cerca posible de donde la ven las figuras
     const k = Math.max(cw / W, ch / H) * 1.03;
     const ox = Math.min(0, Math.max(cw - W * k, f.ox + LUNA[0] * f.k - LUNA[0] * k));
-    const oy = Math.min(0, Math.max(ch - H * k, f.oy + LUNA[1] * f.k - LUNA[1] * k));
+    const oy = ch - H * k;   // anclado abajo: el castillo, el puente y las cascadas se ven enteros hasta su base
     return { k, ox, oy };
   }
   const FONDOS = 3;                                 // las tres primeras capas son el paisaje (se amplían); desde el dragón, figuras
-  const marcoDe = (i, cw, ch) => i < FONDOS ? marcoFondo(cw, ch) : encuadre(cw, ch);
+  // el primer plano (árbol con el risco y la pareja) va grande e imponente, pegado abajo y a la derecha (como en el dibujo original)
+  function marcoFrente(cw, ch) {
+    const f = encuadre(cw, ch); if (cw / W <= ch / H) return f;
+    const k = Math.max(cw / W, ch / H) * 1.03;
+    return { k, ox: cw - W * k, oy: ch - H * k };
+  }
+  // el dragón y el mago se ven enteros (alas incluidas) y se corren a la izquierda lo justo para que las ramas no los tapen
+  function marcoFiguras(cw, ch) {
+    const f = encuadre(cw, ch); if (cw / W <= ch / H) return f;
+    const fr = marcoFrente(cw, ch), rama = fr.ox + 785 * fr.k;
+    return { k: f.k, ox: Math.max(10 - 65 * f.k, Math.min(f.ox, rama - 727 * f.k - 24)), oy: f.oy };
+  }
+  const marcoDe = (i, cw, ch) => i < FONDOS ? marcoFondo(cw, ch) : i < 5 ? marcoFiguras(cw, ch) : marcoFrente(cw, ch);
   /* versión anterior (escena entera bajo la barra, bordes rellenos con la escena difuminada):
   function encuadre(cw, ch) {
     const disp = ch - arriba, vertical = cw / disp < 1.2;
@@ -200,6 +225,11 @@ window.FondoAcuarela = (() => {
         const dx = -mx * DESPLAZA * c.prof, dy = -my * DESPLAZA * c.prof + (c.flota ? Math.sin(t * c.flota[0] + i) * c.flota[1] : 0);
         const M = marcoDe(i, cw, ch), x = M.ox + dx * M.k, y = M.oy + dy * M.k, I = img[c.id];
         ctx.drawImage(I.co, x, y, W * M.k, H * M.k);
+        if (i === 1 && img.niebla) {   // la neblina se desliza lento sobre la cordillera
+          ctx.globalAlpha = suave((t - DURACION) / 3) * (.75 + .25 * Math.sin(t * .35));
+          const deriva = Math.sin(t * .07) * 40 * M.k;
+          ctx.drawImage(img.niebla, x + deriva, y, W * M.k, H * M.k); ctx.globalAlpha = 1;
+        }
         if (I.aura && energia > 0) {
           const [vel, fase] = c.aura;
           ctx.globalCompositeOperation = 'screen';
