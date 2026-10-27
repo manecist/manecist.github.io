@@ -137,7 +137,7 @@ window.FondoAcuarela = (() => {
         if (el) g.drawImage(el, W - 80, 0, DER + 80, H);
         // arbustos con flores en el borde del pasto, bajo el árbol (detrás de la pareja)
         const ab = await cargar(`assets/fondo/reino/${tema}/06-arbustos-acuarela.webp${VER}`).catch(() => null);
-        if (ab) co.getContext('2d').drawImage(ab, 1100, 752 - ab.height, ab.width, ab.height);
+        if (ab) co.getContext('2d').drawImage(ab, 1020, 768 - ab.height, ab.width, ab.height);
       }
       if (FONDO.includes(CAPAS.indexOf(c))) {   // el borde izquierdo del paisaje se funde con su continuación ancha (sin costura)
         [co.getContext('2d'), g].forEach(x => { x.save(); x.filter = 'none'; x.globalCompositeOperation = 'destination-out'; const gr = x.createLinearGradient(0, 0, 70, 0); gr.addColorStop(0, '#000'); gr.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gr; x.fillRect(0, 0, 70, H); x.restore(); });
